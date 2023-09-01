@@ -1,0 +1,59 @@
+.container {
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logout {
+    padding: 5px;
+    border: none;
+    background-color: #53c28b;
+    color: white;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.login {
+    padding: 5px;
+    border: none;
+    background-color: #53c28b;
+    color: white;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Stack items vertically on smaller screens */
+        height: auto; /* Allow container to adjust its height */
+    }
+
+    .links {
+        margin-top: 20px; /* Add some spacing between logo and links */
+        flex-direction: column; /* Stack links vertically */
+        gap: 10px; /* Reduce the gap between links */
+    }
+
+    .logout {
+        padding: 8px 15px; /* Increase padding for better touch interaction */
+        font-size: 14px; /* Adjust font size for smaller screens */
+    }
+
+    .login {
+        padding: 8px 15px; /* Increase padding for better touch interaction */
+        font-size: 14px; /* Adjust font size for smaller screens */
+    }
+}
