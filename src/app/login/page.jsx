@@ -19,12 +19,28 @@ const Login = () => {
   }
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+    const email = e.target[0].value;
+    const password = e.target[1].value;
+    //alert(`Email: ${email}, Password: ${password}`);
+
+    try {
+      await signIn('credentials', { email, password });
+    } catch (error) {
+      console.error('Sign-in error:', error);
+    }
+  };
+
+  
+  /*
+  const handleSubmit = async (e) => {
     const email = e.target[0].value;
     const password = e.target[1].value;
     alert(`Email: ${email}, Password: ${password}`);
 
     signIn("credentials", { email, password });
   };
+  */
   
   return (
     <div className={styles.container}>

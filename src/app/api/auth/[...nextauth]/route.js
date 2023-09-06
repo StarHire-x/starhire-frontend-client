@@ -6,6 +6,54 @@ import bcrypt from "bcryptjs";
 
 const handler = NextAuth({
   providers: [
+    CredentialsProvider({
+      id: "credentials",
+      name: "Credentials",
+      async authorize(credentials) {
+
+        try {
+          const res = await fetch(
+            `http://localhost:8080/users/?email=${credentials.email}`,
+            {
+              cache: "no-store",
+            }
+          );
+        
+          const responseBody = await res.json(); // Read the response body once
+
+          console.log(typeof responseBody.data.password);
+          console.log(typeof credentials.password);
+
+          if (typeof credentials.password === 'string' && typeof responseBody.data.password) {
+            const isPasswordCorrect = await bcrypt.compare(
+              credentials.password,
+              responseBody.data.password
+            );
+            if (isPasswordCorrect) {
+              return responseBody;
+            } else {
+              throw new Error("Wrong Credentials!");
+            }
+          } else {
+            throw new Error("Invalid password in the response");
+          }
+         
+        } catch (err) {
+          console.error(err); // Log the error
+        }
+      },
+    }),
+  ],
+  pages: {
+    error: "/login",
+  },
+});
+
+
+
+/*
+const handler = NextAuth({
+  providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -14,7 +62,7 @@ const handler = NextAuth({
       id: "credentials",
       name: "Credentials",
       async authorize(credentials) {
-        console.log(credentials.email);
+
         try {
           const res = await fetch(
             `http://localhost:8080/users/?email=${credentials.email}`,
@@ -22,12 +70,13 @@ const handler = NextAuth({
               cache: "no-store",
             }
           );
-    
+
           if (!res.ok) {
             return notFound();
           }
     
           const responseBody = await res.json(); // Read the response body once
+          console.log(responseBody);
     
           const isPasswordCorrect = await bcrypt.compare(
             credentials.password,
@@ -49,5 +98,6 @@ const handler = NextAuth({
     error: "/login",
   },
 });
+*/
 
 export { handler as GET, handler as POST };
