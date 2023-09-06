@@ -21,6 +21,10 @@ const handler = NextAuth({
         
           const responseBody = await res.json(); // Read the response body once
 
+          if (res.status === 404) {
+            throw new Error("User not found"); // Handle 404 response
+          }
+
           console.log(typeof responseBody.data.password);
           console.log(typeof credentials.password);
 
