@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import bcrypt from "bcryptjs";
 
 const handler = NextAuth({
+
   providers: [
     CredentialsProvider({
       id: "credentials",
@@ -28,6 +29,7 @@ const handler = NextAuth({
           }
 
           if (typeof credentials.password === 'string' && typeof responseBody.data.password) {
+
             const isPasswordCorrect = await bcrypt.compare(
               credentials.password,
               responseBody.data.password
@@ -35,20 +37,20 @@ const handler = NextAuth({
             if (isPasswordCorrect) {
               return responseBody;
             } else {
-              throw new Error("Wrong Credentials!");
+              //throw new Error("Wrong Credentials!");
             }
           } else {
-            throw new Error("Invalid password in the response");
+            //throw new Error("Invalid password in the response");
           }
          
         } catch (err) {
-          console.error(err); // Log the error
+          //console.error(err); // Log the error
         }
       },
     }),
   ],
   pages: {
-    error: "/login",
+    error: "http://localhost:3000/login",
   },
 });
 
