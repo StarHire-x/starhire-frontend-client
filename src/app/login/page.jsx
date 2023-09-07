@@ -62,7 +62,7 @@ const Login = () => {
       <Link href="/register">I don't have an account </Link>
       <button onClick={() => signIn("google")}>Login with Google</button>
     </div>
-  )
+  );
 }
 
 export default Login;
