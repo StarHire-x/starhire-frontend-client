@@ -18,15 +18,14 @@ const handler = NextAuth({
               cache: "no-store",
             }
           );
-        
+
           const responseBody = await res.json(); // Read the response body once
+          console.log(responseBody)
+          //console.log(res);
 
-          if (res.status === 404) {
-            throw new Error("User not found"); // Handle 404 response
+          if (responseBody.statusCode === 404) {
+            router.push('/login'); // Replace '/error' with the path you want to redirect to
           }
-
-          console.log(typeof responseBody.data.password);
-          console.log(typeof credentials.password);
 
           if (typeof credentials.password === 'string' && typeof responseBody.data.password) {
             const isPasswordCorrect = await bcrypt.compare(
