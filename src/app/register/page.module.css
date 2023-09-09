@@ -6,10 +6,18 @@
    gap: 20px;
 }
 
+.title {
+  font-size: 72px;
+  background: linear-gradient(to bottom, #194c33, #bbb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .form {
-   width: 300px;
-   display: flex; 
-   flex-direction: column;
+   width: 600px;
+   margin: 0 auto;
+   display: grid;
+   grid-template-columns: repeat(2, 1fr);
    gap: 20px;
 }
 
@@ -32,4 +40,16 @@
     border-radius: 5px;
     color: #eee;
     font-weight: bold;
+}
+
+.radio {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px; /* Adjust the spacing between the radio button and label */
+}
+
+.radio input[type="radio"] {
+  /* Optional: Adjust the radio button styles */
+  margin-right: 4px; /* Adjust the spacing between the radio button and label text */
 }

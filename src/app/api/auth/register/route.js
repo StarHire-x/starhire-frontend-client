@@ -14,13 +14,13 @@ export const registerUser = async (request) => {
       },
       body: JSON.stringify(request),
     });
-
-    if (!res.ok) {
+    alert(res);
+    if (res.status === 201) {
+      return res;
+    } else if (!res.ok) {
       const errorData = await res.json();
       throw new Error(errorData.message);
     }
-
-    return res;
   } catch (err) {
     return new NextResponse("Failed to create user", { status: 500 });
   }

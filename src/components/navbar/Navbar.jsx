@@ -54,12 +54,19 @@ const Navbar = () => {
           </Link>
         ))}
         {session.status === "authenticated" && (
-          <button className={styles.logout} onClick={signOut}>
-            Logout
-          </button>
+          <>
+            <h2> {session.data.user.name} </h2>
+            <h3> {session.data.user.role} </h3>
+            <button className={styles.logout} onClick={signOut}>
+              Logout
+            </button>
+          </>
         )}
         {session.status === "unauthenticated" && (
-          <button className={styles.login} onClick={() => window.location.href = "/login"}>
+          <button
+            className={styles.login}
+            onClick={() => (window.location.href = "/login")}
+          >
             Login
           </button>
         )}

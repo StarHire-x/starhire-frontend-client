@@ -5,104 +5,84 @@ import { notFound } from "next/navigation";
 import bcrypt from "bcryptjs";
 
 const handler = NextAuth({
-
-  providers: [
-    CredentialsProvider({
-      id: "credentials",
-      name: "Credentials",
-      async authorize(credentials) {
-
-        try {
-          const res = await fetch(
-            `http://localhost:8080/users/?email=${credentials.email}`,
-            {
-              cache: "no-store",
-            }
-          );
-
-          const responseBody = await res.json(); // Read the response body once
-          console.log(responseBody)
-          //console.log(res);
-
-          if (responseBody.statusCode === 404) {
-            router.push('/login'); // Replace '/error' with the path you want to redirect to
-          }
-
-          if (typeof credentials.password === 'string' && typeof responseBody.data.password) {
-
-            const isPasswordCorrect = await bcrypt.compare(
-              credentials.password,
-              responseBody.data.password
-            );
-            if (isPasswordCorrect) {
-              return responseBody;
-            } else {
-              //throw new Error("Wrong Credentials!");
-            }
-          } else {
-            //throw new Error("Invalid password in the response");
-          }
-         
-        } catch (err) {
-          //console.error(err); // Log the error
-        }
-      },
-    }),
-  ],
-  pages: {
-    error: "http://localhost:3000/login",
-  },
-});
-
-
-
-/*
-const handler = NextAuth({
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
     CredentialsProvider({
-      id: "credentials",
-      name: "Credentials",
+      credentials: {
+        email: "email",
+        password: "password",
+        role: "role",
+      },
       async authorize(credentials) {
-
-        try {
-          const res = await fetch(
-            `http://localhost:8080/users/?email=${credentials.email}`,
-            {
-              cache: "no-store",
-            }
-          );
-
-          if (!res.ok) {
-            return notFound();
+        const { email, password, role } = credentials;
+        const res = await fetch(
+          `http://localhost:8080/users/login/?email=${email}&role=${role}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            cache: "no-store",
           }
-    
-          const responseBody = await res.json(); // Read the response body once
-          console.log(responseBody);
-    
-          const isPasswordCorrect = await bcrypt.compare(
-            credentials.password,
-            responseBody.password
-          );
-    
-          if (isPasswordCorrect) {
-            return responseBody;
-          } else {
-            throw new Error("Wrong Credentials!");
-          }
-        } catch (err) {
-          throw new Error(err);
+        );
+
+        const responseBody = await res.json();
+
+        if (responseBody.statusCode === 404) {
+          throw new Error(responseBody.message || "An error occurred");
+        }
+        
+        const isPasswordCorrect = await bcrypt.compare(
+          password,
+          responseBody.data.password
+        );
+
+        if (isPasswordCorrect) {
+          return {
+            userId: responseBody.data.userId,
+            name: responseBody.data.userName,
+            email: responseBody.data.email,
+            role: responseBody.data.role,
+          };
+        } else {
+          throw new Error("Wrong Credentials!");
         }
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user, session }) {
+      console.log("jwt callback", { token, user, session });
+      if (user) {
+        token.userId = user.userId;
+        token.name = user.name;
+        token.email = user.email;
+        token.role = user.role;
+      }
+      return token;
+    },
+    async session({ session, token, user }) {
+      console.log("session callback", { session, token, user });
+      session.user = {
+        ...session.user,
+        userId: token.userId,
+        name: token.name,
+        email: token.email,
+        role: token.role,
+      };
+      return session;
+    },
+  }, 
+  session: {
+    strategy: "jwt"
+  },
   pages: {
     error: "/login",
   },
+
 });
-*/
 
 export { handler as GET, handler as POST };

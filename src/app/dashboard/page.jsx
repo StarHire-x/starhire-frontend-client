@@ -9,19 +9,22 @@ const Dashboard = () => {
 
     const router = useRouter();
 
-    console.log("TEST" + JSON.stringify(session));
-    const sessionStatus = JSON.stringify(session);
+    console.log(session);
 
-    if (sessionStatus === "loading") {
-        return <p>Loading...</p>;
-      }
+    if (session.status === "loading") {
+      return <p>Loading...</p>;
+    }
     
-    if (sessionStatus === "unauthenticated") {
-        router?.push("/login");
+    if (session.status === "unauthenticated") {
+      router?.push("/login");
     }
 
-    if (sessionStatus === "authenticated") {
-        return <h1>Welcome back {session.data.user.name}, {session.data.user.email}</h1>
+    if (session.status === "authenticated") {
+      return (
+        <h1>
+          Welcome back {session.data.user.name}, {session.data.user.email}, {session.data.user.image}, {session.data.user.role}
+        </h1>
+      );
     }
 }
 
