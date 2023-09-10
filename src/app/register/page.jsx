@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import React from "react";
-import styles from "./page.module.css";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { hashing } from "@/app/api/auth/register/route";
-import { registerUser } from "@/app/api/auth/register/route";
+import React from 'react';
+import styles from './page.module.css';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { hashing } from '@/app/api/auth/register/route';
+import { registerUser } from '@/app/api/auth/register/route';
 
 const Register = () => {
   const [err, setErr] = useState(false);
 
   const [formData, setFormData] = useState({
-    userName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    contactNumber: "",
-    role: "",
-  })
+    userName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    contactNumber: '',
+    role: '',
+  });
 
   const router = useRouter();
 
@@ -52,10 +52,10 @@ const Register = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:8080/users", {
-        method: "POST",
+      const res = await fetch('http://localhost:8080/users', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       });
@@ -65,11 +65,11 @@ const Register = () => {
         alert(errorData.message);
         throw new Error(errorData.message);
       }
-      alert("Account has been created!")
-      router.push("/login?success=Account has been created");
+      alert('Account has been created!');
+      router.push('/login?success=Account has been created');
     } catch (err) {
       // Handle errors more gracefully (e.g., display an error message to the user)
-      console.error("Fetch error:", err);
+      console.error('Fetch error:', err);
       alert(err);
       setErr(true);
     }
@@ -129,8 +129,8 @@ const Register = () => {
             <input
               type="radio"
               name="role"
-              value="Job Seeker"
-              checked={formData.role === "Job Seeker"}
+              value="Job_Seeker"
+              checked={formData.role === 'Job_Seeker'}
               onChange={handleInputChange}
             />
             Job Seeker
@@ -140,14 +140,14 @@ const Register = () => {
               type="radio"
               name="role"
               value="Corporate"
-              checked={formData.role === "Corporate"}
+              checked={formData.role === 'Corporate'}
               onChange={handleInputChange}
             />
             Corporate
           </label>
         </div>
         <button className={styles.button}>Register</button>
-        {err && "Something went wrong!"}
+        {err && 'Something went wrong!'}
       </form>
       <Link href="/login">Login with an existing account</Link>
       <Link href="/forgetPassword">Forget Password</Link>
