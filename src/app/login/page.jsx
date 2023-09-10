@@ -89,7 +89,7 @@ const Login = () => {
               type="radio"
               name="role"
               value="Job Seeker"
-              checked={formData.role === "Job Seeker"}
+              checked={formData.role === "Job_Seeker"}
               onChange={handleInputChange}
             />
             Job Seeker
