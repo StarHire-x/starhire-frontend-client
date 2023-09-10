@@ -31,6 +31,17 @@
    font-weight: bold;
 }
 
+.inputCompanyRegistrationIdField {
+  padding: 20px;
+  background-color: transparent; 
+  border: 2px solid #bbb;
+  color: #bbb;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+
 .button {
     width: 300px;
     padding: 20px;
