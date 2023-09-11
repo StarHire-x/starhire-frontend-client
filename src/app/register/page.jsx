@@ -17,6 +17,7 @@ const Register = () => {
     password: "",
     confirmPassword: "",
     contactNumber: "",
+    companyRegistrationId: "",
     role: "",
   })
 
@@ -48,6 +49,7 @@ const Register = () => {
       email: formData.email,
       password: hashedPassword,
       contactNo: formData.contactNumber,
+      companyRegistrationId: formData.companyRegistrationId,
       role: formData.role,
     };
 
@@ -135,6 +137,15 @@ const Register = () => {
           value={formData.contactNumber}
           onChange={handleInputChange}
           required
+        />
+        <input
+          type="text"
+          name="companyRegistrationId"
+          placeholder="Company Registration ID (Corporate Only)"
+          className={styles.inputCompanyRegistrationIdField}
+          value={formData.companyRegistrationId}
+          onChange={handleInputChange}
+          required={formData.role === "Corporate"}
         />
         <div className={styles.radio}>
           <label>
