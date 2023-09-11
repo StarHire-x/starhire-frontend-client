@@ -51,6 +51,15 @@ const Register = () => {
       role: formData.role,
     };
 
+    // try {
+    //   await registerUser(data);
+    //   alert('Account has been created!');
+    //   router.push('/login?success=Account has been created');
+    // } catch (error) {
+    //   alert(error);
+    //   setErr(true);
+    // }
+
     try {
       const res = await fetch('http://localhost:8080/users', {
         method: 'POST',
