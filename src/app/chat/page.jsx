@@ -10,8 +10,6 @@ import {
   Avatar,
   ChatContainer,
   ConversationHeader,
-  VoiceCallButton,
-  VideoCallButton,
   MessageList,
   TypingIndicator,
   MessageSeparator,
@@ -21,10 +19,10 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import ChatSidebar from "./ChatSidebar";
 import ChatHeader from "./ChatHeader";
-import { getAllUserChats } from "../api/auth/chat/route";
+import { getAllUserChats, getOneUserChat } from "../api/auth/chat/route";
 
 const Chat = () => {
-  const currentUserId = 27; //jane user
+  const currentUserId = 32; //declan user
   // should get from session
   // const session = useSession();
   // const router = useRouter();
@@ -71,8 +69,10 @@ const Chat = () => {
 
   const selectCurrentChat = async (index) => {
     if (index < allChats.length) {
-      await getUserChats(); // not sure if this is a good implementation to handle clicking between chats
-      setCurrentChat(allChats[index]);
+      // get current chat id
+      const currentChatId = allChats[index].chatId;
+      const chatMessagesByCurrentChatId = await getOneUserChat(currentChatId);
+      setCurrentChat(chatMessagesByCurrentChatId);
     }
   };
 
