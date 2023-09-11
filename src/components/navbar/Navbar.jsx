@@ -1,40 +1,45 @@
-"use client";
-import Link from "next/link";
-import React from "react";
-import styles from "./navbar.module.css";
-import DarkModeToggle from "../DarkModeToggle/DarkModeToggle";
-import { signOut, useSession } from "next-auth/react";
+'use client';
+import Link from 'next/link';
+import React from 'react';
+import styles from './navbar.module.css';
+import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
+import { signOut, useSession } from 'next-auth/react';
 
 const links = [
   {
     id: 1,
-    title: "Home",
-    url: "/",
+    title: 'Home',
+    url: '/',
   },
   {
     id: 2,
-    title: "Portfolio",
-    url: "/portfolio",
+    title: 'Portfolio',
+    url: '/portfolio',
   },
   {
     id: 3,
-    title: "Blog",
-    url: "/blog",
+    title: 'Manage Job Listings',
+    url: '/jobListingManagement',
   },
   {
     id: 4,
-    title: "About",
-    url: "/about",
+    title: 'Blog',
+    url: '/blog',
   },
   {
     id: 5,
-    title: "Contact",
-    url: "/contact",
+    title: 'About',
+    url: '/about',
   },
   {
     id: 6,
-    title: "Dashboard",
-    url: "/dashboard",
+    title: 'Contact',
+    url: '/contact',
+  },
+  {
+    id: 7,
+    title: 'Dashboard',
+    url: '/dashboard',
   },
 ];
 
@@ -53,7 +58,7 @@ const Navbar = () => {
             {link.title}
           </Link>
         ))}
-        {session.status === "authenticated" && (
+        {session.status === 'authenticated' && (
           <>
             <h2> {session.data.user.name} </h2>
             <h3> {session.data.user.role} </h3>
@@ -62,10 +67,10 @@ const Navbar = () => {
             </button>
           </>
         )}
-        {session.status === "unauthenticated" && (
+        {session.status === 'unauthenticated' && (
           <button
             className={styles.login}
-            onClick={() => (window.location.href = "/login")}
+            onClick={() => (window.location.href = '/login')}
           >
             Login
           </button>
