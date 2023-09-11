@@ -51,6 +51,7 @@ const Register = () => {
       role: formData.role,
     };
 
+    /*
     try {
       const res = await fetch("http://localhost:8080/users", {
         method: "POST",
@@ -74,6 +75,17 @@ const Register = () => {
       setErr(true);
     }
   };
+  */
+
+  try {
+    await registerUser(data);
+    alert("Account has been created!");
+    router.push("/login?success=Account has been created");
+  } catch (error) {
+    alert(error);
+    setErr(true);
+  }
+};
 
   return (
     <div className={styles.container}>
