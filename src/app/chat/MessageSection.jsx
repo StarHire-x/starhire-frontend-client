@@ -2,7 +2,7 @@ import {} from "@chatscope/chat-ui-kit-react";
 
 const MessageSection = ({}) => {
   return (
-    <MessageList typingIndicator={<TypingIndicator content="Zoe is typing" />}>
+    <MessageList>
       <MessageSeparator content="Saturday, 30 November 2019" />
       <Message
         model={{
@@ -13,7 +13,12 @@ const MessageSection = ({}) => {
           position: "single",
         }}
       >
-        <Avatar src="" name="Zoe" />
+        <Avatar>
+            <Image src={HumanIcon} 
+            alt="Profile Picture"
+            name="Zoe"
+            />
+        </Avatar>
       </Message>
       <Message
         model={{
@@ -64,7 +69,12 @@ const MessageSection = ({}) => {
           position: "last",
         }}
       >
-        <Avatar src="" name="Zoe" />
+        <Avatar>
+            <Image src={HumanIcon} 
+            alt="Profile Picture"
+            name="Zoe"
+            />
+        </Avatar>
       </Message>
       <Message
         model={{
@@ -122,7 +132,12 @@ const MessageSection = ({}) => {
           position: "last",
         }}
       >
-        <Avatar src="" name="Zoe" />
+        <Avatar>
+            <Image src={HumanIcon} 
+            alt="Profile Picture"
+            name="Zoe"
+            />
+        </Avatar>
       </Message>
     </MessageList>
   );

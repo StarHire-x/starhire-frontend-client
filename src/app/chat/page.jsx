@@ -4,6 +4,7 @@ import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import io from "socket.io-client";
 import {
   MainContainer,
@@ -11,7 +12,6 @@ import {
   ChatContainer,
   ConversationHeader,
   MessageList,
-  TypingIndicator,
   MessageSeparator,
   Message,
   MessageInput,
@@ -20,6 +20,7 @@ import {
 import ChatSidebar from "./ChatSidebar";
 import ChatHeader from "./ChatHeader";
 import { getAllUserChats, getOneUserChat } from "../api/auth/chat/route";
+import HumanIcon from "../../../public/icon.png";
 
 const Chat = () => {
   const currentUserId = 32; //declan user
@@ -102,7 +103,12 @@ const Chat = () => {
       <ChatContainer>
         <ConversationHeader>
           <ConversationHeader.Back />
-          <Avatar src="" name={otherUser ? otherUser.userName : ""} />
+          <Avatar>
+              <Image src={HumanIcon} 
+              alt="Profile Picture"
+              name={otherUser ? otherUser.userName : ""}
+              />
+          </Avatar>
           <ConversationHeader.Content
             userName={otherUser ? otherUser.userName : ""}
             info="Active 10 mins ago"
@@ -112,13 +118,7 @@ const Chat = () => {
           </ConversationHeader.Actions>
         </ConversationHeader>
         <ChatHeader />
-        <MessageList
-          typingIndicator={
-            <TypingIndicator
-              content={`${otherUser ? otherUser.userName : ""} is typing`}
-            />
-          }
-        >
+        <MessageList>
           <MessageSeparator content="Saturday, 30 November 2019" />
           {chatMessages.length > 0 &&
             chatMessages.map((value, index) => (
@@ -136,14 +136,16 @@ const Chat = () => {
                   position: "single",
                 }}
               >
-                <Avatar
-                  src=""
-                  name={
-                    value.userId == currentUserId
-                      ? currentUser.userName
-                      : otherUser.userName
-                  }
-                />
+                <Avatar>
+                    <Image src={HumanIcon} 
+                    alt="Profile Picture"
+                    name={
+                      value.userId == currentUserId
+                        ? currentUser.userName
+                        : otherUser.userName
+                    }
+                    />
+                </Avatar>
               </Message>
             ))}
         </MessageList>
