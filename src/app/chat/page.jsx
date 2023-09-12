@@ -23,13 +23,16 @@ import { getAllUserChats, getOneUserChat } from "../api/auth/chat/route";
 import HumanIcon from "../../../public/icon.png";
 
 const Chat = () => {
-  const currentUserId = 32; //declan user
   // should get from session
-  // const session = useSession();
-  // const router = useRouter();
-  // if (session.status === "unauthenticated") {
-  //   router?.push("/login");
-  // }
+  const session = useSession();
+  const router = useRouter();
+  if (session.status === "unauthenticated") {
+    router?.push("/login");
+  }
+
+  const accessToken = session.status === "authenticated" && session.data && session.data.user.accessToken;
+  const currentUserId = session.status === "authenticated" && session.data.user.userId; 
+
 
   const [messageInputValue, setMessageInputValue] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
@@ -64,7 +67,7 @@ const Chat = () => {
   };
 
   async function getUserChats() {
-    const chats = await getAllUserChats(currentUserId);
+    const chats = await getAllUserChats(currentUserId, accessToken);
     setAllChats(chats);
   }
 
@@ -72,7 +75,7 @@ const Chat = () => {
     if (index < allChats.length) {
       // get current chat id
       const currentChatId = allChats[index].chatId;
-      const chatMessagesByCurrentChatId = await getOneUserChat(currentChatId);
+      const chatMessagesByCurrentChatId = await getOneUserChat(currentChatId, accessToken);
       setCurrentChat(chatMessagesByCurrentChatId);
     }
   };
