@@ -22,18 +22,6 @@ const ChatSidebar = ({ userChats, selectCurrentChat }) => {
                   // ? value.jobSeeker.userName
                   // : value.corporate.userName
               }
-              lastSenderName={
-                value.recruiter.userName
-                  // ? value.jobSeeker.userName
-                  // : value.corporate.userName
-              }
-              info={
-                value.chatMessages
-                  ? value.chatMessages.length > 0
-                    ? value.chatMessages.slice(-1)[0].message
-                    : ""
-                  : ""
-              }
               onClick={() => selectCurrentChat(index)}
             >
               <Avatar>
