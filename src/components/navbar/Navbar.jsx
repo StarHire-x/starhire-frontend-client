@@ -14,31 +14,21 @@ const links = [
   },
   {
     id: 2,
-    title: "Portfolio",
-    url: "/portfolio",
-  },
-  {
-    id: 3,
-    title: "Blog",
-    url: "/blog",
-  },
-  {
-    id: 4,
     title: "About",
     url: "/about",
   },
   {
-    id: 5,
+    id: 3,
     title: "Contact",
     url: "/contact",
   },
   {
-    id: 6,
+    id: 4,
     title: "Dashboard",
     url: "/dashboard",
   },
   {
-    id: 7,
+    id: 5,
     title: "Chat",
     url: "/chat",
   },
