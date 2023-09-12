@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import 'primereact/resources/themes/lara-light-teal/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
@@ -12,8 +13,37 @@ const JobListingTable = ({ listings }) => {
     // Handle edit logic here
   };
 
-  const handleDelete = (rowData) => {
-    // Handle delete logic here
+  const handleDelete = async (jobListingId) => {
+    // Confirm before deleting
+    if (!window.confirm('Are you sure you want to delete this job listing?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/job-listing/${jobListingId}`,
+        {
+          method: 'DELETE',
+        }
+      );
+
+      if (response.ok) {
+        // Remove the deleted job listing from the local state
+        setJobListings((prevListings) =>
+          prevListings.filter(
+            (listing) => listing.jobListingId !== jobListingId
+          )
+        );
+        alert('Job listing deleted successfully!');
+      } else {
+        // Handle errors
+        const data = await response.json();
+        alert(`Error: ${data.message || 'Could not delete job listing.'}`);
+      }
+    } catch (error) {
+      console.error('There was an error deleting the job listing.', error);
+      alert('There was an error deleting the job listing.');
+    }
   };
 
   const formatDate = (dateString) => {
@@ -22,37 +52,60 @@ const JobListingTable = ({ listings }) => {
   };
 
   return (
-    <DataTable value={listings} style={styles.table}>
+    <DataTable
+      value={listings}
+      paginator
+      rows={10}
+      paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+      rowsPerPageOptions={[10, 25, 50]}
+      style={styles.table}
+      filterDisplay="menu"
+      globalFilterFields={[
+        'jobListingId',
+        'description',
+        'jobLocation',
+        'averageSalary',
+        'listingDate',
+        'jobStartDate',
+        'jobListingStatus',
+      ]}
+    >
       <Column
         field="jobListingId"
         header="ID"
         style={{ width: '50px' }}
+        sortable
       ></Column>
       <Column field="title" header="Title" style={{ width: '50px' }}></Column>
       <Column
         field="description"
         header="Description"
         style={{ width: '50px' }}
+        sortable
       ></Column>
       <Column
         field="jobLocation"
         header="Location"
         style={{ width: '50px' }}
+        sortable
       ></Column>
       <Column
         field="averageSalary"
         header="Average Salary"
         style={{ width: '50px' }}
+        sortable
       ></Column>
       <Column
         field="listingDate"
         header="Listing Date"
         body={(rowData) => formatDate(rowData.listingDate)}
+        sortable
       ></Column>
       <Column
         field="jobStartDate"
         header="Start Date"
-        body={(rowData) => formatDate(rowData.listingDate)}
+        body={(rowData) => formatDate(rowData.jobStartDate)}
+        sortable
       ></Column>
       <Column
         field="jobListingStatus"
@@ -66,6 +119,7 @@ const JobListingTable = ({ listings }) => {
             {rowData.jobListingStatus}
           </span>
         )}
+        sortable
       ></Column>
 
       <Column
