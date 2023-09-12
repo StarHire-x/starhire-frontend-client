@@ -42,7 +42,7 @@ const JobListingTable = ({ listings }) => {
       }
     } catch (error) {
       console.error('There was an error deleting the job listing.', error);
-      alert('There was an error deleting the job listing.');
+      //alert('There was an error deleting the job listing.');
     }
   };
 

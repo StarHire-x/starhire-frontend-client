@@ -14,12 +14,16 @@ const JobListingManagementPage = () => {
 
   useEffect(() => {
     if (session) {
-      fetch(`http://localhost:8080/job-listing/my-listings`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session.accessToken}`,
-        },
-      })
+      fetch(
+        `http://localhost:8080/job-listing/corporate/${session.user.userId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session.accessToken}`,
+          },
+        }
+      )
         .then((response) => response.json())
         .then((data) => setJobListings(data));
     }
@@ -53,7 +57,7 @@ const JobListingManagementPage = () => {
 
       // Fetch the updated job listings
       const updatedListingsResponse = await fetch(
-        `http://localhost:8080/job-listing?userId=${session.user.userId}`,
+        `http://localhost:8080/job-listing/corporate/${session.user.userId}}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -71,7 +75,7 @@ const JobListingManagementPage = () => {
         'There was an error creating the job listing:',
         error.message
       );
-      // You can also set some state here to display the error message to the user, if you wish.
+      // Can also set some state here to display the error message to the user
     }
   };
 
