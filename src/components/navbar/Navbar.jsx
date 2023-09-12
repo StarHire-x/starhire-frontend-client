@@ -1,9 +1,10 @@
-'use client';
-import Link from 'next/link';
-import React from 'react';
-import styles from './navbar.module.css';
-import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
-import { signOut, useSession } from 'next-auth/react';
+"use client";
+import Link from "next/link";
+import React from "react";
+import styles from "./navbar.module.css";
+import DarkModeToggle from "../DarkModeToggle/DarkModeToggle";
+import { signOut, useSession } from "next-auth/react";
+import { useState } from "react";
 
 const links = [
   {
@@ -27,51 +28,73 @@ const links = [
     url: '/blog',
   },
   {
+    id: 3,
+    title: "Contact",
+    url: "/contact",
+  },
+  {
+    id: 4,
+    title: "Dashboard",
+    url: "/dashboard",
+  },
+  {
     id: 5,
-    title: 'About',
-    url: '/about',
-  },
-  {
-    id: 6,
-    title: 'Contact',
-    url: '/contact',
-  },
-  {
-    id: 7,
-    title: 'Dashboard',
-    url: '/dashboard',
+    title: "Chat",
+    url: "/chat",
   },
 ];
 
 const Navbar = () => {
-  const session = useSession();
+  const session = useSession();  
+  const [showDropdown, setShowDropdown] = useState(null);
+
+  const handleLinkMouseEnter = (linkId) => {
+    setShowDropdown(linkId);
+  };
+
+  const handleLinkMouseLeave = () => {
+    setShowDropdown(null);
+  };
 
   return (
     <div className={styles.container}>
       <Link href="/" className={styles.logo}>
-        StarHire Client
+        StarHire
       </Link>
       <div className={styles.links}>
         <DarkModeToggle />
         {links.map((link) => (
-          <Link key={link.id} href={link.url} className={styles.link}>
-            {link.title}
-          </Link>
+          <div
+            key={link.id}
+            className={styles.linkContainer}
+            onMouseEnter={() => handleLinkMouseEnter(link.id)}
+            onMouseLeave={handleLinkMouseLeave}
+          > 
+          <Link href={link.url} className={styles.link}>
+              {link.title}
+            </Link>
+            {link.submenu && showDropdown === link.id && (
+              <div className={styles.dropdown}>
+                {link.submenu.map((submenuItem) => (
+                  <Link
+                    key={submenuItem.id}
+                    href={submenuItem.url}
+                    className={styles.submenuItem}
+                  >
+                    {submenuItem.title}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         ))}
-        {session.status === 'authenticated' && (
-          <>
-            <h2> {session.data.user.name} </h2>
-            <h3> {session.data.user.role} </h3>
-            <button className={styles.logout} onClick={signOut}>
-              Logout
-            </button>
-          </>
+        {session.status === "authenticated" && (
+          <button className={styles.logout} onClick={signOut}>
+            Logout
+          </button>
         )}
-        {session.status === 'unauthenticated' && (
-          <button
-            className={styles.login}
-            onClick={() => (window.location.href = '/login')}
-          >
+        {session.status === "unauthenticated" && (
+          <button className={styles.login} onClick={() => window.location.href = "/login"}>
             Login
           </button>
         )}
