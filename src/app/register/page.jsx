@@ -43,11 +43,11 @@ const Register = () => {
       return; // Exit early if passwords don't match
     }
 
-    const hashedPassword = await hashing(formData.password);
+    // const hashedPassword = await hashing(formData.password);
     const data = {
       userName: formData.userName,
       email: formData.email,
-      password: hashedPassword,
+      password: formData.password,
       contactNo: formData.contactNumber,
       companyRegistrationId: formData.companyRegistrationId,
       role: formData.role,

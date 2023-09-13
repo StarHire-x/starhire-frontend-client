@@ -1,9 +1,10 @@
-export const getAllUserChats = async (userId) => {
+export const getAllUserChats = async (userId, accessToken) => {
   try {
     const res = await fetch(`http://localhost:8080/chat/user-chats/${userId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${accessToken}`
       },
       cache: "no-store",
     });
@@ -18,12 +19,13 @@ export const getAllUserChats = async (userId) => {
   }
 };
 
-export const getOneUserChat = async (chatId) => {
+export const getOneUserChat = async (chatId, accessToken) => {
   try {
     const res = await fetch(`http://localhost:8080/chat/${chatId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${accessToken}`
       },
       cache: "no-store",
     });
