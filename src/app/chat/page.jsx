@@ -15,7 +15,6 @@ import {
   MessageSeparator,
   Message,
   MessageInput,
-  EllipsisButton,
 } from "@chatscope/chat-ui-kit-react";
 import ChatSidebar from "./ChatSidebar";
 import ChatHeader from "./ChatHeader";
@@ -71,13 +70,10 @@ const Chat = () => {
     setAllChats(chats);
   }
 
-  const selectCurrentChat = async (index) => {
-    if (index < allChats.length) {
-      // get current chat id
-      const currentChatId = allChats[index].chatId;
-      const chatMessagesByCurrentChatId = await getOneUserChat(currentChatId, accessToken);
-      setCurrentChat(chatMessagesByCurrentChatId);
-    }
+  const selectCurrentChat = async (chat) => {
+    const currentChatId = chat.chatId;
+    const chatMessagesByCurrentChatId = await getOneUserChat(currentChatId, accessToken);
+    setCurrentChat(chatMessagesByCurrentChatId);
   };
 
   useEffect(() => {
@@ -128,7 +124,6 @@ const Chat = () => {
                 userName={otherUser ? otherUser.userName : ""}
               />
               <ConversationHeader.Actions>
-                <EllipsisButton orientation="vertical" />
               </ConversationHeader.Actions>
             </ConversationHeader>
             <ChatHeader />
