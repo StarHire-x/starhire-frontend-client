@@ -82,7 +82,7 @@ const Chat = () => {
 
   useEffect(() => {
     getUserChats();
-  }, []);
+  }, [accessToken]);
 
   useEffect(() => {
     if (currentChat) {
