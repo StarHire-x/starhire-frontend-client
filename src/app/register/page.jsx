@@ -21,6 +21,8 @@ const Register = () => {
     role: '',
   });
 
+  const [roleSelected, setRoleSelected] = useState(false);
+
   const router = useRouter();
 
   const handleInputChange = (e) => {
@@ -90,6 +92,39 @@ const Register = () => {
     <div className={styles.container}>
       <h1 className={styles.title}>Registration</h1>
       <form className={styles.form} onSubmit={handleSubmit}>
+
+        <div className={styles.userRole}>
+        <p>
+          I am registering as a
+        </p>
+
+        <div className={styles.radio}>
+          <label>
+            <input
+              type="radio"
+              name="role"
+              value="Job_Seeker"
+              checked={formData.role === 'Job_Seeker'}
+              onChange={handleInputChange}
+            />
+            Job Seeker
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="role"
+              value="Corporate"
+              checked={formData.role === 'Corporate'}
+              onChange={handleInputChange}
+            />
+            Corporate
+          </label>
+        </div>
+
+        </div>
+
+
+        <div className={styles.inputFields}>
         <input
           type="text"
           name="userName"
@@ -144,28 +179,8 @@ const Register = () => {
           onChange={handleInputChange}
           required={formData.role === 'Corporate'}
         />
-        <div className={styles.radio}>
-          <label>
-            <input
-              type="radio"
-              name="role"
-              value="Job_Seeker"
-              checked={formData.role === 'Job_Seeker'}
-              onChange={handleInputChange}
-            />
-            Job Seeker
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="role"
-              value="Corporate"
-              checked={formData.role === 'Corporate'}
-              onChange={handleInputChange}
-            />
-            Corporate
-          </label>
         </div>
+
         <button className={styles.button}>Register</button>
         {err && 'Something went wrong!'}
       </form>
