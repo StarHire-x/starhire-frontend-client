@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import io from "socket.io-client";
+import moment from "moment";
 import {
   MainContainer,
   Avatar,
@@ -71,6 +72,15 @@ const Chat = () => {
     socket.emit("sendMessage", message);
   };
 
+  socket.on(currentChat ? currentChat.chatId : null, (message) => {
+    receiveMessage(message);
+  });
+
+  const formatRawDate= (rawDate) => {
+    const formattedDate = moment(rawDate).format("MMMM D, YYYY, h:mm A")
+    return formattedDate;
+  }
+
   const receiveMessage = (message) => {
     if (!message.timestamp) {
       return;
@@ -97,10 +107,6 @@ const Chat = () => {
       setChatMessagesByDate([[message]]);
     }
   };
-
-  socket.on(currentChat ? currentChat.chatId : null, (message) => {
-    receiveMessage(message);
-  });
 
   const handleSendMessage = (content) => {
     sendMessage({
@@ -151,8 +157,7 @@ const Chat = () => {
   if (session.status === "authenticated") {
     return (
       <>
-        <h2>Manage Chats</h2>
-        <MainContainer responsive style={{ height: 500 }}>
+        <MainContainer responsive style={{ height: 800 }}>
           <ChatSidebar
             userChats={allChats}
             selectCurrentChat={(index) => {
@@ -219,6 +224,9 @@ const Chat = () => {
                               }
                             />
                           </Avatar>
+                          <Message.Footer>
+                            {formatRawDate(value.timestamp)}
+                          </Message.Footer>
                         </Message>
                       ))}
                     </>
