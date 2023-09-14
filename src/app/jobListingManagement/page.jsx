@@ -10,12 +10,26 @@ import { useSession } from 'next-auth/react';
 const JobListingManagementPage = () => {
   const [jobListings, setJobListings] = useState([]);
   const [showCreateDialog, setShowCreateDialog] = useState(false); // State to handle the modal visibility
-  const { data: session } = useSession();
+  const session = useSession();
 
-  useEffect(() => {
+  const userIdRef =
+    session.status === "authenticated" &&
+    session.data &&
+    session.data.user.userId;
+
+  const accessToken =
+    session.status === "authenticated" &&
+    session.data &&
+    session.data.user.accessToken;
+
+console.log(session);
+console.log(userIdRef);
+
+/*  
+useEffect(() => {
     // If session doesn't exist, redirect to login
     if (!session) {
-      window.location.href = '/login';
+      window.location.href = "/login";
       return; // Exit the useEffect if there's no session
     }
 
@@ -23,11 +37,11 @@ const JobListingManagementPage = () => {
     const fetchCorporateJobListings = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/job-listing/corporate/${session.user.userId}`,
+          `http://localhost:8080/job-listing/corporate/${userIdRef}`,
           {
-            method: 'GET',
+            method: "GET",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
               Authorization: `Bearer ${session.accessToken}`,
             },
           }
@@ -35,7 +49,7 @@ const JobListingManagementPage = () => {
 
         // Check for response errors
         if (!response.ok) {
-          console.error('Error fetching job listings:', await response.text());
+          console.error("Error fetching job listings:", await response.text());
           return;
         }
 
@@ -43,15 +57,43 @@ const JobListingManagementPage = () => {
         setJobListings(data);
       } catch (error) {
         console.error(
-          'There was an error fetching the job listings:',
+          "There was an error fetching the job listings:",
           error.message
         );
       }
     };
-
     // Call the function
     fetchCorporateJobListings();
-  }, [session]);
+  }, []);
+  */
+
+  useEffect(() => {
+    fetch(`http://localhost:8080/job-listing/corporate/${userIdRef}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: "no-store",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setJobListings(data);
+        //setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        //setIsLoading(false);
+      });
+  }, [accessToken]);
+
+  console.log("HERE" + JSON.stringify(jobListings.userName));
+
+
 
   const handleJobListingCreation = async (newJobListing) => {
     try {
@@ -64,13 +106,13 @@ const JobListingManagementPage = () => {
         },
         body: JSON.stringify({
           ...newJobListing,
-          corporateId: session.user.userId, // Assuming the session has the user's ID
+          corporateId: userIdRef, // Assuming the session has the user's ID
         }),
       });
 
       const payload = {
         ...newJobListing,
-        corporateId: session.user.userId,
+        corporateId: userIdRef,
       };
       console.log('Payload:', payload);
 
@@ -83,7 +125,7 @@ const JobListingManagementPage = () => {
 
       // Fetch the updated job listings
       const updatedListingsResponse = await fetch(
-        `http://localhost:8080/job-listing/corporate/${session.user.userId}`,
+        `http://localhost:8080/job-listing/corporate/${userIdRef}`,
         {
           headers: {
             'Content-Type': 'application/json',

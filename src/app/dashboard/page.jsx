@@ -23,7 +23,7 @@ const Dashboard = () => {
     return (
       <h1>
         Welcome back {session.data.user.name}, {session.data.user.email},{' '}
-        {session.data.user.image}, {session.data.user.role}
+        {session.data.user.image}, {session.data.user.role}, {session.data.user.userId}
       </h1>
     );
   }
