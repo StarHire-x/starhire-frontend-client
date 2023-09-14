@@ -13,7 +13,21 @@
   -webkit-text-fill-color: transparent;
 }
 
-.form {
+.userRole {
+  display: flex;
+  align-items: row;
+  gap: 10px;
+}
+
+.form{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inputFields {
    width: 600px;
    margin: 0 auto;
    display: grid;

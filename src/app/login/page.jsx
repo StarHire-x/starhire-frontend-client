@@ -1,22 +1,21 @@
-"use client"
-import React from 'react'
-import styles from './page.module.css'
+'use client';
+import React from 'react';
+import styles from './page.module.css';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useState } from "react";
-import Link from "next/link";
+import { useState } from 'react';
+import Link from 'next/link';
 import { headers } from '../../../next.config';
-import bcrypt from "bcryptjs";
+import bcrypt from 'bcryptjs';
 
 const Login = () => {
-
   const session = useSession();
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    role: "",
+    email: '',
+    password: '',
+    role: '',
   });
 
   const handleInputChange = (e) => {
@@ -27,12 +26,12 @@ const Login = () => {
     });
   };
 
-  if(session.status === "loading") {
-    return <p>Loading ....</p>
+  if (session.status === 'loading') {
+    return <p>Loading ....</p>;
   }
 
-  if(session.status === "authenticated") {
-    router?.push("/dashboard");
+  if (session.status === 'authenticated') {
+    router?.push('/dashboard');
   }
 
   const handleSubmit = async (e) => {
@@ -42,25 +41,23 @@ const Login = () => {
     const role = formData.role;
     alert(`Email: ${email}, Password: ${password}, Role: ${role}`);
 
-  
     const result = await signIn('credentials', {
-        redirect: false,
-        email: email,
-        password: password,
-        role: role 
-    })
+      redirect: false,
+      email: email,
+      password: password,
+      role: role,
+    });
 
     if (!result.error) {
       // User signed in successfully
-      alert("Success")
-      router.push("/dashboard");
+      alert('Success');
+      router.push('/dashboard');
     } else {
       // Handle the error result.error
       alert(result.error);
     }
-
   };
-  
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Login</h1>
@@ -89,7 +86,7 @@ const Login = () => {
               type="radio"
               name="role"
               value="Job_Seeker"
-              checked={formData.role === "Job_Seeker"}
+              checked={formData.role === 'Job_Seeker'}
               onChange={handleInputChange}
             />
             Job Seeker
@@ -99,7 +96,7 @@ const Login = () => {
               type="radio"
               name="role"
               value="Corporate"
-              checked={formData.role === "Corporate"}
+              checked={formData.role === 'Corporate'}
               onChange={handleInputChange}
             />
             Corporate
@@ -111,6 +108,6 @@ const Login = () => {
       <Link href="/forgetPassword">Forget Password</Link>
     </div>
   );
-}
+};
 
 export default Login;

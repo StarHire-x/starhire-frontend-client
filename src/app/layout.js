@@ -8,7 +8,7 @@ import AuthProvider from '@/components/AuthProvider/AuthProvider';
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'StarHire',
+  title: 'StarHire Client Portal',
   description: 'Job Search and Recruitment Website',
 }
 

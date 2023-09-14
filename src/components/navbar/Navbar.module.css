@@ -34,6 +34,50 @@
     border-radius: 3px;
 }
 
+
+.linkContainer {
+    position: relative;
+    display: inline-block;
+    margin-right: 20px;
+}
+  
+.linkContainer:hover .dropdown {
+    display: block;
+}  
+ 
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid black; /* Add a border for the dropdown box */
+}
+
+/* Style for the dropdown links */
+.submenuItem {
+    padding: 8px 12px;
+    display: block;
+    color: #333;
+    text-decoration: none;
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+.submenuItem:hover {
+    background-color: #f0f0f0;
+}
+  
+/* Style for the dropdown container (column layout) */
+.dropdown-column {
+    display: flex;
+    flex-direction: column; /* Display links in a column */
+    gap: 2px; /* Add some spacing between links */
+    padding: 10px; /* Add padding to the dropdown container */
+    left: 0;
+    top: 100%; /* Position it below the link */
+}
+
 /* Mobile Responsive Styles */
 @media screen and (max-width: 768px) {
     .container {
