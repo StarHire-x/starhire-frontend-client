@@ -157,7 +157,7 @@ const Chat = () => {
   if (session.status === "authenticated") {
     return (
       <>
-        <MainContainer responsive style={{ height: 800 }}>
+        <MainContainer responsive style={{  height: "75vh" }}>
           <ChatSidebar
             userChats={allChats}
             selectCurrentChat={(index) => {
@@ -243,10 +243,9 @@ const Chat = () => {
             <div
               style={{
                 display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                paddingLeft: 300,
-                height: "100%",
+                position: "absolute",
+                top: "50%",
+                left: "50%",
               }}
             >
               <p>Select a conversation to start chatting.</p>
