@@ -8,6 +8,7 @@ import { Dialog } from 'primereact/dialog';
 import { useSession } from 'next-auth/react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import EditJobListingForm from '@/components/EditJobListingForm/EditJobListingForm';
 
 const JobListingManagementPage = () => {
   const [jobListings, setJobListings] = useState([]);
