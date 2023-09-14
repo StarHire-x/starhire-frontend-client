@@ -1,19 +1,68 @@
-.container {
-    height: 100px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .logo {
     font-weight: bold;
     font-size: 22px;
 }
 
-.links {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+.header{
+  position: sticky;
+  z-index: 30;
+  top: 0;
+}
+
+.nav{
+  display: flex;
+  padding: 16px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav__menu_bar{
+  display: flex;
+  flex-direction: column;
+  row-gap: 6px;
+  cursor: pointer;
+}
+
+.nav__menu_bar div{
+  width: 40px;
+  height: 4px;
+  background-color: white;
+  border-radius: 2px;
+}
+
+.nav__menu_list{
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 60px;
+  width: 144px;
+  row-gap: 24px;
+  right: -288px;
+  padding: 24px 16px;
+  transition: all 0.2s;
+  min-height: calc(100vh - 60px);
+}
+
+.nav__menu_list.active{
+  right: 0;
+}
+
+.nav__link{
+  font-size: 18px; 
+  position: relative;
+  transition: all 0.2s;
+}
+
+.nav__link:hover{
+ font-weight: bold;
+ color: #53c28b;
+}
+
+.center{
+  min-height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logout {
@@ -34,70 +83,30 @@
     border-radius: 3px;
 }
 
-
-.linkContainer {
-    position: relative;
-    display: inline-block;
-    margin-right: 20px;
-}
-  
-.linkContainer:hover .dropdown {
-    display: block;
-}  
- 
-.dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
+@media screen and (min-width: 768px) {
+  .nav__menu_bar{
     display: none;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border: 1px solid black; /* Add a border for the dropdown box */
-}
-
-/* Style for the dropdown links */
-.submenuItem {
-    padding: 8px 12px;
-    display: block;
-    color: #333;
-    text-decoration: none;
-    white-space: nowrap; /* Prevent text from wrapping */
-}
-
-.submenuItem:hover {
-    background-color: #f0f0f0;
-}
-  
-/* Style for the dropdown container (column layout) */
-.dropdown-column {
-    display: flex;
-    flex-direction: column; /* Display links in a column */
-    gap: 2px; /* Add some spacing between links */
-    padding: 10px; /* Add padding to the dropdown container */
+  }
+  .nav__menu_list{
+    position: unset;
+    flex-direction: row;
+    min-height: fit-content;
+    width: fit-content;
+    column-gap: 24px;
+    align-items: center;
+  }
+  .nav__link::before{
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 6px;
+    bottom: -10px;
     left: 0;
-    top: 100%; /* Position it below the link */
-}
-
-/* Mobile Responsive Styles */
-@media screen and (max-width: 768px) {
-    .container {
-        flex-direction: column; /* Stack items vertically on smaller screens */
-        height: auto; /* Allow container to adjust its height */
-    }
-
-    .links {
-        margin-top: 20px; /* Add some spacing between logo and links */
-        flex-direction: column; /* Stack links vertically */
-        gap: 10px; /* Reduce the gap between links */
-    }
-
-    .logout {
-        padding: 8px 15px; /* Increase padding for better touch interaction */
-        font-size: 14px; /* Adjust font size for smaller screens */
-    }
-
-    .login {
-        padding: 8px 15px; /* Increase padding for better touch interaction */
-        font-size: 14px; /* Adjust font size for smaller screens */
-    }
+    background-color: white;
+    transition: all 0.2s;
+  }
+  
+  .nav__link:hover:before{
+   width: 100%;
+  }
 }
