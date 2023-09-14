@@ -104,7 +104,7 @@ const Login = () => {
         </div>
         <button className={styles.button}>Login</button>
       </form>
-      <Link href="/register">I don't have an account </Link>
+      <Link href="/register">I don&apos;t have an account </Link>
       <Link href="/forgetPassword">Forget Password</Link>
     </div>
   );

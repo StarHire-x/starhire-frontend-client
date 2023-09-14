@@ -1,4 +1,5 @@
-import {} from "@chatscope/chat-ui-kit-react";
+import { Avatar, Message, MessageList, MessageSeparator } from "@chatscope/chat-ui-kit-react";
+import Image from "next/image";
 
 const MessageSection = ({}) => {
   return (
