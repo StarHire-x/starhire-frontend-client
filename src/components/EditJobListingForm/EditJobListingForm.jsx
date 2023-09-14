@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
@@ -8,18 +8,14 @@ import 'primereact/resources/themes/lara-light-teal/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 
-const CreateJobListingForm = ({ onCreate }) => {
+const EditJobListingForm = ({ initialData, onSave }) => {
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    jobLocation: '',
-    averageSalary: null,
-    jobStartDate: null,
-    jobListingStatus: 'Unverified', // default status
-    // corporateId will be set during API call
+    title: initialData?.title || '',
+    description: initialData?.description || '',
+    jobLocation: initialData?.jobLocation || '',
+    averageSalary: initialData?.averageSalary || null,
+    jobStartDate: initialData?.jobStartDate || null,
   });
-
-  const jobListingStatuses = ['Active', 'Unverified', 'Inactive'];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -27,16 +23,16 @@ const CreateJobListingForm = ({ onCreate }) => {
   };
 
   const handleSubmit = () => {
-    console.log('handleSubmit is triggered');
-    if (onCreate) onCreate(formData);
+    if (onSave) onSave(formData);
   };
 
   return (
     <div>
-      <h3>Create Job Listing</h3>
-      <div>
-        <label>Title:</label>
+      <h3>Edit Job Listing</h3>
+      <div className="p-field">
+        <label htmlFor="title">Title:</label>
         <InputText
+          id="title"
           name="title"
           value={formData.title}
           onChange={handleInputChange}
@@ -89,10 +85,10 @@ const CreateJobListingForm = ({ onCreate }) => {
         />
       </div>
       <div>
-        <Button label="Create" onClick={handleSubmit} />
+        <Button label="Save Changes" onClick={handleSubmit} />
       </div>
     </div>
   );
 };
 
-export default CreateJobListingForm;
+export default EditJobListingForm;

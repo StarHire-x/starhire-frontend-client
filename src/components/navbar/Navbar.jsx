@@ -1,10 +1,10 @@
-"use client";
-import Link from "next/link";
-import React from "react";
-import styles from "./navbar.module.css";
-import DarkModeToggle from "../DarkModeToggle/DarkModeToggle";
-import { signOut, useSession } from "next-auth/react";
-import { useState } from "react";
+'use client';
+import Link from 'next/link';
+import React from 'react';
+import styles from './navbar.module.css';
+import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
+import { signOut, useSession } from 'next-auth/react';
+import { useState } from 'react';
 
 const links = [
   {
@@ -29,23 +29,23 @@ const links = [
   },
   {
     id: 3,
-    title: "Contact",
-    url: "/contact",
+    title: 'Contact',
+    url: '/contact',
   },
   {
     id: 4,
-    title: "Dashboard",
-    url: "/dashboard",
+    title: 'Dashboard',
+    url: '/dashboard',
   },
   {
     id: 5,
-    title: "Chat",
-    url: "/chat",
+    title: 'Chat',
+    url: '/chat',
   },
 ];
 
 const Navbar = () => {
-  const session = useSession();  
+  const session = useSession();
   const [showDropdown, setShowDropdown] = useState(null);
 
   const handleLinkMouseEnter = (linkId) => {
@@ -69,8 +69,8 @@ const Navbar = () => {
             className={styles.linkContainer}
             onMouseEnter={() => handleLinkMouseEnter(link.id)}
             onMouseLeave={handleLinkMouseLeave}
-          > 
-          <Link href={link.url} className={styles.link}>
+          >
+            <Link href={link.url} className={styles.link}>
               {link.title}
             </Link>
             {link.submenu && showDropdown === link.id && (
@@ -88,13 +88,16 @@ const Navbar = () => {
             )}
           </div>
         ))}
-        {session.status === "authenticated" && (
+        {session.status === 'authenticated' && (
           <button className={styles.logout} onClick={signOut}>
             Logout
           </button>
         )}
-        {session.status === "unauthenticated" && (
-          <button className={styles.login} onClick={() => window.location.href = "/login"}>
+        {session.status === 'unauthenticated' && (
+          <button
+            className={styles.login}
+            onClick={() => (window.location.href = '/login')}
+          >
             Login
           </button>
         )}

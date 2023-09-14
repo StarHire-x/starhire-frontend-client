@@ -2,15 +2,88 @@ import React, { useEffect, useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
 import Link from 'next/link';
+import EditJobListingForm from '@/components/EditJobListingForm/EditJobListingForm';
 import { useSession } from 'next-auth/react';
 import 'primereact/resources/themes/lara-light-teal/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 
 const JobListingTable = ({ listings }) => {
-  const handleEdit = (rowData) => {
-    // Handle edit logic here
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [currentListing, setCurrentListing] = useState(null); // Holds the listing data you want to edit
+  const { data: session } = useSession();
+  const [isLoading, setIsLoading] = useState(false);
+  const [jobListings, setJobListings] = useState([]);
+  const [selectedJob, setSelectedJob] = useState(null); // To store the job that's being edited
+
+  useEffect(() => {
+    const fetchJobListings = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/job-listing');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setJobListings(data);
+      } catch (error) {
+        console.error('Error fetching job listings:', error);
+      }
+    };
+
+    fetchJobListings();
+  }, []);
+
+  const handleEdit = async (jobListingId, updatedData) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/job-listing/${jobListingId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedData),
+        }
+      );
+
+      if (response.ok) {
+        // Handle success case. You can update the state of the job listings to reflect the change or fetch again from the backend.
+        console.log('Job Listing updated successfully');
+        // Update the jobListings state to reflect the changes
+        setJobListings((prevListings) =>
+          prevListings.map((listing) =>
+            listing.jobListingId === jobListingId
+              ? { ...listing, ...updatedData }
+              : listing
+          )
+        );
+      } else {
+        console.error(
+          'Failed to update job listing. Response status:',
+          response.status
+        );
+      }
+    } catch (error) {
+      // Handle error scenarios like network errors, validation errors, etc.
+      console.error(
+        'Error while updating job listing:',
+        error.message || error
+      );
+    }
+  };
+
+  // When edit button is clicked, populate the form and show it
+  const onEditButtonClick = (jobListing) => {
+    setFormData(jobListing); // Assuming you have some state method to set form data
+    setShowEditForm(true); // Assuming you're using a state variable to toggle the display of the edit form
+  };
+
+  // onSave callback for the EditJobListingForm
+  const onSave = (updatedData) => {
+    handleEdit(currentListing.jobListingId, updatedData);
+    setShowEditForm(false); // Hide the form after saving
   };
 
   const handleDelete = async (jobListingId) => {
@@ -53,7 +126,7 @@ const JobListingTable = ({ listings }) => {
 
   return (
     <DataTable
-      value={listings}
+      value={jobListings}
       paginator
       rows={10}
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -123,17 +196,41 @@ const JobListingTable = ({ listings }) => {
       ></Column>
 
       <Column
-        body={(rowData) => (
-          <Link href="/dashboard">
-            <Button
-              icon="pi pi-pencil"
-              rounded
-              outlined
-              className="mr-2"
-              onClick={() => handleEdit(rowData.jobListingId)}
-            />
-          </Link>
-        )}
+        body={(rowData) => {
+          if (session) {
+            return (
+              <>
+                <Button
+                  label="Edit"
+                  icon="pi pi-pencil"
+                  onClick={() => {
+                    setCurrentListing(rowData);
+                    setShowEditDialog(true);
+                  }}
+                />
+                <Dialog
+                  header="Edit Job Listing"
+                  visible={showEditDialog && currentListing === rowData}
+                  onHide={() => {
+                    setCurrentListing(null);
+                    setShowEditDialog(false);
+                  }}
+                  style={{ width: '50vw' }}
+                >
+                  <EditJobListingForm
+                    initialData={currentListing}
+                    onSave={(updatedData) => {
+                      handleEdit(currentListing.jobListingId, updatedData);
+                      setCurrentListing(null); // Reset current listing
+                      setShowEditDialog(false); // Close the dialog after saving
+                    }}
+                  />
+                </Dialog>
+              </>
+            );
+          }
+          return null;
+        }}
       ></Column>
       <Column
         body={(rowData) => (
@@ -174,6 +271,13 @@ const styles = {
   },
   deleteButton: {
     color: '#e29578',
+  },
+  editForm: {
+    marginTop: '20px',
+    padding: '20px',
+    backgroundColor: '#edf6f9',
+    borderRadius: '8px',
+    boxShadow: '0 4px 6px rgba(0, 109, 119, 0.1)',
   },
 };
 

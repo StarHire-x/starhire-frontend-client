@@ -13,26 +13,44 @@ const JobListingManagementPage = () => {
   const { data: session } = useSession();
 
   useEffect(() => {
-    if (session) {
-      fetch(
-        `http://localhost:8080/job-listing/corporate/${session.user.userId}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${session.accessToken}`,
-          },
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => setJobListings(data));
-    }
-  }, [session]);
-
-  useEffect(() => {
+    // If session doesn't exist, redirect to login
     if (!session) {
-      window.location.href = '/login'; // Redirect to login if not authenticated
+      window.location.href = '/login';
+      return; // Exit the useEffect if there's no session
     }
+
+    // Function to fetch job listings for the corporate user
+    const fetchCorporateJobListings = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/job-listing/corporate/${session.user.userId}`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${session.accessToken}`,
+            },
+          }
+        );
+
+        // Check for response errors
+        if (!response.ok) {
+          console.error('Error fetching job listings:', await response.text());
+          return;
+        }
+
+        const data = await response.json();
+        setJobListings(data);
+      } catch (error) {
+        console.error(
+          'There was an error fetching the job listings:',
+          error.message
+        );
+      }
+    };
+
+    // Call the function
+    fetchCorporateJobListings();
   }, [session]);
 
   const handleJobListingCreation = async (newJobListing) => {
@@ -50,14 +68,22 @@ const JobListingManagementPage = () => {
         }),
       });
 
+      const payload = {
+        ...newJobListing,
+        corporateId: session.user.userId,
+      };
+      console.log('Payload:', payload);
+
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to create the listing');
+        throw new Error(
+          errorData.message || 'Failed to create the job listing'
+        );
       }
 
       // Fetch the updated job listings
       const updatedListingsResponse = await fetch(
-        `http://localhost:8080/job-listing/corporate/${session.user.userId}}`,
+        `http://localhost:8080/job-listing/corporate/${session.user.userId}`,
         {
           headers: {
             'Content-Type': 'application/json',
