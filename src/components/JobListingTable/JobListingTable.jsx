@@ -11,13 +11,24 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 
 const JobListingTable = ({ listings }) => {
+  const session = useSession();
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [currentListing, setCurrentListing] = useState(null); // Holds the listing data you want to edit
-  const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const [jobListings, setJobListings] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null); // To store the job that's being edited
 
+  const userIdRef =
+    session.status === "authenticated" &&
+    session.data &&
+    session.data.user.userId;
+
+  const accessToken =
+    session.status === "authenticated" &&
+    session.data &&
+    session.data.user.accessToken;
+
+  /*
   useEffect(() => {
     const fetchJobListings = async () => {
       try {
@@ -34,6 +45,7 @@ const JobListingTable = ({ listings }) => {
 
     fetchJobListings();
   }, []);
+  */
 
   const handleEdit = async (jobListingId, updatedData) => {
     try {
@@ -126,7 +138,7 @@ const JobListingTable = ({ listings }) => {
 
   return (
     <DataTable
-      value={jobListings}
+      value={listings}
       paginator
       rows={10}
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -134,38 +146,32 @@ const JobListingTable = ({ listings }) => {
       style={styles.table}
       filterDisplay="menu"
       globalFilterFields={[
-        'jobListingId',
-        'description',
-        'jobLocation',
-        'averageSalary',
-        'listingDate',
-        'jobStartDate',
-        'jobListingStatus',
+        "jobListingId",
+        "description",
+        "jobLocation",
+        "averageSalary",
+        "listingDate",
+        "jobStartDate",
+        "jobListingStatus",
       ]}
     >
-      <Column
-        field="jobListingId"
-        header="ID"
-        style={{ width: '50px' }}
-        sortable
-      ></Column>
-      <Column field="title" header="Title" style={{ width: '50px' }}></Column>
+      <Column field="title" header="Title" style={{ width: "50px" }}></Column>
       <Column
         field="description"
         header="Description"
-        style={{ width: '50px' }}
+        style={{ width: "50px" }}
         sortable
       ></Column>
       <Column
         field="jobLocation"
         header="Location"
-        style={{ width: '50px' }}
+        style={{ width: "50px" }}
         sortable
       ></Column>
       <Column
         field="averageSalary"
         header="Average Salary"
-        style={{ width: '50px' }}
+        style={{ width: "50px" }}
         sortable
       ></Column>
       <Column
@@ -186,7 +192,7 @@ const JobListingTable = ({ listings }) => {
         body={(rowData) => (
           <span
             style={{
-              color: rowData.jobListingStatus === 'Active' ? 'green' : 'red',
+              color: rowData.jobListingStatus === "Active" ? "green" : "red",
             }}
           >
             {rowData.jobListingStatus}
@@ -215,7 +221,7 @@ const JobListingTable = ({ listings }) => {
                     setCurrentListing(null);
                     setShowEditDialog(false);
                   }}
-                  style={{ width: '50vw' }}
+                  style={{ width: "50vw" }}
                 >
                   <EditJobListingForm
                     initialData={currentListing}

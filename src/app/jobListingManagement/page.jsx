@@ -6,6 +6,8 @@ import { Toolbar } from 'primereact/toolbar';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { useSession } from 'next-auth/react';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 
 const JobListingManagementPage = () => {
   const [jobListings, setJobListings] = useState([]);
@@ -66,7 +68,6 @@ useEffect(() => {
     fetchCorporateJobListings();
   }, []);
   */
-
   useEffect(() => {
     fetch(`http://localhost:8080/job-listing/corporate/${userIdRef}`, {
       method: "GET",
@@ -91,7 +92,8 @@ useEffect(() => {
       });
   }, [accessToken]);
 
-  console.log("HERE" + JSON.stringify(jobListings.userName));
+  //console.log("HERE" + JSON.stringify(jobListings.));
+
 
 
 
@@ -169,7 +171,7 @@ useEffect(() => {
         header="Create Job Listing"
         visible={showCreateDialog}
         onHide={() => setShowCreateDialog(false)}
-        style={{ width: '50vw' }}
+        style={{ width: "50vw" }}
       >
         <CreateJobListingForm onCreate={handleJobListingCreation} />
       </Dialog>
