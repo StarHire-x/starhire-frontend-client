@@ -9,13 +9,23 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chatscope/chat-ui-kit-react": "^1.10.1",
+    "@chatscope/chat-ui-kit-styles": "^1.4.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
+    "bufferutil": "^4.0.7",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
+    "moment": "^2.29.4",
     "next": "13.4.19",
     "next-auth": "^4.23.1",
+    "primeflex": "^3.3.1",
+    "primeicons": "^6.0.1",
+    "primereact": "^9.6.2",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2",
+    "utf-8-validate": "^5.0.10"
   }
 }
