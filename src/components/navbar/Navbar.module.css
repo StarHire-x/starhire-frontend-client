@@ -47,17 +47,6 @@
   right: 0;
 }
 
-.nav__link{
-  font-size: 18px; 
-  position: relative;
-  transition: all 0.2s;
-}
-
-.nav__link:hover{
- font-weight: bold;
- color: #53c28b;
-}
-
 .center{
   min-height: 600px;
   display: flex;
@@ -94,19 +83,5 @@
     width: fit-content;
     column-gap: 24px;
     align-items: center;
-  }
-  .nav__link::before{
-    content: '';
-    position: absolute;
-    width: 0%;
-    height: 6px;
-    bottom: -10px;
-    left: 0;
-    background-color: white;
-    transition: all 0.2s;
-  }
-  
-  .nav__link:hover:before{
-   width: 100%;
   }
 }

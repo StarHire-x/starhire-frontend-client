@@ -1,5 +1,5 @@
 import Link from "next/link";
-import styles from "./navbar.module.css";
+import styles from "./navitem.module.css";
 
 const NavItem = ({ text, href, active }) => {
   return (

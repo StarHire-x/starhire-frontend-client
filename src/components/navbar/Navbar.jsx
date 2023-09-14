@@ -5,7 +5,7 @@ import styles from "./navbar.module.css";
 import DarkModeToggle from "../DarkModeToggle/DarkModeToggle";
 import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
-import NavItem from "./NavItem";
+import NavItem from "../navItem/NavItem";
 
 const links = [
   {
