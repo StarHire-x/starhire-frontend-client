@@ -7,6 +7,9 @@ import { useSession } from "next-auth/react";
 import { findAllJobListingsByCorporate } from "../api/auth/jobListing/route";
 import styles from "./page.module.css";
 import { Toolbar } from "primereact/toolbar";
+import "primeflex/primeflex.css";
+import CreateJobListingForm from "@/components/CreateJobListingForm/CreateJobListingForm";
+import { Dialog } from "primereact/dialog";
 
 const JobListingManagementMobile = () => {
   const [jobListing, setJobListing] = useState(null);
@@ -103,6 +106,44 @@ const JobListingManagementMobile = () => {
     );
   };
 
+  const handleJobListingCreation = async (newJobListing) => {
+    try {
+      // Send the new listing data to the backend
+      const response = await fetch(`http://localhost:8080/job-listing`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          ...newJobListing,
+          corporateId: userIdRef, // Assuming the session has the user's ID
+        }),
+      });
+
+      const payload = {
+        ...newJobListing,
+        corporateId: userIdRef,
+      };
+      console.log("Payload:", payload);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.message || "Failed to create the job listing"
+        );
+      }
+      setRefreshData((prev) => !prev);
+      // Close the modal dialog
+      setShowCreateDialog(false);
+    } catch (error) {
+      console.error(
+        "There was an error creating the job listing:",
+        error.message
+      );
+    }
+  };
+
   const header = (
     <div className="p-d-flex p-jc-between">
       <h2 className={styles.headerTitle}>Job Listing Management</h2>
@@ -115,12 +156,12 @@ const JobListingManagementMobile = () => {
 
   return (
     <div className="container">
-      <Toolbar left={header}></Toolbar>
       <DataView
         value={jobListing}
         layout="grid"
         rows={10}
         paginator
+        header={header}
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         rowsPerPageOptions={[10, 25, 50]}
         emptyMessage="No job listing found"
@@ -129,6 +170,16 @@ const JobListingManagementMobile = () => {
           grid: { className: "surface-ground" },
         }}
       />
+
+      <Dialog
+        header="Create Job Listing"
+        visible={showCreateDialog}
+        onHide={() => setShowCreateDialog(false)}
+        style={{ width: "50vw" }}
+      >
+        <CreateJobListingForm onCreate={handleJobListingCreation} />
+      </Dialog>
+
     </div>
   );
 };
