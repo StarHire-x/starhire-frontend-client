@@ -13,6 +13,7 @@ import EditJobListingForm from '@/components/EditJobListingForm/EditJobListingFo
 const JobListingManagementPage = () => {
   const [jobListings, setJobListings] = useState([]);
   const [showCreateDialog, setShowCreateDialog] = useState(false); // State to handle the modal visibility
+  const [refreshData, setRefreshData] = useState(false);
   const session = useSession();
 
   const userIdRef =
@@ -91,18 +92,19 @@ useEffect(() => {
         console.error('Error fetching data:', error);
         //setIsLoading(false);
       });
-  }, [accessToken]);
+  }, [refreshData, accessToken]);
 
   //console.log("HERE" + JSON.stringify(jobListings.));
 
   const handleJobListingCreation = async (newJobListing) => {
     try {
       // Send the new listing data to the backend
+      console.log("Hellooo");
       const response = await fetch(`http://localhost:8080/job-listing`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${session.accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           ...newJobListing,
@@ -122,20 +124,7 @@ useEffect(() => {
           errorData.message || 'Failed to create the job listing'
         );
       }
-
-      // Fetch the updated job listings
-      const updatedListingsResponse = await fetch(
-        `http://localhost:8080/job-listing/corporate/${userIdRef}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${session.accessToken}`,
-          },
-        }
-      );
-      const updatedListings = await updatedListingsResponse.json();
-      setJobListings(updatedListings);
-
+      setRefreshData((prev) => !prev);
       // Close the modal dialog
       setShowCreateDialog(false);
     } catch (error) {
