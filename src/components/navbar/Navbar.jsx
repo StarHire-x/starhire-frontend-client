@@ -7,7 +7,7 @@ import { signOut, useSession } from 'next-auth/react';
 import { useState } from 'react';
 import NavItem from '../navItem/NavItem';
 
-const MENU_LIST = [
+const MENU_LIST_AUTHENTICATED = [
   { text: "Home", href: "/" },
   { text: "Account", href: "/accountManagement" },
   { text: "Portfolio", href: "/portfolio" },
@@ -15,6 +15,11 @@ const MENU_LIST = [
   { text: "Blog", href: "/blog" },
   { text: "Contact", href: "/contact" },
   { text: "Chat", href: "/chat" },
+];
+
+const MENU_LIST_UNAUTHENTICATED = [
+  { text: "Home", href: "/" },
+  { text: "About", href: "/about" },
 ];
 
 const Navbar = () => {
@@ -43,7 +48,18 @@ const Navbar = () => {
             styles.nav__menu_list
           }`}
         >
-          {MENU_LIST.map((menu, idx) => (
+          {session.status == 'authenticated' && MENU_LIST_AUTHENTICATED.map((menu, idx) => (
+            <div
+              onClick={() => {
+                setActiveIdx(idx);
+                setNavActive(false);
+              }}
+              key={menu.text}
+            >
+              <NavItem active={activeIdx === idx} {...menu} />
+            </div>
+          ))}
+          {session.status == 'unauthenticated' && MENU_LIST_UNAUTHENTICATED.map((menu, idx) => (
             <div
               onClick={() => {
                 setActiveIdx(idx);

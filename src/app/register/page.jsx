@@ -21,8 +21,6 @@ const Register = () => {
     role: "",
   });
 
-  const [roleSelected, setRoleSelected] = useState(false);
-
   const router = useRouter();
 
   const handleInputChange = (e) => {
@@ -58,15 +56,6 @@ const Register = () => {
       companyRegistrationId: formData.companyRegistrationId,
       role: formData.role,
     };
-
-    // try {
-    //   await registerUser(data);
-    //   alert('Account has been created!');
-    //   router.push('/login?success=Account has been created');
-    // } catch (error) {
-    //   alert(error);
-    //   setErr(true);
-    // }
 
     try {
       const res = await fetch("http://localhost:8080/users", {
@@ -169,7 +158,8 @@ const Register = () => {
             className={styles.input}
             value={formData.contactNumber}
             onChange={handleInputChange}
-            required
+            required={formData.role === "Job_Seeker"}
+            disabled={formData.role === "Corporate"}
           />
           <input
             type="text"
