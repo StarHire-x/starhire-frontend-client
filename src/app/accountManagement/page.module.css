@@ -1,0 +1,152 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  font-size: 72px;
+  background: linear-gradient(to bottom, #194c33, #bbb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.avatarContainer {
+  grid-column: span 2; /* This makes it span the full width of the form */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%; /* To make it circular */
+  object-fit: cover; /* To ensure the image maintains its aspect ratio */
+  margin-bottom: 10px; /* Add some spacing below the image */
+}
+
+.inputFields {
+  width: 600px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* Insert styling */
+.label {
+
+}
+
+.input {
+  padding: 20px;
+  background-color: transparent;
+  border: 2px solid #bbb;
+  color: #bbb;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+
+.button {
+  width: 300px;
+  padding: 20px;
+  cursor: pointer;
+  background-color: #53c28b;
+  border: none;
+  border-radius: 5px;
+  color: #eee;
+  font-weight: bold;
+}
+
+.buttonContainer {
+  grid-column: span 2; /* This makes it span the full width of the form */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.radio {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px; /* Adjust the spacing between the radio button and label */
+}
+
+
+.radio input[type="radio"] {
+  /* Optional: Adjust the radio button styles */
+  margin-right: 4px; /* Adjust the spacing between the radio button and label text */
+}
+
+.radioFields {
+  display: flex;
+  flex-direction: column;
+  gap:10px;
+}
+
+.radioOption {
+  display: flex;
+  flex-direction: row;
+  align-items: column;
+  gap: 8px; /* Adjust the spacing between the radio button and label */
+}
+
+
+@media screen and (max-width: 768px) {
+  .title {
+    font-size: 40px;
+    text-align: center;
+  }
+
+  .inputFields {
+    width: 300px;
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .field {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Create two equal columns */
+    align-items: center; /* Align items vertically in the center if needed */
+    gap: 10px; /* Add some gap between label and input */
+  }
+
+  .input {
+    padding: 10px;
+    border: 1px solid #bbb;
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .fileField {
+    display: grid;
+    grid-template-columns: 2.5fr 1fr; /* Create two equal columns */
+    align-items: center; /* Align items vertically in the center if needed */
+    gap: 10px; /* Add some gap between label and input */
+  }
+
+  .radioFields {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr; /* Create two equal columns */
+    align-items: center; /* Align items vertically in the center if needed */
+    gap: 10px; /* Add some gap between label and input */
+  }
+  .radioOption {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px; /* Adjust the spacing between the radio button and label */
+  }
+}
