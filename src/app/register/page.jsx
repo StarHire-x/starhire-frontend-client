@@ -45,7 +45,11 @@ const Register = () => {
       return; // Exit early if passwords don't match
     }
 
-    // const hashedPassword = await hashing(formData.password);
+    if (!formData.userName || !formData.email || !formData.contactNumber || !formData.role) {
+      alert("Please ensure you have filled all the fields, especially your role.");
+      return;
+    }
+    
     const data = {
       userName: formData.userName,
       email: formData.email,
@@ -175,6 +179,7 @@ const Register = () => {
             value={formData.companyRegistrationId}
             onChange={handleInputChange}
             required={formData.role === "Corporate"}
+            disabled={formData.role === "Job_Seeker"}
           />
         </div>
 
