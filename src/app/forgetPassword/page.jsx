@@ -64,12 +64,15 @@ const ForgetPassword = () => {
           required
         />
         <div className={styles.radio}>
+          <p>
+            I am a...
+          </p>
           <label>
             <input
               type="radio"
               name="role"
-              value="Job Seeker"
-              checked={formData.role === "Job Seeker"}
+              value="Job_Seeker"
+              checked={formData.role === 'Job_Seeker'}
               onChange={handleInputChange}
             />
             Job Seeker
@@ -79,7 +82,7 @@ const ForgetPassword = () => {
               type="radio"
               name="role"
               value="Corporate"
-              checked={formData.role === "Corporate"}
+              checked={formData.role === 'Corporate'}
               onChange={handleInputChange}
             />
             Corporate
