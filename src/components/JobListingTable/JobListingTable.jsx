@@ -32,24 +32,22 @@ const JobListingTable = ({ listings }) => {
   console.log(session);
   console.log(userIdRef);
 
-  /*
-  useEffect(() => {
-    const fetchJobListings = async () => {
-      try {
-        const response = await fetch('http://localhost:8080/job-listing');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setJobListings(data);
-      } catch (error) {
-        console.error('Error fetching job listings:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchJobListings = async () => {
+  //     try {
+  //       const response = await fetch('http://localhost:8080/job-listing');
+  //       if (!response.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
+  //       const data = await response.json();
+  //       setJobListings(data);
+  //     } catch (error) {
+  //       console.error('Error fetching job listings:', error);
+  //     }
+  //   };
 
-    fetchJobListings();
-  }, []);
-  */
+  //   fetchJobListings();
+  // }, []);
 
   const handleEdit = async (jobListingId, updatedData) => {
     try {
@@ -83,12 +81,6 @@ const JobListingTable = ({ listings }) => {
       setRefreshData((prev) => !prev);
       // Close the modal dialog
       setShowEditDialog(false);
-      // } else {
-      //     console.error(
-      //       'Failed to update job listing. Response status:',
-      //       response.status
-      //     );
-      //   }
     } catch (error) {
       // Handle error scenarios like network errors, validation errors, etc.
       console.error('Error while updating job listing:', error.message);
@@ -241,7 +233,7 @@ const JobListingTable = ({ listings }) => {
       ></Column>
       <Column
         body={(rowData) => (
-          <Link href="/dashboard">
+          <Link href="/jobListingManagement">
             <Button
               icon="pi pi-trash"
               rounded
