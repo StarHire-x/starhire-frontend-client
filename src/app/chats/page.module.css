@@ -8,7 +8,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 50px;
 }
 
 .title {
@@ -16,11 +16,6 @@
   background: linear-gradient(to bottom, #194c33, #bbb);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-
-.subTitle {
-  font-size: 24px;
-  font-weight: 300;
 }
 
 .img {
@@ -31,12 +26,12 @@
 }
 
 @keyframes move {
-    from {
-        transform: translateY(-15px);
-    }
-    to {
-        transform: translateY(0px) scale(1.03);
-    }
+  from {
+    transform: translateY(-15px);
+  }
+  to {
+    transform: translateY(0px) scale(1.03);
+  }
 }
 
 .desc {
@@ -52,18 +47,4 @@
   border-radius: 5px;
   width: max-content;
   color: white;
-}
-
-@media screen and (max-width: 768px) {
-  .title {
-    font-size: 50px;
-    text-align: center;
-  }
-  .subTitle {
-    text-align: center;
-  }
-  .buttonContainer {
-    display: flex;
-    justify-content: center;
-  }
 }

@@ -87,7 +87,7 @@ const ForgetPassword = () => {
         </div>
         <button className={styles.button}>Reset Password</button>
       </form>
-      <Link href="/register">I don't have an account </Link>
+      <Link href="/register">I don&apos;t have an account </Link>
       <Link href="/login">Login with an existing account</Link>
     </div>
   );
