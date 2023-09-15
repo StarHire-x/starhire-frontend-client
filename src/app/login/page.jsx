@@ -81,6 +81,9 @@ const Login = () => {
           required
         />
         <div className={styles.radio}>
+          <p>
+            I am a...
+          </p>
           <label>
             <input
               type="radio"

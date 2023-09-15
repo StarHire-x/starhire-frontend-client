@@ -1,9 +1,9 @@
 .container {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   flex-direction: column;
-   gap: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .title {
@@ -16,10 +16,10 @@
 .userRole {
   display: flex;
   align-items: row;
-  gap: 10px;
+  gap: 20px;
 }
 
-.form{
+.form {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,26 +28,26 @@
 }
 
 .inputFields {
-   width: 600px;
-   margin: 0 auto;
-   display: grid;
-   grid-template-columns: repeat(2, 1fr);
-   gap: 20px;
+  width: 600px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 }
 
 .input {
-   padding: 20px;
-   background-color: transparent; 
-   border: 2px solid #bbb;
-   color: #bbb;
-   border-radius: 5px;
-   font-size: 20px;
-   font-weight: bold;
+  padding: 20px;
+  background-color: transparent;
+  border: 2px solid #bbb;
+  color: #bbb;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .inputCompanyRegistrationIdField {
   padding: 20px;
-  background-color: transparent; 
+  background-color: transparent;
   border: 2px solid #bbb;
   color: #bbb;
   border-radius: 5px;
@@ -55,16 +55,15 @@
   font-weight: bold;
 }
 
-
 .button {
-    width: 300px;
-    padding: 20px;
-    cursor: pointer;
-    background-color: #53c28b;
-    border: none;
-    border-radius: 5px;
-    color: #eee;
-    font-weight: bold;
+  width: 300px;
+  padding: 20px;
+  cursor: pointer;
+  background-color: #53c28b;
+  border: none;
+  border-radius: 5px;
+  color: #eee;
+  font-weight: bold;
 }
 
 .radio {
@@ -72,10 +71,40 @@
   flex-direction: row;
   align-items: center;
   gap: 8px; /* Adjust the spacing between the radio button and label */
-  justify-content: center; 
+  justify-content: center;
 }
 
 .radio input[type="radio"] {
   /* Optional: Adjust the radio button styles */
   margin-right: 4px; /* Adjust the spacing between the radio button and label text */
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+    font-size: 50px;
+  }
+
+  .userRole {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .inputFields {
+    width: 300px;
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .input {
+    padding: 10px;
+    border: 1px solid #bbb;
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .inputCompanyRegistrationIdField {
+    padding: 10px;
+    border: 1px solid #bbb;
+  }
 }

@@ -12,7 +12,7 @@ export default function Home() {
         <p className={styles.subTitle}>Job Matching</p>
         <p className={styles.subTitle}>An All-in-one Platform</p>
         <div className={styles.buttonContainer}>
-          <Button url="/portfolio" text="See Our Works" />
+          <Button url="/login" text="Login" />
         </div>
       </div>
       <div className={styles.item}></div>
