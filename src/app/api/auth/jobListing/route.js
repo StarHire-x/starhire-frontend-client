@@ -1,14 +1,14 @@
-export const findAllJobListingsByCorporate = async (accessToken) => {
+export const findAllJobListingsByCorporate = async (userId, accessToken) => {
   try {
     const res = await fetch(
-      `http://localhost:8080/jobListing/corporate/${session.user.userId}`,
+      `http://localhost:8080/job-listing/corporate/${userId}`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        cache: 'no-store',
+        cache: "no-store",
       }
     );
     if (!res.ok) {
@@ -24,14 +24,14 @@ export const findAllJobListingsByCorporate = async (accessToken) => {
 
 export const createJobListing = async (newJobListing, accessToken) => {
   try {
-    const res = await fetch(`http://localhost:8080/jobListing`, {
-      method: 'POST',
+    const res = await fetch(`http://localhost:8080/job-listing`, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(newJobListing),
-      cache: 'no-store',
+      cache: "no-store",
     });
     if (!res.ok) {
       const errorData = await res.json();
@@ -47,10 +47,10 @@ export const createJobListing = async (newJobListing, accessToken) => {
 
 export const updateJobListing = async (request, id, accessToken) => {
   try {
-    const res = await fetch(`http://localhost:8080/jobListing/${id}`, {
-      method: 'PUT',
+    const res = await fetch(`http://localhost:8080/job-listing/${id}`, {
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(request),
@@ -70,12 +70,12 @@ export const updateJobListing = async (request, id, accessToken) => {
 
 export const removeJobListing = async (request, id) => {
   try {
-    const res = await fetch(`http://localhost:8080/jobListing/${id}`, {
-      method: 'DELETE',
+    const res = await fetch(`http://localhost:8080/job-listing/${id}`, {
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      cache: 'no-store',
+      cache: "no-store",
     });
 
     console.log(res);
