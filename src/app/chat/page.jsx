@@ -48,9 +48,20 @@ const Chat = () => {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [attachedFile, setAttachedFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [socket, setSocket] = useState(io());
 
-  // WebSocket functions
-  const socket = io("http://localhost:8080");
+
+  useEffect(() => {
+    // WebSocket functions
+    const socket = io("http://localhost:8080");
+    setSocket(socket);
+
+    // Clean-up logic when the component unmounts (if needed)
+    return () => {
+      // Close the socket or remove event listeners, if necessary
+      socket.close(); // Close the socket when the component unmounts
+    };
+  }, []); // The empty dependency array [] means this effect runs once after the initial render
 
   // returns list of lists
   const getDateStringByTimestamp = (timestamp) => {
