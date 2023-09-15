@@ -11,12 +11,13 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 
 const JobListingTable = ({ listings }) => {
-  const session = useSession();
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [currentListing, setCurrentListing] = useState(null); // Holds the listing data you want to edit
+  const [refreshData, setRefreshData] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [jobListings, setJobListings] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null); // To store the job that's being edited
+  const session = useSession();
 
   const userIdRef =
     session.status === 'authenticated' &&
@@ -58,6 +59,7 @@ const JobListingTable = ({ listings }) => {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({
             ...updatedData,
@@ -72,42 +74,25 @@ const JobListingTable = ({ listings }) => {
       };
       console.log('Payload:', payload);
 
-      if (response.ok) {
-        // Handle success case. You can update the state of the job listings to reflect the change or fetch again from the backend.
-        console.log('Job Listing updated successfully');
-        // Update the jobListings state to reflect the changes
-        setJobListings((prevListings) =>
-          prevListings.map((listing) =>
-            listing.jobListingId === jobListingId
-              ? { ...listing, ...updatedData }
-              : listing
-          )
-        );
-      } else {
-        console.error(
-          'Failed to update job listing. Response status:',
-          response.status
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.message || 'Failed to create the job listing'
         );
       }
+      setRefreshData((prev) => !prev);
+      // Close the modal dialog
+      setShowEditDialog(false);
+      // } else {
+      //     console.error(
+      //       'Failed to update job listing. Response status:',
+      //       response.status
+      //     );
+      //   }
     } catch (error) {
       // Handle error scenarios like network errors, validation errors, etc.
-      console.error(
-        'Error while updating job listing:',
-        error.message || error
-      );
+      console.error('Error while updating job listing:', error.message);
     }
-  };
-
-  // When edit button is clicked, populate the form and show it
-  const onEditButtonClick = (jobListing) => {
-    setFormData(jobListing); // Assuming you have some state method to set form data
-    setShowEditForm(true); // Assuming you're using a state variable to toggle the display of the edit form
-  };
-
-  // onSave callback for the EditJobListingForm
-  const onSave = (updatedData) => {
-    handleEdit(currentListing.jobListingId, updatedData);
-    setShowEditForm(false); // Hide the form after saving
   };
 
   const handleDelete = async (jobListingId) => {

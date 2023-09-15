@@ -86,20 +86,15 @@ useEffect(() => {
       })
       .then((data) => {
         setJobListings(data);
-        //setIsLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
-        //setIsLoading(false);
       });
   }, [refreshData, accessToken]);
-
-  //console.log("HERE" + JSON.stringify(jobListings.));
 
   const handleJobListingCreation = async (newJobListing) => {
     try {
       // Send the new listing data to the backend
-      console.log("Hellooo");
       const response = await fetch(`http://localhost:8080/job-listing`, {
         method: 'POST',
         headers: {
@@ -132,7 +127,6 @@ useEffect(() => {
         'There was an error creating the job listing:',
         error.message
       );
-      // Can also set some state here to display the error message to the user
     }
   };
 

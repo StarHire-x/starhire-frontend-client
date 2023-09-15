@@ -27,7 +27,6 @@ const CreateJobListingForm = ({ onCreate }) => {
   };
 
   const handleSubmit = () => {
-    console.log('handleSubmit is triggered');
     if (onCreate) onCreate(formData);
   };
 
