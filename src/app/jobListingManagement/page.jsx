@@ -16,19 +16,19 @@ const JobListingManagementPage = () => {
   const session = useSession();
 
   const userIdRef =
-    session.status === "authenticated" &&
+    session.status === 'authenticated' &&
     session.data &&
     session.data.user.userId;
 
   const accessToken =
-    session.status === "authenticated" &&
+    session.status === 'authenticated' &&
     session.data &&
     session.data.user.accessToken;
 
-console.log(session);
-console.log(userIdRef);
+  console.log(session);
+  console.log(userIdRef);
 
-/*  
+  /*  
 useEffect(() => {
     // If session doesn't exist, redirect to login
     if (!session) {
@@ -71,15 +71,15 @@ useEffect(() => {
   */
   useEffect(() => {
     fetch(`http://localhost:8080/job-listing/corporate/${userIdRef}`, {
-      method: "GET",
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-      cache: "no-store",
+      cache: 'no-store',
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error('Network response was not ok');
         }
         return response.json();
       })
@@ -88,15 +88,12 @@ useEffect(() => {
         //setIsLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
         //setIsLoading(false);
       });
   }, [accessToken]);
 
   //console.log("HERE" + JSON.stringify(jobListings.));
-
-
-
 
   const handleJobListingCreation = async (newJobListing) => {
     try {
@@ -172,7 +169,7 @@ useEffect(() => {
         header="Create Job Listing"
         visible={showCreateDialog}
         onHide={() => setShowCreateDialog(false)}
-        style={{ width: "50vw" }}
+        style={{ width: '50vw' }}
       >
         <CreateJobListingForm onCreate={handleJobListingCreation} />
       </Dialog>

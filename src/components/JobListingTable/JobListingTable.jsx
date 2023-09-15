@@ -19,14 +19,17 @@ const JobListingTable = ({ listings }) => {
   const [selectedJob, setSelectedJob] = useState(null); // To store the job that's being edited
 
   const userIdRef =
-    session.status === "authenticated" &&
+    session.status === 'authenticated' &&
     session.data &&
     session.data.user.userId;
 
   const accessToken =
-    session.status === "authenticated" &&
+    session.status === 'authenticated' &&
     session.data &&
     session.data.user.accessToken;
+
+  console.log(session);
+  console.log(userIdRef);
 
   /*
   useEffect(() => {
@@ -56,9 +59,18 @@ const JobListingTable = ({ listings }) => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(updatedData),
+          body: JSON.stringify({
+            ...updatedData,
+            corporateId: userIdRef,
+          }),
         }
       );
+
+      const payload = {
+        ...updatedData,
+        corporateId: userIdRef,
+      };
+      console.log('Payload:', payload);
 
       if (response.ok) {
         // Handle success case. You can update the state of the job listings to reflect the change or fetch again from the backend.
@@ -109,6 +121,10 @@ const JobListingTable = ({ listings }) => {
         `http://localhost:8080/job-listing/${jobListingId}`,
         {
           method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session.accessToken}`,
+          },
         }
       );
 
@@ -146,32 +162,32 @@ const JobListingTable = ({ listings }) => {
       style={styles.table}
       filterDisplay="menu"
       globalFilterFields={[
-        "jobListingId",
-        "description",
-        "jobLocation",
-        "averageSalary",
-        "listingDate",
-        "jobStartDate",
-        "jobListingStatus",
+        'jobListingId',
+        'description',
+        'jobLocation',
+        'averageSalary',
+        'listingDate',
+        'jobStartDate',
+        'jobListingStatus',
       ]}
     >
-      <Column field="title" header="Title" style={{ width: "50px" }}></Column>
+      <Column field="title" header="Title" style={{ width: '50px' }}></Column>
       <Column
         field="description"
         header="Description"
-        style={{ width: "50px" }}
+        style={{ width: '50px' }}
         sortable
       ></Column>
       <Column
         field="jobLocation"
         header="Location"
-        style={{ width: "50px" }}
+        style={{ width: '50px' }}
         sortable
       ></Column>
       <Column
         field="averageSalary"
         header="Average Salary"
-        style={{ width: "50px" }}
+        style={{ width: '50px' }}
         sortable
       ></Column>
       <Column
@@ -192,7 +208,7 @@ const JobListingTable = ({ listings }) => {
         body={(rowData) => (
           <span
             style={{
-              color: rowData.jobListingStatus === "Active" ? "green" : "red",
+              color: rowData.jobListingStatus === 'Active' ? 'green' : 'red',
             }}
           >
             {rowData.jobListingStatus}
@@ -221,7 +237,7 @@ const JobListingTable = ({ listings }) => {
                     setCurrentListing(null);
                     setShowEditDialog(false);
                   }}
-                  style={{ width: "50vw" }}
+                  style={{ width: '50vw' }}
                 >
                   <EditJobListingForm
                     initialData={currentListing}
