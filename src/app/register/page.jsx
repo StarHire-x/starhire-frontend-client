@@ -158,8 +158,9 @@ const Register = () => {
             className={styles.input}
             value={formData.contactNumber}
             onChange={handleInputChange}
-            required={formData.role === "Job_Seeker"}
-            disabled={formData.role === "Corporate"}
+            // required={formData.role === "Job_Seeker"}
+            // disabled={formData.role === "Corporate"}
+            //commented out because cannot register corporate and it is ok to put contact number for corporate too. 
           />
           <input
             type="text"
