@@ -10,7 +10,6 @@ import NavItem from '../navItem/NavItem';
 const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
   { text: "Home", href: "/" },
   { text: "Account", href: "/accountManagement" },
-  { text: "Portfolio", href: "/portfolio" },
   { text: "Job Listings", href: "/jobListing" },
   { text: "Forum", href: "/forum" },
   { text: "Events", href: "/events" },
@@ -21,7 +20,6 @@ const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
 const MENU_LIST_AUTHENTICATED_CORPORATE = [
   { text: "Home", href: "/" },
   { text: "Account", href: "/accountManagement" },
-  { text: "Portfolio", href: "/portfolio" },
   { text: "Job Listing Management", href: "/jobListingManagement" },
   { text: "Forum", href: "/forum" },
   { text: "Events", href: "/events" },
