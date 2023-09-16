@@ -48,7 +48,7 @@ const Chat = () => {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [attachedFile, setAttachedFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [socket, setSocket] = useState(io());
+  const [socket, setSocket] = useState(null);
 
 
   useEffect(() => {
@@ -85,10 +85,10 @@ const Chat = () => {
   };
 
   const sendMessage = (message) => {
-    socket.emit("sendMessage", message);
+    socket?.emit("sendMessage", message);
   };
 
-  socket.on(currentChat ? currentChat.chatId : null, (message) => {
+  socket?.on(currentChat ? currentChat.chatId : null, (message) => {
     receiveMessage(message);
   });
 
