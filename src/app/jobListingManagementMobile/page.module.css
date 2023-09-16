@@ -1,29 +1,25 @@
 .container {
-    background-color: transparent;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    margin: 40px auto;
-    max-width: 1200px;
-    display: grid;
-    grid-template-columns: repeat(9, 1fr); /* Set up a 9-column grid */
-    grid-gap: 20px;
-}
-
-.headerContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: flex;            /* Enable flexbox */
+    flex-wrap: wrap;          /* Allow the items to wrap to the next line */
+    justify-content: center;  /* Center the cards horizontally */
+    width: 1050px;  
+    gap: 15px;            /* Provide consistent gap between the cards. This will replace the margin if supported */
 }
  
 .card {
     background-color: #ffffff;
-    padding: 20px;
+    padding: 10px;
+    width: 205px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
     overflow: hidden;
     border: 1px solid #e0e0e0;
+    max-width: 100%;
+    margin-left: 10px;   /* half of desired space */
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
     
 }
 
@@ -55,7 +51,8 @@
 .cardRow {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    flex-wrap: wrap;
 }
 
 .cardRow:last-child {
@@ -89,36 +86,36 @@
 }
 
 .buttonSpacing {
-    margin-right: 50px;  /* Adjust the value as needed */
+    margin-right: 20px;
 }
 
-@media (max-width: 768px) { /* You can adjust this breakpoint as needed */
-    
-    .container {
-        padding: 20px 30px;
-        grid-gap: 20px;
-    }
+.cardDialog {
+    background-color: #ffffff;
+    padding: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    max-width: 100%;
+}
+
+@media (max-width: 480px) {/* Typical breakpoint for mobile phones */
 
     .card {
-        grid-column: span 9; /* Card takes full width */
-        width: 350px; /* Remove the fixed width */
-        margin-bottom: 20px; /* Reduced margin-bottom */
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .cardRow {
+        flex-direction: column;  /* Stack items vertically on smaller screens */
     }
 
-    .cardHeader h4 {
-        font-size: 1.4em; /* Slightly smaller font size */
-    }
-
-    .cardBody {
-        font-size: 0.9em; /* Slightly smaller font size */
-    }
-
-    .cardFooter button {
-        padding: 8px 15px; /* Reduced padding for buttons */
-        font-size: 0.8em; /* Slightly smaller font size */
+    .cardRow span {
+        margin-bottom: 5px;  /* Spacing between stacked items */
     }
 
     .buttonSpacing {
-        margin-right: 50px;  /* Reduce the spacing between buttons */
+        margin-right: 0;  /* Remove margin for smallest screens */
+        margin-bottom: 20px;  /* Add vertical spacing between buttons */
     }
 }

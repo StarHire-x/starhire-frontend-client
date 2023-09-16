@@ -4,16 +4,25 @@ import { Button } from "primereact/button";
 import { DataView, DataViewLayoutOptions } from "primereact/dataview";
 import { Tag } from "primereact/tag";
 import { useSession } from "next-auth/react";
-import { findAllJobListingsByCorporate } from "../api/auth/jobListing/route";
+import {
+  findAllJobListingsByCorporate,
+  createJobListing,
+  updateJobListing,
+  removeJobListing,
+} from "../api/auth/jobListing/route";
 import styles from "./page.module.css";
 import { Toolbar } from "primereact/toolbar";
 import "primeflex/primeflex.css";
 import CreateJobListingForm from "@/components/CreateJobListingForm/CreateJobListingForm";
 import { Dialog } from "primereact/dialog";
+import EditJobListingForm from "@/components/EditJobListingForm/EditJobListingForm";
 
 const JobListingManagementMobile = () => {
   const [jobListing, setJobListing] = useState(null);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [selectedJobListingData, setSelectedJobListingData] = useState(null);
   const [refreshData, setRefreshData] = useState(false);
   const session = useSession();
 
@@ -44,6 +53,32 @@ const JobListingManagementMobile = () => {
     }
   };
 
+  const hideEditDialog = () => {
+    setSelectedJobListingData(null);
+    setShowEditDialog(false);
+  };
+
+  const hideCreateDialog = () => {
+    setShowCreateDialog(false)
+  }
+
+  const hideDeleteDialog = () => {
+    setSelectedJobListingData(null);
+    setShowDeleteDialog(false);
+  }
+
+  const deleteDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        onClick={() =>
+          handleDeleteJobListing(selectedJobListingData.jobListingId)
+        }
+      />
+    </React.Fragment>
+  );
+
   useEffect(() => {
     findAllJobListingsByCorporate(userIdRef, accessToken)
       .then((jobListing) => setJobListing(jobListing))
@@ -56,7 +91,7 @@ const JobListingManagementMobile = () => {
     return (
       <div className={styles.card}>
         <div className={styles.cardHeader}>
-          <h4>{jobListing.title}</h4>
+          <h5>{jobListing.title}</h5>
         </div>
         <div className={styles.cardBody}>
           <div className={styles.cardRow}>
@@ -92,57 +127,80 @@ const JobListingManagementMobile = () => {
             label="Edit"
             icon="pi pi-pencil"
             className={styles.buttonSpacing}
-            onClick={() => {}}
+            onClick={() => {
+              setSelectedJobListingData(jobListing);
+              setShowEditDialog(jobListing);
+            }}
           />
           <Button
             icon="pi pi-trash"
             rounded
             outlined
             className={styles.buttonSpacing}
-            onClick={() => {}}
+            onClick={() => {
+              setSelectedJobListingData(jobListing);
+              setShowDeleteDialog(jobListing);
+            }}
           />
         </div>
       </div>
     );
   };
 
+  const handleEditJobListing = async (jobListingId, updatedData) => {
+    try {
+      const payload = {
+        ...updatedData,
+        corporateId: userIdRef,
+      };
+      const response = await updateJobListing(payload, jobListingId, accessToken);
+      console.log("Updated Job listing Successfully", response);
+      alert("Updated job listing successfully");
+      setRefreshData((prev) => !prev);
+    } catch (error) {
+      console.error(
+        "There was an error updating the job listing:",
+        error.message
+      );
+      alert("There was an error updating the job listing:");
+    }
+    setSelectedJobListingData(null);
+    setShowEditDialog(false);
+  }
+
   const handleJobListingCreation = async (newJobListing) => {
     try {
-      // Send the new listing data to the backend
-      const response = await fetch(`http://localhost:8080/job-listing`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-          ...newJobListing,
-          corporateId: userIdRef, // Assuming the session has the user's ID
-        }),
-      });
-
       const payload = {
         ...newJobListing,
         corporateId: userIdRef,
       };
-      console.log("Payload:", payload);
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          errorData.message || "Failed to create the job listing"
-        );
-      }
+      const response = await createJobListing(payload, accessToken)
+      console.log("Created Job listing Successfully", response)
+      alert("Created job listing successfully")
       setRefreshData((prev) => !prev);
-      // Close the modal dialog
-      setShowCreateDialog(false);
     } catch (error) {
       console.error(
         "There was an error creating the job listing:",
         error.message
       );
+      alert("There was an error creating the job listing:");
     }
+    setShowCreateDialog(false)
   };
+
+  const handleDeleteJobListing = async (jobListingId) => {
+    try {
+      const response = await removeJobListing(jobListingId, accessToken);
+      console.log("User is deleted", response);
+      alert("Deleted job listing successfully");
+      setRefreshData((prev) => !prev);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("There was an error deleting the job listing:");
+    }
+    setSelectedJobListingData(null);
+    setShowDeleteDialog(false);
+  }
 
   const header = (
     <div className="p-d-flex p-jc-between">
@@ -174,12 +232,37 @@ const JobListingManagementMobile = () => {
       <Dialog
         header="Create Job Listing"
         visible={showCreateDialog}
-        onHide={() => setShowCreateDialog(false)}
-        style={{ width: "50vw" }}
+        onHide={hideCreateDialog}
+        className={styles.cardDialog}
       >
         <CreateJobListingForm onCreate={handleJobListingCreation} />
       </Dialog>
 
+      <Dialog
+        header="Edit Job Listing"
+        visible={showEditDialog}
+        onHide={hideEditDialog}
+        className={styles.cardDialog}
+      >
+        <EditJobListingForm
+          initialData={showEditDialog}
+          onSave={(updatedData) => {
+            handleEditJobListing(showEditDialog.jobListingId, updatedData);
+          }}
+        />
+      </Dialog>
+
+      <Dialog
+        header="Delete Job Listing"
+        visible={showDeleteDialog}
+        onHide={hideDeleteDialog}
+        className={styles.cardDialog}
+        footer={deleteDialogFooter}
+      >
+        <h3>
+          Confirm Delete Job ID: {showDeleteDialog && showDeleteDialog.jobListingId}?
+        </h3>
+      </Dialog>
     </div>
   );
 };
