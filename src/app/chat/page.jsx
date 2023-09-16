@@ -16,6 +16,9 @@ import {
   MessageSeparator,
   Message,
   MessageInput,
+  InfoButton,
+  SendButton,
+  AttachmentButton,
 } from "@chatscope/chat-ui-kit-react";
 import ChatSidebar from "./ChatSidebar";
 import ChatHeader from "./ChatHeader";
