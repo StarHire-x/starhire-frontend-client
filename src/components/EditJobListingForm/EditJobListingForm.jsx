@@ -4,9 +4,8 @@ import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dropdown } from 'primereact/dropdown';
-import 'primereact/resources/themes/lara-light-teal/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
+import styles from './page.module.css'
+import { InputTextarea } from "primereact/inputtextarea";
 
 const EditJobListingForm = ({ initialData, onSave }) => {
   const [formData, setFormData] = useState({
@@ -27,29 +26,29 @@ const EditJobListingForm = ({ initialData, onSave }) => {
   };
 
   return (
-    <div>
-      <h3>Edit Job Listing</h3>
-      <div className="p-field">
-        <label htmlFor="title">Title:</label>
+    <div className={styles.cardBody}>
+      <div className={styles.cardRow}>
+        <label>Title:</label>
         <InputText
-          id="title"
           name="title"
           value={formData.title}
           onChange={handleInputChange}
         />
       </div>
 
-      <div className="p-field">
+      <div className={styles.cardRow}>
         <label htmlFor="description">Description:</label>
-        <InputText
+        <InputTextarea
           id="description"
           name="description"
           value={formData.description}
           onChange={handleInputChange}
+          rows={5} /* Adjust as needed */
+          autoResize={true} /* If you want it to resize automatically */
         />
       </div>
 
-      <div className="p-field">
+      <div className={styles.cardRow}>
         <label htmlFor="jobLocation">Job Location:</label>
         <InputText
           id="jobLocation"
@@ -59,32 +58,29 @@ const EditJobListingForm = ({ initialData, onSave }) => {
         />
       </div>
 
-      <div className="p-field">
+      <div className={styles.cardRow}>
         <label htmlFor="averageSalary">Average Salary:</label>
         <InputNumber
           id="averageSalary"
           name="averageSalary"
           value={formData.averageSalary}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, averageSalary: e.value }))
-          }
+          onChange={handleInputChange}
           mode="currency"
           currency="SGD"
         />
       </div>
 
-      <div className="p-field">
+      <div className={styles.cardRow}>
         <label htmlFor="jobStartDate">Job Start Date:</label>
         <Calendar
           id="jobStartDate"
           name="jobStartDate"
           value={formData.jobStartDate}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, jobStartDate: e.value }))
-          }
+          onChange={handleInputChange}
         />
       </div>
-      <div>
+      
+      <div className={styles.cardFooter}>
         <Button label="Save Changes" onClick={handleSubmit} />
       </div>
     </div>
