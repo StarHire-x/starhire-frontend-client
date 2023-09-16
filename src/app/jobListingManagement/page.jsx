@@ -10,6 +10,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import EditJobListingForm from '@/components/EditJobListingForm/EditJobListingForm';
 
+//this page is viewed by corporate
 const JobListingManagementPage = () => {
   const [jobListings, setJobListings] = useState([]);
   const [showCreateDialog, setShowCreateDialog] = useState(false); // State to handle the modal visibility

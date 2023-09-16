@@ -11,8 +11,9 @@ const MENU_LIST_AUTHENTICATED = [
   { text: "Home", href: "/" },
   { text: "Account", href: "/accountManagement" },
   { text: "Portfolio", href: "/portfolio" },
-  { text: "Job Listings", href: "/jobListings" },
-  { text: "Blog", href: "/blog" },
+  { text: "Job Listings", href: "/jobListing" },
+  { text: "Forum", href: "/forum" },
+  { text: "Events", href: "/events" },
   { text: "Contact", href: "/contact" },
   { text: "Chat", href: "/chat" },
 ];
