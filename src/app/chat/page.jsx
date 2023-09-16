@@ -18,7 +18,7 @@ import {
   MessageInput,
   AttachmentButton,
   InfoButton,
-  SendButton
+  SendButton,
 } from "@chatscope/chat-ui-kit-react";
 import ChatSidebar from "./ChatSidebar";
 import ChatHeader from "./ChatHeader";
@@ -167,12 +167,13 @@ const Chat = () => {
   }
 
   const selectCurrentChat = async (chat) => {
-    const currentChatId = chat.chatId;
-    const chatMessagesByCurrentChatId = await getOneUserChat(
-      currentChatId,
-      accessToken
-    );
+    // const currentChatId = chat.chatId;
+    socket.off(currentChat?.chatId);
+    const chatMessagesByCurrentChatId = await getOneUserChat(chat, accessToken);
     setCurrentChat(chatMessagesByCurrentChatId);
+    socket.on(chat, (message) => {
+      receiveMessage(message);
+    });
   };
 
   useEffect(() => {
@@ -208,12 +209,9 @@ const Chat = () => {
         <MainContainer responsive style={{ height: "75vh" }}>
           <ChatSidebar
             userChats={allChats}
-            selectCurrentChat={(index) => {
-              selectCurrentChat(index);
-              setSelectedConversation(index);
-            }}
+            selectCurrentChat={selectCurrentChat}
           />
-          {selectedConversation !== null ? (
+          {currentChat !== null ? (
             <ChatContainer>
               <ConversationHeader>
                 <ConversationHeader.Back />
