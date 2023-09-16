@@ -16,6 +16,9 @@ import {
   MessageSeparator,
   Message,
   MessageInput,
+  AttachmentButton,
+  InfoButton,
+  SendButton
 } from "@chatscope/chat-ui-kit-react";
 import ChatSidebar from "./ChatSidebar";
 import ChatHeader from "./ChatHeader";
@@ -48,9 +51,20 @@ const Chat = () => {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [attachedFile, setAttachedFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [socket, setSocket] = useState(null);
+  const [isImportant, setIsImportant] = useState(false);
 
-  // WebSocket functions
-  const socket = io("http://localhost:8080");
+  useEffect(() => {
+    // WebSocket functions
+    const socket = io("http://localhost:8080");
+    setSocket(socket);
+
+    // Clean-up logic when the component unmounts (if needed)
+    return () => {
+      // Close the socket or remove event listeners, if necessary
+      socket.close(); // Close the socket when the component unmounts
+    };
+  }, []); // The empty dependency array [] means this effect runs once after the initial render
 
   // returns list of lists
   const getDateStringByTimestamp = (timestamp) => {
@@ -74,10 +88,10 @@ const Chat = () => {
   };
 
   const sendMessage = (message) => {
-    socket.emit("sendMessage", message);
+    socket?.emit("sendMessage", message);
   };
 
-  socket.on(currentChat ? currentChat.chatId : null, (message) => {
+  socket?.on(currentChat ? currentChat.chatId : null, (message) => {
     receiveMessage(message);
   });
 
@@ -112,7 +126,7 @@ const Chat = () => {
     }
   };
 
-  const handleSendMessage = async (content) => {
+  const handleSendMessage = async () => {
     setLoading(true);
     // get fileURL here
     let fileURL = "";
@@ -126,8 +140,8 @@ const Chat = () => {
     sendMessage({
       userId: currentUserId,
       chatId: currentChat ? currentChat.chatId : null,
-      message: content,
-      isImportant: false,
+      message: messageInputValue,
+      isImportant: isImportant,
       timestamp: new Date(),
       fileURL: fileURL ? fileURL.url : "",
     });
@@ -146,7 +160,7 @@ const Chat = () => {
     setAttachedFile(selectedFile);
   };
 
-  async function getUserChats() {
+  async function getUserChats(currentUserId, accessToken) {
     console.log(currentUserId);
     const chats = await getAllUserChats(currentUserId, accessToken);
     setAllChats(chats);
@@ -162,8 +176,10 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    getUserChats();
-  }, [accessToken]);
+    if (session.status === "authenticated") {
+      getUserChats(currentUserId, accessToken);
+    }
+  }, [session.status, currentUserId, accessToken]);
 
   useEffect(() => {
     if (currentChat) {
@@ -257,6 +273,14 @@ const Chat = () => {
                             />
                           </Avatar>
                           <Message.CustomContent>
+                            {value.isImportant ? (
+                              <>
+                                <b>*Notification Sent*</b>
+                                <br />
+                              </>
+                            ) : (
+                              <></>
+                            )}
                             {value.fileURL != "" ? (
                               <>
                                 <b style={{ color: "#00008B" }}>
@@ -279,17 +303,73 @@ const Chat = () => {
                     </>
                   ))}
               </MessageList>
-              <MessageInput
-                placeholder={
-                  attachedFile
-                    ? `File attached: ${attachedFile.name}`
-                    : "Type message here"
-                }
-                value={messageInputValue}
-                onChange={(innerHtml, textContent, innerText) => setMessageInputValue(innerText)}
-                onSend={(innerHtml, textContent, innerText) => handleSendMessage(textContent)}
-                onAttachClick={handleAttachClick}
-              ></MessageInput>
+              <div
+                as={MessageInput}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  borderTop: "1px dashed #d1dbe4",
+                }}
+              >
+                <AttachmentButton
+                  style={{
+                    fontSize: "1.2em",
+                    paddingLeft: "0.5em",
+                    paddingRight: "0.2em",
+                  }}
+                  onClick={handleAttachClick}
+                />
+                <MessageInput
+                  placeholder={
+                    attachedFile
+                      ? `File attached: ${attachedFile.name}`
+                      : "Type message here"
+                  }
+                  onChange={(innerHtml, textContent, innerText) =>
+                    setMessageInputValue(innerText)
+                  }
+                  value={messageInputValue}
+                  sendButton={false}
+                  attachButton={false}
+                  onSend={handleSendMessage}
+                  style={{
+                    flexGrow: 1,
+                    borderTop: 0,
+                    flexShrink: "initial",
+                    caretColor: "#000000",
+                  }}
+                />
+                {isImportant ? (
+                  <InfoButton
+                    onClick={() => setIsImportant(false)}
+                    border
+                    style={{
+                      fontSize: "1.2em",
+                      paddingLeft: "0.2em",
+                      paddingRight: "0.2em",
+                    }}
+                  />
+                ) : (
+                  <InfoButton
+                    onClick={() => setIsImportant(true)}
+                    style={{
+                      fontSize: "1.2em",
+                      paddingLeft: "0.2em",
+                      paddingRight: "0.2em",
+                    }}
+                  />
+                )}
+                <SendButton
+                  onClick={handleSendMessage}
+                  disabled={messageInputValue.length === 0}
+                  style={{
+                    fontSize: "1.2em",
+                    marginLeft: 0,
+                    paddingLeft: "0.2em",
+                    paddingRight: "1em",
+                  }}
+                />
+              </div>
             </ChatContainer>
           ) : (
             <div
