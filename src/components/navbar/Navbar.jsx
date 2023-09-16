@@ -7,12 +7,24 @@ import { signOut, useSession } from 'next-auth/react';
 import { useState } from 'react';
 import NavItem from '../navItem/NavItem';
 
-const MENU_LIST_AUTHENTICATED = [
+const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
   { text: "Home", href: "/" },
   { text: "Account", href: "/accountManagement" },
   { text: "Portfolio", href: "/portfolio" },
-  { text: "Job Listings", href: "/jobListings" },
-  { text: "Blog", href: "/blog" },
+  { text: "Job Listings", href: "/jobListing" },
+  { text: "Forum", href: "/forum" },
+  { text: "Events", href: "/events" },
+  { text: "Contact", href: "/contact" },
+  { text: "Chat", href: "/chat" },
+];
+
+const MENU_LIST_AUTHENTICATED_CORPORATE = [
+  { text: "Home", href: "/" },
+  { text: "Account", href: "/accountManagement" },
+  { text: "Portfolio", href: "/portfolio" },
+  { text: "Job Listing Management", href: "/jobListingManagement" },
+  { text: "Forum", href: "/forum" },
+  { text: "Events", href: "/events" },
   { text: "Contact", href: "/contact" },
   { text: "Chat", href: "/chat" },
 ];
@@ -48,7 +60,18 @@ const Navbar = () => {
             styles.nav__menu_list
           }`}
         >
-          {session.status == 'authenticated' && MENU_LIST_AUTHENTICATED.map((menu, idx) => (
+          {session.status == 'authenticated' && session.data.user.role === "Job_Seeker" && MENU_LIST_AUTHENTICATED_JOB_SEEKER.map((menu, idx) => (
+            <div
+              onClick={() => {
+                setActiveIdx(idx);
+                setNavActive(false);
+              }}
+              key={menu.text}
+            >
+              <NavItem active={activeIdx === idx} {...menu} />
+            </div>
+          ))}
+          {session.status == 'authenticated' && session.data.user.role === "Corporate" && MENU_LIST_AUTHENTICATED_CORPORATE.map((menu, idx) => (
             <div
               onClick={() => {
                 setActiveIdx(idx);
