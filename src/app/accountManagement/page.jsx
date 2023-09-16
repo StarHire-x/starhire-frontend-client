@@ -100,7 +100,7 @@ const AccountManagement = () => {
       <div className={styles.container}>
         <h1 className={styles.title}>My Account Details</h1>
         <form className={styles.form} onSubmit={saveChanges}>
-          {/* <div className={styles.avatarContainer}>
+          <div className={styles.avatarContainer}>
             {formData?.profilePictureUrl && (
               <img
                 src={formData.profilePictureUrl}
@@ -108,7 +108,7 @@ const AccountManagement = () => {
                 className={styles.avatar}
               />
             )}
-          </div> */}
+          </div>
 
           <div className={styles.inputFields}>
             <div className={styles.field}>
