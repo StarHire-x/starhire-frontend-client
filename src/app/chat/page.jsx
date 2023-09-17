@@ -205,7 +205,6 @@ const Chat = () => {
 
     if (currentChat) {
       setOtherUser(currentChat.recruiter);
-      console.log(currentChat.recruiter);
       setCurrentUser(currentChat.jobSeeker || currentChat.corporate);
     }
   }, [currentChat]);
