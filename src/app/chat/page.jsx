@@ -48,12 +48,13 @@ const Chat = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [otherUser, setOtherUser] = useState(null); // user object
   const [allChats, setAllChats] = useState([]);
-  const [selectedConversation, setSelectedConversation] = useState(null);
   const [attachedFile, setAttachedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [socket, setSocket] = useState(null);
   const [isImportant, setIsImportant] = useState(false);
+  const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
 
+  // ============================= Socket.io Related Codes =============================
   useEffect(() => {
     // WebSocket functions
     const socket = io("http://localhost:8080");
@@ -66,6 +67,16 @@ const Chat = () => {
     };
   }, []); // The empty dependency array [] means this effect runs once after the initial render
 
+  const sendMessage = (message) => {
+    socket?.emit("sendMessage", message);
+  };
+
+  socket?.on(currentChat ? currentChat.chatId : null, (message) => {
+    receiveMessage(message);
+  });
+  // ============================= Socket.io Related Codes =============================
+
+  // ============================= Date Related Codes =============================
   // returns list of lists
   const getDateStringByTimestamp = (timestamp) => {
     return new Date(timestamp).toLocaleDateString("en-SG");
@@ -87,18 +98,13 @@ const Chat = () => {
     return Object.values(dateMessageMap);
   };
 
-  const sendMessage = (message) => {
-    socket?.emit("sendMessage", message);
-  };
-
-  socket?.on(currentChat ? currentChat.chatId : null, (message) => {
-    receiveMessage(message);
-  });
-
   const formatRawDate = (rawDate) => {
     const formattedDate = moment(rawDate).format("MMMM D, YYYY, h:mm A");
     return formattedDate;
   };
+  // ============================= Date Related Codes =============================
+ 
+  // ============================= Message Related Codes =============================
   const receiveMessage = (message) => {
     if (!message.timestamp) {
       return;
@@ -149,7 +155,9 @@ const Chat = () => {
     setAttachedFile(null);
     setLoading(false);
   };
+  // ============================= Message Related Codes =============================
 
+  // ============================= Attachment Related Codes =============================
   const handleAttachClick = () => {
     fileInputRef.current.value = "";
     fileInputRef.current.click();
@@ -159,7 +167,9 @@ const Chat = () => {
     const selectedFile = event.target.files[0]; // Get the selected file
     setAttachedFile(selectedFile);
   };
+  // ============================= Attachment Related Codes =============================
 
+  // ============================= Get Chats Related Codes =============================
   async function getUserChats(currentUserId, accessToken) {
     console.log(currentUserId);
     const chats = await getAllUserChats(currentUserId, accessToken);
@@ -198,6 +208,15 @@ const Chat = () => {
       setCurrentUser(currentChat.jobSeeker || currentChat.corporate);
     }
   }, [currentChat]);
+  // ============================= Get Chats Related Codes =============================
+
+  // ============================= Others Codes =============================
+    const toggleChatSidebar = () => {
+      console.log("toggle chatsidebar is called!!!!");
+      setIsChatSidebarOpen(!isChatSidebarOpen);
+    }
+
+  // ============================= Others Codes =============================
 
   if (session.status === "authenticated") {
     return (
@@ -216,7 +235,7 @@ const Chat = () => {
           {currentChat !== null ? (
             <ChatContainer>
               <ConversationHeader>
-                <ConversationHeader.Back />
+                <ConversationHeader.Back onClick={toggleChatSidebar} />
                 <Avatar>
                   <Image
                     src={HumanIcon}
@@ -229,6 +248,11 @@ const Chat = () => {
                 />
                 <ConversationHeader.Actions></ConversationHeader.Actions>
               </ConversationHeader>
+              {isChatSidebarOpen && <ChatSidebar
+                  userChats={allChats}
+                  selectCurrentChat={selectCurrentChat}
+                />
+              }
               <ChatHeader />
               <MessageList loadingMore={loading} loadingMorePosition="bottom">
                 {chatMessagesByDate.length > 0 &&
@@ -378,6 +402,7 @@ const Chat = () => {
                 position: "absolute",
                 top: "50%",
                 left: "50%",
+                transform: "translate(-35%, -100%)"
               }}
             >
               <p>Select a conversation to start chatting</p>
