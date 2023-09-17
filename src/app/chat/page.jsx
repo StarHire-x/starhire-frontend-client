@@ -103,7 +103,7 @@ const Chat = () => {
     return formattedDate;
   };
   // ============================= Date Related Codes =============================
- 
+
   // ============================= Message Related Codes =============================
   const receiveMessage = (message) => {
     if (!message.timestamp) {
@@ -208,13 +208,16 @@ const Chat = () => {
       setCurrentUser(currentChat.jobSeeker || currentChat.corporate);
     }
   }, [currentChat]);
+
   // ============================= Get Chats Related Codes =============================
 
+  // ============================= Get Users Related Codes =============================
+
   // ============================= Others Codes =============================
-    const toggleChatSidebar = () => {
-      console.log("toggle chatsidebar is called!!!!");
-      setIsChatSidebarOpen(!isChatSidebarOpen);
-    }
+  const toggleChatSidebar = () => {
+    console.log("toggle chatsidebar is called!!!!");
+    setIsChatSidebarOpen(!isChatSidebarOpen);
+  };
 
   // ============================= Others Codes =============================
 
@@ -227,10 +230,17 @@ const Chat = () => {
           style={{ display: "none" }}
           onChange={handleFileInputChange}
         />
-        <MainContainer responsive style={{ height: "75vh" }}>
+        <MainContainer 
+          responsive 
+          style={{ 
+            height: "75vh",
+            
+          }}
+        >
           <ChatSidebar
             userChats={allChats}
             selectCurrentChat={selectCurrentChat}
+            className="chatSidebarContainer"
           />
           {currentChat !== null ? (
             <ChatContainer>
@@ -248,11 +258,12 @@ const Chat = () => {
                 />
                 <ConversationHeader.Actions></ConversationHeader.Actions>
               </ConversationHeader>
-              {isChatSidebarOpen && <ChatSidebar
+              {isChatSidebarOpen && (
+                <ChatSidebar
                   userChats={allChats}
                   selectCurrentChat={selectCurrentChat}
                 />
-              }
+              )}
               <ChatHeader />
               <MessageList loadingMore={loading} loadingMorePosition="bottom">
                 {chatMessagesByDate.length > 0 &&
@@ -402,7 +413,7 @@ const Chat = () => {
                 position: "absolute",
                 top: "50%",
                 left: "50%",
-                transform: "translate(-35%, -100%)"
+                transform: "translate(-35%, -100%)",
               }}
             >
               <p>Select a conversation to start chatting</p>
