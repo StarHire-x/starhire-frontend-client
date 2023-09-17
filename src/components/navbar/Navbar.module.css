@@ -40,11 +40,12 @@
   right: -288px;
   padding: 24px 16px;
   transition: all 0.2s;
-  min-height: calc(100vh - 60px);
+  /* min-height: calc(100vh - 60px); */
 }
 
 .nav__menu_list.active{
   right: 0;
+  background-color: #00191c;
 }
 
 .center{
@@ -72,10 +73,11 @@
     border-radius: 3px;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 900px) {
   .nav__menu_bar{
     display: none;
   }
+
   .nav__menu_list{
     position: unset;
     flex-direction: row;
@@ -83,5 +85,6 @@
     width: fit-content;
     column-gap: 24px;
     align-items: center;
+    height: auto;
   }
 }
