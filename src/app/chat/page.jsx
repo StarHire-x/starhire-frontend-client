@@ -205,6 +205,7 @@ const Chat = () => {
 
     if (currentChat) {
       setOtherUser(currentChat.recruiter);
+      console.log(currentChat.recruiter);
       setCurrentUser(currentChat.jobSeeker || currentChat.corporate);
     }
   }, [currentChat]);
@@ -230,11 +231,10 @@ const Chat = () => {
           style={{ display: "none" }}
           onChange={handleFileInputChange}
         />
-        <MainContainer 
-          responsive 
-          style={{ 
+        <MainContainer
+          responsive
+          style={{
             height: "75vh",
-            
           }}
         >
           <ChatSidebar
@@ -247,11 +247,11 @@ const Chat = () => {
               <ConversationHeader>
                 <ConversationHeader.Back onClick={toggleChatSidebar} />
                 <Avatar>
-                  <Image
-                    src={HumanIcon}
-                    alt="Profile Picture"
-                    name={otherUser ? otherUser.userName : ""}
-                  />
+                  {otherUser && otherUser.profilePictureUrl != "" ? (
+                    <img src={otherUser.profilePictureUrl} alt="user" />
+                  ) : (
+                    <Image src={HumanIcon} />
+                  )}
                 </Avatar>
                 <ConversationHeader.Content
                   userName={otherUser ? otherUser.userName : ""}
@@ -297,15 +297,25 @@ const Chat = () => {
                           }}
                         >
                           <Avatar>
-                            <Image
-                              src={HumanIcon}
-                              alt="Profile Picture"
-                              name={
-                                value.userId == currentUserId
-                                  ? currentUser.userName
-                                  : otherUser.userName
-                              }
-                            />
+                            {value.userId == currentUserId ? (
+                              currentUser &&
+                              currentUser.profilePictureUrl != "" ? (
+                                <img
+                                  src={currentUser.profilePictureUrl}
+                                  alt="user"
+                                />
+                              ) : (
+                                <Image src={HumanIcon} />
+                              )
+                            ) : otherUser &&
+                              otherUser.profilePictureUrl != "" ? (
+                              <img
+                                src={otherUser.profilePictureUrl}
+                                alt="user"
+                              />
+                            ) : (
+                              <Image src={HumanIcon} />
+                            )}
                           </Avatar>
                           <Message.CustomContent>
                             {value.isImportant ? (
