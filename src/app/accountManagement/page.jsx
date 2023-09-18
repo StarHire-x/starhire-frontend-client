@@ -1,24 +1,33 @@
 "use client";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { getUserByEmailRole, getUserByUserId } from "../api/auth/user/route";
 import { uploadFile } from "../api/auth/upload/route";
 import { updateUser } from "../api/auth/user/route";
 import styles from "./page.module.css";
+import { UserContext } from "@/context/UserContext";
 
 const AccountManagement = () => {
   const session = useSession();
   const router = useRouter();
+  const [refreshData, setRefreshData] = useState(false);
   const [formData, setFormData] = useState({
     userId: "",
     userName: "",
     email: "",
     fullName: "",
+    homeAddress: "",
+    companyName: "",
+    companyAddress: "",
     profilePictureUrl: "",
     notificationMode: "",
     status: "",
+
   });
+
+  // this is to do a reload of userContext if it is updated in someway
+  const { userData, fetchUserData } = useContext(UserContext);
 
   let roleRef, sessionTokenRef, userIdRef;
 
@@ -38,7 +47,7 @@ const AccountManagement = () => {
           console.error("Error fetching user:", error);
         });
     }
-  }, [session.status, userIdRef, roleRef]);
+  }, [session.status, userIdRef, roleRef, refreshData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -68,14 +77,21 @@ const AccountManagement = () => {
     const email = formData.email;
     const userName = formData.userName;
     const fullName = formData.fullName;
+    const homeAddress = formData.homeAddress;
+    const companyName = formData.companyName;
+    const companyAddress = formData.companyAddress;
     const profilePictureUrl = formData.profilePictureUrl;
     const notificationMode = formData.notificationMode;
     const status = formData.status;
+    
     const updateUserDetails = {
       role: roleRef,
       email: email,
       userName: userName,
       fullName: fullName,
+      homeAddress: homeAddress,
+      companyName: companyName,
+      companyAddress: companyAddress,
       profilePictureUrl: profilePictureUrl,
       notificationMode: notificationMode,
       status: status,
@@ -90,8 +106,13 @@ const AccountManagement = () => {
       );
       console.log("Status changed successfully:", response);
       alert("Status changed successfully!");
+
+      setRefreshData((prev) => !prev);
+      // this is to do a reload of userContext if it is updated so that navbar can change
+      fetchUserData();
     } catch {
-      console.log("Save changes to the backend");
+      console.log("Failed to update user");
+      alert("Failed to update user particulars");
     }
   };
 
@@ -124,7 +145,6 @@ const AccountManagement = () => {
                 onChange={handleInputChange}
               />
             </div>
-
             <div className={styles.field}>
               <label htmlFor="email">Email:</label>
               <input
@@ -136,19 +156,58 @@ const AccountManagement = () => {
                 onChange={handleInputChange}
               />
             </div>
-
-            <div className={styles.field}>
-              <label htmlFor="fullName">Full Name:</label>
-              <input
-                type="text"
-                id="fullName"
-                name="fullName"
-                className={styles.input}
-                value={formData.fullName}
-                onChange={handleInputChange}
-              />
-            </div>
-
+            {session.data.user.role === "Job_Seeker" && (
+              <>
+                <div className={styles.field}>
+                  <label htmlFor="fullName">Full Name:</label>
+                  <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    className={styles.input}
+                    value={formData.fullName}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="homeAddress">Home Address:</label>
+                  <input
+                    type="text"
+                    id="homeAddress"
+                    name="homeAddress"
+                    className={styles.input}
+                    value={formData.homeAddress}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </>
+            )}
+            {session.data.user.role === "Corporate" && (
+              <>
+                <div className={styles.field}>
+                  <label htmlFor="companyName">Company Name:</label>
+                  <input
+                    type="text"
+                    id="companyName"
+                    name="companyName"
+                    className={styles.input}
+                    value={formData.companyName}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="companyAddress">Company Address:</label>
+                  <input
+                    type="text"
+                    id="companyAddress"
+                    name="companyAddress"
+                    className={styles.input}
+                    value={formData.companyAddress}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </>
+            )}
             {/* This is just to check the image link */}
             {/* <div className={styles.field}>
             <label htmlFor="profilePictureUrl">Profile Picture URL:</label>
@@ -161,7 +220,6 @@ const AccountManagement = () => {
               onChange={handleInputChange}
             />
           </div> */}
-
             <div className={styles.fileField}>
               <label htmlFor="profilePicture">Profile Picture:</label>
               <input
@@ -170,9 +228,7 @@ const AccountManagement = () => {
                 onChange={handleFileChange}
               />
             </div>
-
             <div className={styles.radioFields}>
-              
               <div className={styles.radioHeader}>
                 <p>Notifications</p>
               </div>
@@ -227,7 +283,6 @@ const AccountManagement = () => {
                 </label>
               </div>
             </div>
-            
           </div>
 
           <div className={styles.buttonContainer}>

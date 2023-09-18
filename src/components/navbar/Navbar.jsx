@@ -5,10 +5,10 @@ import React from 'react';
 import styles from './Navbar.module.css';
 import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
 import { signOut, useSession } from 'next-auth/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import NavItem from '../navItem/NavItem';
 import HumanIcon from "../../../public/icon.png";
-
+import { UserContext } from '@/context/UserContext';
 import { getUserByUserId } from '@/app/api/auth/user/route';
 
 const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
@@ -39,9 +39,12 @@ const Navbar = () => {
 
   const [navActive, setNavActive] = useState(null);
   const [activeIdx, setActiveIdx] = useState(-1);
-  const [imageUrl, setImageUrl] = useState(null);
-  const [userName, setUserName] = useState(null);
+  // const [imageUrl, setImageUrl] = useState(null);
+  // const [userName, setUserName] = useState(null);
   let roleRef, sessionTokenRef, userIdRef;
+
+  // utilising use context to get the latest information
+  const { userData } = useContext(UserContext);
 
   if (session && session.data && session.data.user) {
     userIdRef = session.data.user.userId;
@@ -49,26 +52,26 @@ const Navbar = () => {
     sessionTokenRef = session.data.user.accessToken;
   }
 
-  useEffect(() => {
-    if (session.status === "authenticated") {
-      const fetchData = () => {
-        getUserByUserId(userIdRef, roleRef, sessionTokenRef)
-          .then((user) => {
-            setImageUrl(user.data.profilePictureUrl);
-            setUserName(user.data.userName);
-          })
-          .catch((error) => {
-            console.error("Error fetching user:", error);
-          });
-      };
+  // useEffect(() => {
+  //   if (session.status === "authenticated") {
+  //     const fetchData = () => {
+  //       getUserByUserId(userIdRef, roleRef, sessionTokenRef)
+  //         .then((user) => {
+  //           setImageUrl(user.data.profilePictureUrl);
+  //           setUserName(user.data.userName);
+  //         })
+  //         .catch((error) => {
+  //           console.error("Error fetching user:", error);
+  //         });
+  //     };
 
-      fetchData(); // Fetch immediately
+  //     fetchData(); // Fetch immediately
 
-      const intervalId = setInterval(fetchData, 5000); // Poll every 5 seconds
+  //     const intervalId = setInterval(fetchData, 5000); // Poll every 5 seconds
 
-      return () => clearInterval(intervalId); // Cleanup on unmount
-    }
-  }, [session.status, userIdRef, roleRef, sessionTokenRef]);
+  //     return () => clearInterval(intervalId); // Cleanup on unmount
+  //   }
+  // }, [session.status, userIdRef, roleRef, sessionTokenRef]);
 
   return (
     <header className={styles.header}>
@@ -86,70 +89,79 @@ const Navbar = () => {
           <div></div>
         </div>
         <div
-          className={`${navActive ? styles.active : ''} ${
+          className={`${navActive ? styles.active : ""} ${
             styles.nav__menu_list
           }`}
         >
-          {session.status == 'authenticated' && session.data.user.role === "Job_Seeker" && MENU_LIST_AUTHENTICATED_JOB_SEEKER.map((menu, idx) => (
-            <div
-              onClick={() => {
-                setActiveIdx(idx);
-                setNavActive(false);
-              }}
-              key={menu.text}
-            >
-              <NavItem active={activeIdx === idx} {...menu} />
-            </div>
-          ))}
-          {session.status == 'authenticated' && session.data.user.role === "Corporate" && MENU_LIST_AUTHENTICATED_CORPORATE.map((menu, idx) => (
-            <div
-              onClick={() => {
-                setActiveIdx(idx);
-                setNavActive(false);
-              }}
-              key={menu.text}
-            >
-              <NavItem active={activeIdx === idx} {...menu} />
-            </div>
-          ))}
-          {session.status == 'unauthenticated' && MENU_LIST_UNAUTHENTICATED.map((menu, idx) => (
-            <div
-              onClick={() => {
-                setActiveIdx(idx);
-                setNavActive(false);
-              }}
-              key={menu.text}
-            >
-              <NavItem active={activeIdx === idx} {...menu} />
-            </div>
-          ))}
-          {session.status === 'authenticated' && (
+          {session.status == "authenticated" &&
+            session.data.user.role === "Job_Seeker" &&
+            MENU_LIST_AUTHENTICATED_JOB_SEEKER.map((menu, idx) => (
+              <div
+                onClick={() => {
+                  setActiveIdx(idx);
+                  setNavActive(false);
+                }}
+                key={menu.text}
+              >
+                <NavItem active={activeIdx === idx} {...menu} />
+              </div>
+            ))}
+          {session.status == "authenticated" &&
+            session.data.user.role === "Corporate" &&
+            MENU_LIST_AUTHENTICATED_CORPORATE.map((menu, idx) => (
+              <div
+                onClick={() => {
+                  setActiveIdx(idx);
+                  setNavActive(false);
+                }}
+                key={menu.text}
+              >
+                <NavItem active={activeIdx === idx} {...menu} />
+              </div>
+            ))}
+          {session.status == "unauthenticated" &&
+            MENU_LIST_UNAUTHENTICATED.map((menu, idx) => (
+              <div
+                onClick={() => {
+                  setActiveIdx(idx);
+                  setNavActive(false);
+                }}
+                key={menu.text}
+              >
+                <NavItem active={activeIdx === idx} {...menu} />
+              </div>
+            ))}
+          {session.status === "authenticated" && (
             <>
-             <div className={styles.imageContainer}>
-             {imageUrl !== "" ? (
-                 <Link href="/accountManagement">
-                   <img
-                     src={imageUrl}
-                     alt="User Profile"
-                     className={styles.avatar}
-                   />
-               </Link>
-              ) : (
-                <Link href="/accountManagement">
-                  <Image src={HumanIcon} alt="Profile Picture" className={styles.avatar} />
-                </Link>
-              )}
-              <h6>{userName}</h6>
-            </div>
-            <button className={styles.logout} onClick={signOut}>
-              Logout
-            </button>
+              <div className={styles.imageContainer}>
+                {userData?.profilePictureUrl ? (
+                  <Link href="/accountManagement">
+                    <img
+                      src={userData?.profilePictureUrl}
+                      alt="User Profile"
+                      className={styles.avatar}
+                    />
+                  </Link>
+                ) : (
+                  <Link href="/accountManagement">
+                    <Image
+                      src={HumanIcon}
+                      alt="Profile Picture"
+                      className={styles.avatar}
+                    />
+                  </Link>
+                )}
+                <h6>{userData?.userName}</h6>
+              </div>
+              <button className={styles.logout} onClick={signOut}>
+                Logout
+              </button>
             </>
           )}
-          {session.status === 'unauthenticated' && (
+          {session.status === "unauthenticated" && (
             <button
               className={styles.login}
-              onClick={() => (window.location.href = '/login')}
+              onClick={() => (window.location.href = "/login")}
             >
               Login
             </button>
