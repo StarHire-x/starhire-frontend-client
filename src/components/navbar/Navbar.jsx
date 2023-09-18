@@ -13,7 +13,6 @@ import { getUserByUserId } from '@/app/api/auth/user/route';
 
 const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
   { text: "Home", href: "/" },
-  { text: "Account Management", href: "/accountManagement" },
   { text: "Job Listings", href: "/jobListing" },
   { text: "Forum", href: "/forum" },
   { text: "Events", href: "/events" },
@@ -23,7 +22,6 @@ const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
 
 const MENU_LIST_AUTHENTICATED_CORPORATE = [
   { text: "Home", href: "/" },
-  { text: "Account Management", href: "/accountManagement" },
   { text: "Job Listing Management", href: "/jobListingManagement" },
   { text: "Forum", href: "/forum" },
   { text: "Events", href: "/events" },
@@ -129,13 +127,17 @@ const Navbar = () => {
             <>
              <div className={styles.imageContainer}>
              {imageUrl !== "" ? (
-                 <img
-                 src={imageUrl}
-                 alt="User Profile"
-                 className={styles.avatar}
-               />
+                 <Link href="/accountManagement">
+                   <img
+                     src={imageUrl}
+                     alt="User Profile"
+                     className={styles.avatar}
+                   />
+               </Link>
               ) : (
-                <Image src={HumanIcon} alt="Profile Picture" className={styles.avatar} />
+                <Link href="/accountManagement">
+                  <Image src={HumanIcon} alt="Profile Picture" className={styles.avatar} />
+                </Link>
               )}
               <h6>{userName}</h6>
             </div>
