@@ -3,7 +3,7 @@ import React, { useRef } from "react";
 import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import io from "socket.io-client";
 import moment from "moment";
@@ -52,7 +52,13 @@ const Chat = () => {
   const [loading, setLoading] = useState(false);
   const [socket, setSocket] = useState(null);
   const [isImportant, setIsImportant] = useState(false);
-  const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
+  const [sidebarVisible, setSidebarVisible] = useState(true); // must show sidebar by default
+  const [sidebarStyle, setSidebarStyle] = useState({});
+  const [searchBarStyle, setSearchBarStyle] = useState({});
+  const [chatContainerStyle, setChatContainerStyle] = useState({});
+  const [conversationContentStyle, setConversationContentStyle] = useState({});
+  const [conversationAvatarStyle, setConversationAvatarStyle] = useState({});
+
 
   // ============================= Socket.io Related Codes =============================
   useEffect(() => {
@@ -181,6 +187,9 @@ const Chat = () => {
     socket.on(chatId, (message) => {
       receiveMessage(message);
     });
+    
+    handleConversationClick();
+
     const chatMessagesByCurrentChatId = await getOneUserChat(
       chatId,
       accessToken
@@ -211,40 +220,84 @@ const Chat = () => {
 
   // ============================= Get Chats Related Codes =============================
 
-  // ============================= Get Users Related Codes =============================
-
   // ============================= Others Codes =============================
-  const toggleChatSidebar = () => {
-    console.log("toggle chatsidebar is called!!!!");
-    setIsChatSidebarOpen(!isChatSidebarOpen);
-  };
+  const handleBackClick = () => setSidebarVisible(!sidebarVisible);
+
+  const handleConversationClick = useCallback(() => {
+    if (sidebarVisible) {
+      setSidebarVisible(false);
+    }
+  }, [sidebarVisible, setSidebarVisible]);
+
+  useEffect(() => {
+    if (sidebarVisible) {
+      setSidebarStyle({
+        display: "flex",
+        flexBasis: "auto",
+        width: "100%",
+        maxWidth: "100%",
+        paddingRight: "3%"
+      });
+
+      setSearchBarStyle({
+        display: "flex",
+        flexBasis: "auto",
+        width: "100%",
+        maxWidth: "100%"
+      });
+
+      setConversationContentStyle({
+        display: "flex",
+      });
+      setConversationAvatarStyle({
+        marginRight: "1em",
+      });
+      setChatContainerStyle({
+        display: "none",
+      });
+    } else {
+      setSidebarStyle({});
+      setSearchBarStyle({});
+      setConversationContentStyle({});
+      setConversationAvatarStyle({});
+      setChatContainerStyle({});
+    }
+  }, [
+    sidebarVisible,
+    setSidebarVisible,
+    setConversationContentStyle,
+    setConversationAvatarStyle,
+    setSidebarStyle,
+    setChatContainerStyle,
+    setSearchBarStyle
+  ]);
 
   // ============================= Others Codes =============================
 
   if (session.status === "authenticated") {
     return (
-      <>
+      <div style={{height: "75vh", position: "relative"}}>
         <input
           type="file"
           ref={fileInputRef}
           style={{ display: "none" }}
           onChange={handleFileInputChange}
         />
-        <MainContainer
-          responsive
-          style={{
-            height: "75vh",
-          }}
-        >
+        <MainContainer responsive>
           <ChatSidebar
             userChats={allChats}
             selectCurrentChat={selectCurrentChat}
-            className="chatSidebarContainer"
+            position="left"
+            scrollable={false}
+            sideBarStyle={sidebarStyle}
+            searchBarStyle={searchBarStyle}
+            conversationContentStyle={conversationContentStyle}
+            conversationAvatarStyle={conversationAvatarStyle}
           />
-          {currentChat !== null ? (
-            <ChatContainer>
+          {currentChat && (
+            <ChatContainer style={chatContainerStyle}>
               <ConversationHeader>
-                <ConversationHeader.Back onClick={toggleChatSidebar} />
+                <ConversationHeader.Back onClick={handleBackClick}/>
                 <Avatar>
                   {otherUser && otherUser.profilePictureUrl != "" ? (
                     <img src={otherUser.profilePictureUrl} alt="user" />
@@ -257,12 +310,6 @@ const Chat = () => {
                 />
                 <ConversationHeader.Actions></ConversationHeader.Actions>
               </ConversationHeader>
-              {isChatSidebarOpen && (
-                <ChatSidebar
-                  userChats={allChats}
-                  selectCurrentChat={selectCurrentChat}
-                />
-              )}
               <ChatHeader />
               <MessageList loadingMore={loading} loadingMorePosition="bottom">
                 {chatMessagesByDate.length > 0 &&
@@ -415,21 +462,10 @@ const Chat = () => {
                 />
               </div>
             </ChatContainer>
-          ) : (
-            <div
-              style={{
-                display: "flex",
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-35%, -100%)",
-              }}
-            >
-              <p>Select a conversation to start chatting</p>
-            </div>
-          )}
+          )
+          }
         </MainContainer>
-      </>
+      </div>
     );
   }
 };

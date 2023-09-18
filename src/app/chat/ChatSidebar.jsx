@@ -9,7 +9,7 @@ import Image from "next/image";
 import HumanIcon from "../../../public/icon.png";
 import { useState } from "react";
 
-const ChatSidebar = ({ userChats, selectCurrentChat }) => {
+const ChatSidebar = ({ userChats, selectCurrentChat, position, scrollable, sideBarStyle, searchBarStyle, conversationContentStyle, conversationAvatarStyle }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   // Create a new array called filteredChats that include those userNames where it match the search query.
@@ -23,12 +23,13 @@ const ChatSidebar = ({ userChats, selectCurrentChat }) => {
   };
 
   return (
-    <Sidebar position="left" scrollable={false}>
+    <Sidebar position={position} scrollable={scrollable} style={sideBarStyle}>
       <Search
         placeholder="Search..."
         value={searchQuery}
         onChange={(query) => setSearchQuery(query)}
         onClearClick={handleClearSearch}
+        style={searchBarStyle}
       />
       <ConversationList>
         {filteredChats.length > 0 ? (
@@ -36,16 +37,17 @@ const ChatSidebar = ({ userChats, selectCurrentChat }) => {
             <Conversation
               key={index}
               index={index}
-              name={chat.recruiter.userName}
+              // name={chat.recruiter.userName}
               onClick={() => selectCurrentChat(chat.chatId)}
             >
-              <Avatar>
+              <Avatar style={conversationAvatarStyle}>
                 {chat.recruiter && chat.recruiter.profilePictureUrl != "" ? (
                   <img src={chat.recruiter.profilePictureUrl} alt="user" />
                 ) : (
                   <Image src={HumanIcon} />
                 )}
               </Avatar>
+              <Conversation.Content name={chat.recruiter.userName} style={conversationContentStyle}/>
             </Conversation>
           ))
         ) : (
@@ -53,8 +55,9 @@ const ChatSidebar = ({ userChats, selectCurrentChat }) => {
             style={{
               display: "flex",
               position: "absolute",
-              top: "40%",
-              left: "30%",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-35%, -100%)",
             }}
           >
             <p>No Chat History</p>
