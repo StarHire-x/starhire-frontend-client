@@ -37,15 +37,14 @@ const ChatSidebar = ({ userChats, selectCurrentChat }) => {
               key={index}
               index={index}
               name={chat.recruiter.userName}
-              onClick={() => selectCurrentChat(chat)}
+              onClick={() => selectCurrentChat(chat.chatId)}
             >
               <Avatar>
-                <Image
-                  src={HumanIcon}
-                  alt="Profile Picture"
-                  name={chat.recruiter.userName}
-                  status="available"
-                />
+                {chat.recruiter && chat.recruiter.profilePictureUrl != "" ? (
+                  <img src={chat.recruiter.profilePictureUrl} alt="user" />
+                ) : (
+                  <Image src={HumanIcon} />
+                )}
               </Avatar>
             </Conversation>
           ))

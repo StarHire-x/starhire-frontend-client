@@ -1,23 +1,23 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import { Button } from 'primereact/button';
-import { DataView } from 'primereact/dataview';
-import { Dialog } from 'primereact/dialog';
-import { Tag } from 'primereact/tag';
-import { useSession } from 'next-auth/react';
+"use client";
+import React, { useState, useEffect } from "react";
+import { Button } from "primereact/button";
+import { DataView, DataViewLayoutOptions } from "primereact/dataview";
+import { Tag } from "primereact/tag";
+import { useSession } from "next-auth/react";
 import {
   findAllJobListingsByCorporate,
   createJobListing,
   updateJobListing,
   removeJobListing,
-} from '../api/auth/jobListing/route';
-import styles from './page.module.css';
-import 'primeflex/primeflex.css';
-import CreateJobListingForm from '@/components/CreateJobListingForm/CreateJobListingForm';
-import EditJobListingForm from '@/components/EditJobListingForm/EditJobListingForm';
+} from "../api/auth/jobListing/route";
+import styles from "./page.module.css";
+import { Toolbar } from "primereact/toolbar";
+import "primeflex/primeflex.css";
+import CreateJobListingForm from "@/components/CreateJobListingForm/CreateJobListingForm";
+import { Dialog } from "primereact/dialog";
+import EditJobListingForm from "@/components/EditJobListingForm/EditJobListingForm";
 
-//this page is viewed by corporate
-const JobListingManagementPage = () => {
+const JobListingManagementMobile = () => {
   const [jobListing, setJobListing] = useState(null);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
@@ -27,29 +27,29 @@ const JobListingManagementPage = () => {
   const session = useSession();
 
   const userIdRef =
-    session.status === 'authenticated' &&
+    session.status === "authenticated" &&
     session.data &&
     session.data.user.userId;
 
   const accessToken =
-    session.status === 'authenticated' &&
+    session.status === "authenticated" &&
     session.data &&
     session.data.user.accessToken;
 
-  console.log(session);
   console.log(userIdRef);
+  console.log(accessToken);
 
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+    const options = { year: "numeric", month: "numeric", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   const getStatus = (status) => {
     switch (status) {
-      case 'Verified':
-        return 'success';
-      case 'Unverified':
-        return 'danger';
+      case "Verified":
+        return "success";
+      case "Unverified":
+        return "danger";
     }
   };
 
@@ -59,13 +59,13 @@ const JobListingManagementPage = () => {
   };
 
   const hideCreateDialog = () => {
-    setShowCreateDialog(false);
-  };
+    setShowCreateDialog(false)
+  }
 
   const hideDeleteDialog = () => {
     setSelectedJobListingData(null);
     setShowDeleteDialog(false);
-  };
+  }
 
   const deleteDialogFooter = (
     <React.Fragment>
@@ -83,7 +83,7 @@ const JobListingManagementPage = () => {
     findAllJobListingsByCorporate(userIdRef, accessToken)
       .then((jobListing) => setJobListing(jobListing))
       .catch((error) => {
-        console.error('Error fetching user:', error);
+        console.error("Error fetching user:", error);
       });
   }, [refreshData, userIdRef, accessToken]);
 
@@ -147,64 +147,60 @@ const JobListingManagementPage = () => {
     );
   };
 
-  const handleJobListingCreation = async (newJobListing) => {
-    try {
-      const payload = {
-        ...newJobListing,
-        corporateId: userIdRef,
-      };
-      const response = await createJobListing(payload, accessToken);
-      console.log('Created Job listing Successfully', response);
-      alert('Created job listing successfully');
-      setRefreshData((prev) => !prev);
-    } catch (error) {
-      console.error(
-        'There was an error creating the job listing:',
-        error.message
-      );
-      alert('There was an error creating the job listing:');
-    }
-    setShowCreateDialog(false);
-  };
-
   const handleEditJobListing = async (jobListingId, updatedData) => {
     try {
       const payload = {
         ...updatedData,
         corporateId: userIdRef,
       };
-      const response = await updateJobListing(
-        payload,
-        jobListingId,
-        accessToken
-      );
-      console.log('Updated Job listing Successfully', response);
-      alert('Updated job listing successfully');
+      const response = await updateJobListing(payload, jobListingId, accessToken);
+      console.log("Updated Job listing Successfully", response);
+      alert("Updated job listing successfully");
       setRefreshData((prev) => !prev);
     } catch (error) {
       console.error(
-        'There was an error updating the job listing:',
+        "There was an error updating the job listing:",
         error.message
       );
-      alert('There was an error updating the job listing:');
+      alert("There was an error updating the job listing:");
     }
     setSelectedJobListingData(null);
     setShowEditDialog(false);
+  }
+
+  const handleJobListingCreation = async (newJobListing) => {
+    try {
+      const payload = {
+        ...newJobListing,
+        corporateId: userIdRef,
+      };
+      const response = await createJobListing(payload, accessToken)
+      console.log("Created Job listing Successfully", response)
+      alert("Created job listing successfully")
+      setRefreshData((prev) => !prev);
+    } catch (error) {
+      console.error(
+        "There was an error creating the job listing:",
+        error.message
+      );
+      alert("There was an error creating the job listing:");
+    }
+    setShowCreateDialog(false)
   };
 
   const handleDeleteJobListing = async (jobListingId) => {
     try {
       const response = await removeJobListing(jobListingId, accessToken);
-      console.log('User is deleted', response);
-      alert('Deleted job listing successfully');
+      console.log("User is deleted", response);
+      alert("Deleted job listing successfully");
       setRefreshData((prev) => !prev);
     } catch (error) {
-      console.error('Error deleting user:', error);
-      alert('There was an error deleting the job listing:');
+      console.error("Error deleting user:", error);
+      alert("There was an error deleting the job listing:");
     }
     setSelectedJobListingData(null);
     setShowDeleteDialog(false);
-  };
+  }
 
   const header = (
     <div className="p-d-flex p-jc-between">
@@ -229,7 +225,7 @@ const JobListingManagementPage = () => {
         emptyMessage="No job listing found"
         itemTemplate={itemTemplate}
         pt={{
-          grid: { className: 'surface-ground' },
+          grid: { className: "surface-ground" },
         }}
       />
 
@@ -264,12 +260,11 @@ const JobListingManagementPage = () => {
         footer={deleteDialogFooter}
       >
         <h3>
-          Confirm Delete Job ID:{' '}
-          {showDeleteDialog && showDeleteDialog.jobListingId}?
+          Confirm Delete Job ID: {showDeleteDialog && showDeleteDialog.jobListingId}?
         </h3>
       </Dialog>
     </div>
   );
 };
 
-export default JobListingManagementPage;
+export default JobListingManagementMobile;

@@ -4,9 +4,8 @@ import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dropdown } from 'primereact/dropdown';
-import 'primereact/resources/themes/lara-light-teal/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
+import styles from './page.module.css';
+import { InputTextarea } from "primereact/inputtextarea";
 
 const CreateJobListingForm = ({ onCreate }) => {
   const [formData, setFormData] = useState({
@@ -31,9 +30,8 @@ const CreateJobListingForm = ({ onCreate }) => {
   };
 
   return (
-    <div>
-      <h3>Create Job Listing</h3>
-      <div>
+    <div className={styles.cardBody}>
+      <div className={styles.cardRow}>
         <label>Title:</label>
         <InputText
           name="title"
@@ -42,17 +40,19 @@ const CreateJobListingForm = ({ onCreate }) => {
         />
       </div>
 
-      <div className="p-field">
+      <div className={styles.cardRow}>
         <label htmlFor="description">Description:</label>
-        <InputText
+        <InputTextarea
           id="description"
           name="description"
           value={formData.description}
           onChange={handleInputChange}
+          rows={5} /* Adjust as needed */
+          autoResize={true} /* If you want it to resize automatically */
         />
       </div>
 
-      <div className="p-field">
+      <div className={styles.cardRow}>
         <label htmlFor="jobLocation">Job Location:</label>
         <InputText
           id="jobLocation"
@@ -62,7 +62,7 @@ const CreateJobListingForm = ({ onCreate }) => {
         />
       </div>
 
-      <div className="p-field">
+      <div className={styles.cardRow}>
         <label htmlFor="averageSalary">Average Salary:</label>
         <InputNumber
           id="averageSalary"
@@ -76,7 +76,7 @@ const CreateJobListingForm = ({ onCreate }) => {
         />
       </div>
 
-      <div className="p-field">
+      <div className={styles.cardRow}>
         <label htmlFor="jobStartDate">Job Start Date:</label>
         <Calendar
           id="jobStartDate"
@@ -87,7 +87,8 @@ const CreateJobListingForm = ({ onCreate }) => {
           }
         />
       </div>
-      <div>
+
+      <div className={styles.cardFooter}>
         <Button label="Create" onClick={handleSubmit} />
       </div>
     </div>

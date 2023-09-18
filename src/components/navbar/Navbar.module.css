@@ -40,11 +40,12 @@
   right: -288px;
   padding: 24px 16px;
   transition: all 0.2s;
-  min-height: calc(100vh - 60px);
+  /* min-height: calc(100vh - 60px); */
 }
 
 .nav__menu_list.active{
   right: 0;
+  background-color: #00191c;
 }
 
 .center{
@@ -63,6 +64,22 @@
     border-radius: 3px;
 }
 
+.imageContainer {
+  display: flex;
+  flex-direction: column; /* To ensure children are stacked vertically */
+  align-items: center;   /* Horizontally center the children */
+  justify-content: center; /* Vertically center the children (though it's optional here) */
+  gap: 1px; /* Gives a little space between the image and the h6 */
+}
+
+.avatar {
+width: 40px;
+height: 40px;
+border-radius: 50%; /* To make it circular */
+object-fit: cover; /* To ensure the image maintains its aspect ratio */
+margin-bottom: 0px /* Add some spacing below the image */
+}
+
 .login {
     padding: 5px;
     border: none;
@@ -72,10 +89,11 @@
     border-radius: 3px;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 900px) {
   .nav__menu_bar{
     display: none;
   }
+
   .nav__menu_list{
     position: unset;
     flex-direction: row;
@@ -83,5 +101,6 @@
     width: fit-content;
     column-gap: 24px;
     align-items: center;
+    height: auto;
   }
 }
