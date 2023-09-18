@@ -3,9 +3,8 @@ import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
-import { Dropdown } from 'primereact/dropdown';
 import styles from './page.module.css';
-import { InputTextarea } from "primereact/inputtextarea";
+import { InputTextarea } from 'primereact/inputtextarea';
 
 const CreateJobListingForm = ({ onCreate }) => {
   const [formData, setFormData] = useState({
@@ -18,7 +17,7 @@ const CreateJobListingForm = ({ onCreate }) => {
     // corporateId will be set during API call
   });
 
-  const jobListingStatuses = ['Active', 'Unverified', 'Inactive'];
+  // const jobListingStatuses = ['Active', 'Unverified', 'Inactive'];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -47,7 +46,7 @@ const CreateJobListingForm = ({ onCreate }) => {
           name="description"
           value={formData.description}
           onChange={handleInputChange}
-          rows={5} /* Adjust as needed */
+          rows={10} /* Adjust as needed */
           autoResize={true} /* If you want it to resize automatically */
         />
       </div>

@@ -96,7 +96,8 @@
   cursor: pointer;
   overflow: hidden;
   border: 1px solid #edf6f9;
-  max-width: 100%;
+  width: 70vw;
+  max-width: 1250px;
 }
 
 @media (max-width: 480px) {
