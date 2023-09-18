@@ -1,45 +1,61 @@
-.cardBody {  /* Add some padding to make the content breathe */
-    font-family: 'Arial', sans-serif;  /* Use Arial font for content */
+.cardBody {
+  /* Add some padding to make the content breathe */
+  font-family: 'Arial', sans-serif; /* Use Arial font for content */
 }
 
 .cardRow {
-    display: flex;  /* Make the row flexible */
-    justify-content: space-between;  /* Separate the label and the input */
-    align-items: center;  /* Center items vertically */
-    margin-bottom: 15px;  /* Add some space below each row */
+  display: flex; /* Make the row flexible */
+  justify-content: space-between; /* Separate the label and the input */
+  align-items: center; /* Center items vertically */
+  margin-bottom: 15px; /* Add some space below each row */
 }
 
 .cardRow label {
-    flex: 1;  /* Let the label take 1 part of the space */
-    font-size: 0.8em;
-    margin-right: 10px;  /* Add some margin to the right of the label */
+  flex: 1; /* Let the label take 1 part of the space */
+  font-size: 0.8em;
+  margin-right: 10px; /* Add some margin to the right of the label */
 }
 
 .cardRow input,
 .cardRow .p-inputnumber,
 .cardRow .p-calendar {
-    flex: 2;  /* Let the input or any prime react component take 2 parts of the space */
-    min-width: 0;  /* Ensure input respects flex parent boundaries */
+  flex: 2; /* Let the input or any prime react component take 2 parts of the space */
+  min-width: 0; /* Ensure input respects flex parent boundaries */
 }
 
 .cardRow textarea,
 .cardRow .p-inputtextarea {
-    flex: 2;  /* Let the textarea take 2 parts of the space */
-    min-width: 0;  /* Ensure textarea respects flex parent boundaries */
-    width: 100%;  /* Ensure it takes the full width available in the flex container */
+  flex: 2; /* Let the textarea take 2 parts of the space */
+  min-width: 0; /* Ensure textarea respects flex parent boundaries */
+  width: 100%; /* Ensure it takes the full width available in the flex container */
 }
 
 .cardFooter {
-    display: flex;  /* Make the footer flexible */
-    justify-content: flex-end;  /* Align the button to the right */
-    margin-top: 20px;  /* Add some space above the button */
+  display: flex; /* Make the footer flexible */
+  justify-content: flex-end; /* Align the button to the right */
+  margin-top: 20px; /* Add some space above the button */
+}
+
+.cardFooter button {
+  background-color: #e29578;
+  border: none;
+  border-radius: 5px;
+  color: #edf6f9;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 /* Adjust the styling for PrimeReact components, if needed */
-.p-inputtext, .p-inputnumber, .p-calendar {
-    width: 100%;  /* Ensure they take the full width available in the flex container */
+.p-inputtext,
+.p-inputnumber,
+.p-calendar {
+  width: 100%; /* Ensure they take the full width available in the flex container */
 }
 
 .p-inputnumber .p-inputnumber-input {
-    width: 100%;  /* Ensure the input within the InputNumber component takes full width */
+  width: 100%; /* Ensure the input within the InputNumber component takes full width */
 }
