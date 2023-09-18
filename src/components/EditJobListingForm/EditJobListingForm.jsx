@@ -75,6 +75,7 @@ const EditJobListingForm = ({ initialData, onSave }) => {
           id="jobStartDate"
           name="jobStartDate"
           value={formData.jobStartDate}
+          minDate={new Date(new Date().setDate(new Date().getDate() + 1))} // set minimum date to tomorrow
           onChange={handleInputChange}
         />
       </div>
