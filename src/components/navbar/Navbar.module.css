@@ -64,6 +64,22 @@
     border-radius: 3px;
 }
 
+.imageContainer {
+  display: flex;
+  flex-direction: column; /* To ensure children are stacked vertically */
+  align-items: center;   /* Horizontally center the children */
+  justify-content: center; /* Vertically center the children (though it's optional here) */
+  gap: 1px; /* Gives a little space between the image and the h6 */
+}
+
+.avatar {
+width: 40px;
+height: 40px;
+border-radius: 50%; /* To make it circular */
+object-fit: cover; /* To ensure the image maintains its aspect ratio */
+margin-bottom: 0px /* Add some spacing below the image */
+}
+
 .login {
     padding: 5px;
     border: none;
