@@ -70,12 +70,12 @@
 .cardFooter button {
   background-color: #e29578;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   color: #edf6f9;
-  padding: 10px 20px;
+  padding: 5px 10px;
   text-align: center;
   text-decoration: none;
-  font-size: 0.9em;
+  font-size: 0.8em;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -85,7 +85,7 @@
 }
 
 .buttonSpacing {
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .cardDialog {
