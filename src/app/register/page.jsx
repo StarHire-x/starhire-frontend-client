@@ -166,8 +166,8 @@ const Step3 = ({ formData, setFormData, onPrevious, onSubmit, err }) => {
             <input
               type="text"
               name="companyRegistrationId"
-              placeholder="UEN (Corporate Only)"
-              className={styles.inputCompanyRegistrationIdField}
+              placeholder="UEN"
+              className={styles.input}
               value={formData.companyRegistrationId}
               onChange={handleInputChange}
               required
