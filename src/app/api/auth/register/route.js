@@ -8,7 +8,7 @@ export const hashing = async (password) => {
 export const registerUser = async (request) => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users`, {
-      method: "POST",
+      method: 'POST',
       headers: {
         "Content-Type": "application/json",
       },

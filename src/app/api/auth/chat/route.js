@@ -1,16 +1,13 @@
 export const getAllUserChats = async (userId, accessToken) => {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/chat/user-chats/${userId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        cache: "no-store",
-      }
-    );
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/chat/user-chats/${userId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${accessToken}`
+      },
+      cache: "no-store",
+    });
     if (!res.ok) {
       const errorData = await res.json();
       throw new Error(errorData.message);
@@ -24,17 +21,14 @@ export const getAllUserChats = async (userId, accessToken) => {
 
 export const getOneUserChat = async (chatId, accessToken) => {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/chat/${chatId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        cache: "no-store",
-      }
-    );
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/chat/${chatId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${accessToken}`
+      },
+      cache: "no-store",
+    });
     if (!res.ok) {
       const errorData = await res.json();
       console.log(errorData);

@@ -48,13 +48,16 @@ export const sendEmail = async (request) => {
   try {
     // const { tokenId, expiry, emailReset, role } = request;
     console.log(request);
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/email/reset`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(request),
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/email/reset`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(request)
+      }
+    );
   } catch (err) {
     return new Error("Error in DB");
   }
