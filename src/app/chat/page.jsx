@@ -63,7 +63,7 @@ const Chat = () => {
   // ============================= Socket.io Related Codes =============================
   useEffect(() => {
     // WebSocket functions
-    const socket = io(`${process.env.BASE_URL}`);
+    const socket = io(`${process.env.NEXT_PUBLIC_BASE_URL}`);
     setSocket(socket);
 
     // Clean-up logic when the component unmounts (if needed)
