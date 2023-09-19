@@ -3,9 +3,8 @@ import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
-import { Dropdown } from 'primereact/dropdown';
-import styles from './page.module.css'
-import { InputTextarea } from "primereact/inputtextarea";
+import styles from './page.module.css';
+import { InputTextarea } from 'primereact/inputtextarea';
 
 const EditJobListingForm = ({ initialData, onSave }) => {
   const [formData, setFormData] = useState({
@@ -43,7 +42,7 @@ const EditJobListingForm = ({ initialData, onSave }) => {
           name="description"
           value={formData.description}
           onChange={handleInputChange}
-          rows={5} /* Adjust as needed */
+          rows={10} /* Adjust as needed */
           autoResize={true} /* If you want it to resize automatically */
         />
       </div>
@@ -76,10 +75,11 @@ const EditJobListingForm = ({ initialData, onSave }) => {
           id="jobStartDate"
           name="jobStartDate"
           value={formData.jobStartDate}
+          minDate={new Date(new Date().setDate(new Date().getDate() + 1))} // set minimum date to tomorrow
           onChange={handleInputChange}
         />
       </div>
-      
+
       <div className={styles.cardFooter}>
         <Button label="Save Changes" onClick={handleSubmit} />
       </div>

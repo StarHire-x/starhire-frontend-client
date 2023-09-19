@@ -133,9 +133,10 @@ const JobListingManagementPage = () => {
             }}
           />
           <Button
+            label="Delete"
             icon="pi pi-trash"
-            rounded
-            outlined
+            // rounded
+            // outlined
             className={styles.buttonSpacing}
             onClick={() => {
               setSelectedJobListingData(jobListing);
