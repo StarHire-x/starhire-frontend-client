@@ -34,23 +34,6 @@ const handler = NextAuth({
         if (responseBody.statusCode === 404) {
           throw new Error(responseBody.message || "An error occurred");
         }
-
-        // const isPasswordCorrect = await bcrypt.compare(
-        //   password,
-        //   responseBody.data.password
-        // );
-
-        // if (isPasswordCorrect) {
-        //   return {
-        //     userId: responseBody.data.userId,
-        //     name: responseBody.data.userName,
-        //     email: responseBody.data.email,
-        //     role: responseBody.data.role,
-        //   };
-        // } else {
-        //   throw new Error("Wrong Credentials!");
-        // }
-
         return {
           userId: responseBody.data.userId,
           name: responseBody.data.userName,

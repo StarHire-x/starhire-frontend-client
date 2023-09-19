@@ -56,7 +56,6 @@ const Login = () => {
           password,
           role,
         });
-
         if (!result.error) {
           // User signed in successfully
           router.push("/dashboard");
