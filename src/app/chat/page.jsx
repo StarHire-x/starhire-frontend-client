@@ -301,7 +301,7 @@ const Chat = () => {
                   {otherUser && otherUser.profilePictureUrl != "" ? (
                     <img src={otherUser.profilePictureUrl} alt="user" />
                   ) : (
-                    <Image src={HumanIcon} />
+                    <Image src={HumanIcon} alt="Profile Picture" />
                   )}
                 </Avatar>
                 <ConversationHeader.Content
@@ -350,7 +350,7 @@ const Chat = () => {
                                   alt="user"
                                 />
                               ) : (
-                                <Image src={HumanIcon} />
+                                <Image src={HumanIcon} alt="Profile Picture" />
                               )
                             ) : otherUser &&
                               otherUser.profilePictureUrl != "" ? (
@@ -359,7 +359,7 @@ const Chat = () => {
                                 alt="user"
                               />
                             ) : (
-                              <Image src={HumanIcon} />
+                              <Image src={HumanIcon} alt="Profile Picture" />
                             )}
                           </Avatar>
                           <Message.CustomContent>
