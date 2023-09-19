@@ -1,6 +1,6 @@
 export const getAllUserChats = async (userId, accessToken) => {
   try {
-    const res = await fetch(`${process.env.BASE_URL}/chat/user-chats/${userId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/chat/user-chats/${userId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -21,7 +21,7 @@ export const getAllUserChats = async (userId, accessToken) => {
 
 export const getOneUserChat = async (chatId, accessToken) => {
   try {
-    const res = await fetch(`${process.env.BASE_URL}/chat/${chatId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/chat/${chatId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

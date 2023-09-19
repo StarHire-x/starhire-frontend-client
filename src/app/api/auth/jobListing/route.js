@@ -1,7 +1,7 @@
 export const findAllJobListingsByCorporate = async (userId, accessToken) => {
   try {
     const res = await fetch(
-      `${process.env.BASE_URL}/job-listing/corporate/${userId}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/corporate/${userId}`,
       {
         method: "GET",
         headers: {
@@ -27,7 +27,7 @@ export const findAllJobListingsByCorporate = async (userId, accessToken) => {
 
 export const createJobListing = async (newJobListing, accessToken) => {
   try {
-    const res = await fetch(`${process.env.BASE_URL}/job-listing`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/job-listing`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export const createJobListing = async (newJobListing, accessToken) => {
 
 export const updateJobListing = async (request, id, accessToken) => {
   try {
-    const res = await fetch(`${process.env.BASE_URL}/job-listing/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +74,7 @@ export const updateJobListing = async (request, id, accessToken) => {
 
 export const removeJobListing = async (id, accessToken) => {
   try {
-    const res = await fetch(`${process.env.BASE_URL}/job-listing/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

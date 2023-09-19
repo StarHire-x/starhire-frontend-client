@@ -1,7 +1,7 @@
 export const getUsers = async (accessToken) => {
     try {
         const res = await fetch(
-          `${process.env.BASE_URL}/users/all`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}/users/all`,
           {
             method: "GET",
             headers: {
@@ -24,7 +24,7 @@ export const getUsers = async (accessToken) => {
 
 export const updateUser = async (request, id, accessToken) => {
     try {
-      const res = await fetch(`${process.env.BASE_URL}/users/${id}`, 
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/${id}`, 
       {
         method: "PUT",
         headers: {
@@ -48,7 +48,7 @@ export const updateUser = async (request, id, accessToken) => {
 
 export const deleteUser = async (request, id) => {
   try {
-    const res = await fetch(`${process.env.BASE_URL}/users/${id}?role=${request}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/${id}?role=${request}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -72,7 +72,7 @@ export const deleteUser = async (request, id) => {
 export const getUserByEmailRole = async (email, role) => {
   try {
     const res = await fetch(
-      `${process.env.BASE_URL}/users/find?email=${email}&role=${role}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/users/find?email=${email}&role=${role}`,
       {
         method: "GET",
         headers: {
@@ -96,7 +96,7 @@ export const getUserByEmailRole = async (email, role) => {
 export const getUserByUserId = async (userId, role, accessToken) => {
   try {
     const res = await fetch(
-      `${process.env.BASE_URL}/users/search?userId=${userId}&role=${role}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/users/search?userId=${userId}&role=${role}`,
       {
         method: "GET",
         headers: {
