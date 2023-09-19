@@ -160,18 +160,19 @@ const Register = () => {
             onChange={handleInputChange}
             // required={formData.role === "Job_Seeker"}
             // disabled={formData.role === "Corporate"}
-            //commented out because cannot register corporate and it is ok to put contact number for corporate too. 
+            //commented out because cannot register corporate and it is ok to put contact number for corporate too.
           />
-          <input
-            type="text"
-            name="companyRegistrationId"
-            placeholder="UEN (Corporate Only)"
-            className={styles.inputCompanyRegistrationIdField}
-            value={formData.companyRegistrationId}
-            onChange={handleInputChange}
-            required={formData.role === "Corporate"}
-            disabled={formData.role === "Job_Seeker"}
-          />
+          {formData.role === "Corporate" && (
+            <input
+              type="text"
+              name="companyRegistrationId"
+              placeholder="UEN (Corporate Only)"
+              className={styles.inputCompanyRegistrationIdField}
+              value={formData.companyRegistrationId}
+              onChange={handleInputChange}
+              required
+            />
+          )}
         </div>
 
         <button className={styles.button}>Register</button>
