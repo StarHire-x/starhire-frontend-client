@@ -6,6 +6,11 @@
    gap: 20px;
 }
 
+.error {
+   color: rgb(201, 15, 15);
+   text-align: center;
+}
+
 .title {
    font-size: 72px;
    background: linear-gradient(to bottom, #194c33, #bbb);
