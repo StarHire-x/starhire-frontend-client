@@ -1,7 +1,7 @@
 //import nodemailer from "nodemailer";
 
 const fetchUserData = async (email, role) => {
-  const url = `http://localhost:8080/users/find?email=${email}&role=${role}`;
+  const url = `${process.env.BASE_URL}/users/find?email=${email}&role=${role}`;
   const response = await fetch(url, {
     method: "GET",
     headers: {
@@ -49,7 +49,7 @@ export const sendEmail = async (request) => {
     // const { tokenId, expiry, emailReset, role } = request;
     console.log(request);
     const res = await fetch(
-      "http://localhost:8080/email/reset",
+      `${process.env.BASE_URL}/email/reset`,
       {
         method: "POST",
         headers: {
