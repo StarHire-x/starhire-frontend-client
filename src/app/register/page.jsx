@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import styles from "./page.module.css";
 import Link from "next/link";
@@ -8,20 +7,10 @@ import { useState } from "react";
 import { hashing } from "@/app/api/auth/register/route";
 import { registerUser } from "@/app/api/auth/register/route";
 
-const Register = () => {
-  const [err, setErr] = useState(false);
-
-  const [formData, setFormData] = useState({
-    userName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    contactNumber: "",
-    companyRegistrationId: "",
-    role: "",
-  });
-
-  const router = useRouter();
+const Step1 = ({ formData, setFormData, onNext }) => {
+  const handleNext = () => {
+    onNext();
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -31,60 +20,10 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Password validation
-    const v1 = formData.password;
-    const v2 = formData.confirmPassword;
-    if (v1 !== v2) {
-      // Display a validation message near the password fields
-      setErr(true);
-      return; // Exit early if passwords don't match
-    }
-
-    if (!formData.userName || !formData.email || !formData.contactNumber || !formData.role) {
-      alert("Please ensure you have filled all the fields, especially your role.");
-      return;
-    }
-    
-    const data = {
-      userName: formData.userName,
-      email: formData.email,
-      password: formData.password,
-      contactNo: formData.contactNumber,
-      companyRegistrationId: formData.companyRegistrationId,
-      role: formData.role,
-    };
-
-    try {
-      const res = await fetch("${process.env.BASE_URL}/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        alert(errorData.message);
-        throw new Error(errorData.message);
-      }
-      alert("Account has been created!");
-      router.push("/login?success=Account has been created");
-    } catch (err) {
-      // Handle errors more gracefully (e.g., display an error message to the user)
-      console.error("Fetch error:", err);
-      alert(err);
-      setErr(true);
-    }
-  };
-
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Registration</h1>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <h2>Step 1: User Information</h2>
+      <form className={styles.form}>
         <div className={styles.userRole}>
           <div>
             <p>I am registering as a...</p>
@@ -133,7 +72,36 @@ const Register = () => {
             onChange={handleInputChange}
             required
           />
-          <input
+        </div>
+      </form>
+      <button className={styles.button} onClick={handleNext}>Next</button>
+    </div>
+  );
+};
+
+const Step2 = ({ formData, setFormData, onNext, onPrevious }) => {
+  const handleNext = () => {
+    onNext();
+  };
+
+  const handlePrevious = () => {
+    onPrevious();
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  return (
+    <div className={styles.container}>
+      <h2>Step 2: Password</h2>
+      <form className={styles.form}>
+        <div className={styles.inputFields}>
+        <input
             type="password"
             name="password"
             placeholder="Password"
@@ -151,16 +119,48 @@ const Register = () => {
             onChange={handleInputChange}
             required
           />
-          <input
+        </div>
+      </form>
+      <div className={styles.stepTwoThreeButton}>
+        <button className={styles.button} onClick={handlePrevious}>Previous</button>
+        <div className={styles.spacer}></div>
+        <button className={styles.button} onClick={handleNext}>Next</button>
+      </div>
+    </div>
+  );
+};
+
+const Step3 = ({ formData, setFormData, onPrevious, onSubmit, err }) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Perform final validation and registration logic here
+    onSubmit(e);
+  };
+
+  const handlePrevious = () => {
+    onPrevious();
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  return (
+    <div className={styles.container}>
+      <h2>Step 3: Additional Information</h2>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <div className={styles.inputFields}>
+        <input
             type="text"
             name="contactNumber"
             placeholder="Contact Number"
             className={styles.input}
             value={formData.contactNumber}
             onChange={handleInputChange}
-            // required={formData.role === "Job_Seeker"}
-            // disabled={formData.role === "Corporate"}
-            //commented out because cannot register corporate and it is ok to put contact number for corporate too.
           />
           {formData.role === "Corporate" && (
             <input
@@ -174,10 +174,124 @@ const Register = () => {
             />
           )}
         </div>
-
-        <button className={styles.button}>Register</button>
         {err && "Something went wrong!"}
+        <div className={styles.stepTwoThreeButton}>
+          <button className={styles.button} onClick={handlePrevious}>Previous</button>
+          <div className={styles.spacer}></div>
+          <button className={styles.button}>Register</button>
+        </div>
       </form>
+    </div>
+  );
+};
+
+const Register = () => {
+  const router = useRouter();
+
+  const [err, setErr] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState({
+    userName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    contactNumber: "",
+    companyRegistrationId: "",
+    role: "",
+  });
+
+  const handleNext = () => {
+    setCurrentStep(currentStep + 1);
+  };
+
+  const handlePrevious = () => {
+    setCurrentStep(currentStep - 1);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Password validation
+    const v1 = formData.password;
+    const v2 = formData.confirmPassword;
+    if (v1 !== v2) {
+      // Display a validation message near the password fields
+      setErr(true);
+      return; // Exit early if passwords don't match
+    }
+
+    if (
+      !formData.userName ||
+      !formData.email ||
+      !formData.contactNumber ||
+      !formData.role
+    ) {
+      alert(
+        "Please ensure you have filled all the fields, especially your role."
+      );
+      return;
+    }
+
+    const data = {
+      userName: formData.userName,
+      email: formData.email,
+      password: formData.password,
+      contactNo: formData.contactNumber,
+      companyRegistrationId: formData.companyRegistrationId,
+      role: formData.role,
+    };
+
+    try {
+      const res = await fetch("http://localhost:8080/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        alert(errorData.message);
+        throw new Error(errorData.message);
+      }
+      alert("Account has been created!");
+      router.push("/login?success=Account has been created");
+    } catch (err) {
+      // Handle errors more gracefully (e.g., display an error message to the user)
+      console.error("Fetch error:", err);
+      alert(err);
+      setErr(true);
+    }
+  };
+
+  return (
+    <div className={styles.container}>
+      <h1 className={styles.title}>Registration</h1>
+      {currentStep === 1 && (
+        <Step1
+          formData={formData}
+          setFormData={setFormData}
+          onNext={handleNext}
+        />
+      )}
+      {currentStep === 2 && (
+        <Step2
+          formData={formData}
+          setFormData={setFormData}
+          onNext={handleNext}
+          onPrevious={handlePrevious}
+        />
+      )}
+      {currentStep === 3 && (
+        <Step3
+          formData={formData}
+          setFormData={setFormData}
+          onPrevious={handlePrevious}
+          onSubmit={handleSubmit}
+          err = {err}
+        />
+      )}
       <Link href="/login">Login with an existing account</Link>
       <Link href="/forgetPassword">Forget Password</Link>
     </div>

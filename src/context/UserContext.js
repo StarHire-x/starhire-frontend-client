@@ -1,6 +1,6 @@
 "use client"
 import React, { createContext, useState, useEffect, useCallback } from "react";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { getUserByUserId } from "@/app/api/auth/user/route";
 
 const UserContext = createContext();
@@ -8,6 +8,13 @@ const UserContext = createContext();
 const UserProvider = ({ children }) => {
   const session = useSession();
   const [userData, setUserData] = useState(null);
+
+  // codes to check once the user is invalid (removed from db), signs the user out to clear all the cookies that contains the user data
+  useEffect(() => {
+    if (session.data?.error === 'INVALID_USER') {
+      signOut();
+    }
+  }, [session.data?.error]);
 
  let roleRef, sessionTokenRef, userIdRef;
 

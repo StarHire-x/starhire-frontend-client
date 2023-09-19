@@ -46,9 +46,11 @@ const JobListingManagementPage = () => {
 
   const getStatus = (status) => {
     switch (status) {
-      case 'Verified':
+      case 'Active':
         return 'success';
       case 'Unverified':
+        return 'danger';
+      case 'Inactive':
         return 'danger';
     }
   };
