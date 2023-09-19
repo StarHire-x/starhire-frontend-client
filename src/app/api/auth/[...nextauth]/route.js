@@ -84,6 +84,14 @@ const handler = NextAuth({
         // if no longer valid, it will catch the error and just return null session, and then the user will be auto logged out
         // else, the user remains logged in
         const result = (token?.userId && token?.role && token?.accessToken) && await getUserByUserId(token.userId, token.role, token.accessToken);
+        const currentAccountStatus = result?.data?.status
+        console.log(`Current user account status: ${currentAccountStatus}`);
+        if (currentAccountStatus === 'Inactive') {
+          // sign out here since user no longer in database
+          console.error(`SESSION API USER ERROR: ${error}`);
+          session.error = "INVALID_USER";
+          return session; // retrieve it from userContext.js and check if error is equal to 'INVALID_USER', if it is, sign user out to clear cookies
+        }
       } catch (error) {
         // sign out here since user no longer in database
         console.error(`SESSION API USER ERROR: ${error}`);
