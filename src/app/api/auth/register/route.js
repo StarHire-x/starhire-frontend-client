@@ -1,5 +1,5 @@
-import bcrypt from 'bcryptjs';
-import { NextResponse } from 'next/server';
+import bcrypt from "bcryptjs";
+import { NextResponse } from "next/server";
 
 export const hashing = async (password) => {
   return await bcrypt.hash(password, 5);
@@ -10,7 +10,7 @@ export const registerUser = async (request) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(request),
     });
@@ -22,6 +22,6 @@ export const registerUser = async (request) => {
       throw new Error(errorData.message);
     }
   } catch (err) {
-    return new NextResponse('Failed to create user', { status: 500 });
+    return new NextResponse("Failed to create user", { status: 500 });
   }
 };

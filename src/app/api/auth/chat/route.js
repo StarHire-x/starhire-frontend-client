@@ -37,7 +37,10 @@ export const getOneUserChat = async (chatId, accessToken) => {
     return await res.json();
   } catch (error) {
     console.log("SEHHH: ");
-    console.log("There was a problem fetching chat messages for this chat", error);
+    console.log(
+      "There was a problem fetching chat messages for this chat",
+      error
+    );
     throw error;
   }
 };

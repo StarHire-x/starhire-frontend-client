@@ -20,7 +20,12 @@ export const getUsers = async (accessToken) => {
         console.log("There was a problem fetching the users", error);
         throw error;
     }
-}
+    return await res.json();
+  } catch (error) {
+    console.log("There was a problem fetching the users", error);
+    throw error;
+  }
+};
 
 export const updateUser = async (request, id, accessToken) => {
     try {
@@ -34,17 +39,17 @@ export const updateUser = async (request, id, accessToken) => {
         body: JSON.stringify(request)
       });
 
-      if (res.ok) {
-        return;
-      } else {
-        throw new Error(errorData.message || "An error occurred");
-      }
-      return await res.json();
-    } catch (error) {
-      console.log("There was a problem fetching the users", error);
-      throw error;
+    if (res.ok) {
+      return;
+    } else {
+      throw new Error(errorData.message || "An error occurred");
     }
-}
+    return await res.json();
+  } catch (error) {
+    console.log("There was a problem fetching the users", error);
+    throw error;
+  }
+};
 
 export const deleteUser = async (request, id) => {
   try {
@@ -117,4 +122,3 @@ export const getUserByUserId = async (userId, role, accessToken) => {
     throw error;
   }
 };
-

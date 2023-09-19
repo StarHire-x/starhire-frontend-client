@@ -13,14 +13,14 @@ export const findAllJobListingsByCorporate = async (userId, accessToken) => {
     );
 
     const response = await res.json();
-    console.log(response)
+    console.log(response);
     if (response.statusCode === 200) {
       return response.data;
     } else {
       throw new Error(response.message || "An error occurred");
     }
   } catch (error) {
-    console.log('There was a problem fetching the job listings', error);
+    console.log("There was a problem fetching the job listings", error);
     throw error;
   }
 };
@@ -44,7 +44,7 @@ export const createJobListing = async (newJobListing, accessToken) => {
       throw new Error(response.message || "An error occurred");
     }
   } catch (error) {
-    console.log('There was a problem creating this jobListing', error);
+    console.log("There was a problem creating this jobListing", error);
     throw error;
   }
 };
@@ -67,7 +67,7 @@ export const updateJobListing = async (request, id, accessToken) => {
       throw new Error(response.message || "An error occurred");
     }
   } catch (error) {
-    console.log('There was a problem fetching the job listings', error);
+    console.log("There was a problem fetching the job listings", error);
     throw error;
   }
 };
@@ -87,11 +87,11 @@ export const removeJobListing = async (id, accessToken) => {
     if (res.ok) {
       return;
     } else {
-      throw new Error(errorData.message || 'An error occurred');
+      throw new Error(errorData.message || "An error occurred");
     }
     return await res.json();
   } catch (error) {
-    console.log('There was a problem fetching the job listings', error);
+    console.log("There was a problem fetching the job listings", error);
     throw error;
   }
 };
