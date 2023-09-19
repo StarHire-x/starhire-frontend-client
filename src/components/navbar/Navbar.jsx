@@ -163,7 +163,7 @@ const Navbar = () => {
               className={styles.login}
               onClick={() => (window.location.href = "/login")}
             >
-              Login
+              Login/Register
             </button>
           )}
         </div>
