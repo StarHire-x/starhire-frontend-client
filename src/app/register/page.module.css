@@ -28,10 +28,10 @@
 }
 
 .inputFields {
-  width: 600px;
+  width: 300px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  /* grid-template-columns: repeat(2, 1fr); */
   gap: 20px;
 }
 
@@ -56,7 +56,7 @@
 }
 
 .button {
-  width: 300px;
+  width: 100px;
   padding: 20px;
   cursor: pointer;
   background-color: #53c28b;
@@ -64,6 +64,16 @@
   border-radius: 5px;
   color: #eee;
   font-weight: bold;
+}
+
+.stepTwoThreeButton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.spacer {
+  margin-left: 100px;
 }
 
 .radio {
@@ -94,6 +104,7 @@
   .inputFields {
     width: 300px;
     grid-template-columns: repeat(1, 1fr);
+    flex-direction: column;
   }
 
   .input {
@@ -106,5 +117,16 @@
   .inputCompanyRegistrationIdField {
     padding: 10px;
     border: 1px solid #bbb;
+  }
+
+  .button {
+    width: 100px;
+    padding: 20px;
+    cursor: pointer;
+    background-color: #53c28b;
+    border: none;
+    border-radius: 5px;
+    color: #eee;
+    font-weight: bold;
   }
 }
