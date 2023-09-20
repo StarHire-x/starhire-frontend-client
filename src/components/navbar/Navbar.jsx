@@ -52,27 +52,6 @@ const Navbar = () => {
     sessionTokenRef = session.data.user.accessToken;
   }
 
-  // useEffect(() => {
-  //   if (session.status === "authenticated") {
-  //     const fetchData = () => {
-  //       getUserByUserId(userIdRef, roleRef, sessionTokenRef)
-  //         .then((user) => {
-  //           setImageUrl(user.data.profilePictureUrl);
-  //           setUserName(user.data.userName);
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error fetching user:", error);
-  //         });
-  //     };
-
-  //     fetchData(); // Fetch immediately
-
-  //     const intervalId = setInterval(fetchData, 5000); // Poll every 5 seconds
-
-  //     return () => clearInterval(intervalId); // Cleanup on unmount
-  //   }
-  // }, [session.status, userIdRef, roleRef, sessionTokenRef]);
-
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
@@ -163,7 +142,7 @@ const Navbar = () => {
               className={styles.login}
               onClick={() => (window.location.href = "/login")}
             >
-              Login/Register
+              Login
             </button>
           )}
         </div>
