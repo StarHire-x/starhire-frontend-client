@@ -162,21 +162,21 @@ const ResetPassword = () => {
             <input
               type="radio"
               name="role"
-              value="Administrator"
-              checked={formData.role === "Administrator"}
+              value="Job_Seeker"
+              checked={formData.role === "Job_Seeker"}
               onChange={handleInputChange}
             />
-            Administrator
+            Job Seeker
           </label>
           <label>
             <input
               type="radio"
               name="role"
-              value="Recruiter"
-              checked={formData.role === "Recruiter"}
+              value="Corporate"
+              checked={formData.role === "Corporate"}
               onChange={handleInputChange}
             />
-            Recruiter
+            Corporate
           </label>
         </div>
         <button className={styles.button}>Reset Password</button>
