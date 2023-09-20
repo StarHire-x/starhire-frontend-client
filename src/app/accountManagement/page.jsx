@@ -23,7 +23,8 @@ const AccountManagement = () => {
     profilePictureUrl: "",
     notificationMode: "",
     status: "",
-
+    contactNo: "",
+    dateOfBirth: "",
   });
 
   // this is to do a reload of userContext if it is updated in someway
@@ -37,12 +38,23 @@ const AccountManagement = () => {
     sessionTokenRef = session.data.user.accessToken;
   }
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0 based
+    const year = date.getFullYear();
+    return `${year}-${month}-${day}`; // NOTE: Changed format
+  };
+
   useEffect(() => {
     if (session.status === "unauthenticated") {
       router.push("/login");
     } else if (session.status !== "loading") {
       getUserByUserId(userIdRef, roleRef, sessionTokenRef)
-        .then((user) => setFormData(user.data))
+        .then((user) => {
+          const formattedDOB = formatDate(user.data.dateOfBirth);
+          setFormData({ ...user.data, dateOfBirth: formattedDOB });
+        })
         .catch((error) => {
           console.error("Error fetching user:", error);
         });
@@ -79,6 +91,8 @@ const AccountManagement = () => {
     const fullName = formData.fullName;
     const homeAddress = formData.homeAddress;
     const companyName = formData.companyName;
+    const dateOfBirth = formData.dateOfBirth;
+    const contactNo = formData.contactNo;
     const companyAddress = formData.companyAddress;
     const profilePictureUrl = formData.profilePictureUrl;
     const notificationMode = formData.notificationMode;
@@ -92,6 +106,8 @@ const AccountManagement = () => {
       homeAddress: homeAddress,
       companyName: companyName,
       companyAddress: companyAddress,
+      contactNo: contactNo,
+      dateOfBirth: dateOfBirth,
       profilePictureUrl: profilePictureUrl,
       notificationMode: notificationMode,
       status: status,
@@ -156,6 +172,17 @@ const AccountManagement = () => {
                 onChange={handleInputChange}
               />
             </div>
+            <div className={styles.field}>
+              <label htmlFor="contactNo">Contact Number:</label>
+              <input
+                type="number"
+                id="contactNo"
+                name="contactNo"
+                className={styles.input}
+                value={formData.contactNo}
+                onChange={handleInputChange}
+              />
+            </div>
             {session.data.user.role === "Job_Seeker" && (
               <>
                 <div className={styles.field}>
@@ -177,6 +204,17 @@ const AccountManagement = () => {
                     name="homeAddress"
                     className={styles.input}
                     value={formData.homeAddress}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="dateOfBirth">Date of Birth:</label>
+                  <input
+                    type="date"
+                    id="dateOfBirth"
+                    name="dateOfBirth"
+                    className={styles.input}
+                    value={formData.dateOfBirth}
                     onChange={handleInputChange}
                   />
                 </div>
