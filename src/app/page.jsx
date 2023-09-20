@@ -1,7 +1,7 @@
+"use client";
 import Image from "next/image";
 import styles from "./page.module.css";
 import Hero from "public/hero.png";
-import Button from "@/components/Button/Button";
 
 export default function Home() {
   return (
@@ -12,7 +12,19 @@ export default function Home() {
         <p className={styles.subTitle}>Job Matching</p>
         <p className={styles.subTitle}>An All-in-one Platform</p>
         <div className={styles.buttonContainer}>
-          <Button url="/login" text="Login" />
+          <button
+            className={styles.register}
+            onClick={() => (window.location.href = "/register")}
+          >
+            Register
+          </button>
+          
+          <button
+            className={styles.login}
+            onClick={() => (window.location.href = "/login")}
+          >
+            Login
+          </button>
         </div>
       </div>
       <div className={styles.item}></div>
