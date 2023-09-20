@@ -8,6 +8,11 @@
   gap: 15px; /* Provide consistent gap between the cards. This will replace the margin if supported */
 }
 
+.dataViewContainer {
+  width: 1150px;
+}
+
+
 .card {
   background-color: #edf6f9;
   padding: 10px;
