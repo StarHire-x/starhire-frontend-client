@@ -8,7 +8,6 @@ import { hashing } from "@/app/api/auth/register/route";
 import { useSession } from "next-auth/react";
 import { updateUserPassword } from "../api/auth/forgetPassword/route";
 
-
 const ResetPassword = () => {
   const router = useRouter();
   const session = useSession();
@@ -25,7 +24,7 @@ const ResetPassword = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    role: ""
+    role: "",
   });
 
   const handleInputChange = (e) => {
@@ -54,17 +53,17 @@ const ResetPassword = () => {
       }));
       setStoredEmail(emailFromLocalStorage);
     }
-    if(token) {
-        setStoredToken(token);
+    if (token) {
+      setStoredToken(token);
     }
-    if(tokenExpire) {
-        setStoredTokenExpiry(tokenExpire);
+    if (tokenExpire) {
+      setStoredTokenExpiry(tokenExpire);
     }
-    if(role) {
-        setStoredRole(role);
+    if (role) {
+      setStoredRole(role);
     }
-    if(userId) {
-        setStoredUserId(userId);
+    if (userId) {
+      setStoredUserId(userId);
     }
   }, []);
 
@@ -83,37 +82,41 @@ const ResetPassword = () => {
     const inputTokenId = formData.tokenId;
     const inputEmail = formData.email;
     const inputRole = formData.role;
-    
+
     const dateTime = Date.now();
 
-    if(dateTime > Number(storedTokenExpiry)) {
-        setErr(true)
-        alert("Token has expired");
-        return;
+    if (dateTime > Number(storedTokenExpiry)) {
+      setErr(true);
+      alert("Token has expired");
+      return;
     }
 
-    if (inputTokenId !== storedToken || inputEmail !== storedEmail || inputRole !== storedRole) {
-        setErr(true)
-        alert("Fields are incorrect");
-        return;
+    if (
+      inputTokenId !== storedToken ||
+      inputEmail !== storedEmail ||
+      inputRole !== storedRole
+    ) {
+      setErr(true);
+      alert("Fields are incorrect");
+      return;
     }
 
     const hashedPassword = await hashing(formData.password);
     const resetPassword = {
-        role: inputRole,
-        password: hashedPassword
-    }
+      role: inputRole,
+      password: hashedPassword,
+    };
     try {
-        const response = await updateUserPassword(resetPassword, storedUserId);
-        alert("Password changed successfully");
-        localStorage.removeItem("passwordResetToken");
-        localStorage.removeItem("passwordResetExpire");
-        localStorage.removeItem("resetEmail");
-        localStorage.removeItem("role");
-        localStorage.removeItem("userId");
-        router.push("/login");
+      const response = await updateUserPassword(resetPassword, storedUserId);
+      alert("Password changed successfully");
+      localStorage.removeItem("passwordResetToken");
+      localStorage.removeItem("passwordResetExpire");
+      localStorage.removeItem("resetEmail");
+      localStorage.removeItem("role");
+      localStorage.removeItem("userId");
+      router.push("/login");
     } catch (error) {
-        alert(error);
+      alert(error);
     }
   };
 
@@ -158,6 +161,7 @@ const ResetPassword = () => {
           required
         />
         <div className={styles.radio}>
+          <p>I am a...</p>
           <label>
             <input
               type="radio"
