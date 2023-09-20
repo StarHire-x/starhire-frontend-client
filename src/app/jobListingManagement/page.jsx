@@ -15,6 +15,7 @@ import styles from './page.module.css';
 import 'primeflex/primeflex.css';
 import CreateJobListingForm from '@/components/CreateJobListingForm/CreateJobListingForm';
 import EditJobListingForm from '@/components/EditJobListingForm/EditJobListingForm';
+import { useRouter } from "next/navigation";
 
 //this page is viewed by corporate
 const JobListingManagementPage = () => {
@@ -25,6 +26,7 @@ const JobListingManagementPage = () => {
   const [selectedJobListingData, setSelectedJobListingData] = useState(null);
   const [refreshData, setRefreshData] = useState(false);
   const session = useSession();
+  const router = useRouter();
 
   const userIdRef =
     session.status === 'authenticated' &&
@@ -82,11 +84,15 @@ const JobListingManagementPage = () => {
   );
 
   useEffect(() => {
+    if (session.status === "unauthenticated" || session.status === "loading") {
+      router.push("/login");
+    } else if (session.status === "authenticated") {
     findAllJobListingsByCorporate(userIdRef, accessToken)
       .then((jobListing) => setJobListing(jobListing))
       .catch((error) => {
         console.error('Error fetching user:', error);
       });
+    }
   }, [refreshData, userIdRef, accessToken]);
 
   const itemTemplate = (jobListing) => {
@@ -219,60 +225,62 @@ const JobListingManagementPage = () => {
     </div>
   );
 
-  return (
-    <div className="container">
-      <DataView
-        value={jobListing}
-        layout="grid"
-        rows={10}
-        paginator
-        header={header}
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        rowsPerPageOptions={[10, 25, 50]}
-        emptyMessage="No job listing found"
-        itemTemplate={itemTemplate}
-        pt={{
-          grid: { className: 'surface-ground' },
-        }}
-      />
-
-      <Dialog
-        header="Create Job Listing"
-        visible={showCreateDialog}
-        onHide={hideCreateDialog}
-        className={styles.cardDialog}
-      >
-        <CreateJobListingForm onCreate={handleJobListingCreation} />
-      </Dialog>
-
-      <Dialog
-        header="Edit Job Listing"
-        visible={showEditDialog}
-        onHide={hideEditDialog}
-        className={styles.cardDialog}
-      >
-        <EditJobListingForm
-          initialData={showEditDialog}
-          onSave={(updatedData) => {
-            handleEditJobListing(showEditDialog.jobListingId, updatedData);
+  if (session.status === 'authenticated') {
+    return (
+      <div className={styles.container}>
+        <DataView
+          value={jobListing}
+          layout="grid"
+          rows={10}
+          paginator
+          header={header}
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          rowsPerPageOptions={[10, 25, 50]}
+          emptyMessage="No job listing found"
+          itemTemplate={itemTemplate}
+          pt={{
+            grid: { className: "surface-ground" },
           }}
         />
-      </Dialog>
 
-      <Dialog
-        header="Delete Job Listing"
-        visible={showDeleteDialog}
-        onHide={hideDeleteDialog}
-        className={styles.cardDialog}
-        footer={deleteDialogFooter}
-      >
-        <h3>
-          Confirm Delete Job ID:{' '}
-          {showDeleteDialog && showDeleteDialog.jobListingId}?
-        </h3>
-      </Dialog>
-    </div>
-  );
+        <Dialog
+          header="Create Job Listing"
+          visible={showCreateDialog}
+          onHide={hideCreateDialog}
+          className={styles.cardDialog}
+        >
+          <CreateJobListingForm onCreate={handleJobListingCreation} />
+        </Dialog>
+
+        <Dialog
+          header="Edit Job Listing"
+          visible={showEditDialog}
+          onHide={hideEditDialog}
+          className={styles.cardDialog}
+        >
+          <EditJobListingForm
+            initialData={showEditDialog}
+            onSave={(updatedData) => {
+              handleEditJobListing(showEditDialog.jobListingId, updatedData);
+            }}
+          />
+        </Dialog>
+
+        <Dialog
+          header="Delete Job Listing"
+          visible={showDeleteDialog}
+          onHide={hideDeleteDialog}
+          className={styles.cardDialog}
+          footer={deleteDialogFooter}
+        >
+          <h3>
+            Confirm Delete Job ID:{" "}
+            {showDeleteDialog && showDeleteDialog.jobListingId}?
+          </h3>
+        </Dialog>
+      </div>
+    );
+  }
 };
 
 export default JobListingManagementPage;
