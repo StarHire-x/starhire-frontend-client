@@ -1,0 +1,47 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+ }
+ 
+ .form {
+    width: 300px;
+    display: flex; 
+    flex-direction: column;
+    gap: 20px;
+ }
+ 
+ .input {
+    padding: 20px;
+    background-color: transparent; 
+    border: 2px solid #bbb;
+    color: #bbb;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: bold;
+ }
+ 
+ .button {
+     width: 300px;
+     padding: 20px;
+     cursor: pointer;
+     background-color: #53c28b;
+     border: none;
+     border-radius: 5px;
+     color: #eee;
+     font-weight: bold;
+ }
+
+ .radio {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px; /* Adjust the spacing between the radio button and label */
+}
+
+.radio input[type="radio"] {
+  /* Optional: Adjust the radio button styles */
+  margin-right: 4px; /* Adjust the spacing between the radio button and label text */
+}
