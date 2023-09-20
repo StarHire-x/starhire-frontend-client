@@ -1,10 +1,17 @@
 .container {
+  margin-left: auto;
+  margin-right: auto;
   display: flex; /* Enable flexbox */
   flex-wrap: wrap; /* Allow the items to wrap to the next line */
   justify-content: center; /* Center the cards horizontally */
-  width: 1050px;
+  width: 1150px;
   gap: 15px; /* Provide consistent gap between the cards. This will replace the margin if supported */
 }
+
+.dataViewContainer {
+  width: 1150px;
+}
+
 
 .card {
   background-color: #edf6f9;

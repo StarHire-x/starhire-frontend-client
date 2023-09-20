@@ -44,7 +44,14 @@
   font-weight: 300;
 }
 
-.button {
+.buttonContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+}
+
+.login {
   padding: 20px;
   cursor: pointer;
   background-color: #53c28b;
@@ -52,7 +59,22 @@
   border-radius: 5px;
   width: max-content;
   color: white;
-  
+  width: 100px;
+  font-size: 20px;
+  margin-left: 10px;
+}
+
+.register {
+  padding: 20px;
+  cursor: pointer;
+  background-color: #175837;
+  border: none;
+  border-radius: 5px;
+  width: max-content;
+  color: white;
+  width: 100px;
+  font-size: 20px;
+  margin-right: 1;
 }
 
 @media screen and (max-width: 768px) {
@@ -65,6 +87,8 @@
   }
   .buttonContainer {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
   }
 }

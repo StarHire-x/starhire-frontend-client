@@ -18,6 +18,10 @@
   text-align: center;
 }
 
+.loadingContainer {
+  
+}
+
 .form {
   width: 300px;
   display: flex;

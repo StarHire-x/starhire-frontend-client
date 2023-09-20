@@ -43,11 +43,8 @@ export const forgetPassword = async (email, role) => {
   }
 };
 
-//work in progress
 export const sendEmail = async (request) => {
   try {
-    // const { tokenId, expiry, emailReset, role } = request;
-    console.log(request);
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/email/reset`,
       {
@@ -58,7 +55,33 @@ export const sendEmail = async (request) => {
         body: JSON.stringify(request)
       }
     );
+    if (!res.ok) {
+      const errorMessage = `Error: ${res.status} - ${res.statusText}`;
+      throw new Error(errorMessage);
+    }
+    return res.json();
   } catch (err) {
-    return new Error("Error in DB");
+    return new Error(error.message || "An unexpected error occurred");
+  }
+};
+
+export const updateUserPassword = async (request, id) => {
+  try {
+    const res = await fetch(`http://localhost:8080/users/reset/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(request),
+    });
+
+    if (res.ok) {
+      return;
+    } else {
+      throw new Error(errorData.message || "An error occurred");
+    }
+  } catch (error) {
+    console.log("There was a problem fetching the users", error);
+    throw error;
   }
 };
