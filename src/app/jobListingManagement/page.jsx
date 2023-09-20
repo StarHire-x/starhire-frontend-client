@@ -230,6 +230,7 @@ const JobListingManagementPage = () => {
       <div className={styles.container}>
         <DataView
           value={jobListing}
+          className={styles.dataViewContainer}
           layout="grid"
           rows={10}
           paginator
