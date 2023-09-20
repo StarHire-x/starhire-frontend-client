@@ -3,21 +3,21 @@ export const findAllJobListingsByCorporate = async (userId, accessToken) => {
     const res = await fetch(
       `${process.env.BASE_URL}/job-listing/corporate/${userId}`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
-        cache: "no-store",
+        cache: 'no-store',
       }
     );
 
     const response = await res.json();
-    console.log(response)
+    console.log(response);
     if (response.statusCode === 200) {
       return response.data;
     } else {
-      throw new Error(response.message || "An error occurred");
+      throw new Error(response.message || 'An error occurred');
     }
   } catch (error) {
     console.log('There was a problem fetching the job listings', error);
@@ -28,20 +28,20 @@ export const findAllJobListingsByCorporate = async (userId, accessToken) => {
 export const createJobListing = async (newJobListing, accessToken) => {
   try {
     const res = await fetch(`${process.env.BASE_URL}/job-listing`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(newJobListing),
-      cache: "no-store",
+      cache: 'no-store',
     });
     const response = await res.json();
     console.log(response);
     if (response.statusCode === 200) {
       return response.data;
     } else {
-      throw new Error(response.message || "An error occurred");
+      throw new Error(response.message || 'An error occurred');
     }
   } catch (error) {
     console.log('There was a problem creating this jobListing', error);
@@ -52,9 +52,9 @@ export const createJobListing = async (newJobListing, accessToken) => {
 export const updateJobListing = async (request, id, accessToken) => {
   try {
     const res = await fetch(`${process.env.BASE_URL}/job-listing/${id}`, {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(request),
@@ -64,7 +64,7 @@ export const updateJobListing = async (request, id, accessToken) => {
     if (response.statusCode === 200) {
       return response.data;
     } else {
-      throw new Error(response.message || "An error occurred");
+      throw new Error(response.message || 'An error occurred');
     }
   } catch (error) {
     console.log('There was a problem fetching the job listings', error);
@@ -75,12 +75,12 @@ export const updateJobListing = async (request, id, accessToken) => {
 export const removeJobListing = async (id, accessToken) => {
   try {
     const res = await fetch(`${process.env.BASE_URL}/job-listing/${id}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
-      cache: "no-store",
+      cache: 'no-store',
     });
 
     console.log(res);
