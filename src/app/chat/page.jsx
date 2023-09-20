@@ -59,11 +59,10 @@ const Chat = () => {
   const [conversationContentStyle, setConversationContentStyle] = useState({});
   const [conversationAvatarStyle, setConversationAvatarStyle] = useState({});
 
-
   // ============================= Socket.io Related Codes =============================
   useEffect(() => {
     // WebSocket functions
-    const socket = io(`${process.env.BASE_URL}`);
+    const socket = io(`${process.env.NEXT_PUBLIC_BASE_URL}`);
     setSocket(socket);
 
     // Clean-up logic when the component unmounts (if needed)
@@ -187,7 +186,7 @@ const Chat = () => {
     socket.on(chatId, (message) => {
       receiveMessage(message);
     });
-    
+
     handleConversationClick();
 
     const chatMessagesByCurrentChatId = await getOneUserChat(
@@ -236,14 +235,14 @@ const Chat = () => {
         flexBasis: "auto",
         width: "100%",
         maxWidth: "100%",
-        paddingRight: "3%"
+        paddingRight: "3%",
       });
 
       setSearchBarStyle({
         display: "flex",
         flexBasis: "auto",
         width: "100%",
-        maxWidth: "100%"
+        maxWidth: "100%",
       });
 
       setConversationContentStyle({
@@ -269,14 +268,14 @@ const Chat = () => {
     setConversationAvatarStyle,
     setSidebarStyle,
     setChatContainerStyle,
-    setSearchBarStyle
+    setSearchBarStyle,
   ]);
 
   // ============================= Others Codes =============================
 
   if (session.status === "authenticated") {
     return (
-      <div style={{height: "75vh", position: "relative"}}>
+      <div style={{ height: "75vh", position: "relative" }}>
         <input
           type="file"
           ref={fileInputRef}
@@ -297,12 +296,12 @@ const Chat = () => {
           {currentChat && (
             <ChatContainer style={chatContainerStyle}>
               <ConversationHeader>
-                <ConversationHeader.Back onClick={handleBackClick}/>
+                <ConversationHeader.Back onClick={handleBackClick} />
                 <Avatar>
                   {otherUser && otherUser.profilePictureUrl != "" ? (
                     <img src={otherUser.profilePictureUrl} alt="user" />
                   ) : (
-                    <Image src={HumanIcon} />
+                    <Image src={HumanIcon} alt="Profile Picture" />
                   )}
                 </Avatar>
                 <ConversationHeader.Content
@@ -351,7 +350,7 @@ const Chat = () => {
                                   alt="user"
                                 />
                               ) : (
-                                <Image src={HumanIcon} />
+                                <Image src={HumanIcon} alt="Profile Picture" />
                               )
                             ) : otherUser &&
                               otherUser.profilePictureUrl != "" ? (
@@ -360,7 +359,7 @@ const Chat = () => {
                                 alt="user"
                               />
                             ) : (
-                              <Image src={HumanIcon} />
+                              <Image src={HumanIcon} alt="Profile Picture" />
                             )}
                           </Avatar>
                           <Message.CustomContent>
@@ -462,8 +461,7 @@ const Chat = () => {
                 />
               </div>
             </ChatContainer>
-          )
-          }
+          )}
         </MainContainer>
       </div>
     );

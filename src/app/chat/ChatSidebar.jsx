@@ -44,7 +44,7 @@ const ChatSidebar = ({ userChats, selectCurrentChat, position, scrollable, sideB
                 {chat.recruiter && chat.recruiter.profilePictureUrl != "" ? (
                   <img src={chat.recruiter.profilePictureUrl} alt="user" />
                 ) : (
-                  <Image src={HumanIcon} />
+                  <Image src={HumanIcon} alt="Profile Picture" />
                 )}
               </Avatar>
               <Conversation.Content name={chat.recruiter.userName} style={conversationContentStyle}/>

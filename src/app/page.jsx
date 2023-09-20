@@ -16,7 +16,7 @@ export default function Home() {
         </div>
       </div>
       <div className={styles.item}></div>
-      <Image src={Hero} alt="" className={styles.img} />
+      <Image src={Hero} alt="Picture" className={styles.img} />
     </div>
   );
 }
