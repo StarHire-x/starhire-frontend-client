@@ -234,7 +234,7 @@ const Register = () => {
 
     const uenPattern = /^\d{9,10}$/; 
     const isValudUen = uenPattern.test(formData.companyRegistrationId);
-    if (!isValudUen) {
+    if (!isValudUen && formData.role === "Corporate") {
       alert(
         "UEN has to be between 9 - 10 digits long."
       );
