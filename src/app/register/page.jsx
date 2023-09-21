@@ -285,17 +285,18 @@ const Register = () => {
     };
 
     try {
-      const response = await createUser(data)
-
+      const response = await createUser(data);
       if (!response.ok) {
         const errorData = await response.json();
-        setErrorMessage(errorData.message);
+        console.log(errorData);
+        setErrorMessage(errorData.error);
+      } else {
+        alert("Account has been created!");
+        router.push("/login?success=Account has been created");
       }
-      alert("Account has been created!");
-      router.push("/login?success=Account has been created");
     } catch (error) {
       console.error("Fetch error:", error);
-      setErrorMessage("An error occurred while processing your request.");
+      // setErrorMessage(error);
     }
   };
 

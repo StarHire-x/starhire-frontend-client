@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server";
+
 export const createUser = async (userData) => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users`, {
@@ -10,12 +12,13 @@ export const createUser = async (userData) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.message || "An error occurred");
+      return NextResponse.json({ error: errorData.message }, { status: errorData.statusCode });
+      // throw new Error(errorData.message || "An error occurred");
     }
     return await response;
   } catch (error) {
     console.log("Encountered a problem when creating a new user", error);
-    throw error;
+    // return NextResponse.json({ error: error }, { status: 500 });
   }
 };
 
