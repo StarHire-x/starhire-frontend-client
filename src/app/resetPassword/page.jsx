@@ -7,6 +7,7 @@ import Link from "next/link";
 import { hashing } from "@/app/api/auth/register/route";
 import { useSession } from "next-auth/react";
 import { updateUserPassword } from "../api/auth/forgetPassword/route";
+import { RadioButton } from "primereact/radiobutton";
 
 const ResetPassword = () => {
   const router = useRouter();
@@ -162,7 +163,29 @@ const ResetPassword = () => {
         />
         <div className={styles.radio}>
           <p>I am a...</p>
-          <label>
+          <RadioButton
+            inputId="Job_Seeker"
+            name="role"
+            value="Job_Seeker"
+            onChange={handleInputChange}
+            checked={formData.role === "Job_Seeker"}
+            required
+          />
+          <label htmlFor="Job_Seeker" className="ml-2">
+            Job Seeker
+          </label>
+          <RadioButton
+            inputId="Corporate"
+            name="role"
+            value="Corporate"
+            onChange={handleInputChange}
+            checked={formData.role === "Corporate"}
+            required
+          />
+          <label htmlFor="Corporate" className="ml-2">
+            Corporate
+          </label>
+          {/* <label>
             <input
               type="radio"
               name="role"
@@ -181,7 +204,7 @@ const ResetPassword = () => {
               onChange={handleInputChange}
             />
             Corporate
-          </label>
+          </label> */}
         </div>
         <button className={styles.button}>Reset Password</button>
       </form>
