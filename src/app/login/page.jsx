@@ -8,6 +8,7 @@ import Link from "next/link";
 import { headers } from "../../../next.config";
 import bcrypt from "bcryptjs";
 import { RadioButton } from "primereact/radiobutton";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 const Login = () => {
   const session = useSession();
@@ -29,7 +30,7 @@ const Login = () => {
   };
 
   if (session.status === "loading") {
-    return <p>Loading ....</p>;
+    return <ProgressSpinner />;
   }
 
   if (session.status === "authenticated") {
