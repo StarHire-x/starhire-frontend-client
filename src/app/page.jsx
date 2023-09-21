@@ -2,8 +2,18 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import Hero from "public/hero.png";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const session = useSession();
+  const router = useRouter();
+
+  const accessToken =
+    session.status === "authenticated" &&
+    session.data &&
+    session.data.user.accessToken;
+
   return (
     <div className={styles.container}>
       <div className={styles.item}>
@@ -11,21 +21,23 @@ export default function Home() {
         <p className={styles.subTitle}>Candidate Sourcing</p>
         <p className={styles.subTitle}>Job Matching</p>
         <p className={styles.subTitle}>An All-in-one Platform</p>
-        <div className={styles.buttonContainer}>
-          <button
-            className={styles.register}
-            onClick={() => (window.location.href = "/register")}
-          >
-            Register
-          </button>
-          
-          <button
-            className={styles.login}
-            onClick={() => (window.location.href = "/login")}
-          >
-            Login
-          </button>
-        </div>
+        {!accessToken && (
+          <div className={styles.buttonContainer}>
+            <button
+              className={styles.register}
+              onClick={() => (window.location.href = "/register")}
+            >
+              Register
+            </button>
+
+            <button
+              className={styles.login}
+              onClick={() => (window.location.href = "/login")}
+            >
+              Login
+            </button>
+          </div>
+        )}
       </div>
       <div className={styles.item}></div>
       <Image src={Hero} alt="Picture" className={styles.img} />

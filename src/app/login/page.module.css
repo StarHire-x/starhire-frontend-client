@@ -1,65 +1,65 @@
 .container {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   flex-direction: column;
-   gap: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .error {
-   color: rgb(201, 15, 15);
-   text-align: center;
+  color: rgb(201, 15, 15);
+  text-align: center;
 }
 
 .title {
-   font-size: 72px;
-   background: linear-gradient(to bottom, #194c33, #bbb);
-   -webkit-background-clip: text;
-   -webkit-text-fill-color: transparent;
- }
+  font-size: 72px;
+  background: linear-gradient(to bottom, #194c33, #bbb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 .form {
-   width: 300px;
-   display: flex; 
-   flex-direction: column;
-   gap: 20px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .input {
-   padding: 20px;
-   background-color: transparent; 
-   border: 2px solid #bbb;
-   color: #bbb;
-   border-radius: 5px;
-   font-size: 20px;
-   font-weight: bold;
+  padding: 20px;
+  background-color: transparent;
+  border: 2px solid #bbb;
+  color: #bbb;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .button {
-    width: 300px;
-    padding: 20px;
-    cursor: pointer;
-    background-color: #53c28b;
-    border: none;
-    border-radius: 5px;
-    color: #eee;
-    font-weight: bold;
+  width: 300px;
+  padding: 20px;
+  cursor: pointer;
+  background-color: #53c28b;
+  border: none;
+  border-radius: 5px;
+  color: #eee;
+  font-weight: bold;
 }
 
 .radio {
- display: flex;
- flex-direction: row;
- align-items: center;
- gap: 15px; /* Adjust the spacing between the radio button and label */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px; /* Adjust the spacing between the radio button and label */
 }
 
 .radio input[type="radio"] {
- /* Optional: Adjust the radio button styles */
- margin-right: 4px; /* Adjust the spacing between the radio button and label text */
+  /* Optional: Adjust the radio button styles */
+  margin-right: 4px; /* Adjust the spacing between the radio button and label text */
 }
 
 @media screen and (max-width: 768px) {
-   .title {
-     font-size: 50px;
-   }
-} 
+  .title {
+    font-size: 50px;
+  }
+}

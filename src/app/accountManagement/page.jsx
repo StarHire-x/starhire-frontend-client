@@ -7,6 +7,7 @@ import { uploadFile } from "../api/auth/upload/route";
 import { updateUser } from "../api/auth/user/route";
 import styles from "./page.module.css";
 import { UserContext } from "@/context/UserContext";
+import { RadioButton } from "primereact/radiobutton";
 
 const AccountManagement = () => {
   const session = useSession();
@@ -63,6 +64,7 @@ const AccountManagement = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, value);
     setFormData({
       ...formData,
       [name]: value,
@@ -97,7 +99,7 @@ const AccountManagement = () => {
     const profilePictureUrl = formData.profilePictureUrl;
     const notificationMode = formData.notificationMode;
     const status = formData.status;
-    
+
     const updateUserDetails = {
       role: roleRef,
       email: email,
@@ -271,25 +273,25 @@ const AccountManagement = () => {
                 <p>Notifications</p>
               </div>
               <div className={styles.radioOption}>
-                <label>
-                  <input
-                    type="radio"
-                    name="notificationMode"
-                    value="Email"
-                    checked={formData.notificationMode === "Email"}
-                    onChange={handleInputChange}
-                  />
+                <RadioButton
+                  inputId="notificationMode"
+                  name="notificationMode"
+                  value="Email"
+                  onChange={handleInputChange}
+                  checked={formData.notificationMode === "Email"}
+                />
+                <label htmlFor="notificationMode" className="ml-2">
                   Email
                 </label>
                 <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="notificationMode"
-                    value="Sms"
-                    checked={formData.notificationMode === "Sms"}
-                    onChange={handleInputChange}
-                  />
+                <RadioButton
+                  inputId="notificationMode"
+                  name="notificationMode"
+                  value="Sms"
+                  onChange={handleInputChange}
+                  checked={formData.notificationMode === "Sms"}
+                />
+                <label htmlFor="notificationMode" className="ml-2">
                   Sms
                 </label>
               </div>
@@ -298,25 +300,25 @@ const AccountManagement = () => {
                 <p>Status</p>
               </div>
               <div className={styles.radioOption}>
-                <label>
-                  <input
-                    type="radio"
-                    name="status"
-                    value="Active"
-                    checked={formData.status === "Active"}
-                    onChange={handleInputChange}
-                  />
+                <RadioButton
+                  inputId="status"
+                  name="status"
+                  value="Active"
+                  onChange={handleInputChange}
+                  checked={formData.status === "Active"}
+                />
+                <label htmlFor="notificationMode" className="ml-2">
                   Active
                 </label>
                 <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="status"
-                    value="Inactive"
-                    checked={formData.status === "Inactive"}
-                    onChange={handleInputChange}
-                  />
+                <RadioButton
+                  inputId="status"
+                  name="status"
+                  value="Inactive"
+                  onChange={handleInputChange}
+                  checked={formData.status === "Inactive"}
+                />
+                <label htmlFor="notificationMode" className="ml-2">
                   Inactive
                 </label>
               </div>
