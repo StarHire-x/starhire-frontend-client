@@ -13,6 +13,17 @@
   -webkit-text-fill-color: transparent;
 }
 
+.subTitle {
+  background: linear-gradient(to bottom, #194c33, #bbb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.error {
+  color: rgb(201, 15, 15);
+  text-align: center;
+}
+
 .form {
   display: flex;
   align-items: center;
@@ -66,14 +77,25 @@
   font-weight: bold;
 }
 
+.previousButton {
+  width: 100px;
+  padding: 20px;
+  cursor: pointer;
+  background-color: #20563b;
+  border: none;
+  border-radius: 5px;
+  color: #eee;
+  font-weight: bold;
+}
+
 .stepTwoThreeButton {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
 }
 
 .spacer {
-  margin-left: 100px;
+  margin-left: 10px;
 }
 
 .radio {

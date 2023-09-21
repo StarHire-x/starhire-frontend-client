@@ -1,3 +1,24 @@
+export const createUser = async (userData) => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "An error occurred");
+    }
+    return await response;
+  } catch (error) {
+    console.log("Encountered a problem when creating a new user", error);
+    throw error;
+  }
+};
+
 export const getUsers = async (accessToken) => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/all`, {
