@@ -273,24 +273,24 @@ const AccountManagement = () => {
               </div>
               <div className={styles.radioOption}>
                 <RadioButton
-                  inputId="notificationMode"
+                  inputId="Email"
                   name="notificationMode"
                   value="Email"
                   onChange={handleInputChange}
                   checked={formData.notificationMode === "Email"}
                 />
-                <label htmlFor="notificationMode" className="ml-2">
+                <label htmlFor="Email" className="ml-2">
                   Email
                 </label>
                 <br />
                 <RadioButton
-                  inputId="notificationMode"
+                  inputId="Sms"
                   name="notificationMode"
                   value="Sms"
                   onChange={handleInputChange}
                   checked={formData.notificationMode === "Sms"}
                 />
-                <label htmlFor="notificationMode" className="ml-2">
+                <label htmlFor="Sms" className="ml-2">
                   Sms
                 </label>
               </div>
