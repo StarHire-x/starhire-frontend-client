@@ -9,7 +9,9 @@ import { InputTextarea } from 'primereact/inputtextarea';
 const CreateJobListingForm = ({ onCreate }) => {
   const [formData, setFormData] = useState({
     title: '',
-    description: '',
+    overview: '',
+    responsibilities: '',
+    requirements: '',
     jobLocation: '',
     averageSalary: null,
     jobStartDate: null,
@@ -40,13 +42,37 @@ const CreateJobListingForm = ({ onCreate }) => {
       </div>
 
       <div className={styles.cardRow}>
-        <label htmlFor="description">Description:</label>
+        <label htmlFor="overview">Job Overview:</label>
         <InputTextarea
-          id="description"
-          name="description"
-          value={formData.description}
+          id="overview"
+          name="overview"
+          value={formData.overview}
           onChange={handleInputChange}
-          rows={10} /* Adjust as needed */
+          rows={5} /* Adjust as needed */
+          autoResize={true} /* If you want it to resize automatically */
+        />
+      </div>
+
+      <div className={styles.cardRow}>
+        <label htmlFor="responsibilities">Job Responsibilities:</label>
+        <InputTextarea
+          id="responsibilities"
+          name="responsibilities"
+          value={formData.responsibilities}
+          onChange={handleInputChange}
+          rows={7} /* Adjust as needed */
+          autoResize={true} /* If you want it to resize automatically */
+        />
+      </div>
+
+      <div className={styles.cardRow}>
+        <label htmlFor="requirements">Job Requirements:</label>
+        <InputTextarea
+          id="requirements"
+          name="requirements"
+          value={formData.requirements}
+          onChange={handleInputChange}
+          rows={7} /* Adjust as needed */
           autoResize={true} /* If you want it to resize automatically */
         />
       </div>
