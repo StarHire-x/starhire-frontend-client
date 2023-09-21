@@ -15,7 +15,7 @@ import styles from './page.module.css';
 import 'primeflex/primeflex.css';
 import CreateJobListingForm from '@/components/CreateJobListingForm/CreateJobListingForm';
 import EditJobListingForm from '@/components/EditJobListingForm/EditJobListingForm';
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
 //this page is viewed by corporate
 const JobListingManagementPage = () => {
@@ -84,14 +84,14 @@ const JobListingManagementPage = () => {
   );
 
   useEffect(() => {
-    if (session.status === "unauthenticated" || session.status === "loading") {
-      router.push("/login");
-    } else if (session.status === "authenticated") {
-    findAllJobListingsByCorporate(userIdRef, accessToken)
-      .then((jobListing) => setJobListing(jobListing))
-      .catch((error) => {
-        console.error('Error fetching user:', error);
-      });
+    if (session.status === 'unauthenticated' || session.status === 'loading') {
+      router.push('/login');
+    } else if (session.status === 'authenticated') {
+      findAllJobListingsByCorporate(userIdRef, accessToken)
+        .then((jobListing) => setJobListing(jobListing))
+        .catch((error) => {
+          console.error('Error fetching user:', error);
+        });
     }
   }, [refreshData, userIdRef, accessToken]);
 
@@ -143,8 +143,6 @@ const JobListingManagementPage = () => {
           <Button
             label="Delete"
             icon="pi pi-trash"
-            // rounded
-            // outlined
             className={styles.buttonSpacing}
             onClick={() => {
               setSelectedJobListingData(jobListing);
@@ -240,7 +238,7 @@ const JobListingManagementPage = () => {
           emptyMessage="No job listing found"
           itemTemplate={itemTemplate}
           pt={{
-            grid: { className: "surface-ground" },
+            grid: { className: 'surface-ground' },
           }}
         />
 
@@ -275,7 +273,7 @@ const JobListingManagementPage = () => {
           footer={deleteDialogFooter}
         >
           <h3>
-            Confirm Delete Job ID:{" "}
+            Confirm Delete Job ID:{' '}
             {showDeleteDialog && showDeleteDialog.jobListingId}?
           </h3>
         </Dialog>

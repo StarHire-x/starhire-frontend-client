@@ -15,9 +15,33 @@ const EditJobListingForm = ({ initialData, onSave }) => {
     jobStartDate: initialData?.jobStartDate || null,
   });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prev) => ({ ...prev, [name]: value }));
+  // };
+
+  const handleInputChange = (e, nameOverride) => {
+    let name, value;
+
+    if (nameOverride) {
+      // Handling special cases where only the value is passed along with a name
+      name = nameOverride;
+      value = e;
+    } else if (e && e.target) {
+      // Handling standard HTML input elements
+      name = e.target.name;
+      value = e.target.value;
+    } else if (e && e.value !== undefined && e.originalEvent) {
+      // Handling calendar events
+      name = e.originalEvent.target.name;
+      value = e.value;
+    }
+
+    if (name && value !== undefined) {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    } else {
+      console.warn('Name or value is missing', e);
+    }
   };
 
   const handleSubmit = () => {
@@ -63,7 +87,7 @@ const EditJobListingForm = ({ initialData, onSave }) => {
           id="averageSalary"
           name="averageSalary"
           value={formData.averageSalary}
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e.value, 'averageSalary')}
           mode="currency"
           currency="SGD"
         />
@@ -75,8 +99,8 @@ const EditJobListingForm = ({ initialData, onSave }) => {
           id="jobStartDate"
           name="jobStartDate"
           value={formData.jobStartDate}
-          minDate={new Date(new Date().setDate(new Date().getDate() + 1))} // set minimum date to tomorrow
-          onChange={handleInputChange}
+          minDate={new Date(new Date().setDate(new Date().getDate() + 1))}
+          onChange={(e) => handleInputChange(e)}
         />
       </div>
 
