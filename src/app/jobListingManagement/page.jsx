@@ -178,6 +178,7 @@ const JobListingManagementPage = () => {
     try {
       const payload = {
         ...updatedData,
+        jobListingStatus: 'Unverified',
         corporateId: userIdRef,
       };
       const response = await updateJobListing(
