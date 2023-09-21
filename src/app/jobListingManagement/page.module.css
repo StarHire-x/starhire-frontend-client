@@ -4,14 +4,15 @@
   display: flex; /* Enable flexbox */
   flex-wrap: wrap; /* Allow the items to wrap to the next line */
   justify-content: center; /* Center the cards horizontally */
-  width: 1150px;
+  width: 1135px;
   gap: 15px; /* Provide consistent gap between the cards. This will replace the margin if supported */
+  max-height: 790px;
+  overflow-y: auto;
 }
 
 .dataViewContainer {
   width: 1150px;
 }
-
 
 .card {
   background-color: #edf6f9;
