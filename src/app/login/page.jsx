@@ -97,7 +97,7 @@ const Login = () => {
           required
         />
         <div className={styles.radio}>
-          <p>I am a...</p>
+          <p>I am a:</p>
           <RadioButton
             inputId="Job_Seeker"
             name="role"

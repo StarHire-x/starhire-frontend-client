@@ -43,7 +43,7 @@ const Step1 = ({ formData, setFormData, onNext }) => {
       <form className={styles.form}>
         <div className={styles.userRole}>
           <div>
-            <p>I am registering as a...</p>
+            <p>I am registering as a:</p>
           </div>
 
           <div className={styles.radio}>
@@ -69,26 +69,6 @@ const Step1 = ({ formData, setFormData, onNext }) => {
             <label htmlFor="Corporate" className="ml-2">
               Corporate
             </label>
-            {/* <label>
-              <input
-                type="radio"
-                name="role"
-                value="Job_Seeker"
-                checked={formData.role === "Job_Seeker"}
-                onChange={handleInputChange}
-              />
-              Job Seeker
-            </label> */}
-            {/* <label>
-              <input
-                type="radio"
-                name="role"
-                value="Corporate"
-                checked={formData.role === "Corporate"}
-                onChange={handleInputChange}
-              />
-              Corporate
-            </label> */}
           </div>
         </div>
 
