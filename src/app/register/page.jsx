@@ -7,11 +7,12 @@ import { useState } from "react";
 import { hashing } from "@/app/api/auth/register/route";
 import { registerUser } from "@/app/api/auth/register/route";
 import { createUser } from "../api/auth/user/route";
+import { RadioButton } from "primereact/radiobutton";
 
 const Step1 = ({ formData, setFormData, onNext }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const handleNext = () => {
-    setErrorMessage("")
+    setErrorMessage("");
     const { role, userName, email } = formData;
     if (!role) {
       setErrorMessage("Please fill in your role!");
@@ -46,7 +47,29 @@ const Step1 = ({ formData, setFormData, onNext }) => {
           </div>
 
           <div className={styles.radio}>
-            <label>
+            <RadioButton
+              inputId="Job_Seeker"
+              name="role"
+              value="Job_Seeker"
+              onChange={handleInputChange}
+              checked={formData.role === "Job_Seeker"}
+              required
+            />
+            <label htmlFor="Job_Seeker" className="ml-2">
+              Job Seeker
+            </label>
+            <RadioButton
+              inputId="Corporate"
+              name="role"
+              value="Corporate"
+              onChange={handleInputChange}
+              checked={formData.role === "Corporate"}
+              required
+            />
+            <label htmlFor="Corporate" className="ml-2">
+              Corporate
+            </label>
+            {/* <label>
               <input
                 type="radio"
                 name="role"
@@ -55,8 +78,8 @@ const Step1 = ({ formData, setFormData, onNext }) => {
                 onChange={handleInputChange}
               />
               Job Seeker
-            </label>
-            <label>
+            </label> */}
+            {/* <label>
               <input
                 type="radio"
                 name="role"
@@ -65,7 +88,7 @@ const Step1 = ({ formData, setFormData, onNext }) => {
                 onChange={handleInputChange}
               />
               Corporate
-            </label>
+            </label> */}
           </div>
         </div>
 
@@ -100,7 +123,7 @@ const Step1 = ({ formData, setFormData, onNext }) => {
 const Step2 = ({ formData, setFormData, onNext, onPrevious }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const handleNext = () => {
-    setErrorMessage("")
+    setErrorMessage("");
     const { password, confirmPassword } = formData;
     if (!password || !confirmPassword) {
       setErrorMessage("Please fill in your password!");
@@ -168,7 +191,7 @@ const Step3 = ({ formData, setFormData, onPrevious, onSubmit, err }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
-    setErrorMessage("")
+    setErrorMessage("");
 
     const { contactNumber } = formData;
     if (!contactNumber) {
@@ -223,6 +246,7 @@ const Step3 = ({ formData, setFormData, onPrevious, onSubmit, err }) => {
             className={styles.input}
             value={formData.contactNumber}
             onChange={handleInputChange}
+            required
           />
           {formData.role === "Corporate" && (
             <input
@@ -273,8 +297,8 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage("")
-    
+    setErrorMessage("");
+
     const data = {
       userName: formData.userName,
       email: formData.email,

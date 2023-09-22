@@ -1,15 +1,15 @@
-'use client';
-import Link from 'next/link';
-import Image from 'next/image';
-import React from 'react';
-import styles from './Navbar.module.css';
-import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
-import { signOut, useSession } from 'next-auth/react';
-import { useState, useEffect, useContext } from 'react';
-import NavItem from '../navItem/NavItem';
+"use client";
+import Link from "next/link";
+import Image from "next/image";
+import React from "react";
+import styles from "./Navbar.module.css";
+import DarkModeToggle from "../DarkModeToggle/DarkModeToggle";
+import { signOut, useSession } from "next-auth/react";
+import { useState, useEffect, useContext } from "react";
+import NavItem from "../navItem/NavItem";
 import HumanIcon from "../../../public/icon.png";
-import { UserContext } from '@/context/UserContext';
-import { getUserByUserId } from '@/app/api/auth/user/route';
+import { UserContext } from "@/context/UserContext";
+import { getUserByUserId } from "@/app/api/auth/user/route";
 
 const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
   { text: "Home", href: "/" },

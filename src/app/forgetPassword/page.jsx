@@ -7,6 +7,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { forgetPassword, sendEmail } from "../api/auth/forgetPassword/route";
 import ReactLoading from "react-loading";
+import { RadioButton } from "primereact/radiobutton";
 
 const ForgetPassword = () => {
   const session = useSession();
@@ -33,8 +34,8 @@ const ForgetPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(false)
-    setErrorMessage("")
+    setLoading(false);
+    setErrorMessage("");
     const email = formData.email;
     const role = formData.role;
 
@@ -66,7 +67,7 @@ const ForgetPassword = () => {
       {errorMessage && <p className={styles.error}>{errorMessage}</p>}
       {loading && (
         <div className={styles.loadingContainer}>
-          <ReactLoading type="bars" color="white"/>
+          <ReactLoading type="bars" color="white" />
         </div>
       )}
       <form className={styles.form} onSubmit={handleSubmit}>
@@ -81,7 +82,29 @@ const ForgetPassword = () => {
         />
         <div className={styles.radio}>
           <p>I am a...</p>
-          <label>
+          <RadioButton
+            inputId="Job_Seeker"
+            name="role"
+            value="Job_Seeker"
+            onChange={handleInputChange}
+            checked={formData.role === "Job_Seeker"}
+            required
+          />
+          <label htmlFor="Job_Seeker" className="ml-2">
+            Job Seeker
+          </label>
+          <RadioButton
+            inputId="Corporate"
+            name="role"
+            value="Corporate"
+            onChange={handleInputChange}
+            checked={formData.role === "Corporate"}
+            required
+          />
+          <label htmlFor="Corporate" className="ml-2">
+            Corporate
+          </label>
+          {/* <label>
             <input
               type="radio"
               name="role"
@@ -100,7 +123,7 @@ const ForgetPassword = () => {
               onChange={handleInputChange}
             />
             Corporate
-          </label>
+          </label> */}
         </div>
         <button className={styles.button}>Reset Password</button>
       </form>
