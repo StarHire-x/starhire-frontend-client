@@ -1,7 +1,7 @@
 import React from "react";
 import { Panel } from "primereact/panel";
 import { Rating } from "primereact/rating";
-import styles from "./jobExperiencePanel.module.css";
+import styles from "./JobExperiencePanel.module.css"
 
 const JobExperiencePanel = ({ }) => {
     return (
