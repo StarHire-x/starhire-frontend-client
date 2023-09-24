@@ -3,7 +3,7 @@ import { Panel } from "primereact/panel";
 import { Button } from "primereact/button";
 import { DataView } from "primereact/dataview";
 import { Dialog } from "primereact/dialog";
-import styles from "./jobExperiencePanel.module.css";
+import styles from "./JobExperiencePanel.module.css"
 import CreateJobExperienceForm from "../CreateJobExperienceForm/CreateJobExperienceForm";
 import { Rating } from "primereact/rating";
 
