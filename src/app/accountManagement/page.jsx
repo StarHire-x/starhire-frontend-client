@@ -25,7 +25,7 @@ const AccountManagement = () => {
   const session = useSession();
   const router = useRouter();
   const [refreshData, setRefreshData] = useState(false);
-  const [jobExperience, setJobExperience] = useState(null);
+  const [jobExperience, setJobExperience] = useState([]);
   const [formData, setFormData] = useState({
     userId: "",
     userName: "",
@@ -46,6 +46,7 @@ const AccountManagement = () => {
     culturePreference: 0,
     diversityPreference: 0,
     workLifeBalancePreference: 0,
+    jobExperienceId: "",
     employerName: "",
     jobTitle: "",
     jobExperienceStartDate: "",
@@ -98,6 +99,29 @@ const AccountManagement = () => {
           console.error("Error fetching job preference:", error);
           setIsJobPreferenceAbsent(true);
         });
+
+      // Set Job Experience testing code
+      setJobExperience([
+        {
+          jobExperienceId: 1,
+          employerName: "Dell Corporation",
+          jobTitle: "Software Engineer",
+          jobExperienceStartDate: "2022-09-15",
+          jobExperienceEndDate: "2023-09-15",
+          jobDescription:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        },
+        {
+          jobExperienceId: 1,
+          employerName: "Dell Corporation",
+          jobTitle: "Software Engineer",
+          jobExperienceStartDate: "2022-09-15",
+          jobExperienceEndDate: "2023-09-15",
+          jobDescription:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        },
+        // You can add more dummy job experiences here...
+      ]);
     }
   }, [session.status, userIdRef, roleRef, refreshData]);
 
@@ -109,20 +133,6 @@ const AccountManagement = () => {
       [name]: value,
     });
   };
-
-  // const handleFileChange = async (e) => {
-  //   const file = e.target.files[0];
-  //   if (!file) return;
-  //   try {
-  //     const response = await uploadFile(file, sessionTokenRef);
-  //     setFormData((prevState) => ({
-  //       ...prevState,
-  //       profilePictureUrl: response.url,
-  //     }));
-  //   } catch (error) {
-  //     console.error("There was an error uploading the file", error);
-  //   }
-  // };
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];

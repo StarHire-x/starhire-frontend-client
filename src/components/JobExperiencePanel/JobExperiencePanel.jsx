@@ -6,6 +6,7 @@ import { Dialog } from "primereact/dialog";
 import styles from "./JobExperiencePanel.module.css"
 import CreateJobExperienceForm from "../CreateJobExperienceForm/CreateJobExperienceForm";
 import { Rating } from "primereact/rating";
+import { Card } from "primereact/card";
 
 const JobExperiencePanel = ({
   formData,
@@ -70,63 +71,49 @@ const JobExperiencePanel = ({
     e.preventDefault();
   };
 
-  const itemTemplate = (jobListing) => {
+  const itemTemplate = (jobExperience) => {
     return (
-      <div className={styles.card}>
-        {/* <div className={styles.cardHeader}>
-          <h5>{jobListing.title}</h5>
+      <Card className={styles.card}>
+        <div className={styles.cardHeader}>
+          <div className={styles.cardHeaderLeft}>
+            <h4>{jobExperience.jobTitle}</h4>
+            <h4 className={styles.hideOnMobile}>|</h4>
+            <h4>{jobExperience.employerName}</h4>
+          </div>
+          <div className={styles.cardHeaderRight}>
+            <h4>{jobExperience.jobExperienceStartDate}</h4>
+            <h4 className={styles.hideOnMobile}>-</h4>
+            <h4>{jobExperience.jobExperienceEndDate}</h4>
+          </div>
         </div>
-        <div className={styles.cardBody}>
-          <div className={styles.cardRow}>
-            <span>Job ID:</span>
-            <span>{jobListing.jobListingId}</span>
-          </div>
-          <div className={styles.cardRow}>
-            <span>Location:</span>
-            <span>{jobListing.jobLocation}</span>
-          </div>
-          <div className={styles.cardRow}>
-            <span>Average Salary</span>
-            <span>${jobListing.averageSalary}</span>
-          </div>
-          <div className={styles.cardRow}>
-            <span>Listing Date:</span>
-            <span>{formatDate(jobListing.listingDate)}</span>
-          </div>
-          <div className={styles.cardRow}>
-            <span>Start Date:</span>
-            <span>{formatDate(jobListing.jobStartDate)}</span>
-          </div>
-          <div className={styles.cardRow}>
-            <span>Status:</span>
-            <Tag
-              value={jobListing.jobListingStatus}
-              severity={getStatus(jobListing.jobListingStatus)}
-            />
-          </div>
+        <div className={styles.cardDescription}>
+          <p>{jobExperience.jobDescription}</p>
         </div>
         <div className={styles.cardFooter}>
           <Button
             label="Edit"
             icon="pi pi-pencil"
+            severity="success"
             className={styles.buttonSpacing}
             onClick={() => {
-              setSelectedJobListingData(jobListing);
-              setShowEditDialog(jobListing);
+              e.preventDefault();
+              // setSelectedJobListingData(jobListing);
+              // setShowEditDialog(jobListing);
             }}
           />
           <Button
             label="Delete"
             icon="pi pi-trash"
+            severity="danger"
             className={styles.buttonSpacing}
             onClick={() => {
-              setSelectedJobListingData(jobListing);
-              setShowDeleteDialog(jobListing);
+              e.preventDefault();
+              // setSelectedJobListingData(jobListing);
+              // setShowDeleteDialog(jobListing);
             }}
           />
-        </div> */}
-        Mickey mouse
-      </div>
+        </div>
+      </Card>
     );
   };
 
