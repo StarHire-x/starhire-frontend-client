@@ -8,12 +8,14 @@ import { hashing } from "@/app/api/auth/register/route";
 import { useSession } from "next-auth/react";
 import { updateUserPassword } from "../api/auth/forgetPassword/route";
 import { RadioButton } from "primereact/radiobutton";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 const ResetPassword = () => {
   const router = useRouter();
   const session = useSession();
 
-  const [err, setErr] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const [storedToken, setStoredToken] = useState("");
   const [storedTokenExpiry, setStoredTokenExpiry] = useState("");
   const [storedRole, setStoredRole] = useState("");
@@ -70,60 +72,63 @@ const ResetPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage("");
+    setLoading(false);
+    const { tokenId, email, password, confirmPassword, role } = formData;
 
-    const v1 = formData.password;
-    const v2 = formData.confirmPassword;
-    if (v1 !== v2) {
-      // Display a validation message near the password fields
-      setErr(true);
-      alert("Password does not match");
-      return; // Exit early if passwords don't match
-    }
-
-    const inputTokenId = formData.tokenId;
-    const inputEmail = formData.email;
-    const inputRole = formData.role;
-
-    const dateTime = Date.now();
-
-    if (dateTime > Number(storedTokenExpiry)) {
-      setErr(true);
-      alert("Token has expired");
+    if (!tokenId) {
+      setErrorMessage("Please fill in your token ID!");
       return;
-    }
-
-    if (
-      inputTokenId !== storedToken ||
-      inputEmail !== storedEmail ||
-      inputRole !== storedRole
-    ) {
-      setErr(true);
-      alert("Fields are incorrect");
+    } else if (!password) {
+      setErrorMessage("Please fill in your password!");
       return;
-    }
-
-    const hashedPassword = await hashing(formData.password);
-    const resetPassword = {
-      role: inputRole,
-      password: hashedPassword,
-    };
-    try {
-      const response = await updateUserPassword(resetPassword, storedUserId);
-      alert("Password changed successfully");
-      localStorage.removeItem("passwordResetToken");
-      localStorage.removeItem("passwordResetExpire");
-      localStorage.removeItem("resetEmail");
-      localStorage.removeItem("role");
-      localStorage.removeItem("userId");
-      router.push("/login");
-    } catch (error) {
-      alert(error);
+    } else if (!confirmPassword) {
+      setErrorMessage("Please confirm your password!");
+      return;
+    } else if (password !== confirmPassword) {
+      setErrorMessage("Please ensure that the password provided match!");
+      return;
+    } else if (Date.now() > Number(storedTokenExpiry)) {
+      setErrorMessage("Your token has expired!");
+      return;
+    } else if (tokenId !== storedToken) {
+      setErrorMessage("You have provided the wrong token ID!");
+      return;
+    } else if (email !== storedEmail) {
+      setErrorMessage("You have provided the wrong email!");
+      return;
+    } else if (role !== storedRole) {
+      setErrorMessage("You have selected the wrong role!");
+      return;
+    } else {
+      const hashedPassword = await hashing(password);
+      const resetPassword = {
+        role: role,
+        password: hashedPassword,
+      };
+      try {
+        setLoading(true);
+        const response = await updateUserPassword(resetPassword, storedUserId);
+        alert("Password changed successfully");
+        localStorage.removeItem("passwordResetToken");
+        localStorage.removeItem("passwordResetExpire");
+        localStorage.removeItem("resetEmail");
+        localStorage.removeItem("role");
+        localStorage.removeItem("userId");
+        router.push("/login");
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log("An error occurred during password reset: ", error.message);
+        setErrorMessage(error.message);
+      }
     }
   };
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Reset Password</h1>
+      {errorMessage && <p className={styles.error}>{errorMessage}</p>}
       <form className={styles.form} onSubmit={handleSubmit}>
         <input
           type="text"
@@ -185,28 +190,11 @@ const ResetPassword = () => {
           <label htmlFor="Corporate" className="ml-2">
             Corporate
           </label>
-          {/* <label>
-            <input
-              type="radio"
-              name="role"
-              value="Job_Seeker"
-              checked={formData.role === "Job_Seeker"}
-              onChange={handleInputChange}
-            />
-            Job Seeker
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="role"
-              value="Corporate"
-              checked={formData.role === "Corporate"}
-              onChange={handleInputChange}
-            />
-            Corporate
-          </label> */}
         </div>
-        <button className={styles.button}>Reset Password</button>
+        {loading && (
+          <ProgressSpinner style={{ width: "50px", height: "50px" }} />
+        )}
+        {!loading && <button className={styles.button}>Reset Password</button>}
       </form>
       <Link href="/register">I don&apos;t have an account </Link>
       <Link href="/login">Login with an existing account</Link>

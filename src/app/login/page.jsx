@@ -20,6 +20,7 @@ const Login = () => {
     role: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -39,6 +40,8 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage("")
+    setLoading(false)
     const { email, password, role } = formData;
 
     if (!email) {
@@ -52,6 +55,7 @@ const Login = () => {
       return;
     } else {
       try {
+        setLoading(true);
         const result = await signIn("credentials", {
           redirect: false,
           email,
@@ -61,13 +65,16 @@ const Login = () => {
         if (!result.error) {
           // User signed in successfully
           router.push("/dashboard");
+          setLoading(false);
         } else {
           // Handle the error result.error
           console.error(`Login error: ${result.error}`);
+          setLoading(false);
           setErrorMessage(result.error);
         }
       } catch (error) {
         console.error("An error occurred during authentication:", error);
+        setLoading(false);
         setErrorMessage(error);
       }
     }
@@ -120,28 +127,9 @@ const Login = () => {
           <label htmlFor="Corporate" className="ml-2">
             Corporate
           </label>
-          {/* <label>
-            <input
-              type="radio"
-              name="role"
-              value="Job_Seeker"
-              checked={formData.role === "Job_Seeker"}
-              onChange={handleInputChange}
-            />
-            Job Seeker
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="role"
-              value="Corporate"
-              checked={formData.role === "Corporate"}
-              onChange={handleInputChange}
-            />
-            Corporate
-          </label> */}
         </div>
-        <button className={styles.button}>Login</button>
+        {loading && <ProgressSpinner style={{width: '50px', height: '50px'}}/>}
+        {!loading && <button className={styles.button}>Login</button>}
       </form>
       <Link href="/register">I don&apos;t have an account </Link>
       <Link href="/forgetPassword">Forget Password</Link>
