@@ -57,7 +57,7 @@ export const updateUser = async (request, id, accessToken) => {
     });
 
     if (res.ok) {
-      return;
+      return true;
     } else {
       throw new Error(errorData.message || "An error occurred");
     }
