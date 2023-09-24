@@ -25,6 +25,7 @@ const AccountManagement = () => {
   const session = useSession();
   const router = useRouter();
   const [refreshData, setRefreshData] = useState(false);
+  const [jobExperience, setJobExperience] = useState(null);
   const [formData, setFormData] = useState({
     userId: "",
     userName: "",
@@ -45,6 +46,11 @@ const AccountManagement = () => {
     culturePreference: 0,
     diversityPreference: 0,
     workLifeBalancePreference: 0,
+    employerName: "",
+    jobTitle: "",
+    jobExperienceStartDate: "",
+    jobExperienceEndDate: "",
+    jobDescription: "",
   });
 
   // this is to do a reload of userContext if it is updated in someway
@@ -140,7 +146,7 @@ const AccountManagement = () => {
       console.error("There was an error uploading the file", error);
     }
   };
-  
+
   const removePdf = () => {
     setFormData((prevState) => ({
       ...prevState,
@@ -176,7 +182,7 @@ const AccountManagement = () => {
         sessionTokenRef
       );
 
-      if(response) {
+      if (response) {
         alert("Status changed successfully!");
         setRefreshData((prev) => !prev);
         // this is to do a reload of userContext if it is updated so that navbar can change
@@ -188,61 +194,24 @@ const AccountManagement = () => {
     }
   };
 
-  const newJobPreferences = async (e) => {
+  const deleteJobExperience = async (e) => {
+    e.preventDefault();
+  };
+
+  const createJobExperience = async (e) => {
     e.preventDefault();
     const userId = formData.userId;
 
     const reqBody = {
       jobSeekerId: userId,
-      locationPreference: formData.locationPreference,
-      culturePreference: formData.culturePreference,
-      salaryPreference: formData.salaryPreference,
-      diversityPreference: formData.diversityPreference,
-      workLifeBalancePreference: formData.workLifeBalancePreference,
-    };
-
-    try {
-      console.log(userId);
-      console.log(createJobPreference);
-      const response = await createJobPreference(reqBody, sessionTokenRef);
-      if (!response.error) {
-        console.log("Job preference created successfully:", response);
-        alert("Job preference created successfully!");
-        setRefreshData((prev) => !prev);
-      }
-    } catch (error){
-      console.log("Failed to update job preference");
-      alert(error.message);
+      employerName: formData.employerName,
+      jobTitle: formData.jobTitle,
+      jobExperienceStartDate: formData.jobExperienceStartDate,
+      jobExperienceEndDate: formData.jobExperienceEndDate,
+      jobDescription: formData.jobDescription
     }
-  };
 
-  const modifyJobPreference = async (e) => {
-    e.preventDefault();
-    const jobPreferenceId = formData.jobPreferenceId;
-
-    const reqBody = {
-      locationPreference: formData.locationPreference,
-      culturePreference: formData.culturePreference,
-      salaryPreference: formData.salaryPreference,
-      diversityPreference: formData.diversityPreference,
-      workLifeBalancePreference: formData.workLifeBalancePreference,
-    };
-
-    try {
-      const response = await updateJobPreference(
-        jobPreferenceId,
-        reqBody,
-        sessionTokenRef
-      );
-      if(!response.error) {
-        console.log("Job preference update successfully:", response);
-        alert("Job preference update successfully!");
-        setRefreshData((prev) => !prev);
-      }
-    } catch (error) {
-      console.log("Failed to update job preference");
-      alert(error.message);
-    }
+    console.log(reqBody);
   };
 
   if (session.status === "authenticated") {
@@ -256,14 +225,27 @@ const AccountManagement = () => {
           session={session}
           removePdf={removePdf}
         />
-        <JobPreferencePanel
-          isJobPreferenceAbsent={isJobPreferenceAbsent}
-          formData={formData}
-          setFormData={setFormData}
-          newJobPreferences={newJobPreferences}
-          modifyJobPreference={modifyJobPreference}
-        />
-        <JobExperiencePanel />
+        <br />
+        {roleRef === "Job_Seeker" && (
+          <>
+            <JobPreferencePanel
+              formData={formData}
+              setFormData={setFormData}
+              sessionTokenRef={sessionTokenRef}
+              setRefreshData={setRefreshData}
+              isJobPreferenceAbsent={isJobPreferenceAbsent}
+            />
+            <br />
+            <JobExperiencePanel
+              formData={formData}
+              setFormData={setFormData}
+              sessionTokenRef={sessionTokenRef}
+              setRefreshData={setRefreshData}
+              jobExperience={jobExperience}
+              handleInputChange={handleInputChange}
+            />
+          </>
+        )}
       </div>
     );
   }
