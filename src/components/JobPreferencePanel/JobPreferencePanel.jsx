@@ -3,15 +3,72 @@ import { Panel } from "primereact/panel";
 import { Rating } from "primereact/rating";
 import { Button } from "primereact/button";
 import styles from "./jobPreferencePanel.module.css"
+import { createJobPreference, updateJobPreference } from '@/app/api/auth/preference/route';
 
 const JobPreferencePanel = ({
-  isJobPreferenceAbsent,
   formData,
   setFormData,
-  newJobPreferences,
-  modifyJobPreference,
+  sessionTokenRef,
+  setRefreshData,
+  isJobPreferenceAbsent,
 }) => {
-  
+  const newJobPreferences = async (e) => {
+    e.preventDefault();
+    const userId = formData.userId;
+
+    const reqBody = {
+      jobSeekerId: userId,
+      locationPreference: formData.locationPreference,
+      culturePreference: formData.culturePreference,
+      salaryPreference: formData.salaryPreference,
+      diversityPreference: formData.diversityPreference,
+      workLifeBalancePreference: formData.workLifeBalancePreference,
+    };
+
+    try {
+      console.log(userId);
+      console.log(createJobPreference);
+      const response = await createJobPreference(reqBody, sessionTokenRef);
+      if (!response.error) {
+        console.log("Job preference created successfully:", response);
+        alert("Job preference created successfully!");
+        setRefreshData((prev) => !prev);
+      }
+    } catch (error) {
+      console.log("Failed to update job preference");
+      alert(error.message);
+    }
+  };
+
+  const modifyJobPreference = async (e) => {
+    e.preventDefault();
+    const jobPreferenceId = formData.jobPreferenceId;
+
+    const reqBody = {
+      locationPreference: formData.locationPreference,
+      culturePreference: formData.culturePreference,
+      salaryPreference: formData.salaryPreference,
+      diversityPreference: formData.diversityPreference,
+      workLifeBalancePreference: formData.workLifeBalancePreference,
+    };
+
+    try {
+      const response = await updateJobPreference(
+        jobPreferenceId,
+        reqBody,
+        sessionTokenRef
+      );
+      if (!response.error) {
+        console.log("Job preference update successfully:", response);
+        alert("Job preference update successfully!");
+        setRefreshData((prev) => !prev);
+      }
+    } catch (error) {
+      console.log("Failed to update job preference");
+      alert(error.message);
+    }
+  };
+
   return (
     <Panel header="Job Preference" toggleable>
       {isJobPreferenceAbsent ? (
