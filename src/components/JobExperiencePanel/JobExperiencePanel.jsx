@@ -6,7 +6,6 @@ import { Dialog } from "primereact/dialog";
 import styles from "./jobExperiencePanel.module.css";
 import CreateJobExperienceForm from "../CreateJobExperienceForm/CreateJobExperienceForm";
 import { Rating } from "primereact/rating";
-import styles from "./JobExperiencePanel.module.css"
 
 const JobExperiencePanel = ({
   formData,
