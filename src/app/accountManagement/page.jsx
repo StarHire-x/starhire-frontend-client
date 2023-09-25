@@ -49,8 +49,8 @@ const AccountManagement = () => {
     jobExperienceId: "",
     employerName: "",
     jobTitle: "",
-    jobExperienceStartDate: "",
-    jobExperienceEndDate: "",
+    startDate: "",
+    endDate: "",
     jobDescription: "",
   });
 
@@ -106,8 +106,8 @@ const AccountManagement = () => {
           jobExperienceId: 1,
           employerName: "Dell Corporation",
           jobTitle: "Software Engineer",
-          jobExperienceStartDate: "2022-09-15",
-          jobExperienceEndDate: "2023-09-15",
+          startDate: "2022-09-15",
+          endDate: "2023-09-15",
           jobDescription:
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         },
@@ -115,8 +115,8 @@ const AccountManagement = () => {
           jobExperienceId: 1,
           employerName: "Dell Corporation",
           jobTitle: "Software Engineer",
-          jobExperienceStartDate: "2022-09-15",
-          jobExperienceEndDate: "2023-09-15",
+          startDate: "2022-09-15",
+          endDate: "2023-09-15",
           jobDescription:
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         },
@@ -216,8 +216,8 @@ const AccountManagement = () => {
       jobSeekerId: userId,
       employerName: formData.employerName,
       jobTitle: formData.jobTitle,
-      jobExperienceStartDate: formData.jobExperienceStartDate,
-      jobExperienceEndDate: formData.jobExperienceEndDate,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
       jobDescription: formData.jobDescription
     }
 

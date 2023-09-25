@@ -52,8 +52,8 @@ const JobExperiencePanel = ({
       jobSeekerId: userId,
       employerName: formData.employerName,
       jobTitle: formData.jobTitle,
-      jobExperienceStartDate: formData.jobExperienceStartDate,
-      jobExperienceEndDate: formData.jobExperienceEndDate,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
       jobDescription: formData.jobDescription,
     };
 
@@ -81,9 +81,9 @@ const JobExperiencePanel = ({
             <h4>{jobExperience.employerName}</h4>
           </div>
           <div className={styles.cardHeaderRight}>
-            <h4>{jobExperience.jobExperienceStartDate}</h4>
+            <h4>{jobExperience.startDate}</h4>
             <h4 className={styles.hideOnMobile}>-</h4>
-            <h4>{jobExperience.jobExperienceEndDate}</h4>
+            <h4>{jobExperience.endDate}</h4>
           </div>
         </div>
         <div className={styles.cardDescription}>

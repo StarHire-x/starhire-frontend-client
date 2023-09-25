@@ -34,13 +34,13 @@ const CreateJobExperienceForm = ({ formData, setFormData, handleInputChange, cre
               <div className={styles.cardRow}>
                 <label>Start Date</label>
                 <Calendar
-                  id="jobExperienceStartDate"
-                  name="jobExperienceStartDate"
-                  value={formData?.jobExperienceStartDate}
+                  id="startDate"
+                  name="startDate"
+                  value={formData?.startDate}
                   onChange={(e) =>
                     setFormData((prev) => ({
                       ...prev,
-                      jobExperienceStartDate: e.value,
+                      startDate: e.value,
                     }))
                   }
                 />
@@ -49,14 +49,14 @@ const CreateJobExperienceForm = ({ formData, setFormData, handleInputChange, cre
               <div className={styles.cardRow}>
                 <label>End Date</label>
                 <Calendar
-                  id="jobExperienceEndDate"
-                  name="jobExperienceEndDate"
-                  value={formData?.jobExperienceEndDate}
+                  id="endDate"
+                  name="endDate"
+                  value={formData?.endDate}
                   maxDate={new Date(new Date().setDate(new Date().getDate()))}
                   onChange={(e) =>
                     setFormData((prev) => ({
                       ...prev,
-                      jobExperienceEndDate: e.value,
+                      endDate: e.value,
                     }))
                   }
                 />
