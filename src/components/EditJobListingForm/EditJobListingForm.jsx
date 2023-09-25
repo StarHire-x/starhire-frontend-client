@@ -86,7 +86,7 @@ const EditJobListingForm = ({ initialData, onSave }) => {
       </div>
 
       <div className={styles.cardRow}>
-        <label htmlFor="requirements">Job Responsibilities:</label>
+        <label htmlFor="requirements">Job Requirements:</label>
         <InputTextarea
           id="requirements"
           name="requirements"
