@@ -20,9 +20,28 @@ const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
   { text: "Chat", href: "/chat" },
 ];
 
+/*
 const MENU_LIST_AUTHENTICATED_CORPORATE = [
   { text: "Home", href: "/" },
   { text: "Job Listing Management", href: "/jobListingManagement" },
+  { text: "Forum", href: "/forum" },
+  { text: "Events", href: "/events" },
+  { text: "Contact", href: "/contact" },
+  { text: "Chat", href: "/chat" },
+];
+*/
+
+const MENU_LIST_AUTHENTICATED_CORPORATE = [
+  { text: "Home", href: "/" },
+  {
+    text: "Job Listing Management",
+    href: "#", // Use # as the href for dropdown
+    subMenu: [
+      { text: "Create Job Listing", href: "/createJobListing" },
+      { text: "Edit Job Listing", href: "/editJobListing" },
+      // Add more sub-menu items as needed
+    ],
+  },
   { text: "Forum", href: "/forum" },
   { text: "Events", href: "/events" },
   { text: "Contact", href: "/contact" },
@@ -45,6 +64,7 @@ const Navbar = () => {
 
   // utilising use context to get the latest information
   const { userData } = useContext(UserContext);
+  const [showSubMenu, setShowSubMenu] = useState(false);
 
   if (session && session.data && session.data.user) {
     userIdRef = session.data.user.userId;
@@ -85,19 +105,41 @@ const Navbar = () => {
                 <NavItem active={activeIdx === idx} {...menu} />
               </div>
             ))}
+
           {session.status == "authenticated" &&
             session.data.user.role === "Corporate" &&
             MENU_LIST_AUTHENTICATED_CORPORATE.map((menu, idx) => (
               <div
-                onClick={() => {
-                  setActiveIdx(idx);
-                  setNavActive(false);
-                }}
                 key={menu.text}
+                onMouseEnter={() => setShowSubMenu(true)} // Show sub-menu on hover
+                onMouseLeave={() => setShowSubMenu(false)} // Hide sub-menu on mouse leave
               >
-                <NavItem active={activeIdx === idx} {...menu} />
+                <Link href={menu.href}>
+                  {" "}
+                  {/* Use Link for the main menu item */}
+                  <a>
+                    <NavItem
+                      active={activeIdx === idx}
+                      text={menu.text}
+                      href={menu.href}
+                    />
+                  </a>
+                </Link>
+
+                {menu.subMenu && showSubMenu && (
+                  <div className={styles.submenu}>
+                    {menu.subMenu.map((subMenuItem, subIdx) => (
+                      <Link href={subMenuItem.href} key={subIdx}>
+                        {" "}
+                        {/* Use Link for sub-menu items */}
+                        <a>{subMenuItem.text}</a>
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
+            
           {session.status == "unauthenticated" &&
             MENU_LIST_UNAUTHENTICATED.map((menu, idx) => (
               <div
