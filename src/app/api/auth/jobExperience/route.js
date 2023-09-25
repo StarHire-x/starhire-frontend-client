@@ -51,20 +51,49 @@ export const getJobExperience = async (userId, accessToken) => {
 };
 
 export const updateJobExperience = async (
-  jobPreferenceId,
-  updateJobPreference,
+  jobExperienceId,
+  updateJobExperience,
   accessToken
 ) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/job-preference/${jobPreferenceId}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/job-experience/${jobExperienceId}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify(updateJobPreference),
+        body: JSON.stringify(updateJobExperience),
+        cache: "no-store",
+      }
+    );
+    const response = await res.json();
+    if (response.statusCode === 200) {
+      return response;
+    } else {
+      throw new Error(response.message || "An error occured");
+    }
+  } catch (error) {
+    console.log("There was a problem fetching job experience", error);
+    throw error;
+  }
+};
+
+
+export const deleteJobExperience = async (
+  jobExperienceId,
+  accessToken
+) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/job-experience/${jobExperienceId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
         cache: "no-store",
       }
     );
