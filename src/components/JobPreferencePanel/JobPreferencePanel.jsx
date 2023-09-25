@@ -27,7 +27,6 @@ const JobPreferencePanel = ({
 
     try {
       console.log(userId);
-      console.log(createJobPreference);
       const response = await createJobPreference(reqBody, sessionTokenRef);
       if (!response.error) {
         console.log("Job preference created successfully:", response);

@@ -7,11 +7,11 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Calendar } from "primereact/calendar";
 import { Button } from "primereact/button";
 
-const CreateJobExperienceForm = ({ formData, setFormData, handleInputChange, createJobExperience }) => {
+const CreateJobExperienceForm = ({ formData, setFormData, handleInputChange, addJobExperience }) => {
     
     return (
       <div className={styles.container}>
-          <form className={styles.form} onSubmit={createJobExperience}>
+          <form className={styles.form} onSubmit={addJobExperience}>
             <div className={styles.cardBody}>
               <div className={styles.cardRow}>
                 <label>Company Name:</label>
