@@ -7,6 +7,7 @@ import styles from "./JobExperiencePanel.module.css"
 import CreateJobExperienceForm from "../CreateJobExperienceForm/CreateJobExperienceForm";
 import { Rating } from "primereact/rating";
 import { Card } from "primereact/card";
+import { createJobExperience } from "@/app/api/auth/jobExperience/route";
 
 const JobExperiencePanel = ({
   formData,
@@ -44,7 +45,7 @@ const JobExperiencePanel = ({
     setShowCreateJobExperienceDialog(false);
   };
 
-  const createJobExperience = async (e) => {
+  const addJobExperience = async (e) => {
     e.preventDefault();
     const userId = formData.userId;
 
@@ -58,9 +59,13 @@ const JobExperiencePanel = ({
     };
 
     console.log(reqBody);
-
     try {
-
+      const response = await createJobExperience(reqBody, sessionTokenRef);
+      if (!response.error) {
+        console.log("Job experience created successfully:", response);
+        alert("Job experience created successfully!");
+        setRefreshData((prev) => !prev);
+      }
     } catch (error) {
       alert(error.message)
     }
@@ -68,7 +73,7 @@ const JobExperiencePanel = ({
   };
 
   const deleteJobExperience = async (e) => {
-    e.preventDefault();
+    console.log("Hello")
   };
 
   const itemTemplate = (jobExperience) => {
@@ -89,7 +94,7 @@ const JobExperiencePanel = ({
         <div className={styles.cardDescription}>
           <p>{jobExperience.jobDescription}</p>
         </div>
-        <div className={styles.cardFooter}>
+        {/* <div className={styles.cardFooter}>
           <Button
             label="Edit"
             icon="pi pi-pencil"
@@ -112,7 +117,7 @@ const JobExperiencePanel = ({
               // setShowDeleteDialog(jobListing);
             }}
           />
-        </div>
+        </div> */}
       </Card>
     );
   };
@@ -139,7 +144,7 @@ const JobExperiencePanel = ({
             formData={formData}
             setFormData={setFormData}
             handleInputChange={handleInputChange}
-            createJobExperience={createJobExperience}
+            addJobExperience={addJobExperience}
           />
         </Dialog>
       </div>
