@@ -68,3 +68,8 @@
 .p-inputnumber .p-inputnumber-input {
   width: 100%; /* Ensure the input within the InputNumber component takes full width */
 }
+
+.errorMessage {
+  color: red;
+  font-size: 0.8em;
+}

@@ -7,7 +7,12 @@ import styles from "./JobExperiencePanel.module.css"
 import CreateJobExperienceForm from "../CreateJobExperienceForm/CreateJobExperienceForm";
 import { Rating } from "primereact/rating";
 import { Card } from "primereact/card";
-import { createJobExperience } from "@/app/api/auth/jobExperience/route";
+import {
+  createJobExperience,
+  updateJobExperience,
+  deleteJobExperience
+} from "@/app/api/auth/jobExperience/route";
+import EditJobExperienceForm from "../EditJobExperienceForm/EditJobExperienceForm";
 
 const JobExperiencePanel = ({
   formData,
@@ -24,6 +29,13 @@ const JobExperiencePanel = ({
     useState(false);
   const [showDeleteJobExperienceDialog, setShowDeleteJobExperienceDialog] =
     useState(false);
+
+  const [selectedJobExperienceData, setSelectedJobExperienceData] = useState(null);
+
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    return new Date(dateString).toLocaleDateString("en-GB", options);
+  };
 
   const jobExperienceHeader = (
     <div
@@ -45,9 +57,35 @@ const JobExperiencePanel = ({
     setShowCreateJobExperienceDialog(false);
   };
 
+  const hideEditJobExperienceDialog = () => {
+    setShowEditJobExperienceDialog(false);
+  }
+
+  const hideDeleteJobExperienceDialog = () => {
+    setShowDeleteJobExperienceDialog(false);
+  }
+
+  const deleteDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        onClick={() =>
+          removeJobExperience(selectedJobExperienceData.jobExperienceId)
+        }
+      />
+    </React.Fragment>
+  );
+
   const addJobExperience = async (e) => {
     e.preventDefault();
     const userId = formData.userId;
+
+    if (Object.keys(formErrors).length > 0) {
+      // There are validation errors
+      alert("Please fix the form errors before submitting.");
+      return;
+    }
 
     const reqBody = {
       jobSeekerId: userId,
@@ -72,8 +110,48 @@ const JobExperiencePanel = ({
     setShowCreateJobExperienceDialog(false);
   };
 
-  const deleteJobExperience = async (e) => {
-    console.log("Hello")
+  const editJobExperience = async (e) => {
+    e.preventDefault();
+    const jobExperienceId = formData.jobExperienceId;
+
+    const reqBody = {
+      employerName: formData.employerName,
+      jobTitle: formData.jobTitle,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
+      jobDescription: formData.jobDescription,
+    };
+    
+    try {
+      const response = await updateJobExperience(
+        jobExperienceId, 
+        reqBody,
+        sessionTokenRef
+      );
+      if (!response.error) {
+        console.log("Job experience updated successfully:", response);
+        alert("Job experience updated successfully!");
+        setRefreshData((prev) => !prev);
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+    setSelectedJobExperienceData(null);
+    setShowEditJobExperienceDialog(false);
+  }
+
+  const removeJobExperience = async (jobExperienceId) => {
+    try {
+      const response = await deleteJobExperience(jobExperienceId, sessionTokenRef)
+      console.log('User is deleted', response);
+      alert('Deleted job experience successfully');
+      setRefreshData((prev) => !prev);
+    } catch (error) {
+      console.error("Error deleting job experience:", error);
+      alert("There was an error deleting the job experience:");
+    }
+    setSelectedJobExperienceData(null);
+    setShowDeleteJobExperienceDialog(false);
   };
 
   const itemTemplate = (jobExperience) => {
@@ -86,24 +164,23 @@ const JobExperiencePanel = ({
             <h4>{jobExperience.employerName}</h4>
           </div>
           <div className={styles.cardHeaderRight}>
-            <h4>{jobExperience.startDate}</h4>
+            <h4>{formatDate(jobExperience.startDate)}</h4>
             <h4 className={styles.hideOnMobile}>-</h4>
-            <h4>{jobExperience.endDate}</h4>
+            <h4>{formatDate(jobExperience.endDate)}</h4>
           </div>
         </div>
         <div className={styles.cardDescription}>
           <p>{jobExperience.jobDescription}</p>
         </div>
-        {/* <div className={styles.cardFooter}>
+        <div className={styles.cardFooter}>
           <Button
             label="Edit"
             icon="pi pi-pencil"
             severity="success"
             className={styles.buttonSpacing}
             onClick={() => {
-              e.preventDefault();
-              // setSelectedJobListingData(jobListing);
-              // setShowEditDialog(jobListing);
+              setSelectedJobExperienceData(jobExperience);
+              setShowEditJobExperienceDialog(jobExperience);
             }}
           />
           <Button
@@ -112,12 +189,11 @@ const JobExperiencePanel = ({
             severity="danger"
             className={styles.buttonSpacing}
             onClick={() => {
-              e.preventDefault();
-              // setSelectedJobListingData(jobListing);
-              // setShowDeleteDialog(jobListing);
+              setSelectedJobExperienceData(jobExperience);
+              setShowDeleteJobExperienceDialog(jobExperience);
             }}
           />
-        </div> */}
+        </div>
       </Card>
     );
   };
@@ -146,6 +222,38 @@ const JobExperiencePanel = ({
             handleInputChange={handleInputChange}
             addJobExperience={addJobExperience}
           />
+        </Dialog>
+
+        <Dialog
+          header="Edit Job Experience"
+          visible={showEditJobExperienceDialog}
+          onHide={hideEditJobExperienceDialog}
+          className={styles.cardDialog}
+        >
+          <EditJobExperienceForm
+            formData={formData}
+            setFormData={setFormData}
+            handleInputChange={handleInputChange}
+            editJobExperience={editJobExperience}
+            selectedJobExperience={selectedJobExperienceData}
+          />
+        </Dialog>
+
+        <Dialog
+          header="Delete Job Experience"
+          visible={showDeleteJobExperienceDialog}
+          onHide={hideDeleteJobExperienceDialog}
+          className={styles.cardDialog}
+          footer={deleteDialogFooter}
+        >
+          <h3>
+            Confirm Delete Job Experience:{" "}
+            {showDeleteJobExperienceDialog &&
+              showDeleteJobExperienceDialog.jobTitle}
+            ,
+            {showDeleteJobExperienceDialog &&
+              showDeleteJobExperienceDialog.employerName}
+          </h3>
         </Dialog>
       </div>
     </Panel>

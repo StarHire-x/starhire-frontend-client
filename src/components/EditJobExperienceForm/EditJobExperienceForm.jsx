@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styles from "./createJobExperienceForm.module.css";
+import React, { useState, useEffect } from "react";
+import styles from "./editJobExperienceForm.module.css";
 import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
@@ -7,17 +7,31 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Calendar } from "primereact/calendar";
 import { Button } from "primereact/button";
 
-const CreateJobExperienceForm = ({
+const EditJobExperienceForm = ({
   formData,
   setFormData,
   handleInputChange,
-  addJobExperience,
+  editJobExperience,
+  selectedJobExperience,
 }) => {
   const [formErrors, setFormErrors] = useState({});
 
+  useEffect(() => {
+    if (selectedJobExperience) {
+      setFormData({
+        jobExperienceId: selectedJobExperience.jobExperienceId,
+        employerName: selectedJobExperience.employerName,
+        jobTitle: selectedJobExperience.jobTitle,
+        startDate: new Date(selectedJobExperience.startDate),
+        endDate: new Date(selectedJobExperience.endDate),
+        jobDescription: selectedJobExperience.jobDescription,
+      });
+    }
+  }, [selectedJobExperience]);
+
   return (
     <div className={styles.container}>
-      <form className={styles.form} onSubmit={addJobExperience}>
+      <form className={styles.form} onSubmit={editJobExperience}>
         <div className={styles.cardBody}>
           <div className={styles.cardRow}>
             <label>Company Name:</label>
@@ -92,8 +106,8 @@ const CreateJobExperienceForm = ({
               name="jobDescription"
               value={formData?.jobDescription}
               onChange={handleInputChange}
-              rows={7}
-              autoResize={true}
+              rows={7} /* Adjust as needed */
+              autoResize={true} /* If you want it to resize automatically */
             />
           </div>
         </div>
@@ -106,4 +120,4 @@ const CreateJobExperienceForm = ({
   );
 };
 
-export default CreateJobExperienceForm;
+export default EditJobExperienceForm;

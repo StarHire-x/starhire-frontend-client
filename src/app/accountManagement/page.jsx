@@ -236,6 +236,7 @@ const AccountManagement = () => {
               sessionTokenRef={sessionTokenRef}
               setRefreshData={setRefreshData}
               isJobPreferenceAbsent={isJobPreferenceAbsent}
+              setIsJobPreferenceAbsent={setIsJobPreferenceAbsent}
             />
             <br />
             <JobExperiencePanel
