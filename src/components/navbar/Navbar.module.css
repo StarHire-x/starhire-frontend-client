@@ -116,7 +116,7 @@ margin-bottom: 0px /* Add some spacing below the image */
   /* Style for the submenu */
   .submenu {
     position: absolute;
-    top: 200%; /* Position the submenu below the main menu item */
+    top: 120%; /* Position the submenu below the main menu item */
     left: 0;
     display: none; /* Initially hide the submenu */
     background-color: #fff; /* Background color of the submenu */

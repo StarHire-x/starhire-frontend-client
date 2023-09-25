@@ -37,8 +37,8 @@ const MENU_LIST_AUTHENTICATED_CORPORATE = [
     text: "Job Listing Management",
     href: "#", // Use # as the href for dropdown
     subMenu: [
-      { text: "Create Job Listing", href: "/createJobListing" },
-      { text: "Edit Job Listing", href: "/editJobListing" },
+      { text: "Create Job Listing", href: "/jobListingManagement" },
+      { text: "Edit Job Listing", href: "/jobListingManagement" },
       // Add more sub-menu items as needed
     ],
   },
@@ -139,7 +139,7 @@ const Navbar = () => {
                 )}
               </div>
             ))}
-            
+
           {session.status == "unauthenticated" &&
             MENU_LIST_UNAUTHENTICATED.map((menu, idx) => (
               <div
