@@ -11,6 +11,7 @@ const JobPreferencePanel = ({
   sessionTokenRef,
   setRefreshData,
   isJobPreferenceAbsent,
+  setIsJobPreferenceAbsent,
 }) => {
   const newJobPreferences = async (e) => {
     e.preventDefault();
@@ -32,6 +33,7 @@ const JobPreferencePanel = ({
         console.log("Job preference created successfully:", response);
         alert("Job preference created successfully!");
         setRefreshData((prev) => !prev);
+        setIsJobPreferenceAbsent(false);
       }
     } catch (error) {
       console.log("Failed to update job preference");
