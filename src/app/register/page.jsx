@@ -247,10 +247,7 @@ const Step3 = ({ formData, setFormData, onPrevious, onSubmit, err }) => {
             Previous
           </button>
           <div className={styles.spacer}></div>
-          {loading && (
-            <ProgressSpinner style={{ width: "50px", height: "50px" }} />
-          )}
-          {!loading && <button className={styles.button}>Register</button>}
+          <button className={styles.button}>Register</button>
         </div>
       </form>
     </div>
