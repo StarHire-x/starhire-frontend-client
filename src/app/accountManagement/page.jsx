@@ -2,17 +2,30 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { getUserByEmailRole, getUserByUserId } from "../api/auth/user/route";
+import { getUserByUserId, updateUser } from "../api/auth/user/route";
 import { uploadFile } from "../api/auth/upload/route";
-import { updateUser } from "../api/auth/user/route";
 import styles from "./page.module.css";
 import { UserContext } from "@/context/UserContext";
 import { RadioButton } from "primereact/radiobutton";
+import { Card } from "primereact/card";
+import { Panel } from "primereact/panel";
+import { Ripple } from "primereact/ripple";
+import { Rating } from "primereact/rating";
+import { Button } from "primereact/button";
+import EditAccountForm from "@/components/EditAccountForm/EditAccountForm";
+import JobPreferencePanel from "@/components/JobPreferencePanel/JobPreferencePanel";
+import {
+  createJobPreference,
+  getExistingJobPreference,
+  updateJobPreference,
+} from "../api/auth/preference/route";
+import JobExperiencePanel from "@/components/JobExperiencePanel/JobExperiencePanel";
 
 const AccountManagement = () => {
   const session = useSession();
   const router = useRouter();
   const [refreshData, setRefreshData] = useState(false);
+  const [jobExperience, setJobExperience] = useState([]);
   const [formData, setFormData] = useState({
     userId: "",
     userName: "",
@@ -26,10 +39,25 @@ const AccountManagement = () => {
     status: "",
     contactNo: "",
     dateOfBirth: "",
+    jobPreferenceId: "",
+    resumePdf: "",
+    locationPreference: 0,
+    salaryPreference: 0,
+    culturePreference: 0,
+    diversityPreference: 0,
+    workLifeBalancePreference: 0,
+    jobExperienceId: "",
+    employerName: "",
+    jobTitle: "",
+    jobExperienceStartDate: "",
+    jobExperienceEndDate: "",
+    jobDescription: "",
   });
 
   // this is to do a reload of userContext if it is updated in someway
   const { userData, fetchUserData } = useContext(UserContext);
+
+  const [isJobPreferenceAbsent, setIsJobPreferenceAbsent] = useState(false);
 
   let roleRef, sessionTokenRef, userIdRef;
 
@@ -59,11 +87,47 @@ const AccountManagement = () => {
         .catch((error) => {
           console.error("Error fetching user:", error);
         });
+
+      getExistingJobPreference(userIdRef, sessionTokenRef)
+        .then((preference) => {
+          setFormData((prevState) => ({
+            ...prevState,
+            ...preference.data,
+          }));
+        })
+        .catch((error) => {
+          console.error("Error fetching job preference:", error);
+          setIsJobPreferenceAbsent(true);
+        });
+
+      // Set Job Experience testing code
+      setJobExperience([
+        {
+          jobExperienceId: 1,
+          employerName: "Dell Corporation",
+          jobTitle: "Software Engineer",
+          jobExperienceStartDate: "2022-09-15",
+          jobExperienceEndDate: "2023-09-15",
+          jobDescription:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        },
+        {
+          jobExperienceId: 1,
+          employerName: "Dell Corporation",
+          jobTitle: "Software Engineer",
+          jobExperienceStartDate: "2022-09-15",
+          jobExperienceEndDate: "2023-09-15",
+          jobDescription:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        },
+        // You can add more dummy job experiences here...
+      ]);
     }
   }, [session.status, userIdRef, roleRef, refreshData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
     setFormData({
       ...formData,
       [name]: value,
@@ -72,46 +136,52 @@ const AccountManagement = () => {
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
+    const inputId = e.target.id; // Get the ID of the input that triggered the event
     if (!file) return;
     try {
       const response = await uploadFile(file, sessionTokenRef);
-      setFormData((prevState) => ({
-        ...prevState,
-        profilePictureUrl: response.url,
-      }));
+
+      if (inputId === "profilePicture") {
+        setFormData((prevState) => ({
+          ...prevState,
+          profilePictureUrl: response.url,
+        }));
+      } else if (inputId === "resumePdf") {
+        setFormData((prevState) => ({
+          ...prevState,
+          resumePdf: response.url,
+        }));
+      }
     } catch (error) {
       console.error("There was an error uploading the file", error);
     }
   };
 
+  const removePdf = () => {
+    setFormData((prevState) => ({
+      ...prevState,
+      resumePdf: "",
+    }));
+  };
+
   const saveChanges = async (e) => {
     e.preventDefault();
     const userId = formData.userId;
-    const email = formData.email;
-    const userName = formData.userName;
-    const fullName = formData.fullName;
-    const homeAddress = formData.homeAddress;
-    const companyName = formData.companyName;
-    const dateOfBirth = formData.dateOfBirth;
-    const contactNo = formData.contactNo;
-    const companyAddress = formData.companyAddress;
-    const profilePictureUrl = formData.profilePictureUrl;
-    const notificationMode = formData.notificationMode;
-    const status = formData.status;
 
     const updateUserDetails = {
       role: roleRef,
-      email: email,
-      userName: userName,
-      fullName: fullName,
-      homeAddress: homeAddress,
-      companyName: companyName,
-      companyAddress: companyAddress,
-      contactNo: contactNo,
-      dateOfBirth: dateOfBirth,
-      profilePictureUrl: profilePictureUrl,
-      notificationMode: notificationMode,
-      status: status,
+      email: formData.email,
+      userName: formData.userName,
+      fullName: formData.fullName,
+      homeAddress: formData.homeAddress,
+      companyName: formData.companyName,
+      companyAddress: formData.companyAddress,
+      contactNo: formData.contactNo,
+      dateOfBirth: formData.dateOfBirth,
+      profilePictureUrl: formData.profilePictureUrl,
+      resumePdf: formData.resumePdf,
+      notificationMode: formData.notificationMode,
+      status: formData.status,
     };
     try {
       console.log(userId);
@@ -121,213 +191,71 @@ const AccountManagement = () => {
         userId,
         sessionTokenRef
       );
-      console.log("Status changed successfully:", response);
-      alert("Status changed successfully!");
 
-      setRefreshData((prev) => !prev);
-      // this is to do a reload of userContext if it is updated so that navbar can change
-      fetchUserData();
+      if (response) {
+        alert("Status changed successfully!");
+        setRefreshData((prev) => !prev);
+        // this is to do a reload of userContext if it is updated so that navbar can change
+        fetchUserData();
+      }
     } catch {
       console.log("Failed to update user");
       alert("Failed to update user particulars");
     }
   };
 
+  const deleteJobExperience = async (e) => {
+    e.preventDefault();
+  };
+
+  const createJobExperience = async (e) => {
+    e.preventDefault();
+    const userId = formData.userId;
+
+    const reqBody = {
+      jobSeekerId: userId,
+      employerName: formData.employerName,
+      jobTitle: formData.jobTitle,
+      jobExperienceStartDate: formData.jobExperienceStartDate,
+      jobExperienceEndDate: formData.jobExperienceEndDate,
+      jobDescription: formData.jobDescription
+    }
+
+    console.log(reqBody);
+  };
+
   if (session.status === "authenticated") {
     return (
       <div className={styles.container}>
-        <h1 className={styles.title}>My Account Details</h1>
-        <form className={styles.form} onSubmit={saveChanges}>
-          <div className={styles.avatarContainer}>
-            {formData?.profilePictureUrl && (
-              <img
-                src={formData.profilePictureUrl}
-                alt="User Profile"
-                className={styles.avatar}
-              />
-            )}
-          </div>
-
-          <div className={styles.inputFields}>
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="userName">
-                User Name:
-              </label>
-              <input
-                type="text"
-                id="userName"
-                name="userName"
-                className={styles.input}
-                value={formData.userName}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="email">Email:</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className={styles.input}
-                value={formData.email}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="contactNo">Contact Number:</label>
-              <input
-                type="number"
-                id="contactNo"
-                name="contactNo"
-                className={styles.input}
-                value={formData.contactNo}
-                onChange={handleInputChange}
-              />
-            </div>
-            {session.data.user.role === "Job_Seeker" && (
-              <>
-                <div className={styles.field}>
-                  <label htmlFor="fullName">Full Name:</label>
-                  <input
-                    type="text"
-                    id="fullName"
-                    name="fullName"
-                    className={styles.input}
-                    value={formData.fullName}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className={styles.field}>
-                  <label htmlFor="homeAddress">Home Address:</label>
-                  <input
-                    type="text"
-                    id="homeAddress"
-                    name="homeAddress"
-                    className={styles.input}
-                    value={formData.homeAddress}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className={styles.field}>
-                  <label htmlFor="dateOfBirth">Date of Birth:</label>
-                  <input
-                    type="date"
-                    id="dateOfBirth"
-                    name="dateOfBirth"
-                    className={styles.input}
-                    value={formData.dateOfBirth}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </>
-            )}
-            {session.data.user.role === "Corporate" && (
-              <>
-                <div className={styles.field}>
-                  <label htmlFor="companyName">Company Name:</label>
-                  <input
-                    type="text"
-                    id="companyName"
-                    name="companyName"
-                    className={styles.input}
-                    value={formData.companyName}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className={styles.field}>
-                  <label htmlFor="companyAddress">Company Address:</label>
-                  <input
-                    type="text"
-                    id="companyAddress"
-                    name="companyAddress"
-                    className={styles.input}
-                    value={formData.companyAddress}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </>
-            )}
-            {/* This is just to check the image link */}
-            {/* <div className={styles.field}>
-            <label htmlFor="profilePictureUrl">Profile Picture URL:</label>
-            <input
-              type="url"
-              id="profilePictureUrl"
-              name="profilePictureUrl"
-              className={styles.input}
-              value={formData.profilePictureUrl}
-              onChange={handleInputChange}
+        <EditAccountForm
+          formData={formData}
+          handleInputChange={handleInputChange}
+          handleFileChange={handleFileChange}
+          saveChanges={saveChanges}
+          session={session}
+          removePdf={removePdf}
+        />
+        <br />
+        {roleRef === "Job_Seeker" && (
+          <>
+            <JobPreferencePanel
+              formData={formData}
+              setFormData={setFormData}
+              sessionTokenRef={sessionTokenRef}
+              setRefreshData={setRefreshData}
+              isJobPreferenceAbsent={isJobPreferenceAbsent}
             />
-          </div> */}
-            <div className={styles.fileField}>
-              <label htmlFor="profilePicture">Profile Picture:</label>
-              <input
-                type="file"
-                id="profilePicture"
-                onChange={handleFileChange}
-              />
-            </div>
-            <div className={styles.radioFields}>
-              <div className={styles.radioHeader}>
-                <p>Notifications</p>
-              </div>
-              <div className={styles.radioOption}>
-                <RadioButton
-                  inputId="Email"
-                  name="notificationMode"
-                  value="Email"
-                  onChange={handleInputChange}
-                  checked={formData.notificationMode === "Email"}
-                />
-                <label htmlFor="Email" className="ml-2">
-                  Email
-                </label>
-                <br />
-                <RadioButton
-                  inputId="Sms"
-                  name="notificationMode"
-                  value="Sms"
-                  onChange={handleInputChange}
-                  checked={formData.notificationMode === "Sms"}
-                />
-                <label htmlFor="Sms" className="ml-2">
-                  Sms
-                </label>
-              </div>
-
-              <div className={styles.radioHeader}>
-                <p>Status</p>
-              </div>
-              <div className={styles.radioOption}>
-                <RadioButton
-                  inputId="status"
-                  name="status"
-                  value="Active"
-                  onChange={handleInputChange}
-                  checked={formData.status === "Active"}
-                />
-                <label htmlFor="notificationMode" className="ml-2">
-                  Active
-                </label>
-                <br />
-                <RadioButton
-                  inputId="status"
-                  name="status"
-                  value="Inactive"
-                  onChange={handleInputChange}
-                  checked={formData.status === "Inactive"}
-                />
-                <label htmlFor="notificationMode" className="ml-2">
-                  Inactive
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.buttonContainer}>
-            <button className={styles.button}>Save Changes</button>
-          </div>
-        </form>
+            <br />
+            <JobExperiencePanel
+              formData={formData}
+              setFormData={setFormData}
+              sessionTokenRef={sessionTokenRef}
+              setRefreshData={setRefreshData}
+              jobExperience={jobExperience}
+              handleInputChange={handleInputChange}
+            />
+          </>
+        )}
       </div>
     );
   }

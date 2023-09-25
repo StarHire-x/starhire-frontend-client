@@ -1,0 +1,83 @@
+.title {
+  font-size: 40px;
+  color: #000000; /* This will make the title black */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inputFields {
+  width: 600px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.button {
+  width: 300px;
+  padding: 20px;
+  cursor: pointer;
+  background-color: #53c28b;
+  border: none;
+  border-radius: 5px;
+  color: #eee;
+  font-weight: bold;
+}
+
+.buttonContainer {
+  grid-column: span 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.labelRating {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-bottom: 5px;
+}
+
+.fieldRating {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+      font-size: 40px;
+  }
+
+  .inputFields {
+      width: 90%;
+      grid-template-columns: 1fr;
+      gap: 10px;
+  }
+
+  .labelRating {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+  }
+
+  .button {
+      width: 90%;
+  }
+
+  .fieldRating {
+      grid-template-columns: 1fr;
+      gap: 5px;
+  }
+}

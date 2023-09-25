@@ -89,6 +89,9 @@ margin-bottom: 0px /* Add some spacing below the image */
     border-radius: 3px;
 }
 
+
+
+
 @media screen and (min-width: 900px) {
   .nav__menu_bar{
     display: none;
@@ -103,4 +106,42 @@ margin-bottom: 0px /* Add some spacing below the image */
     align-items: center;
     height: auto;
   }
+
+  .nav__menu_list > div {
+    position: relative;
+    display: inline-block;
+    margin-right: 20px; /* Adjust the spacing between menu items */
+  }
+  
+  /* Style for the submenu */
+  .submenu {
+    position: absolute;
+    top: 120%; /* Position the submenu below the main menu item */
+    left: 0;
+    display: none; /* Initially hide the submenu */
+    background-color: #fff; /* Background color of the submenu */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for the submenu */
+    z-index: 1; /* Ensure the submenu appears above other elements */
+  }
+  
+  /* Style for individual submenu items */
+  .submenu a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #333; /* Text color of submenu items */
+    transition: background-color 0.3s; /* Add a smooth transition effect */
+  }
+  
+  /* Hover state for submenu items */
+  .submenu a:hover {
+    background-color: #f5f5f5; /* Background color on hover */
+  }
+  
+  /* Show the submenu when the main menu item is hovered */
+  .nav__menu_list > div:hover .submenu {
+    display: block;
+  }
+
+  
 }

@@ -1,0 +1,62 @@
+.jobExperienceHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card {
+    border: 1px dotted #000000;
+}
+
+.cardHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;  /* This will push cardHeaderLeft and cardHeaderRight apart */
+    align-items: center;  /* Vertically centers the content if needed */
+    border-bottom: 2px solid #000000; /* This will add a light gray line below cardHeader */
+}
+
+.cardHeaderLeft {
+    display: flex;
+    align-items: center;  /* Vertically centers the content */
+    gap: 10px;  /* Spacing between the items */
+}
+
+.cardHeaderRight {
+    display: flex;
+    align-items: center;  /* Vertically centers the content */
+    gap: 10px;  /* Spacing between the items */
+}
+
+.cardFooter {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;  /* This will push cardHeaderLeft and cardHeaderRight apart */
+    align-items: center;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+
+    .hideOnMobile {
+        display: none;  /* Hides elements with this class on screens 768px and below */
+    }
+
+    .cardHeader {
+        flex-direction: column;
+        padding: 5px; /* reduced padding for mobile */
+    }
+
+    .cardHeaderLeft, .cardHeaderRight {
+        flex-direction: column; /* stack items vertically */
+        align-items: flex-start; /* align to the start */
+        gap: 5px;
+    }
+
+    .cardFooter {
+        flex-direction: column;  /* Stack the buttons vertically on mobile */
+        gap: 5px;  /* Provides a little space between stacked buttons */
+        align-items: center;  /* Centers the buttons */
+    }
+}

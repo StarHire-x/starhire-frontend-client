@@ -5,6 +5,18 @@
     flex-direction: column;
     gap: 20px;
  }
+
+ .title {
+   font-size: 60px;
+   background: linear-gradient(to bottom, #194c33, #bbb);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+ }
+
+ .error {
+   color: rgb(201, 15, 15);
+   text-align: center;
+ } 
  
  .form {
     width: 300px;
@@ -45,3 +57,9 @@
   /* Optional: Adjust the radio button styles */
   margin-right: 4px; /* Adjust the spacing between the radio button and label text */
 }
+
+@media screen and (max-width: 768px) {
+   .title {
+     font-size: 30px;
+   }
+ }

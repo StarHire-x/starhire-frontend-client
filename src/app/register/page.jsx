@@ -8,6 +8,7 @@ import { hashing } from "@/app/api/auth/register/route";
 import { registerUser } from "@/app/api/auth/register/route";
 import { createUser } from "../api/auth/user/route";
 import { RadioButton } from "primereact/radiobutton";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 const Step1 = ({ formData, setFormData, onNext }) => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -43,7 +44,7 @@ const Step1 = ({ formData, setFormData, onNext }) => {
       <form className={styles.form}>
         <div className={styles.userRole}>
           <div>
-            <p>I am registering as a...</p>
+            <p>I am registering as a:</p>
           </div>
 
           <div className={styles.radio}>
@@ -69,26 +70,6 @@ const Step1 = ({ formData, setFormData, onNext }) => {
             <label htmlFor="Corporate" className="ml-2">
               Corporate
             </label>
-            {/* <label>
-              <input
-                type="radio"
-                name="role"
-                value="Job_Seeker"
-                checked={formData.role === "Job_Seeker"}
-                onChange={handleInputChange}
-              />
-              Job Seeker
-            </label> */}
-            {/* <label>
-              <input
-                type="radio"
-                name="role"
-                value="Corporate"
-                checked={formData.role === "Corporate"}
-                onChange={handleInputChange}
-              />
-              Corporate
-            </label> */}
           </div>
         </div>
 
@@ -189,6 +170,7 @@ const Step2 = ({ formData, setFormData, onNext, onPrevious }) => {
 
 const Step3 = ({ formData, setFormData, onPrevious, onSubmit, err }) => {
   const [errorMessage, setErrorMessage] = useState("");
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrorMessage("");
@@ -265,7 +247,10 @@ const Step3 = ({ formData, setFormData, onPrevious, onSubmit, err }) => {
             Previous
           </button>
           <div className={styles.spacer}></div>
-          <button className={styles.button}>Register</button>
+          {loading && (
+            <ProgressSpinner style={{ width: "50px", height: "50px" }} />
+          )}
+          {!loading && <button className={styles.button}>Register</button>}
         </div>
       </form>
     </div>
@@ -320,7 +305,7 @@ const Register = () => {
       }
     } catch (error) {
       console.error("Fetch error:", error);
-      // setErrorMessage(error);
+      setErrorMessage(error);
     }
   };
 
