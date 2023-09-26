@@ -38,6 +38,7 @@ const ViewApplicationsPage = () => {
     const params = useSearchParams();
     const id = params.get("id");
 
+    /*
     useEffect(() => {
       if (accessToken) {
         getJobApplicationsByJobListingId(id, accessToken)
@@ -51,11 +52,11 @@ const ViewApplicationsPage = () => {
           });
       }
     }, [accessToken]);
+    */
 
-    /*
     useEffect(() => {
       // Define the URL you want to fetch
-      const apiUrl = 'http://localhost:8080/job-listing/corporate/jobApplications/1';
+      const apiUrl = `http://localhost:8080/job-listing/corporate/jobApplications/${id}`;
     
       // Use the fetch API to make the request with the access token in the headers
       fetch(apiUrl, {
@@ -78,7 +79,6 @@ const ViewApplicationsPage = () => {
           //setLoading(false); // Set loading to false in case of an error
         });
     }, [accessToken]);
-    */
     
 
 

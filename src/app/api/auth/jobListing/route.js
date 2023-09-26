@@ -131,6 +131,7 @@ export const findAssignedJobListings = async (userId, accessToken) => {
 
 export const getJobApplicationsByJobListingId = async (id, accessToken) => {
   try {
+    console.log("TEST");
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/corporate/jobApplications/${id}`,
       {
@@ -146,7 +147,7 @@ export const getJobApplicationsByJobListingId = async (id, accessToken) => {
     const response = await res.json();
     console.log(response);
     if (response.statusCode === 200) {
-      return response.data;
+      return await response.data;
     } else {
       throw new Error(response.message || 'An error occurred');
     }
