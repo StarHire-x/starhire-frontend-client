@@ -68,29 +68,31 @@ const ViewApplicationsPage = () => {
               ) : (
                 <>
                   <div className={styles.cardRow}>
-                    <span>Job Application ID:</span>
-                    <span>{jobApplications.jobApplicationId}</span> 
+                    <span>Available start Date:</span>
+                    <span>
+                      {formatDate(jobApplications.availableStartDate)}
+                    </span>
                   </div>
                   <div className={styles.cardRow}>
-                    <span>Location:</span>
-                    <span>{jobApplications.jobApplicatioStatus}</span>
-                  </div>
-                  <div className={styles.cardRow}>
-                    <span>Average Salary:</span> 
-                    <span>{formatDate(jobApplications.availableStartDate)}</span>
-                  </div>
-                  <div className={styles.cardRow}>
-                    <span>Listing Date:</span>
+                    <span>Available End Date:</span>
                     <span>{formatDate(jobApplications.availableEndDate)}</span>
                   </div>
                   <div className={styles.cardRow}>
-                    <span>Start Date:</span>
+                    <span>Submitted on:</span>
                     <span>{formatDate(jobApplications.submissionDate)}</span>
                   </div>
 
                   <div className={styles.cardRow}>
                     <span>Status:</span>
-                    <span>{jobApplications.jobApplicationStatus}</span> 
+                    <span
+                      className={
+                        jobApplications.jobApplicationStatus === "Accepted"
+                          ? styles.greenText
+                          : styles.redText
+                      }
+                    >
+                      {jobApplications.jobApplicationStatus}
+                    </span>
                   </div>
                 </>
               )}

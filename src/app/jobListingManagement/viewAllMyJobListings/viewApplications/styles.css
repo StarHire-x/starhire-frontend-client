@@ -13,6 +13,32 @@
     height: 40px;
     animation: spin 1s linear infinite;
   }
+
+/* Add your CSS classes for different statuses */
+.status-submitted {
+  color: blue;
+}
+
+.status-processing {
+  color: orange;
+}
+
+.status-waiting {
+  color: purple;
+}
+
+.status-rejected {
+  color: red;
+}
+
+.status-accepted {
+  color: green;
+}
+.status-Unverified {
+  color: green;
+}
+
+
   
   @keyframes spin {
     0% { transform: rotate(0deg); }
