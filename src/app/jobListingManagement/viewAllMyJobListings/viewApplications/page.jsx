@@ -11,7 +11,7 @@ import 'primeflex/primeflex.css';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 
-const ViewAJobListingPage = () => {
+const ViewApplicationsPage = () => {
     const [jobListing, setJobListing] = useState(null);
     const [refreshData, setRefreshData] = useState(false);
     const session = useSession();
@@ -95,4 +95,4 @@ const ViewAJobListingPage = () => {
       }
 }
 
-export default ViewAJobListingPage;
+export default ViewApplicationsPage;
