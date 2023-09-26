@@ -84,7 +84,7 @@ const ViewAJobListingPage = () => {
               header={<h2 className={styles.headerTitle}>All Applicants</h2>}
               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
               rowsPerPageOptions={[10, 25, 50]}
-              emptyMessage="No job listing found"
+              emptyMessage="No Applicants found for this Job Listing"
               itemTemplate={itemTemplate}
               pt={{
                 grid: { className: 'surface-ground' },
