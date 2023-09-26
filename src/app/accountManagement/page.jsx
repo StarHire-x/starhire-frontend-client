@@ -97,10 +97,10 @@ const AccountManagement = () => {
         });
 
       getExistingJobPreference(userIdRef, sessionTokenRef).then((response) => {
-        if (response.status === 200) {
+        if (response.statusCode === 200) {
           setFormData((prevState) => ({
             ...prevState,
-            ...preference.data,
+            ...response.data,
           }));
         } else {
           console.error("Error fetching job preference:", response.json());
