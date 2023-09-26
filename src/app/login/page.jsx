@@ -31,7 +31,11 @@ const Login = () => {
   };
 
   if (session.status === "loading") {
-    return <ProgressSpinner />;
+    return (
+      <div className={styles.loadingSession}>
+        <ProgressSpinner />
+      </div>
+    );
   }
 
   if (session.status === "authenticated") {
@@ -40,8 +44,8 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage("")
-    setLoading(false)
+    setErrorMessage("");
+    setLoading(false);
     const { email, password, role } = formData;
 
     if (!email) {
@@ -128,7 +132,9 @@ const Login = () => {
             Corporate
           </label>
         </div>
-        {loading && <ProgressSpinner style={{width: '50px', height: '50px'}}/>}
+        {loading && (
+          <ProgressSpinner style={{ width: "50px", height: "50px" }} />
+        )}
         {!loading && <button className={styles.button}>Login</button>}
       </form>
       <Link href="/register">I don&apos;t have an account </Link>

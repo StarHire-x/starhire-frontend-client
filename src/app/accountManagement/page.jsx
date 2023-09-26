@@ -60,6 +60,9 @@ const AccountManagement = () => {
 
   const [isJobPreferenceAbsent, setIsJobPreferenceAbsent] = useState(false);
 
+  // Cap the number of stars
+  const [totalStarsUsed, setTotalStarsUsed] = useState(0);
+
   let roleRef, sessionTokenRef, userIdRef;
 
   if (session && session.data && session.data.user) {
@@ -89,17 +92,17 @@ const AccountManagement = () => {
           console.error("Error fetching user:", error);
         });
 
-      getExistingJobPreference(userIdRef, sessionTokenRef)
-        .then((preference) => {
+      getExistingJobPreference(userIdRef, sessionTokenRef).then((response) => {
+        if (response.status === 200) {
           setFormData((prevState) => ({
             ...prevState,
             ...preference.data,
           }));
-        })
-        .catch((error) => {
-          console.error("Error fetching job preference:", error);
+        } else {
+          console.error("Error fetching job preference:", response.json());
           setIsJobPreferenceAbsent(true);
-        });
+        }
+      });
 
       // Set Job Experience testing code
       getJobExperience(userIdRef, sessionTokenRef)
@@ -108,8 +111,7 @@ const AccountManagement = () => {
           // setJobExperience(
           //   Array.isArray(jobExp.data) ? jobExp.data : [jobExp.data]
           // );
-          setJobExperience(jobExp.data
-          );
+          setJobExperience(jobExp.data);
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
@@ -210,8 +212,8 @@ const AccountManagement = () => {
       jobTitle: formData.jobTitle,
       startDate: formData.startDate,
       endDate: formData.endDate,
-      jobDescription: formData.jobDescription
-    }
+      jobDescription: formData.jobDescription,
+    };
 
     console.log(reqBody);
   };
@@ -237,6 +239,8 @@ const AccountManagement = () => {
               setRefreshData={setRefreshData}
               isJobPreferenceAbsent={isJobPreferenceAbsent}
               setIsJobPreferenceAbsent={setIsJobPreferenceAbsent}
+              totalStarsUsed={totalStarsUsed}
+              setTotalStarsUsed={setTotalStarsUsed}
             />
             <br />
             <JobExperiencePanel
