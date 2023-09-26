@@ -38,7 +38,11 @@ const ViewApplicationsPage = () => {
     const params = useSearchParams();
     const id = params.get("id");
 
-    /*
+    const formatDate = (dateString) => {
+      const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString(undefined, options);
+    };
+
     useEffect(() => {
       if (accessToken) {
         getJobApplicationsByJobListingId(id, accessToken)
@@ -51,34 +55,7 @@ const ViewApplicationsPage = () => {
             //setIsLoading(false);
           });
       }
-    }, [accessToken]);
-    */
-
-    useEffect(() => {
-      // Define the URL you want to fetch
-      const apiUrl = `http://localhost:8080/job-listing/corporate/jobApplications/${id}`;
-    
-      // Use the fetch API to make the request with the access token in the headers
-      fetch(apiUrl, {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-        },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json(); // Assuming the response is JSON data
-        })
-        .then((responseData) => {
-          setJobApplications(responseData); // Store the fetched data in state
-          //setLoading(false); // Set loading to false
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-          //setLoading(false); // Set loading to false in case of an error
-        });
-    }, [accessToken]);
+    }, [userIdRef, accessToken]);
     
 
 
