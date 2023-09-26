@@ -11,17 +11,11 @@ import styles from 'src/app/jobListingManagement/page.module.css';
 import 'primeflex/primeflex.css';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
-import { FilterMatchMode, FilterOperator } from "primereact/api";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-import { InputText } from "primereact/inputtext";
-import { Dropdown } from "primereact/dropdown";
-import { Button } from "primereact/button"
-
+import "./styles.css";
 const ViewApplicationsPage = () => {
     const [jobApplications, setJobApplications] = useState(null);
     const [refreshData, setRefreshData] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const session = useSession();
     const router = useRouter();
   
@@ -48,78 +42,87 @@ const ViewApplicationsPage = () => {
         getJobApplicationsByJobListingId(id, accessToken)
           .then((response) => {
             setJobApplications(response);
-            //setIsLoading(false);
+            setIsLoading(false);
           })
           .catch((error) => {
             console.error("Error fetching job listings:", error);
-            //setIsLoading(false);
+            setIsLoading(false);
           });
       }
     }, [userIdRef, accessToken]);
-    
 
 
     const itemTemplate = (jobApplications) => {
       const cardLink = `/jobListingManagement/viewAllMyJobListings/viewApplications`;
-      <a href={cardLink} className={styles.cardLink}>
-        <div className={styles.card}>
-          <div className={styles.cardHeader}></div>
-        </div>
-      </a>
       return (
         <a href={cardLink} className={styles.cardLink}>
           <div className={styles.card}>
             <div className={styles.cardHeader}>
-              <h5>{jobApplications.jobApplicationId}</h5>
+              <h3>{"Application ID: " + jobApplications.jobApplicationId}</h3>
             </div>
             <div className={styles.cardBody}>
-              <div className={styles.cardRow}>
-                <span>Job ID:</span>
-                <span>{jobApplications.jobApplicationId}</span> {/* Use the correct property */}
-              </div>
-              <div className={styles.cardRow}>
-                <span>Location:</span>
-                <span>{jobApplications.jobApplicatioStatus}</span> {/* Correct the property name */}
-              </div>
-              <div className={styles.cardRow}>
-                <span>Average Salary:</span> {/* Add a colon after the label */}
-                <span>{formatDate(jobApplications.availableStartDate)}</span>
-              </div>
-              <div className={styles.cardRow}>
-                <span>Listing Date:</span>
-                <span>{formatDate(jobApplications.availableEndDate)}</span>
-              </div>
-              <div className={styles.cardRow}>
-                <span>Start Date:</span>
-                <span>{formatDate(jobApplications.submissionDate)}</span>
-              </div>
+              {isLoading ? (
+                <div className="loading-animation">
+                  <div className="spinner"></div>
+                </div>
+              ) : (
+                <>
+                  <div className={styles.cardRow}>
+                    <span>Job Application ID:</span>
+                    <span>{jobApplications.jobApplicationId}</span> 
+                  </div>
+                  <div className={styles.cardRow}>
+                    <span>Location:</span>
+                    <span>{jobApplications.jobApplicatioStatus}</span>
+                  </div>
+                  <div className={styles.cardRow}>
+                    <span>Average Salary:</span> 
+                    <span>{formatDate(jobApplications.availableStartDate)}</span>
+                  </div>
+                  <div className={styles.cardRow}>
+                    <span>Listing Date:</span>
+                    <span>{formatDate(jobApplications.availableEndDate)}</span>
+                  </div>
+                  <div className={styles.cardRow}>
+                    <span>Start Date:</span>
+                    <span>{formatDate(jobApplications.submissionDate)}</span>
+                  </div>
+
+                  <div className={styles.cardRow}>
+                    <span>Status:</span>
+                    <span>{jobApplications.jobApplicationStatus}</span> 
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </a>
       );
     };
+    
+    if (session.status === 'authenticated') {
+      return (
+        <div className={styles.container}>
+          <DataView
+            value={jobApplications}
+            className={styles.dataViewContainer}
+            layout="grid"
+            rows={10}
+            paginator
+            header={<h2 className={styles.headerTitle}>All Applications for Current Job Listing</h2>}
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            rowsPerPageOptions={[10, 25, 50]}
+            emptyMessage="No Application found for this Job Listing"
+            itemTemplate={itemTemplate}
+            pt={{
+              grid: { className: 'surface-ground' },
+            }}
+          />
+        </div>
+      );
+    }
 
-      if (session.status === 'authenticated') {
-        return (
-          <div className={styles.container}>
-            <DataView
-              value={jobApplications}
-              className={styles.dataViewContainer}
-              layout="grid"
-              rows={10}
-              paginator
-              header={<h2 className={styles.headerTitle}>All Applications for Current Job Listing</h2>}
-              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-              rowsPerPageOptions={[10, 25, 50]}
-              emptyMessage="No Applicantion found for this Job Listing"
-              itemTemplate={itemTemplate}
-              pt={{
-                grid: { className: 'surface-ground' },
-              }}
-            />
-          </div>
-        );
-      }
+    
 }
 
 export default ViewApplicationsPage;
