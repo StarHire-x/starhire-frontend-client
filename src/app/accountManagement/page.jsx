@@ -64,6 +64,9 @@ const AccountManagement = () => {
 
   const [isJobPreferenceAbsent, setIsJobPreferenceAbsent] = useState(false);
 
+  // Cap the number of stars
+  const [totalStarsUsed, setTotalStarsUsed] = useState(0);
+
   let roleRef, sessionTokenRef, userIdRef;
 
   if (session && session.data && session.data.user) {
@@ -93,17 +96,17 @@ const AccountManagement = () => {
           console.error("Error fetching user:", error);
         });
 
-      getExistingJobPreference(userIdRef, sessionTokenRef)
-        .then((preference) => {
+      getExistingJobPreference(userIdRef, sessionTokenRef).then((response) => {
+        if (response.status === 200) {
           setFormData((prevState) => ({
             ...prevState,
             ...preference.data,
           }));
-        })
-        .catch((error) => {
-          console.error("Error fetching job preference:", error);
+        } else {
+          console.error("Error fetching job preference:", response.json());
           setIsJobPreferenceAbsent(true);
-        });
+        }
+      });
 
       // Set Job Experience testing code
       getJobExperience(userIdRef, sessionTokenRef)
@@ -198,7 +201,7 @@ const AccountManagement = () => {
       alert("Failed to update user particulars");
     }
   };
-
+  
   if (session.status === "authenticated") {
     return (
       <div className={styles.container}>
@@ -221,6 +224,8 @@ const AccountManagement = () => {
               setRefreshData={setRefreshData}
               isJobPreferenceAbsent={isJobPreferenceAbsent}
               setIsJobPreferenceAbsent={setIsJobPreferenceAbsent}
+              totalStarsUsed={totalStarsUsed}
+              setTotalStarsUsed={setTotalStarsUsed}
             />
             <br />
             <JobExperiencePanel
