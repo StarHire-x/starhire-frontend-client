@@ -4,6 +4,9 @@ import { RadioButton } from "primereact/radiobutton";
 import { Card } from "primereact/card";
 import "primeicons/primeicons.css";
 import { Button } from "primereact/button";
+import { InputText } from "primereact/inputtext";
+import { Calendar } from "primereact/calendar";
+import { InputNumber } from "primereact/inputnumber";
 
 const EditAccountForm = ({
   formData,
@@ -30,72 +33,76 @@ const EditAccountForm = ({
 
           <div className={styles.inputFields}>
             <div className={styles.field}>
-              <label className={styles.label} htmlFor="userName">
+              <label htmlFor="userName">
                 User Name:
               </label>
-              <input
-                type="text"
-                id="userName"
+              <InputText
                 name="userName"
-                className={styles.input}
                 value={formData.userName}
                 onChange={handleInputChange}
               />
             </div>
             <div className={styles.field}>
               <label htmlFor="email">Email Address:</label>
-              <input
-                type="email"
-                id="email"
+              <InputText
                 name="email"
-                className={styles.input}
                 value={formData.email}
                 onChange={handleInputChange}
               />
             </div>
             <div className={styles.field}>
               <label htmlFor="contactNo">Contact Number:</label>
-              <input
-                type="number"
-                id="contactNo"
+              <InputNumber
                 name="contactNo"
-                className={styles.input}
                 value={formData.contactNo}
                 onChange={handleInputChange}
+                useGrouping={false}
               />
             </div>
             {session.data.user.role === "Job_Seeker" && (
               <>
                 <div className={styles.field}>
                   <label htmlFor="fullName">Full Name:</label>
-                  <input
-                    type="text"
-                    id="fullName"
+                  <InputText
                     name="fullName"
-                    className={styles.input}
                     value={formData.fullName}
                     onChange={handleInputChange}
                   />
                 </div>
                 <div className={styles.field}>
                   <label htmlFor="homeAddress">Home Address:</label>
-                  <input
-                    type="text"
-                    id="homeAddress"
+                  <InputText
                     name="homeAddress"
-                    className={styles.input}
                     value={formData.homeAddress}
                     onChange={handleInputChange}
                   />
                 </div>
                 <div className={styles.field}>
                   <label htmlFor="dateOfBirth">Date of Birth:</label>
-                  <input
-                    type="date"
+                  <Calendar
                     id="dateOfBirth"
                     name="dateOfBirth"
-                    className={styles.input}
+                    dateFormat="dd/mm/yy"
                     value={formData.dateOfBirth}
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label htmlFor="instituteName">Education Institution:</label>
+                  <InputText
+                    name="instituteName"
+                    value={formData.instituteName}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="dateOfGraduation">Date of Graduation:</label>
+                  <Calendar
+                    id="dateOfGraduation"
+                    name="dateOfGraduation"
+                    dateFormat="dd/mm/yy"
+                    value={formData.dateOfGraduation}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -134,22 +141,16 @@ const EditAccountForm = ({
               <>
                 <div className={styles.field}>
                   <label htmlFor="companyName">Company Name:</label>
-                  <input
-                    type="text"
-                    id="companyName"
+                  <InputText
                     name="companyName"
-                    className={styles.input}
                     value={formData.companyName}
                     onChange={handleInputChange}
                   />
                 </div>
                 <div className={styles.field}>
                   <label htmlFor="companyAddress">Company Address:</label>
-                  <input
-                    type="text"
-                    id="companyAddress"
+                  <InputText
                     name="companyAddress"
-                    className={styles.input}
                     value={formData.companyAddress}
                     onChange={handleInputChange}
                   />
@@ -217,6 +218,7 @@ const EditAccountForm = ({
                 </label>
               </div>
             </div>
+
             <div className={styles.radioFields}>
               <div className={styles.radioHeader}>
                 <p>Status</p>

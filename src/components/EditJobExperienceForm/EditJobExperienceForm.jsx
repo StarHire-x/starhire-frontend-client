@@ -13,8 +13,9 @@ const EditJobExperienceForm = ({
   handleInputChange,
   editJobExperience,
   selectedJobExperience,
+  formErrors,
+  setFormErrors
 }) => {
-  const [formErrors, setFormErrors] = useState({});
 
   useEffect(() => {
     if (selectedJobExperience) {

@@ -30,6 +30,8 @@ const JobExperiencePanel = ({
   const [showDeleteJobExperienceDialog, setShowDeleteJobExperienceDialog] =
     useState(false);
 
+  const [formErrors, setFormErrors] = useState({});
+
   const [selectedJobExperienceData, setSelectedJobExperienceData] = useState(null);
 
   const formatDate = (dateString) => {
@@ -221,6 +223,8 @@ const JobExperiencePanel = ({
             setFormData={setFormData}
             handleInputChange={handleInputChange}
             addJobExperience={addJobExperience}
+            formErrors={formErrors}
+            setFormErrors={setFormErrors}
           />
         </Dialog>
 
@@ -236,6 +240,8 @@ const JobExperiencePanel = ({
             handleInputChange={handleInputChange}
             editJobExperience={editJobExperience}
             selectedJobExperience={selectedJobExperienceData}
+            formErrors={formErrors}
+            setFormErrors={setFormErrors}
           />
         </Dialog>
 

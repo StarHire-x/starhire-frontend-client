@@ -12,8 +12,9 @@ const CreateJobExperienceForm = ({
   setFormData,
   handleInputChange,
   addJobExperience,
+  formErrors,
+  setFormErrors
 }) => {
-  const [formErrors, setFormErrors] = useState({});
 
   return (
     <div className={styles.container}>

@@ -40,6 +40,8 @@ const AccountManagement = () => {
     status: "",
     contactNo: "",
     dateOfBirth: "",
+    instituteName: "",
+    dateOfGraduation: "",
     jobPreferenceId: "",
     resumePdf: "",
     locationPreference: 0,
@@ -174,6 +176,8 @@ const AccountManagement = () => {
       resumePdf: formData.resumePdf,
       notificationMode: formData.notificationMode,
       status: formData.status,
+      instituteName: formData.instituteName,
+      dateOfGraduation: formData.dateOfGraduation
     };
     try {
       console.log(userId);
@@ -194,26 +198,6 @@ const AccountManagement = () => {
       console.log("Failed to update user");
       alert("Failed to update user particulars");
     }
-  };
-
-  const deleteJobExperience = async (e) => {
-    e.preventDefault();
-  };
-
-  const createJobExperience = async (e) => {
-    e.preventDefault();
-    const userId = formData.userId;
-
-    const reqBody = {
-      jobSeekerId: userId,
-      employerName: formData.employerName,
-      jobTitle: formData.jobTitle,
-      startDate: formData.startDate,
-      endDate: formData.endDate,
-      jobDescription: formData.jobDescription
-    }
-
-    console.log(reqBody);
   };
 
   if (session.status === "authenticated") {
