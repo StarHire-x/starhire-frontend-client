@@ -5,8 +5,8 @@ import { DataView } from "primereact/dataview";
 import { Dialog } from "primereact/dialog";
 import styles from "./JobExperiencePanel.module.css"
 import CreateJobExperienceForm from "../CreateJobExperienceForm/CreateJobExperienceForm";
-import { Rating } from "primereact/rating";
 import { Card } from "primereact/card";
+import { Dropdown } from "primereact/dropdown";
 import {
   createJobExperience,
   updateJobExperience,
@@ -31,6 +31,8 @@ const JobExperiencePanel = ({
     useState(false);
 
   const [formErrors, setFormErrors] = useState({});
+  const [sortKey, setSortKey] = useState(null);
+  const [sortOrder, setSortOrder] = useState(null);
 
   const [selectedJobExperienceData, setSelectedJobExperienceData] = useState(null);
 
@@ -48,12 +50,47 @@ const JobExperiencePanel = ({
       }}
     >
       <h2 className={styles.headerTitle}>My Job Experience</h2>
+      <div>
+        <Dropdown
+          value={sortKey}
+          options={[
+            { label: "Start Date", value: "startDate" },
+            { label: "Job Title", value: "jobTitle" },
+          ]}
+          onChange={(e) => setSortKey(e.value)}
+          placeholder="Sort By"
+        />
+        <Dropdown
+          value={sortOrder}
+          options={[
+            { label: "Asc", value: 1 },
+            { label: "Desc", value: -1 },
+          ]}
+          onChange={(e) => setSortOrder(e.value)}
+          placeholder="Order"
+        />
+      </div>
       <Button
-        label="Add A Job Experience"
+        icon="pi pi-plus"
+        rounded
+        severity="success"
         onClick={() => setShowCreateJobExperienceDialog(true)}
       />
     </div>
   );
+
+  const sortFunction = (data) => {
+    if (sortKey && sortOrder) {
+      return [...data].sort((a, b) => {
+        const value1 = a[sortKey];
+        const value2 = b[sortKey];
+        if (value1 < value2) return -1 * sortOrder;
+        if (value1 > value2) return 1 * sortOrder;
+        return 0;
+      });
+    }
+    return data;
+  };
 
   const hideCreateJobExperienceDialog = () => {
     setShowCreateJobExperienceDialog(false);
@@ -168,7 +205,11 @@ const JobExperiencePanel = ({
           <div className={styles.cardHeaderRight}>
             <h4>{formatDate(jobExperience.startDate)}</h4>
             <h4 className={styles.hideOnMobile}>-</h4>
-            <h4>{formatDate(jobExperience.endDate)}</h4>
+            <h4>
+              {formatDate(jobExperience.endDate) === "01/01/1970"
+                ? "Present"
+                : formatDate(jobExperience.endDate)}
+            </h4>
           </div>
         </div>
         <div className={styles.cardDescription}>
@@ -204,7 +245,7 @@ const JobExperiencePanel = ({
     <Panel header="Job Experience" toggleable>
       <div className={styles.container}>
         <DataView
-          value={jobExperience}
+          value={sortFunction(jobExperience)}
           className={styles.dataViewContainer}
           layout="grid"
           rows={3}

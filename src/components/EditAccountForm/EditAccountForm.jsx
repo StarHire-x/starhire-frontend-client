@@ -7,15 +7,31 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
 import { InputNumber } from "primereact/inputnumber";
+import { Dropdown } from "primereact/dropdown";
 
 const EditAccountForm = ({
   formData,
+  setFormData,
   handleInputChange,
   handleFileChange,
   saveChanges,
   session,
   removePdf,
 }) => {
+
+  const educationOptions = [
+    { label: "No School", value: "No_School" },
+    { label: "High School", value: "High_School" },
+    { label: "Bachelor", value: "Bachelor" },
+    { label: "Master", value: "Master" },
+    { label: "Doctorate", value: "Doctorate" },
+  ];
+
+  const visibilityOptions = [
+    { label: "Public", value: "Public" },
+    { label: "Limited (Hide Sensitive Details)", value: "Limited" },
+  ];
+
   return (
     <div className={styles.container}>
       <Card>
@@ -33,9 +49,7 @@ const EditAccountForm = ({
 
           <div className={styles.inputFields}>
             <div className={styles.field}>
-              <label htmlFor="userName">
-                User Name:
-              </label>
+              <label htmlFor="userName">User Name:</label>
               <InputText
                 name="userName"
                 value={formData.userName}
@@ -83,11 +97,29 @@ const EditAccountForm = ({
                     id="dateOfBirth"
                     name="dateOfBirth"
                     dateFormat="dd/mm/yy"
-                    value={formData.dateOfBirth}
-                    onChange={handleInputChange}
+                    value={new Date(formData.dateOfBirth)}
+                    maxDate={new Date()}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        dateOfBirth: e.value,
+                      }))
+                    }
                   />
                 </div>
-
+                <div className={styles.field}>
+                  <label htmlFor="highestEducationStatus">
+                    Highest Education Status:
+                  </label>
+                  <Dropdown
+                    id="highestEducationStatus" // make sure the htmlFor and id values match for accessibility
+                    name="highestEducationStatus"
+                    value={formData.highestEducationStatus}
+                    options={educationOptions}
+                    onChange={handleInputChange}
+                    placeholder="Select Education Status"
+                  />
+                </div>
                 <div className={styles.field}>
                   <label htmlFor="instituteName">Education Institution:</label>
                   <InputText
@@ -102,11 +134,17 @@ const EditAccountForm = ({
                     id="dateOfGraduation"
                     name="dateOfGraduation"
                     dateFormat="dd/mm/yy"
-                    value={formData.dateOfGraduation}
-                    onChange={handleInputChange}
+                    value={new Date(formData.dateOfGraduation)}
+                    maxDate={new Date()}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        dateOfGraduation: e.value,
+                      }))
+                    }
                   />
                 </div>
-                <div className={styles.fileField}>
+                <div className={styles.field}>
                   <label htmlFor="resumePdf">Upload Resume:</label>
                   <input
                     type="file"
@@ -134,6 +172,17 @@ const EditAccountForm = ({
                       />
                     </div>
                   )}
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="visibility">Visibility Settings:</label>
+                  <Dropdown
+                    id="visibility" // make sure the htmlFor and id values match for accessibility
+                    name="visibility"
+                    value={formData.visibility}
+                    options={visibilityOptions}
+                    onChange={handleInputChange}
+                    placeholder="Select Visibility Options"
+                  />
                 </div>
               </>
             )}
@@ -181,7 +230,7 @@ const EditAccountForm = ({
                 onChange={handleInputChange}
               />
             </div> */}
-            <div className={styles.fileField}>
+            <div className={styles.field}>
               <label htmlFor="profilePicture">Profile Picture:</label>
               <input
                 type="file"

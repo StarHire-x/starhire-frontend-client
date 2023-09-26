@@ -55,6 +55,8 @@ const AccountManagement = () => {
     startDate: "",
     endDate: "",
     jobDescription: "",
+    highestEducationStatus: "",
+    visibilityOptions: ""
   });
 
   // this is to do a reload of userContext if it is updated in someway
@@ -70,13 +72,13 @@ const AccountManagement = () => {
     sessionTokenRef = session.data.user.accessToken;
   }
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0 based
-    const year = date.getFullYear();
-    return `${year}-${month}-${day}`; // NOTE: Changed format
-  };
+  // const formatDate = (dateString) => {
+  //   const date = new Date(dateString);
+  //   const day = String(date.getDate()).padStart(2, "0");
+  //   const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0 based
+  //   const year = date.getFullYear();
+  //   return `${year}-${month}-${day}`; // NOTE: Changed format
+  // };
 
   useEffect(() => {
     if (session.status === "unauthenticated") {
@@ -84,8 +86,8 @@ const AccountManagement = () => {
     } else if (session.status !== "loading") {
       getUserByUserId(userIdRef, roleRef, sessionTokenRef)
         .then((user) => {
-          const formattedDOB = formatDate(user.data.dateOfBirth);
-          setFormData({ ...user.data, dateOfBirth: formattedDOB });
+          // const formattedDOB = formatDate(user.data.dateOfBirth);
+          setFormData(user.data);
         })
         .catch((error) => {
           console.error("Error fetching user:", error);
@@ -106,12 +108,7 @@ const AccountManagement = () => {
       // Set Job Experience testing code
       getJobExperience(userIdRef, sessionTokenRef)
         .then((jobExp) => {
-          console.log("Job Experience Data:", jobExp); // Log the entire response
-          // setJobExperience(
-          //   Array.isArray(jobExp.data) ? jobExp.data : [jobExp.data]
-          // );
-          setJobExperience(jobExp.data
-          );
+          setJobExperience(jobExp.data);
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
@@ -177,7 +174,9 @@ const AccountManagement = () => {
       notificationMode: formData.notificationMode,
       status: formData.status,
       instituteName: formData.instituteName,
-      dateOfGraduation: formData.dateOfGraduation
+      dateOfGraduation: formData.dateOfGraduation,
+      highestEducationStatus: formData.highestEducationStatus,
+      visibility: formData.visibility
     };
     try {
       console.log(userId);
@@ -205,6 +204,7 @@ const AccountManagement = () => {
       <div className={styles.container}>
         <EditAccountForm
           formData={formData}
+          setFormData={setFormData}
           handleInputChange={handleInputChange}
           handleFileChange={handleFileChange}
           saveChanges={saveChanges}
