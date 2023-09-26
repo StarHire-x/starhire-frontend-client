@@ -6,14 +6,18 @@ import { InputNumber } from "primereact/inputnumber";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Calendar } from "primereact/calendar";
 import { Button } from "primereact/button";
+import { Checkbox } from "primereact/checkbox";
 
 const CreateJobExperienceForm = ({
   formData,
   setFormData,
   handleInputChange,
   addJobExperience,
+  formErrors,
+  setFormErrors
 }) => {
-  const [formErrors, setFormErrors] = useState({});
+
+  const [isCurrentJob, setIsCurrentJob] = useState(false);
 
   return (
     <div className={styles.container}>
@@ -58,12 +62,30 @@ const CreateJobExperienceForm = ({
           )}
 
           <div className={styles.cardRow}>
+            <label>Current Job:</label>
+            <Checkbox
+              inputId="isCurrent"
+              checked={isCurrentJob}
+              onChange={(e) => {
+                setIsCurrentJob(e.checked);
+                if (e.checked) {
+                  setFormData((prev) => ({
+                    ...prev,
+                    endDate: null,
+                  }));
+                }
+              }}
+            />
+          </div>
+
+          <div className={styles.cardRow}>
             <label>End Date</label>
             <Calendar
               id="endDate"
               name="endDate"
               value={formData?.endDate}
               dateFormat="dd/mm/yy"
+              disabled={isCurrentJob}
               maxDate={new Date(new Date().setDate(new Date().getDate()))}
               onChange={(e) => {
                 if (e.value <= formData.startDate) {

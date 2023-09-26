@@ -7,7 +7,21 @@
   margin-bottom: 20px;
 }
 
+/* Input field styles */
+.inputFields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    align-items: flex-start; /* Adjusted to align start */
+    justify-content: center;
+    width: 600px;
+    margin: 0 auto;
+}
+
 .field {
+    display: flex;
+    flex-direction: column; /* Set the direction to column to stack label above input */
+    width: 100%; /* Take the full width */
     margin-bottom: 10px;
 }
 
@@ -34,41 +48,6 @@
   object-fit: cover;
   margin-bottom: 10px;
   border: 2px solid #000; 
-}
-
-.inputFields {
-  width: 600px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  align-items: center;
-  justify-content: center;
-}
-
-.label {
-  padding-bottom: 10px;
-}
-
-.input {
-  padding: 20px;
-  background-color: transparent;
-  border: 2px solid #bbb;
-  color: #000000;
-  border-radius: 5px;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.button {
-  width: 300px;
-  padding: 20px;
-  cursor: pointer;
-  background-color: #53c28b;
-  border: none;
-  border-radius: 5px;
-  color: #eee;
-  font-weight: bold;
 }
 
 .pdfButtons {
@@ -127,16 +106,6 @@
   .inputFields {
     width: 100%;   /* Use full width on mobile screens */
     grid-template-columns: 1fr; /* Change to single column layout for mobile */
-  }
-
-  .input {
-    padding: 10px;
-    font-size: 15px; /* Slightly smaller font size for inputs */
-  }
-
-  .button {
-    width: 100%;  /* Button takes full width on mobile */
-    padding: 15px;
   }
 
   .pdfButtons {
