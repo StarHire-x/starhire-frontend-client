@@ -201,7 +201,6 @@ const AccountManagement = () => {
       alert("Failed to update user particulars");
     }
   };
-
   if (session.status === "authenticated") {
     return (
       <div className={styles.container}>
