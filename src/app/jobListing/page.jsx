@@ -48,20 +48,23 @@ const JobListingPage = () => {
 
   return (
     <div className={styles.container}>
-      {' '}
-      {/* <-- Use styles here */}
       {isLoading ? (
         <div>Loading...</div>
       ) : (
         <div>
           {jobListings.length > 0 ? (
             jobListings.map((job) => (
-              <Card key={job.id} className={styles.card}>
-                {' '}
-                {/* <-- Use styles here */}
+              <Card key={job.jobListingId} className={styles.card}>
                 <h2>{job.title}</h2>
-                <p>{job.description}</p>
-                <button onClick={() => handleOnClick(job.id)}>View More</button>
+                <p>{job.overview}</p> {/* Adjusted this line */}
+                <p>Location: {job.jobLocation}</p>
+                <p>
+                  Listing Date: {new Date(job.listingDate).toLocaleDateString()}
+                </p>
+                <p>Average Salary: ${job.averageSalary}</p>
+                <button onClick={() => handleOnClick(job.jobListingId)}>
+                  View More
+                </button>
               </Card>
             ))
           ) : (

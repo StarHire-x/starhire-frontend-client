@@ -1,11 +1,62 @@
+/* General Container Styles */
 .container {
-  margin: 20px;
-  padding: 20px;
-  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Arial', sans-serif;
+  background-color: #edf6f9;
+  min-height: 100vh;
 }
 
+/* Card Styles */
 .card {
-  margin: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  background-color: #ffddd2;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+/* Heading inside the card */
+.card h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #006d77;
+}
+
+/* Paragraphs inside the card */
+.card p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  color: #e29578;
+}
+
+/* Buttons and Interactables */
+.button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #006d77;
+  color: #edf6f9;
+  transition: background-color 0.2s;
+}
+
+.button:hover {
+  background-color: #83c5be;
 }
