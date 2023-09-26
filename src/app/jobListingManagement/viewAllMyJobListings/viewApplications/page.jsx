@@ -108,10 +108,10 @@ const ViewApplicationsPage = () => {
               layout="grid"
               rows={10}
               paginator
-              header={<h2 className={styles.headerTitle}>All Applicants</h2>}
+              header={<h2 className={styles.headerTitle}>All Applications for Current Job Listing</h2>}
               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
               rowsPerPageOptions={[10, 25, 50]}
-              emptyMessage="No Applicants found for this Job Listing"
+              emptyMessage="No Applicantion found for this Job Listing"
               itemTemplate={itemTemplate}
               pt={{
                 grid: { className: 'surface-ground' },
