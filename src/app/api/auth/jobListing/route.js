@@ -128,3 +128,31 @@ export const findAssignedJobListings = async (userId, accessToken) => {
     throw error;
   }
 };
+
+export const getJobApplicationsByJobListingId = async (id, accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/corporate/jobApplications/${id}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: 'no-store',
+      }
+    );
+
+    const response = await res.json();
+    console.log(response);
+    if (response.statusCode === 200) {
+      return response.data;
+    } else {
+      throw new Error(response.message || 'An error occurred');
+    }
+  } catch (error) {
+    console.log('There was a problem fetching the job applications', error);
+    throw error;
+  }
+};
+
