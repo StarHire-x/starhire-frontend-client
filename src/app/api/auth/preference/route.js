@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server";
+
 export const createJobPreference = async (newJobPreference, accessToken) => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/job-preference`, {
@@ -10,15 +12,13 @@ export const createJobPreference = async (newJobPreference, accessToken) => {
       cache: "no-store",
     });
     const response = await res.json();
-    console.log(response);
     if (response.statusCode === 200) {
       return response.data;
     } else {
-      throw new Error(response.message || "An error occurred");
+      return NextResponse.json({ error: response.message }, { status: response.statusCode });
     }
   } catch (error) {
-    console.log("There was a problem creating this jobListing", error);
-    throw error;
+    console.log("Encountered a problem when creating the job preference", error.message);
   }
 };
 
@@ -39,16 +39,16 @@ export const getExistingJobPreference = async (userId, accessToken) => {
     if(response.statusCode === 200) {
         return response;
     } else {
-        throw new Error(response.message || "An error occured");
+      return NextResponse.json({ error: response.message }, { status: response.statusCode });
     }
   } catch (error) {
-    console.log("There was a problem fetching job preference", error);
-    throw error;
+    console.log("Encountered a problem when fetching job preference", error.message);
   }
 };
 
 export const updateJobPreference = async (jobPreferenceId, updateJobPreference, accessToken) => {
     try {
+      console.log("Sending request...")
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/job-preference/${jobPreferenceId}`,
         {
@@ -62,13 +62,13 @@ export const updateJobPreference = async (jobPreferenceId, updateJobPreference, 
         }
       );
       const response = await res.json();
+      console.log("received response: ", response)
       if (response.statusCode === 200) {
         return response;
       } else {
-        throw new Error(response.message || "An error occured");
+        return NextResponse.json({ error: response.message }, { status: response.statusCode });
       }
     } catch (error) {
-      console.log("There was a problem fetching job preference", error);
-      throw error;
+      console.log("Encountered a problem when updating the job preference", error.message);
     }
 }
