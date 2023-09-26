@@ -59,7 +59,7 @@ const ViewAllMyJobListingsManagementPage = () => {
   }, [refreshData, userIdRef, accessToken]);
 
   const itemTemplate = (jobListing) => {
-    const cardLink = `/jobListingDetails/${jobListing.jobListingId}`;
+    const cardLink = `/jobListingManagement/viewAllMyJobListings/viewAJobListing?id=${jobListing.jobListingId}`;
     <a href={cardLink} className={styles.cardLink}>
       <div className={styles.card}>
         <div className={styles.cardHeader}></div>
