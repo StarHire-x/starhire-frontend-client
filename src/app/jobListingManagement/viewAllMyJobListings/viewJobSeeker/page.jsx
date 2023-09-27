@@ -80,7 +80,7 @@ const ViewJobSeekerPage = () => {
     const footer = (
       <div className="flex flex-wrap justify-content-end gap-2">
         <Button
-          label="Approve"
+          label="Accept"
           icon="pi pi-check"
           className="approve-button p-button-outlined p-button-secondary"
           onClick={() => showUserDialog('Active')}
@@ -89,12 +89,6 @@ const ViewJobSeekerPage = () => {
           label="Reject"
           icon="pi pi-times"
           className="reject-button p-button-outlined p-button-secondary"
-          onClick={() => showUserDialog('Inactive')}
-        />
-        <Button
-          label="Archive"
-          icon="pi pi-folder"
-          className="archive-button p-button-outlined p-button-secondary"
           onClick={() => showUserDialog('Inactive')}
         />
       </div>
