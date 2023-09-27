@@ -13,6 +13,7 @@ import { useSearchParams } from 'next/navigation';
 import { Card } from 'primereact/card';
 import Image from 'next/image';
 import "./styles.css";
+import { Joan } from 'next/font/google';
 
 const ViewJobSeekerPage = () => {
     const [jobApplication, setJobApplications] = useState(null);
@@ -127,12 +128,24 @@ const ViewJobSeekerPage = () => {
                     />
                   )}
 
-                  <div className="company-details">
+                  {/*<div className="company-details">
                     <p>{jobApplication.jobApplicationId}</p>
                   </div>
                 </div>
+                */}
+
+                <strong>Application Details</strong>
+                <p>
+                  {"Available Start Date: " +
+                    formatDate(jobApplication.availableStartDate)}
+                </p>
+                <p>
+                  {"Available End Date: " +
+                    formatDate(jobApplication.availableEndDate)}
+                </p>
 
                 <strong>Personal Particulars </strong>
+                <p>{"StarHire User ID: " + jobApplication.jobSeeker.userId}</p>
                 <p>{"Full Name: " + jobApplication.jobSeeker.fullName}</p>
                 <p>
                   {"Date of Birth: " +
@@ -148,7 +161,7 @@ const ViewJobSeekerPage = () => {
 
                 <div className="contact-info">
                   <strong>Contact Information</strong>
-                  <p>{"Email: " + jobApplication.jobSeeker.email}</p>
+                  <p>{"Email Adress: " + jobApplication.jobSeeker.email}</p>
                   <p className="second-p">
                     {"Contact Number: " + jobApplication.jobSeeker.contactNo}
                   </p>
@@ -178,6 +191,29 @@ const ViewJobSeekerPage = () => {
                   </p>
                   <p className="second-p">
                     {"L2 Certificate: " + "Attach Link here"}
+                  </p>
+                </div>
+
+                <div className="contact-info">
+                  <strong>Assigned by: </strong>
+
+                  {jobApplication.jobApplicationId === "" ? (
+                    <Image src={HumanIcon} alt="User" className="avatar" />
+                  ) : (
+                    <div>
+                      <img
+                        src={jobApplication.jobSeeker.profilePictureUrl}
+                        className="avatar"
+                      />
+                      <p>
+                        {"Recruiter User ID: " +
+                          jobApplication.recruiter.userId}
+                      </p>
+                    </div>
+                  )}
+                  <p>
+                    {"Recruiter Email Address: " +
+                      jobApplication.recruiter.email}
                   </p>
                 </div>
 
