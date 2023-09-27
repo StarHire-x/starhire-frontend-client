@@ -196,7 +196,7 @@ export const getJobSeekersByJobApplicationId = async (id, accessToken) => {
 export const viewOneJobListing = async (jobListingId, accessToken) => {
   try {
     const res = await fetch(
-      `http://localhost:8080/job-listing/${jobListingId}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/${jobListingId}`,
       {
         method: 'GET',
         headers: {
@@ -217,4 +217,45 @@ export const viewOneJobListing = async (jobListingId, accessToken) => {
     console.log('There was a problem fetching single job listing', error);
     throw error;
   }
+};
+
+export const saveJobListing = async (jobListingId, accessToken) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/${jobListingId}/save`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ jobListingId: jobListingId }), // Adjust this as needed
+    }
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'Could not save job listing.');
+  }
+
+  return response.json();
+};
+
+export const getSavedJobListings = async (accessToken) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/saved`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'Could not fetch saved job listings.');
+  }
+
+  return response.json();
 };
