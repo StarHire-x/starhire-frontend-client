@@ -4,7 +4,9 @@ import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { viewOneJobListing } from '@/app/api/auth/jobListing/route'; // Adjust the path
+import { saveJobListing } from '@/app/api/auth/jobListing/route'; // Adjust the path
 import { Card } from 'primereact/card';
+import { Button } from 'primereact/button';
 import Image from 'next/image';
 import HumanIcon from '../../../../public/icon.png'; // Adjust the path
 
@@ -44,6 +46,34 @@ export default function viewJobListingDetailsJobSeeker() {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  const handleSaveJobListing = async (jobListingId) => {
+    try {
+      console.log('Attempting to save job listing with ID:', jobListingId);
+      if (accessToken) {
+        console.log('Access Token before API call:', accessToken);
+        await saveJobListing(jobListingId, accessToken);
+        alert('Job listing saved successfully!');
+        console.log('Successfully saved job listing.');
+      } else {
+        alert('Please login to save the job listing.');
+      }
+    } catch (error) {
+      console.error('Error saving job listing:', error);
+      alert('Failed to save job listing. Please try again.');
+    }
+  };
+
+  const footer = (
+    <div className="flex flex-wrap justify-content-end gap-2">
+      <Button
+        label="Save"
+        icon="pi pi-bookmark" // An icon to represent 'Save'
+        className="save-button p-button-outlined p-button-secondary"
+        onClick={() => handleSaveJobListing(jobListing.jobListingId)} // Pass the job listing ID to the save handler
+      />
+    </div>
+  );
+
   return (
     <div className="container">
       {isLoading ? (
@@ -54,6 +84,7 @@ export default function viewJobListingDetailsJobSeeker() {
         <Card
           title={jobListing.title}
           subTitle={jobListing.jobLocation}
+          footer={footer}
           className="my-card"
           style={{ borderRadius: '0' }}
         >
@@ -99,8 +130,6 @@ export default function viewJobListingDetailsJobSeeker() {
 
             <strong>Job Listing Details</strong>
             <p>{formatDate(jobListing.listingDate)}</p>
-
-            <p>{'Job Listing ID: ' + jobListing.jobListingId}</p>
           </div>
         </Card>
       )}

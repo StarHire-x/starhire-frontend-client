@@ -12,9 +12,7 @@ body {
   padding: 0 20px;
 }
 
-.approve-button,
-.reject-button,
-.archive-button {
+.save-button {
   border: none !important;
   color: white !important;
   transition: all 0.3s !important;
@@ -26,32 +24,11 @@ body {
   ) !important;
 }
 
-.approve-button {
-  background-color: #006d77 !important;
-}
-
-.reject-button {
-  background-color: #e29578 !important;
-}
-
-.archive-button {
+.save-button {
   background-color: #007bff !important;
 }
 
-.transparent-circle:before {
-  content: '';
-  display: inline-block;
-  width: 16px; /* Adjust the circle's width to your preference */
-  height: 16px; /* Adjust the circle's height to your preference */
-  border: 2px solid currentColor; /* Uses the current font color for the border */
-  border-radius: 50%; /* Makes it a circle */
-  vertical-align: middle; /* Aligns it with the text */
-  margin-right: 5px; /* Space between the circle and label */
-}
-
-.approve-button:hover,
-.reject-button:hover,
-.archive-button:hover {
+.save-button:hover {
   transform: scale(1.05);
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1) !important;
 }
