@@ -11,7 +11,7 @@ import styles from 'src/app/jobListingManagement/page.module.css';
 import 'primeflex/primeflex.css';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
-import "./styles.css";
+//import "./styles.css";
 const ViewApplicationsPage = () => {
     const [jobApplications, setJobApplications] = useState(null);
     const [refreshData, setRefreshData] = useState(false);
