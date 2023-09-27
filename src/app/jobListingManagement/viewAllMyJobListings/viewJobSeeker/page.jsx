@@ -109,66 +109,98 @@ const ViewJobSeekerPage = () => {
           <div>
             <Card
               title={"Job Application: " + jobApplication.jobApplicationId}
-              //subTitle={jobApplication.jobSeeker.userName}
+              subTitle={
+                "Submitted on: " + formatDate(jobApplication.submissionDate)
+              }
               footer={footer}
               className="my-card"
-              style={{ borderRadius: '0' }}
+              style={{ borderRadius: "0" }}
             >
               <div className="my-card.p-card-content">
                 <div className="company-info">
-                {jobApplication.jobApplicationId === "" ? (
+                  {jobApplication.jobApplicationId === "" ? (
                     <Image src={HumanIcon} alt="User" className="avatar" />
                   ) : (
-                  <img
-                    src={jobApplication.jobSeeker.profilePictureUrl}
-                    className="avatar"
-                  />
-                )}
-                  
+                    <img
+                      src={jobApplication.jobSeeker.profilePictureUrl}
+                      className="avatar"
+                    />
+                  )}
+
                   <div className="company-details">
                     <p>{jobApplication.jobApplicationId}</p>
                   </div>
                 </div>
-  
-                <strong>Username: </strong>
-                <p>{jobApplication.jobSeeker.userName}</p>
-                <strong>Job Responsibilities</strong>
-                <p>{jobApplication.jobApplicationId}</p>
-                <strong>Job Requirements</strong>
-                <p>{jobApplication.jobApplicationId}</p>
-                <strong>Average Salary</strong>
-                <p>{"$" + jobApplication.jobApplicationId + " SGD"}</p>
-                <strong>Job Start Date</strong>
-  
+
+                <strong>Personal Particulars </strong>
+                <p>{"Full Name: " + jobApplication.jobSeeker.fullName}</p>
+                <p>
+                  {"Date of Birth: " +
+                    formatDate(jobApplication.jobSeeker.dateOfBirth)}
+                </p>
+
+                <p className="second-p">
+                  {"Contact Number: " + jobApplication.jobSeeker.contactNo}
+                </p>
+                <p className="second-p">
+                  {"Home Address: " + jobApplication.jobSeeker.homeAddress}
+                </p>
+
                 <div className="contact-info">
                   <strong>Contact Information</strong>
-                  <p>{jobApplication.jobApplicationId}</p>
-                  <p className="second-p">{jobApplication.jobApplicationId}</p>
+                  <p>{"Email: " + jobApplication.jobSeeker.email}</p>
+                  <p className="second-p">
+                    {"Contact Number: " + jobApplication.jobSeeker.contactNo}
+                  </p>
                 </div>
-  
-                <strong>Job Seeker Details</strong>
-                <p>{"Email: " + jobApplication.jobSeeker.email}</p>
-                <p className="second-p">{"Address: " + jobApplication.jobApplicationId}</p>
-  
-  
-                <p>{"Job Listing ID: " + jobApplication.jobApplicationId}</p>
-  
-                <strong>Current Status of Job</strong>
+
+                <div className="contact-info">
+                  <strong>Education Infomation</strong>
+                  <p>
+                    {"Highest Education Level: " +
+                      jobApplication.jobSeeker.highestEducationStatus}
+                  </p>
+                  <p className="second-p">
+                    {"Name of Institution: " +
+                      jobApplication.jobSeeker.instituteName}
+                  </p>
+                  <p className="second-p">
+                    {"Date of Graduation: " +
+                      formatDate(jobApplication.jobSeeker.dateOfGraduation)}
+                  </p>
+                </div>
+
+                <div className="contact-info">
+                  <strong>Attachments</strong>
+                  <p>{"Resume: " + "Attach Link here"}</p>
+                  <p className="second-p">
+                    {"L1 Certificate: " + "Attach Link here"}
+                  </p>
+                  <p className="second-p">
+                    {"L2 Certificate: " + "Attach Link here"}
+                  </p>
+                </div>
+
+                <strong>Application Status</strong>
                 <p
                   style={{
                     color:
-                    jobApplication.jobApplicationIds === 'Active' ? 'green' : 'red',
+                      jobApplication.jobApplicationStatus === "Accepted"
+                        ? "green"
+                        : jobApplication.jobApplicationStatus === "Rejected"
+                        ? "red"
+                        : "grey",
                   }}
                 >
-                  {jobApplication.jobApplicationId}
+                  {jobApplication.jobApplicationStatus}
                 </p>
               </div>
             </Card>
-  
+
             <Dialog
               visible={userDialog}
-              style={{ width: '32rem' }}
-              breakpoints={{ '960px': '75vw', '641px': '90vw' }}
+              style={{ width: "32rem" }}
+              breakpoints={{ "960px": "75vw", "641px": "90vw" }}
               header="Confirm?"
               className="p-fluid"
               footer={userDialogFooter}
