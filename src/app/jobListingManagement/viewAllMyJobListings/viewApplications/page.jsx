@@ -53,7 +53,7 @@ const ViewApplicationsPage = () => {
 
 
     const itemTemplate = (jobApplications) => {
-      const cardLink = `/jobListingManagement/viewAllMyJobListings/viewApplications`;
+      const cardLink = `/jobListingManagement/viewAllMyJobListings/viewJobSeeker?id=${jobApplications.jobApplicationId}`;
       return (
         <a href={cardLink} className={styles.cardLink}>
           <div className={styles.card}>
