@@ -40,6 +40,8 @@ const AccountManagement = () => {
     status: "",
     contactNo: "",
     dateOfBirth: "",
+    instituteName: "",
+    dateOfGraduation: "",
     jobPreferenceId: "",
     resumePdf: "",
     locationPreference: 0,
@@ -53,12 +55,17 @@ const AccountManagement = () => {
     startDate: "",
     endDate: "",
     jobDescription: "",
+    highestEducationStatus: "",
+    visibilityOptions: ""
   });
 
   // this is to do a reload of userContext if it is updated in someway
   const { userData, fetchUserData } = useContext(UserContext);
 
   const [isJobPreferenceAbsent, setIsJobPreferenceAbsent] = useState(false);
+
+  // Cap the number of stars
+  const [totalStarsUsed, setTotalStarsUsed] = useState(0);
 
   let roleRef, sessionTokenRef, userIdRef;
 
@@ -68,13 +75,13 @@ const AccountManagement = () => {
     sessionTokenRef = session.data.user.accessToken;
   }
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0 based
-    const year = date.getFullYear();
-    return `${year}-${month}-${day}`; // NOTE: Changed format
-  };
+  // const formatDate = (dateString) => {
+  //   const date = new Date(dateString);
+  //   const day = String(date.getDate()).padStart(2, "0");
+  //   const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0 based
+  //   const year = date.getFullYear();
+  //   return `${year}-${month}-${day}`; // NOTE: Changed format
+  // };
 
   useEffect(() => {
     if (session.status === "unauthenticated") {
@@ -82,34 +89,29 @@ const AccountManagement = () => {
     } else if (session.status !== "loading") {
       getUserByUserId(userIdRef, roleRef, sessionTokenRef)
         .then((user) => {
-          const formattedDOB = formatDate(user.data.dateOfBirth);
-          setFormData({ ...user.data, dateOfBirth: formattedDOB });
+          // const formattedDOB = formatDate(user.data.dateOfBirth);
+          setFormData(user.data);
         })
         .catch((error) => {
           console.error("Error fetching user:", error);
         });
 
-      getExistingJobPreference(userIdRef, sessionTokenRef)
-        .then((preference) => {
+      getExistingJobPreference(userIdRef, sessionTokenRef).then((response) => {
+        if (response.statusCode === 200) {
           setFormData((prevState) => ({
             ...prevState,
-            ...preference.data,
+            ...response.data,
           }));
-        })
-        .catch((error) => {
-          console.error("Error fetching job preference:", error);
+        } else {
+          console.error("Error fetching job preference:", response.json());
           setIsJobPreferenceAbsent(true);
-        });
+        }
+      });
 
       // Set Job Experience testing code
       getJobExperience(userIdRef, sessionTokenRef)
         .then((jobExp) => {
-          console.log("Job Experience Data:", jobExp); // Log the entire response
-          // setJobExperience(
-          //   Array.isArray(jobExp.data) ? jobExp.data : [jobExp.data]
-          // );
-          setJobExperience(jobExp.data
-          );
+          setJobExperience(jobExp.data);
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
@@ -174,6 +176,10 @@ const AccountManagement = () => {
       resumePdf: formData.resumePdf,
       notificationMode: formData.notificationMode,
       status: formData.status,
+      instituteName: formData.instituteName,
+      dateOfGraduation: formData.dateOfGraduation,
+      highestEducationStatus: formData.highestEducationStatus,
+      visibility: formData.visibility
     };
     try {
       console.log(userId);
@@ -195,32 +201,12 @@ const AccountManagement = () => {
       alert("Failed to update user particulars");
     }
   };
-
-  const deleteJobExperience = async (e) => {
-    e.preventDefault();
-  };
-
-  const createJobExperience = async (e) => {
-    e.preventDefault();
-    const userId = formData.userId;
-
-    const reqBody = {
-      jobSeekerId: userId,
-      employerName: formData.employerName,
-      jobTitle: formData.jobTitle,
-      startDate: formData.startDate,
-      endDate: formData.endDate,
-      jobDescription: formData.jobDescription
-    }
-
-    console.log(reqBody);
-  };
-
   if (session.status === "authenticated") {
     return (
       <div className={styles.container}>
         <EditAccountForm
           formData={formData}
+          setFormData={setFormData}
           handleInputChange={handleInputChange}
           handleFileChange={handleFileChange}
           saveChanges={saveChanges}
@@ -237,6 +223,8 @@ const AccountManagement = () => {
               setRefreshData={setRefreshData}
               isJobPreferenceAbsent={isJobPreferenceAbsent}
               setIsJobPreferenceAbsent={setIsJobPreferenceAbsent}
+              totalStarsUsed={totalStarsUsed}
+              setTotalStarsUsed={setTotalStarsUsed}
             />
             <br />
             <JobExperiencePanel

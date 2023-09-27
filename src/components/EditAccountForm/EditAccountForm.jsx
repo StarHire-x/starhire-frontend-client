@@ -4,15 +4,34 @@ import { RadioButton } from "primereact/radiobutton";
 import { Card } from "primereact/card";
 import "primeicons/primeicons.css";
 import { Button } from "primereact/button";
+import { InputText } from "primereact/inputtext";
+import { Calendar } from "primereact/calendar";
+import { InputNumber } from "primereact/inputnumber";
+import { Dropdown } from "primereact/dropdown";
 
 const EditAccountForm = ({
   formData,
+  setFormData,
   handleInputChange,
   handleFileChange,
   saveChanges,
   session,
   removePdf,
 }) => {
+
+  const educationOptions = [
+    { label: "No School", value: "No_School" },
+    { label: "High School", value: "High_School" },
+    { label: "Bachelor", value: "Bachelor" },
+    { label: "Master", value: "Master" },
+    { label: "Doctorate", value: "Doctorate" },
+  ];
+
+  const visibilityOptions = [
+    { label: "Public", value: "Public" },
+    { label: "Limited (Hide Sensitive Details)", value: "Limited" },
+  ];
+
   return (
     <div className={styles.container}>
       <Card>
@@ -30,76 +49,102 @@ const EditAccountForm = ({
 
           <div className={styles.inputFields}>
             <div className={styles.field}>
-              <label className={styles.label} htmlFor="userName">
-                User Name:
-              </label>
-              <input
-                type="text"
-                id="userName"
+              <label htmlFor="userName">User Name:</label>
+              <InputText
                 name="userName"
-                className={styles.input}
                 value={formData.userName}
                 onChange={handleInputChange}
               />
             </div>
             <div className={styles.field}>
               <label htmlFor="email">Email Address:</label>
-              <input
-                type="email"
-                id="email"
+              <InputText
                 name="email"
-                className={styles.input}
                 value={formData.email}
                 onChange={handleInputChange}
               />
             </div>
             <div className={styles.field}>
               <label htmlFor="contactNo">Contact Number:</label>
-              <input
-                type="number"
-                id="contactNo"
+              <InputNumber
                 name="contactNo"
-                className={styles.input}
                 value={formData.contactNo}
                 onChange={handleInputChange}
+                useGrouping={false}
               />
             </div>
             {session.data.user.role === "Job_Seeker" && (
               <>
                 <div className={styles.field}>
                   <label htmlFor="fullName">Full Name:</label>
-                  <input
-                    type="text"
-                    id="fullName"
+                  <InputText
                     name="fullName"
-                    className={styles.input}
                     value={formData.fullName}
                     onChange={handleInputChange}
                   />
                 </div>
                 <div className={styles.field}>
                   <label htmlFor="homeAddress">Home Address:</label>
-                  <input
-                    type="text"
-                    id="homeAddress"
+                  <InputText
                     name="homeAddress"
-                    className={styles.input}
                     value={formData.homeAddress}
                     onChange={handleInputChange}
                   />
                 </div>
                 <div className={styles.field}>
                   <label htmlFor="dateOfBirth">Date of Birth:</label>
-                  <input
-                    type="date"
+                  <Calendar
                     id="dateOfBirth"
                     name="dateOfBirth"
-                    className={styles.input}
-                    value={formData.dateOfBirth}
+                    dateFormat="dd/mm/yy"
+                    value={new Date(formData.dateOfBirth)}
+                    maxDate={new Date()}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        dateOfBirth: e.value,
+                      }))
+                    }
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="highestEducationStatus">
+                    Highest Education Status:
+                  </label>
+                  <Dropdown
+                    id="highestEducationStatus" // make sure the htmlFor and id values match for accessibility
+                    name="highestEducationStatus"
+                    value={formData.highestEducationStatus}
+                    options={educationOptions}
+                    onChange={handleInputChange}
+                    placeholder="Select Education Status"
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="instituteName">Education Institution:</label>
+                  <InputText
+                    name="instituteName"
+                    value={formData.instituteName}
                     onChange={handleInputChange}
                   />
                 </div>
-                <div className={styles.fileField}>
+                <div className={styles.field}>
+                  <label htmlFor="dateOfGraduation">Date of Graduation:</label>
+                  <Calendar
+                    id="dateOfGraduation"
+                    name="dateOfGraduation"
+                    dateFormat="dd/mm/yy"
+                    value={new Date(formData.dateOfGraduation)}
+                    maxDate={new Date()}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        dateOfGraduation: e.value,
+                      }))
+                    }
+                  />
+                </div>
+                <div className={styles.field}>
                   <label htmlFor="resumePdf">Upload Resume:</label>
                   <input
                     type="file"
@@ -128,28 +173,33 @@ const EditAccountForm = ({
                     </div>
                   )}
                 </div>
+                <div className={styles.field}>
+                  <label htmlFor="visibility">Visibility Settings:</label>
+                  <Dropdown
+                    id="visibility" // make sure the htmlFor and id values match for accessibility
+                    name="visibility"
+                    value={formData.visibility}
+                    options={visibilityOptions}
+                    onChange={handleInputChange}
+                    placeholder="Select Visibility Options"
+                  />
+                </div>
               </>
             )}
             {session.data.user.role === "Corporate" && (
               <>
                 <div className={styles.field}>
                   <label htmlFor="companyName">Company Name:</label>
-                  <input
-                    type="text"
-                    id="companyName"
+                  <InputText
                     name="companyName"
-                    className={styles.input}
                     value={formData.companyName}
                     onChange={handleInputChange}
                   />
                 </div>
                 <div className={styles.field}>
                   <label htmlFor="companyAddress">Company Address:</label>
-                  <input
-                    type="text"
-                    id="companyAddress"
+                  <InputText
                     name="companyAddress"
-                    className={styles.input}
                     value={formData.companyAddress}
                     onChange={handleInputChange}
                   />
@@ -180,7 +230,7 @@ const EditAccountForm = ({
                 onChange={handleInputChange}
               />
             </div> */}
-            <div className={styles.fileField}>
+            <div className={styles.field}>
               <label htmlFor="profilePicture">Profile Picture:</label>
               <input
                 type="file"
@@ -217,6 +267,7 @@ const EditAccountForm = ({
                 </label>
               </div>
             </div>
+
             <div className={styles.radioFields}>
               <div className={styles.radioHeader}>
                 <p>Status</p>
