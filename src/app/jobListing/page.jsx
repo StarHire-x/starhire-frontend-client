@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Card } from 'primereact/card';
+import { Button } from 'primereact/button';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { findAssignedJobListingsByJobSeeker } from '../api/auth/jobListing/route'; // Assuming this is the correct path
@@ -47,45 +48,28 @@ const JobListingPage = () => {
     }
   }, [refreshData, userIdRef, accessToken]);
 
+  const createLink = (id) => {
+    const link = `/jobListing/viewJobListingDetailsJobSeeker?id=${id}`;
+    return link;
+  };
+
+  const saveStatusChange = async (rowData) => {
+    const jobListingId = rowData.jobListingId;
+    if (session.data.user.role === 'Job_Seeker') {
+      try {
+        // Use router.push to navigate to another page with a query parameter
+        let link = createLink(jobListingId);
+        // console.log('Generated Link:', link);
+        router.push(link);
+      } catch (error) {
+        console.error('Error changing status:', error);
+      }
+    }
+  };
+
   // const handleOnClick = (jobId) => {
   //   // Navigate to the job details page for the clicked job
   //   router.push(`/jobDetails/${jobId}`);
-  // };
-
-  // const renderJobCard = (job) => {
-  //   return (
-  //     <Card
-  //       key={job.jobListingId}
-  //       title={job.title}
-  //       style={{ marginBottom: '2em' }}
-  //     >
-  //       <p>
-  //         <b>Location:</b> {job.jobLocation}
-  //       </p>
-  //       <p>
-  //         <b>Listing Date:</b> {new Date(job.listingDate).toLocaleDateString()}
-  //       </p>
-  //       <p>
-  //         <b>Average Salary:</b> ${job.averageSalary}
-  //       </p>
-  //       <p>
-  //         <b>Job Start Date:</b>{' '}
-  //         {new Date(job.jobStartDate).toLocaleDateString()}
-  //       </p>
-  //       <p>
-  //         <b>Overview:</b> {job.overview}
-  //       </p>
-  //       <p>
-  //         <b>Responsibilities:</b> {job.responsibilities}
-  //       </p>
-  //       <p>
-  //         <b>Requirements:</b> {job.requirements}
-  //       </p>
-  //       <p>
-  //         <b>Status:</b> {job.jobListingStatus}
-  //       </p>
-  //     </Card>
-  //   );
   // };
 
   return (
@@ -124,8 +108,12 @@ const JobListingPage = () => {
               </div>
             </div>
             <div className={styles.cardFooter}>
-              {/* Add any buttons/actions here */}
-              <button className={styles.buttonSpacing}>Details</button>
+              <Button
+                label="Details"
+                onClick={(e) => {
+                  saveStatusChange(jobListing);
+                }}
+              />
             </div>
           </Card>
         ))
