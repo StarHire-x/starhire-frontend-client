@@ -131,8 +131,8 @@ const ViewJobSeekerPage = () => {
                   {/*<div className="company-details">
                     <p>{jobApplication.jobApplicationId}</p>
                   </div>
+                  */}
                 </div>
-                */}
 
                 <strong>Application Details</strong>
                 <p>
