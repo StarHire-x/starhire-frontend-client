@@ -1,62 +1,124 @@
-/* General Container Styles */
 .container {
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  font-family: 'Arial', sans-serif;
-  background-color: #edf6f9;
-  min-height: 100vh;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 1150px;
+  gap: 15px;
+  max-height: 790px;
+  overflow-y: auto;
 }
 
-/* Card Styles */
+.dataViewContainer {
+  width: 1150px;
+}
+
 .card {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  padding: 1.5rem;
-  margin: 1rem 0;
-  width: 100%;
-  max-width: 800px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-  background-color: #ffddd2;
-  transition: transform 0.2s;
+  background-color: #edf6f9;
+  padding: 10px;
+  width: 205px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  overflow: hidden;
+  border: 1px solid #edf6f9;
+  max-width: 100%;
+  margin: 10px;
 }
 
 .card:hover {
-  transform: scale(1.02);
+  transform: translateY(-3px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Heading inside the card */
-.card h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-  color: #006d77;
+.cardHeader {
+  border-bottom: 1px solid #edf6f9;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  font-family: 'Arial', sans-serif;
+  justify-content: center;
 }
 
-/* Paragraphs inside the card */
-.card p {
-  font-size: 1rem;
-  line-height: 1.5;
-  margin-bottom: 1rem;
-  color: #e29578;
+.cardHeader h4 {
+  font-size: 1.6em;
+  margin: 0;
+  color: #333;
+  font-weight: 600;
 }
 
-/* Buttons and Interactables */
-.button {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
+.cardBody {
+  font-size: 1em;
+  color: #555;
+}
+
+.cardRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  flex-wrap: wrap;
+}
+
+.cardRow:last-child {
+  margin-bottom: 0;
+}
+
+.cardRow span:first-child {
+  font-weight: 600;
+}
+
+.cardFooter {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.cardFooter button {
+  background-color: #e29578;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: #006d77;
+  border-radius: 4px;
   color: #edf6f9;
-  transition: background-color 0.2s;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 0.8em;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.button:hover {
-  background-color: #83c5be;
+.cardFooter button:hover {
+  background-color: #e2947888;
+}
+
+.buttonSpacing {
+  margin-right: 10px;
+}
+
+.cardDialog {
+  background-color: #edf6f9;
+  padding: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  overflow: hidden;
+  border: 1px solid #edf6f9;
+  width: 70vw;
+  max-width: 1250px;
+}
+
+@media (max-width: 480px) {
+  .card {
+    margin: 5px 0;
+  }
+  .cardRow {
+    flex-direction: column;
+  }
+
+  .cardRow span {
+    margin-bottom: 5px;
+  }
+
+  .buttonSpacing {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
 }

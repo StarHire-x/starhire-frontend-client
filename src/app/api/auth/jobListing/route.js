@@ -102,10 +102,13 @@ export const removeJobListing = async (id, accessToken) => {
   }
 };
 
-export const findAssignedJobListings = async (userId, accessToken) => {
+export const findAssignedJobListingsByJobSeeker = async (
+  userId,
+  accessToken
+) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/job-seeker/${userId}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/assigned/${userId}`,
       {
         method: 'GET',
         headers: {
@@ -116,22 +119,28 @@ export const findAssignedJobListings = async (userId, accessToken) => {
       }
     );
 
-    const response = await res.json();
-    console.log(response);
-    if (response.statusCode === 200) {
-      return response.data;
+    // Directly parse the response as JSON, expecting an array
+    const jobListings = await res.json();
+    console.log(jobListings);
+
+    // Check if the response is an array and return it directly
+    if (Array.isArray(jobListings)) {
+      return jobListings;
     } else {
-      throw new Error(response.message || 'An error occurred');
+      throw new Error('Unexpected response format from the server');
     }
   } catch (error) {
-    console.log('There was a problem fetching the job listings', error);
+    console.log(
+      'There was a problem fetching the assigned job listings for the job seeker',
+      error
+    );
     throw error;
   }
 };
 
 export const getJobApplicationsByJobListingId = async (id, accessToken) => {
   try {
-    console.log("TEST");
+    console.log('TEST');
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/corporate/jobApplications/${id}`,
       {
@@ -156,4 +165,3 @@ export const getJobApplicationsByJobListingId = async (id, accessToken) => {
     throw error;
   }
 };
-
