@@ -3,26 +3,27 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { viewOneJobListing } from '@/app/api/auth/jobListing/route'; // Adjust the path
-import { saveJobListing } from '@/app/api/auth/jobListing/route'; // Adjust the path
+import { viewOneJobListing } from '@/app/api/auth/jobListing/route';
+import { saveJobListing } from '@/app/api/auth/jobListing/route';
 import { Card } from 'primereact/card';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Button } from 'primereact/button';
 import Image from 'next/image';
-import HumanIcon from '../../../../public/icon.png'; // Adjust the path
+import HumanIcon from '../../../../public/icon.png';
 
 export default function viewJobListingDetailsJobSeeker() {
-  const params = useSearchParams();
-  const id = params.get('id');
-
   const session = useSession();
-
   const router = useRouter();
 
   const accessToken =
     session.status === 'authenticated' &&
     session.data &&
     session.data.user.accessToken;
+
+  const params = useSearchParams();
+  const id = params.get('id');
+
+  const userId = session?.data?.user?.id; // Adjust as per the structure of your session object.
 
   const [jobListing, setJobListing] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -47,20 +48,13 @@ export default function viewJobListingDetailsJobSeeker() {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  const handleSaveJobListing = async (jobListingId) => {
+  const handleSaveJobListing = async () => {
     try {
-      console.log('Attempting to save job listing with ID:', jobListingId);
-      if (accessToken) {
-        console.log('Access Token before API call:', accessToken);
-        await saveJobListing(jobListingId, accessToken);
-        alert('Job listing saved successfully!');
-        console.log('Successfully saved job listing.');
-      } else {
-        alert('Please login to save the job listing.');
-      }
+      const result = await saveJobListing(jobListing.jobListingId, accessToken);
+
+      alert('Job Listing Saved Successfully!');
     } catch (error) {
-      console.error('Error saving job listing:', error);
-      alert('Failed to save job listing. Please try again.');
+      alert('Failed to save job listing. Please try again later.');
     }
   };
 
@@ -70,7 +64,7 @@ export default function viewJobListingDetailsJobSeeker() {
         label="Save"
         icon="pi pi-bookmark" // An icon to represent 'Save'
         className="save-button p-button-outlined p-button-secondary"
-        onClick={() => handleSaveJobListing(jobListing.jobListingId)} // Pass the job listing ID to the save handler
+        onClick={handleSaveJobListing}
       />
     </div>
   );
