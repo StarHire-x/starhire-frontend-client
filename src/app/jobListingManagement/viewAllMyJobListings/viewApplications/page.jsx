@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { DataView } from 'primereact/dataview';
 import { Dialog } from 'primereact/dialog';
 import { Tag } from 'primereact/tag';
+import { ProgressSpinner } from 'primereact/progressspinner';
 import { useSession } from 'next-auth/react';
 
 
@@ -62,9 +63,7 @@ const ViewApplicationsPage = () => {
             </div>
             <div className={styles.cardBody}>
               {isLoading ? (
-                <div className="loading-animation">
-                  <div className="spinner"></div>
-                </div>
+                <ProgressSpinner style={{"display": "flex", "height": "100vh", "justify-content": "center", "align-items": "center"}} />
               ) : (
                 <>
                   <div className={styles.cardRow}>

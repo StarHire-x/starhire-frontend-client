@@ -11,6 +11,7 @@ import 'primeflex/primeflex.css';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import { Card } from 'primereact/card';
+import { ProgressSpinner } from 'primereact/progressspinner';
 import Image from 'next/image';
 import "./styles.css";
 import { Joan } from 'next/font/google';
@@ -97,9 +98,7 @@ const ViewJobSeekerPage = () => {
     return (
       <div className="container">
         {isLoading ? (
-          <div className="loading-animation">
-            <div className="spinner"></div>
-          </div>
+          <ProgressSpinner style={{"display": "flex", "height": "100vh", "justify-content": "center", "align-items": "center"}} />
         ) : (
           <div>
             <Card

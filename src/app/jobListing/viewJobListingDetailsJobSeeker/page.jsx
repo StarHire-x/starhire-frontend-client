@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { viewOneJobListing } from '@/app/api/auth/jobListing/route'; // Adjust the path
 import { Card } from 'primereact/card';
+import { ProgressSpinner } from 'primereact/progressspinner';
 import Image from 'next/image';
 import HumanIcon from '../../../../public/icon.png'; // Adjust the path
 
@@ -47,9 +48,7 @@ export default function viewJobListingDetailsJobSeeker() {
   return (
     <div className="container">
       {isLoading ? (
-        <div className="loading-animation">
-          <div className="spinner"></div>
-        </div>
+        <ProgressSpinner style={{"display": "flex", "height": "100vh", "justify-content": "center", "align-items": "center"}} />
       ) : (
         <Card
           title={jobListing.title}
