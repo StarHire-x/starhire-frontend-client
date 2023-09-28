@@ -4,12 +4,13 @@ body {
     background-color: #f7f8fc;
     color: #333;
     margin: 0;
+    /* margin: 40px auto; */
     padding: 0;
   }
   
   .container {
     max-width: 1200px;
-    margin: 40px auto;
+    /* margin: 40px auto; */
     padding: 0 20px;
   }
   
@@ -91,21 +92,21 @@ body {
     color: #555;
   }
   
-  .loading-animation {
+  /* .loading-animation {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-  }
+  } */
   
-  .spinner {
+  /* .spinner {
     border: 5px solid rgba(0, 0, 0, 0.1);
     border-top: 5px solid #007bff;
     border-radius: 50%;
     width: 50px;
     height: 50px;
     animation: spin 1s linear infinite;
-  }
+  } */
   
   .avatar {
     width: 50px;

@@ -9,6 +9,7 @@ import styles from './page.module.css';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import { ProgressSpinner } from "primereact/progressspinner";
 
 const JobListingPage = () => {
   const [jobListings, setJobListings] = useState([]);
@@ -76,7 +77,7 @@ const JobListingPage = () => {
     <div className={styles.container}>
       <h1>Your Assigned Jobs</h1>
       {isLoading ? (
-        <p>Loading...</p>
+        <ProgressSpinner style={{"display": "flex", "height": "100vh", "justify-content": "center", "align-items": "center"}} />
       ) : jobListings.length === 0 ? (
         <p>No job listings assigned yet.</p>
       ) : (
