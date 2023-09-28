@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 import { forgetPassword, sendEmail } from "../api/auth/forgetPassword/route";
-import ReactLoading from "react-loading";
+//import ReactLoading from "react-loading";
 import { RadioButton } from "primereact/radiobutton";
 import { ProgressSpinner } from "primereact/progressspinner";
 
