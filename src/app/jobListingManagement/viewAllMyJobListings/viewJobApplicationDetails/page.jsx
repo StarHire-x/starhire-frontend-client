@@ -76,7 +76,8 @@ const ViewJobApplicationDetails = () => {
   };
 
   const handleOnBackClick = () => {
-    return router.push(`/jobApplications?id=${jobListing?.jobListingId}`);
+    //return router.push(`/jobApplications?id=${jobListing?.jobListingId}`);
+    return router.push(`viewJobApplications?id=${jobListing?.jobListingId}`)
   };
 
   const nodes = [
