@@ -7,7 +7,6 @@ import { viewOneJobListing } from '@/app/api/auth/jobListing/route';
 import { saveJobListing } from '@/app/api/auth/jobListing/route';
 import { Card } from 'primereact/card';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import { Button } from 'primereact/button';
 import Image from 'next/image';
 import HumanIcon from '../../../../public/icon.png'; // Adjust the path
 import { Dialog } from 'primereact/dialog';
