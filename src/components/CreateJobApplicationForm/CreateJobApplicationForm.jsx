@@ -111,6 +111,7 @@ const CreateJobApplicationForm = ({
             <div className={styles.buttonContainer}>
               <Button
                 label="Add Document"
+                rounded
                 type="button"
                 onClick={addDocument}
                 size="small"
@@ -165,6 +166,7 @@ const CreateJobApplicationForm = ({
                     <Button
                       type="button"
                       label="Remove"
+                      rounded
                       severity="danger"
                       size="small"
                       onClick={() => removeDocument(index)}
@@ -176,7 +178,7 @@ const CreateJobApplicationForm = ({
           </Panel>
         </div>
         <div className={styles.buttonContainer}>
-          <Button label="Submit Job Application" severity="success" raised />
+          <Button label="Submit Job Application" rounded severity="success" raised />
         </div>
       </form>
     </div>

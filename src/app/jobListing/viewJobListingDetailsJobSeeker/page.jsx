@@ -154,6 +154,7 @@ export default function viewJobListingDetailsJobSeeker() {
       {isJobApplicationAbsent && (
         <Button
           label="Create Job Application"
+          rounded
           className={`${styles.createButton} p-button-outlined p-button-secondary`}
           icon="pi pi-plus"
           onClick={() => setShowCreateJobApplicationDialog(true)}
@@ -161,6 +162,7 @@ export default function viewJobListingDetailsJobSeeker() {
       )}
       <Button
         label="Save"
+        rounded
         className={`${styles.saveButton} p-button-outlined p-button-secondary`}
         icon="pi pi-bookmark"
         onClick={handleSaveJobListing}
