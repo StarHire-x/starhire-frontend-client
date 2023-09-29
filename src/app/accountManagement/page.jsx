@@ -21,12 +21,14 @@ import {
 } from "../api/auth/preference/route";
 import { getJobExperience } from "../api/auth/jobExperience/route";
 import JobExperiencePanel from "@/components/JobExperiencePanel/JobExperiencePanel";
+import { Dialog } from "primereact/dialog";
 
 const AccountManagement = () => {
   const session = useSession();
   const router = useRouter();
   const [refreshData, setRefreshData] = useState(false);
   const [jobExperience, setJobExperience] = useState([]);
+  const [deactivateAccountDialog, setDeactivateAccountDialog] = useState(false);
   const [formData, setFormData] = useState({
     userId: "",
     userName: "",
@@ -56,7 +58,7 @@ const AccountManagement = () => {
     endDate: "",
     jobDescription: "",
     highestEducationStatus: "",
-    visibilityOptions: ""
+    visibilityOptions: "",
   });
 
   // this is to do a reload of userContext if it is updated in someway
@@ -121,7 +123,6 @@ const AccountManagement = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
     setFormData({
       ...formData,
       [name]: value,
@@ -158,8 +159,34 @@ const AccountManagement = () => {
     }));
   };
 
-  const saveChanges = async (e) => {
+  const hideDeactivateAccountDialog = () => {
+    setDeactivateAccountDialog(false);
+  };
+
+  const deactivateAccountDialogFooter = () => (
+    <React.Fragment>
+      <Button
+        label="Cancel"
+        icon="pi pi-times"
+        rounded
+        outlined
+        onClick={hideDeactivateAccountDialog}
+      />
+      <Button label="Yes" rounded icon="pi pi-check" onClick={saveChanges} />
+    </React.Fragment>
+  );
+
+  const confirmChanges = async (e) => {
     e.preventDefault();
+    if (formData.status === "Inactive") {
+      setDeactivateAccountDialog(true);
+    } else {
+      await saveChanges();
+    }
+  };
+
+  const saveChanges = async (e) => {
+    // e.preventDefault();
     const userId = formData.userId;
 
     const updateUserDetails = {
@@ -179,7 +206,7 @@ const AccountManagement = () => {
       instituteName: formData.instituteName,
       dateOfGraduation: formData.dateOfGraduation,
       highestEducationStatus: formData.highestEducationStatus,
-      visibility: formData.visibility
+      visibility: formData.visibility,
     };
     try {
       console.log(userId);
@@ -192,6 +219,9 @@ const AccountManagement = () => {
 
       if (response) {
         alert("Status changed successfully!");
+        if (deactivateAccountDialog) {
+          hideDeactivateAccountDialog();
+        }
         setRefreshData((prev) => !prev);
         // this is to do a reload of userContext if it is updated so that navbar can change
         fetchUserData();
@@ -212,7 +242,24 @@ const AccountManagement = () => {
           saveChanges={saveChanges}
           session={session}
           removePdf={removePdf}
+          confirmChanges={confirmChanges}
         />
+        <Dialog
+          visible={deactivateAccountDialog}
+          style={{ width: "32rem" }}
+          breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+          header="Warning on self-deactivation of account"
+          className="p-fluid"
+          footer={deactivateAccountDialogFooter}
+          onHide={hideDeactivateAccountDialog}
+        >
+          <h3>
+            You may have accidentally selected Inactive for your account status.
+            Are you sure you want to deactivate your account? Please note that
+            this action is irreversible, and you need to contact our Admin to
+            activate back your account if needed.
+          </h3>
+        </Dialog>
         <br />
         {roleRef === "Job_Seeker" && (
           <>

@@ -17,6 +17,7 @@ const EditAccountForm = ({
   saveChanges,
   session,
   removePdf,
+  confirmChanges
 }) => {
 
   const educationOptions = [
@@ -36,7 +37,7 @@ const EditAccountForm = ({
     <div className={styles.container}>
       <Card>
         <h1 className={styles.title}>My Account Details</h1>
-        <form className={styles.form} onSubmit={saveChanges}>
+        <form className={styles.form} onSubmit={confirmChanges}>
           <div className={styles.avatarContainer}>
             {formData?.profilePictureUrl && (
               <img
