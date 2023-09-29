@@ -6,26 +6,26 @@ import { useSession } from 'next-auth/react';
 import { viewOneJobListing } from '@/app/api/auth/jobListing/route';
 import { saveJobListing } from '@/app/api/auth/jobListing/route';
 import { Card } from 'primereact/card';
+import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import Image from 'next/image';
 import HumanIcon from '../../../../public/icon.png'; // Adjust the path
 import { Dialog } from 'primereact/dialog';
 import CreateJobApplicationForm from '@/components/CreateJobApplicationForm/CreateJobApplicationForm';
-import styles from './page.module.css'
+import styles from './page.module.css';
 import {
   createJobApplication,
   findExistingJobApplication,
-} from "@/app/api/auth/jobApplication/route";
-
+} from '@/app/api/auth/jobApplication/route';
 
 export default function viewJobListingDetailsJobSeeker() {
   const session = useSession();
   const router = useRouter();
 
-  const jobSeekerId = session.status === 'authenticated' &&
+  const jobSeekerId =
+    session.status === 'authenticated' &&
     session.data &&
     session.data.user.userId;
-
 
   const accessToken =
     session.status === 'authenticated' &&
@@ -53,16 +53,15 @@ export default function viewJobListingDetailsJobSeeker() {
 
   const [isJobApplicationAbsent, setIsJobApplicationAbsent] = useState(false);
 
-
   const [formData, setFormData] = useState({
-    jobApplicationStatus: "",
-    availableStartDate: "",
-    availableEndDate: "",
-    submissionDate: "",
+    jobApplicationStatus: '',
+    availableStartDate: '',
+    availableEndDate: '',
+    submissionDate: '',
     documents: [
       {
-        documentName: "",
-        documentLink: "",
+        documentName: '',
+        documentLink: '',
       },
     ],
   });
@@ -71,23 +70,23 @@ export default function viewJobListingDetailsJobSeeker() {
     e.preventDefault();
     if (Object.keys(formErrors).length > 0) {
       // There are validation errors
-      alert("Please fix the form errors before submitting.");
+      alert('Please fix the form errors before submitting.');
       return;
     }
 
     const areDocumentsFilled = formData.documents.every(
-      (doc) => doc.documentName.trim() !== "" && doc.documentLink.trim() !== ""
+      (doc) => doc.documentName.trim() !== '' && doc.documentLink.trim() !== ''
     );
 
     if (!areDocumentsFilled) {
-      alert("Please ensure all documents are properly filled up.");
+      alert('Please ensure all documents are properly filled up.');
       return;
     }
-    
+
     const reqBody = {
       jobListingId: jobListing.jobListingId,
       jobSeekerId: jobSeekerId,
-      jobApplicationStatus: "Submitted",
+      jobApplicationStatus: 'Submitted',
       availableStartDate: formData.availableStartDate,
       availableEndDate: formData.availableEndDate,
       submissionDate: new Date(),
@@ -99,15 +98,15 @@ export default function viewJobListingDetailsJobSeeker() {
     try {
       const response = await createJobApplication(reqBody, accessToken);
       if (!response.error) {
-        console.log("Job application created successfully:", response);
-        alert("Job application created successfully!");
+        console.log('Job application created successfully:', response);
+        alert('Job application created successfully!');
         setRefreshData((prev) => !prev);
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.message);
     }
     setShowCreateJobApplicationDialog(false);
-  }
+  };
 
   useEffect(() => {
     if (accessToken) {
@@ -117,19 +116,20 @@ export default function viewJobListingDetailsJobSeeker() {
           setIsLoading(false);
         })
         .catch((error) => {
-          console.error("Error fetching job details:", error);
+          console.error('Error fetching job details:', error);
           setIsLoading(false);
         });
 
-      findExistingJobApplication(jobSeekerId,id,accessToken)
-      .then((response) => {
-        if(response.statusCode === 200) {
-          setIsJobApplicationAbsent(false);
-        } else {
-          console.error("Error fetching job preference:", response.json());
-          setIsJobApplicationAbsent(true);
+      findExistingJobApplication(jobSeekerId, id, accessToken).then(
+        (response) => {
+          if (response.statusCode === 200) {
+            setIsJobApplicationAbsent(false);
+          } else {
+            console.error('Error fetching job preference:', response.json());
+            setIsJobApplicationAbsent(true);
+          }
         }
-      })
+      );
     }
   }, [accessToken, refreshData]);
 
@@ -177,11 +177,11 @@ export default function viewJobListingDetailsJobSeeker() {
           subTitle={jobListing.jobLocation}
           footer={footer}
           className="my-card"
-          style={{ borderRadius: "0" }}
+          style={{ borderRadius: '0' }}
         >
           <div className="my-card.p-card-content">
             <div className="company-info">
-              {jobListing.corporate.profilePictureUrl === "" ? (
+              {jobListing.corporate.profilePictureUrl === '' ? (
                 <Image src={HumanIcon} alt="User" className="avatar" />
               ) : (
                 <img
@@ -201,7 +201,7 @@ export default function viewJobListingDetailsJobSeeker() {
             <strong>Job Requirements</strong>
             <p>{jobListing.requirements}</p>
             <strong>Average Salary</strong>
-            <p>{"$" + jobListing.averageSalary + " SGD"}</p>
+            <p>{'$' + jobListing.averageSalary + ' SGD'}</p>
             <strong>Listing Date</strong>
             <p>{formatDate(jobListing.listingDate)}</p>
             <strong>Job Start Date</strong>
@@ -214,16 +214,15 @@ export default function viewJobListingDetailsJobSeeker() {
             </div>
 
             <strong>Corporate Details</strong>
-            <p>{"UEN Number: " + jobListing.corporate.companyRegistrationId}</p>
+            <p>{'UEN Number: ' + jobListing.corporate.companyRegistrationId}</p>
             <p className="second-p">
-              {"Address: " + jobListing.corporate.companyAddress}
+              {'Address: ' + jobListing.corporate.companyAddress}
             </p>
 
             <strong>Job Listing Details</strong>
             <p>{formatDate(jobListing.listingDate)}</p>
 
-            <p>{"Job Listing ID: " + jobListing.jobListingId}</p>
-
+            <p>{'Job Listing ID: ' + jobListing.jobListingId}</p>
           </div>
 
           {/* Conditionally rendering the button based on the existence of jobListing.jobApplication */}

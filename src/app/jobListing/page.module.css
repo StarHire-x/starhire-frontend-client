@@ -1,11 +1,11 @@
 .container {
   margin-left: auto;
   margin-right: auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: flex; /* Enable flexbox */
+  flex-wrap: wrap; /* Allow the items to wrap to the next line */
+  justify-content: center; /* Center the cards horizontally */
   width: 1150px;
-  gap: 15px;
+  gap: 15px; /* Provide consistent gap between the cards. This will replace the margin if supported */
   max-height: 790px;
   overflow-y: auto;
 }
@@ -24,7 +24,10 @@
   overflow: hidden;
   border: 1px solid #edf6f9;
   max-width: 100%;
-  margin: 10px;
+  margin-left: 10px; /* half of desired space */
+  margin-right: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .card:hover {
@@ -86,7 +89,7 @@
 }
 
 .cardFooter button:hover {
-  background-color: #e2947888;
+  background-color: #e2947888; /* Darker shade of colour on hover */
 }
 
 .buttonSpacing {
@@ -106,19 +109,22 @@
 }
 
 @media (max-width: 480px) {
+  /* Typical breakpoint for mobile phones */
+
   .card {
-    margin: 5px 0;
+    margin-left: 0;
+    margin-right: 0;
   }
   .cardRow {
-    flex-direction: column;
+    flex-direction: column; /* Stack items vertically on smaller screens */
   }
 
   .cardRow span {
-    margin-bottom: 5px;
+    margin-bottom: 5px; /* Spacing between stacked items */
   }
 
   .buttonSpacing {
-    margin-right: 0;
-    margin-bottom: 20px;
+    margin-right: 0; /* Remove margin for smallest screens */
+    margin-bottom: 20px; /* Add vertical spacing between buttons */
   }
 }
