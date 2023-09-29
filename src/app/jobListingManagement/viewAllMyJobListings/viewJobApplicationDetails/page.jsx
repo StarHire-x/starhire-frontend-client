@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-//import { viewJobApplicationDetails } from "@/app/api/auth/jobApplications/route";
+import { viewJobApplicationDetails } from "@/app/api/auth/jobApplication/route";
 import { Card } from "primereact/card";
 import styles from "./page.module.css";
 import Image from "next/image";
@@ -13,7 +13,7 @@ import { Tag } from "primereact/tag";
 import { useRouter } from "next/navigation";
 import { Dropdown } from "@/components/Dropdown/Dropdown";
 import { Checkbox } from "primereact/checkbox";
-//import { updateJobApplicationStatus } from "@/app/api/auth/jobApplications/route";
+import { updateJobApplicationStatus } from "@/app/api/auth/jobApplication/route";
 import moment from "moment";
 import HumanIcon from "../../../../../public/icon.png"
 import { getJobSeekersByJobApplicationId } from '@/app/api/auth/jobListing/route';
@@ -21,12 +21,10 @@ import { getJobSeekersByJobApplicationId } from '@/app/api/auth/jobListing/route
 const ViewJobApplicationDetails = () => {
   const session = useSession();
   const router = useRouter();
-  /*
+
   if (session.status === "unauthenticated") {
     router?.push("/login");
   }
-  */
-
 
   const accessToken =
     session.status === "authenticated" &&
@@ -144,6 +142,31 @@ const ViewJobApplicationDetails = () => {
   };
 
   // retrieve all jobApplication and jobSeeker details
+  /*
+  useEffect(() => {
+    const populateDetails = async () => {
+      try {
+        //const details = await  getJobSeekersByJobApplicationId(id, accessToken);
+        const details = await viewJobApplicationDetails(
+          jobApplicationId,
+          accessToken
+        );
+        setJobApplication(details);
+        setJobSeeker(details.jobSeeker);
+        setDocuments(details.documents);
+        setJobListing(details.jobListing);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    setIsLoading(true);
+    populateDetails();
+  }, [jobApplicationId, accessToken]);
+  */
+
+
+//Updated
   useEffect(() => {
     const populateDetails = async () => {
       try {
@@ -151,13 +174,13 @@ const ViewJobApplicationDetails = () => {
         setJobApplication(details);
         setJobSeeker(details.jobSeeker);
         setDocuments(details.documents);
-        //setJobListing(details.jobListing);
+        setJobListing(details.jobListing);
         setIsLoading(false);
       } catch (error) {
         console.log(error);
       }
     };
-    setIsLoading(true);
+    setIsLoading(false);
     populateDetails();
   }, [jobApplicationId, accessToken]);
 
