@@ -17,7 +17,7 @@ const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
     text: 'Job Listings',
     href: '#', // Use # as the href for dropdown
     subMenu: [
-      { text: 'View Job Listings Available', href: '/jobListing' },
+      { text: 'View Available Job Listings', href: '/jobListing' },
       {
         text: 'View Saved Job Listings',
         href: '/jobListing/viewSavedJobListingsJobSeeker',

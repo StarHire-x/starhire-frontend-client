@@ -132,7 +132,7 @@ margin-bottom: 0px /* Add some spacing below the image */
 
   .nav__menu_list > div {
     position: relative;
-    display: inline-block;
+    /* display: inline-block; */
     margin-right: 20px; /* Adjust the spacing between menu items */
   }
 
