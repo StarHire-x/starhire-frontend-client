@@ -13,7 +13,8 @@ import 'primeflex/primeflex.css';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import "./styles.css";
-const ViewApplicationsPage = () => {
+
+const ViewJobApplicationsPage = () => {
     const [jobApplications, setJobApplications] = useState(null);
     const [refreshData, setRefreshData] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -54,7 +55,7 @@ const ViewApplicationsPage = () => {
 
 
     const itemTemplate = (jobApplications) => {
-      const cardLink = `/jobListingManagement/viewAllMyJobListings/viewJobSeeker?id=${jobApplications.jobApplicationId}`;
+      const cardLink = `/jobListingManagement/viewAllMyJobListings/viewJobApplicationDetails?id=${jobApplications.jobApplicationId}`;
       return (
         <a href={cardLink} className={styles.cardLink}>
           <div className={styles.card}>
@@ -130,4 +131,4 @@ const ViewApplicationsPage = () => {
     
 }
 
-export default ViewApplicationsPage;
+export default ViewJobApplicationsPage;
