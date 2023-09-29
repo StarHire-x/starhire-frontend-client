@@ -166,7 +166,8 @@ const ViewJobApplicationDetails = () => {
   */
 
 
-//Updated
+//Old
+/*
   useEffect(() => {
     const populateDetails = async () => {
       try {
@@ -183,10 +184,27 @@ const ViewJobApplicationDetails = () => {
     setIsLoading(false);
     populateDetails();
   }, [jobApplicationId, accessToken]);
+  */
+  useEffect(() => {
+    if (accessToken) {
+      getJobSeekersByJobApplicationId(jobApplicationId, accessToken)
+        .then((details) => {
+          setJobApplication(details);
+          setJobSeeker(details.jobSeeker);
+          setDocuments(details.documents);
+          setJobListing(details.jobListing);
+          setIsLoading(false);
+          console.log(jobApplication);
+        })
+        .catch((error) => {
+          console.error("Error fetching job listings:", error);
+          setIsLoading(false);
+        });
+    }
+  }, [accessToken]);
 
 
   return (
-    
     <>
       {isLoading && (
         <div className="card flex justify-content-center">
@@ -218,8 +236,12 @@ const ViewJobApplicationDetails = () => {
             )}
             <Card className={styles.jobSeekerCard}>
               <p className={styles.text}>
-                <b>Username: </b>
-                {jobSeeker?.userName}
+                <b>Full Name: </b>
+                {jobSeeker?.fullName}
+              </p>
+              <p className={styles.text}>
+                <b>User ID: </b>
+                {jobSeeker?.userId}
               </p>
               {jobSeeker?.fullName && (
                 <p className={styles.text}>
@@ -235,6 +257,10 @@ const ViewJobApplicationDetails = () => {
                 <b>Email: </b>
                 {jobSeeker?.email}
               </p>
+              <p className={styles.text}>
+                <b>Date of Birth: </b>
+                {jobSeeker?.dateOfBirth}
+              </p>
             </Card>
           </div>
           <div className={styles.jobSeekerApplication}>
@@ -243,7 +269,7 @@ const ViewJobApplicationDetails = () => {
             </Card>
             <Card
               className={styles.childCard}
-              title="Application"
+              title="Application Details"
               subTitle={getApplicationStatus}
             >
               <div className={styles.dates}>
@@ -266,7 +292,7 @@ const ViewJobApplicationDetails = () => {
                     key={document.documentId}
                     className={styles.childCheckbox}
                   >
-                    {jobApplication?.jobApplicationStatus === "Submitted" && (
+                    {jobApplication?.jobApplicationStatus === "Processing" && (
                       <Checkbox
                         inputId={document.documentId}
                         name="document"
