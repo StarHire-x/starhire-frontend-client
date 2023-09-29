@@ -115,7 +115,7 @@ const CreateJobListingForm = ({ onCreate }) => {
       </div>
 
       <div className={styles.cardFooter}>
-        <Button label="Create" onClick={handleSubmit} />
+        <Button label="Create" rounded onClick={handleSubmit} />
       </div>
     </div>
   );

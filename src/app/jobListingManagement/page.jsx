@@ -76,6 +76,7 @@ const JobListingManagementPage = () => {
       <Button
         label="Yes"
         icon="pi pi-check"
+        rounded
         onClick={() =>
           handleDeleteJobListing(selectedJobListingData.jobListingId)
         }
@@ -134,6 +135,7 @@ const JobListingManagementPage = () => {
           <Button
             label="Edit"
             icon="pi pi-pencil"
+            rounded
             className={styles.buttonSpacing}
             onClick={() => {
               setSelectedJobListingData(jobListing);
@@ -143,6 +145,7 @@ const JobListingManagementPage = () => {
           <Button
             label="Delete"
             icon="pi pi-trash"
+            rounded
             className={styles.buttonSpacing}
             onClick={() => {
               setSelectedJobListingData(jobListing);
@@ -219,6 +222,8 @@ const JobListingManagementPage = () => {
       <h2 className={styles.headerTitle}>Job Listing Management</h2>
       <Button
         label="Add A Job Listing"
+        rounded
+        style={{marginTop: "10px"}}
         onClick={() => setShowCreateDialog(true)}
       />
     </div>
