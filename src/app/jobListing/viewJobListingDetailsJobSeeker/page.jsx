@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { viewOneJobListing } from '@/app/api/auth/jobListing/route'; // Adjust the path
+import { viewOneJobListing } from '@/app/api/auth/jobListing/route';
+import { saveJobListing } from '@/app/api/auth/jobListing/route';
 import { Card } from 'primereact/card';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import { Button } from 'primereact/button';
 import Image from 'next/image';
 import HumanIcon from '../../../../public/icon.png'; // Adjust the path
 import { Dialog } from 'primereact/dialog';
@@ -17,12 +19,9 @@ import {
   findExistingJobApplication,
 } from "@/app/api/auth/jobApplication/route";
 
+
 export default function viewJobListingDetailsJobSeeker() {
-  const params = useSearchParams();
-  const id = params.get('id');
-
   const session = useSession();
-
   const router = useRouter();
 
   const jobSeekerId = session.status === 'authenticated' &&
@@ -34,6 +33,11 @@ export default function viewJobListingDetailsJobSeeker() {
     session.status === 'authenticated' &&
     session.data &&
     session.data.user.accessToken;
+
+  const params = useSearchParams();
+  const id = params.get('id');
+
+  const userId = session?.data?.user?.id; // Adjust as per the structure of your session object.
 
   const [jobListing, setJobListing] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -128,21 +132,43 @@ export default function viewJobListingDetailsJobSeeker() {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  const handleSaveJobListing = async () => {
+    try {
+      const result = await saveJobListing(jobListing.jobListingId, accessToken);
+
+      alert('Job Listing Saved Successfully!');
+    } catch (error) {
+      alert('Failed to save job listing. Please try again later.');
+    }
+  };
+
+  const footer = (
+    <div className="flex flex-wrap justify-content-end gap-2">
+      <Button
+        label="Save"
+        icon="pi pi-bookmark" // An icon to represent 'Save'
+        className="save-button p-button-outlined p-button-secondary"
+        onClick={handleSaveJobListing}
+      />
+    </div>
+  );
+
   return (
     <div className="container">
       {isLoading ? (
         <ProgressSpinner
           style={{
-            display: "flex",
-            height: "100vh",
-            "justify-content": "center",
-            "align-items": "center",
+            display: 'flex',
+            height: '100vh',
+            'justify-content': 'center',
+            'align-items': 'center',
           }}
         />
       ) : (
         <Card
           title={jobListing.title}
           subTitle={jobListing.jobLocation}
+          footer={footer}
           className="my-card"
           style={{ borderRadius: "0" }}
         >
@@ -190,6 +216,7 @@ export default function viewJobListingDetailsJobSeeker() {
             <p>{formatDate(jobListing.listingDate)}</p>
 
             <p>{"Job Listing ID: " + jobListing.jobListingId}</p>
+
           </div>
 
           {/* Conditionally rendering the button based on the existence of jobListing.jobApplication */}
