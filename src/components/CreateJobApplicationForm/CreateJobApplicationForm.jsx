@@ -160,7 +160,7 @@ const CreateJobApplicationForm = ({
           </Panel>
         </div>
         <div className={styles.buttonContainer}>
-          <Button label="Create Job Application" severity="success" raised />
+          <Button label="Submit Job Application" severity="success" raised />
         </div>
       </form>
     </div>

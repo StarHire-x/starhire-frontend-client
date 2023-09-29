@@ -66,7 +66,7 @@ export default function viewJobListingDetailsJobSeeker() {
   });
 
   const addJobApplication = async (e) => {
-  
+    e.preventDefault();
     if (Object.keys(formErrors).length > 0) {
       // There are validation errors
       alert("Please fix the form errors before submitting.");
@@ -96,7 +96,6 @@ export default function viewJobListingDetailsJobSeeker() {
       alert(error.message)
     }
     setShowCreateJobApplicationDialog(false);
-    router.push(`/jobListing/viewJobListingDetailsJobSeeker?id=${id}`);
   }
 
   useEffect(() => {
@@ -196,8 +195,9 @@ export default function viewJobListingDetailsJobSeeker() {
           {/* Conditionally rendering the button based on the existence of jobListing.jobApplication */}
           {isJobApplicationAbsent && (
             <Button
-              icon="pi pi-plus"
-              rounded
+              label="Create Job Application"
+              raised
+              type="button"
               severity="success"
               onClick={() => setShowCreateJobApplicationDialog(true)}
             />
