@@ -234,7 +234,7 @@ const ViewJobApplicationDetails = () => {
                 className={styles.avatar}
               />
             )}
-            <Card className={styles.jobSeekerCard}>
+            <Card className={styles.jobSeekerCard} title="Personal Particulars">
               <p className={styles.text}>
                 <b>Full Name: </b>
                 {jobSeeker?.fullName}
@@ -243,12 +243,6 @@ const ViewJobApplicationDetails = () => {
                 <b>User ID: </b>
                 {jobSeeker?.userId}
               </p>
-              {jobSeeker?.fullName && (
-                <p className={styles.text}>
-                  <b>Full Name: </b>
-                  {jobSeeker.fullName}
-                </p>
-              )}
               <p className={styles.text}>
                 <b>Contact Number: </b>
                 {jobSeeker?.contactNo}
@@ -260,6 +254,10 @@ const ViewJobApplicationDetails = () => {
               <p className={styles.text}>
                 <b>Date of Birth: </b>
                 {jobSeeker?.dateOfBirth}
+              </p>
+              <p className={styles.text}>
+                <b>Place of Residence: </b>
+                {jobSeeker?.homeAddress}
               </p>
             </Card>
           </div>
@@ -292,17 +290,15 @@ const ViewJobApplicationDetails = () => {
                     key={document.documentId}
                     className={styles.childCheckbox}
                   >
-                    {jobApplication?.jobApplicationStatus === "Processing" && (
-                      <Checkbox
-                        inputId={document.documentId}
-                        name="document"
-                        value={document}
-                        onChange={onDocumentChange}
-                        checked={selectedDocuments.some(
-                          (item) => item.documentId === document.documentId
-                        )}
-                      />
-                    )}
+                    <Checkbox
+                      inputId={document.documentId}
+                      name="document"
+                      value={document}
+                      onChange={onDocumentChange}
+                      checked={selectedDocuments.some(
+                        (item) => item.documentId === document.documentId
+                      )}
+                    />
                     <label htmlFor={document.documentId} className="ml-2">
                       {document.documentName}
                     </label>
@@ -317,6 +313,39 @@ const ViewJobApplicationDetails = () => {
                   </div>
                 ))}
               </div>
+            </Card>
+
+            <Card className={styles.jobSeekerCard}>
+              <p className={styles.text}>
+                <b>Full Name: </b>
+                {jobSeeker?.fullName}
+              </p>
+              <p className={styles.text}>
+                <b>User ID: </b>
+                {jobSeeker?.userId}
+              </p>
+              {jobSeeker?.fullName && (
+                <p className={styles.text}>
+                  <b>Full Name: </b>
+                  {jobSeeker.fullName}
+                </p>
+              )}
+              <p className={styles.text}>
+                <b>Contact Number: </b>
+                {jobSeeker?.contactNo}
+              </p>
+              <p className={styles.text}>
+                <b>Email: </b>
+                {jobSeeker?.email}
+              </p>
+              <p className={styles.text}>
+                <b>Date of Birth: </b>
+                {jobSeeker?.dateOfBirth}
+              </p>
+              <p className={styles.text}>
+                <b>Place of Residence: </b>
+                {jobSeeker?.homeAddress}
+              </p>
             </Card>
           </div>
           <div className={styles.buttons}>
