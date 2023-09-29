@@ -250,6 +250,91 @@ export const fetchSavedJobListings = async (userId, accessToken) => {
   }
 };
 
+export const unsaveJobListing = async (jobListingId, accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/saved-job-listing/unsave/${jobListingId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: 'no-store',
+      }
+    );
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+
+    const text = await res.text();
+    return text ? JSON.parse(text) : {};
+  } catch (error) {
+    console.log('There was a problem un-saving the job listing', error);
+    throw error;
+  }
+};
+
+// export const checkIfJobIsSaved = async (jobListingId, accessToken) => {
+//   try {
+//     const res = await fetch(
+//       `${process.env.NEXT_PUBLIC_BASE_URL}/saved-job-listing/is-saved/${jobListingId}`,
+//       {
+//         method: 'GET',
+//         headers: {
+//           'Content-Type': 'application/json',
+//           Authorization: `Bearer ${accessToken}`,
+//         },
+//         cache: 'no-store',
+//       }
+//     );
+
+//     if (!res.ok) {
+//       const errorData = await res.json();
+//       throw new Error(errorData.message);
+//     }
+
+//     const { isSaved } = await res.json();
+//     return isSaved;
+//   } catch (error) {
+//     console.log('There was a problem checking if the job is saved:', error);
+//     throw error;
+//   }
+// };
+
+export const checkIfJobIsSaved = async (jobListingId, accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/saved-job-listing/is-saved/${jobListingId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: 'no-store',
+      }
+    );
+
+    if (res.status === 200) {
+      return { statusCode: 200 };
+    } else if (res.status === 404) {
+      return { statusCode: 404 };
+    } else {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+  } catch (error) {
+    console.log(
+      'There was a problem checking if the job listing is saved',
+      error
+    );
+    throw error;
+  }
+};
+
 export const findAssignedJobListingsByJobSeeker = async (
   userId,
   accessToken

@@ -3,8 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { viewOneJobListing } from '@/app/api/auth/jobListing/route';
-import { saveJobListing } from '@/app/api/auth/jobListing/route';
+import {
+  viewOneJobListing,
+  saveJobListing,
+  unsaveJobListing,
+  checkIfJobIsSaved,
+} from '@/app/api/auth/jobListing/route';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
@@ -39,9 +43,9 @@ export default function viewJobListingDetailsJobSeeker() {
 
   const [jobListing, setJobListing] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-
   const [refreshData, setRefreshData] = useState(false);
-
+  const [isJobSaved, setIsJobSaved] = useState(false);
+  console.log('Initial isJobSaved:', isJobSaved);
   const [showCreateJobApplicationDialog, setShowCreateJobApplicationDialog] =
     useState(false);
 
@@ -108,8 +112,45 @@ export default function viewJobListingDetailsJobSeeker() {
     setShowCreateJobApplicationDialog(false);
   };
 
+  // useEffect(() => {
+  //   console.log('useEffect triggered');
+  //   if (accessToken) {
+  //     viewOneJobListing(id, accessToken)
+  //       .then((data) => {
+  //         setJobListing(data);
+  //         setIsLoading(false);
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error fetching job details:', error);
+  //         setIsLoading(false);
+  //       });
+
+  //     findExistingJobApplication(jobSeekerId, id, accessToken).then(
+  //       (response) => {
+  //         if (response.statusCode === 200) {
+  //           setIsJobApplicationAbsent(false);
+  //         } else {
+  //           console.error('Error fetching job preference:', response.json());
+  //           setIsJobApplicationAbsent(true);
+  //         }
+  //       }
+  //     );
+  //     // Check if the job is saved
+  //     checkIfJobIsSaved(id, accessToken)
+  //       .then((result) => {
+  //         setIsJobSaved(result.isSaved); // Assuming the API returns an object with an 'isSaved' property
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error checking job save status:', error);
+  //       });
+  //   }
+  // }, [accessToken, refreshData]);
+
   useEffect(() => {
+    console.log('useEffect triggered');
+
     if (accessToken) {
+      // Fetching the job listing details
       viewOneJobListing(id, accessToken)
         .then((data) => {
           setJobListing(data);
@@ -120,6 +161,7 @@ export default function viewJobListingDetailsJobSeeker() {
           setIsLoading(false);
         });
 
+      // Checking existing job application
       findExistingJobApplication(jobSeekerId, id, accessToken).then(
         (response) => {
           if (response.statusCode === 200) {
@@ -130,8 +172,17 @@ export default function viewJobListingDetailsJobSeeker() {
           }
         }
       );
+
+      // Checking if the job is already saved by the user
+      checkIfJobIsSaved(id, accessToken)
+        .then((response) => {
+          setIsJobSaved(response.statusCode === 200);
+        })
+        .catch((error) => {
+          console.error('Error checking if job is saved:', error);
+        });
     }
-  }, [accessToken, refreshData]);
+  }, [accessToken, id, jobSeekerId, refreshData]);
 
   // Function to format date in "day-month-year" format
   const formatDate = (dateString) => {
@@ -139,13 +190,33 @@ export default function viewJobListingDetailsJobSeeker() {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  // const handleSaveJobListing = async () => {
+  //   try {
+  //     const result = await saveJobListing(jobListing.jobListingId, accessToken);
+
+  //     alert('Job Listing Saved Successfully!');
+  //   } catch (error) {
+  //     alert('Failed to save job listing. Please try again later.');
+  //   }
+  // };
+
   const handleSaveJobListing = async () => {
     try {
-      const result = await saveJobListing(jobListing.jobListingId, accessToken);
-
-      alert('Job Listing Saved Successfully!');
+      if (isJobSaved) {
+        await unsaveJobListing(jobListing.jobListingId, accessToken);
+        setIsJobSaved(false);
+        alert('Job Listing Unsaved Successfully!');
+      } else {
+        await saveJobListing(jobListing.jobListingId, accessToken);
+        setIsJobSaved(true);
+        alert('Job Listing Saved Successfully!');
+      }
     } catch (error) {
-      alert('Failed to save job listing. Please try again later.');
+      alert(
+        isJobSaved
+          ? 'Failed to unsave job listing. Please try again later.'
+          : 'Failed to save job listing. Please try again later.'
+      );
     }
   };
 
@@ -161,10 +232,10 @@ export default function viewJobListingDetailsJobSeeker() {
         />
       )}
       <Button
-        label="Save"
+        label={isJobSaved ? 'Unsave' : 'Save'}
         rounded
         className={`${styles.saveButton} p-button-outlined p-button-secondary`}
-        icon="pi pi-bookmark"
+        icon={isJobSaved ? 'pi pi-bookmark-off' : 'pi pi-bookmark'}
         onClick={handleSaveJobListing}
       />
     </div>
@@ -177,7 +248,7 @@ export default function viewJobListingDetailsJobSeeker() {
           style={{
             display: 'flex',
             height: '100vh',
-            justifyContent: 'center',
+            // justifyContent: 'center',
             alignItems: 'center',
           }}
         />
