@@ -134,6 +134,21 @@ const CreateJobApplicationForm = ({
                     onChange={(e) => handleFileChange(e, index)}
                   />
                 </div>
+                {document.documentLink && (
+                  <div className={styles.cardRow}>
+                    <label>File</label>
+                    <Button
+                      type="button"
+                      icon="pi pi-file-pdf"
+                      onClick={(e) => {
+                        e.stopPropagation(); // This stops the event from propagating up
+                        window.open(document.documentLink, "_blank");
+                      }}
+                      className="p-button-rounded p-button-danger"
+                      aria-label="Open PDF"
+                    />
+                  </div>
+                )}
                 <div className={styles.cardRow}>
                   <label>AWS S3 Link</label>
                   <input
