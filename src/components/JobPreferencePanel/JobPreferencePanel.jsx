@@ -308,10 +308,7 @@ const JobPreferencePanel = ({
                 <Rating
                   value={Number(formData?.locationPreference)}
                   onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      locationPreference: e.value,
-                    })
+                    handleRatingChange("locationPreference", e.value)
                   }
                   stars={5}
                   cancel={false}
@@ -327,42 +324,7 @@ const JobPreferencePanel = ({
                 <Rating
                   value={Number(formData?.salaryPreference)}
                   onChange={(e) =>
-                    setFormData({ ...formData, salaryPreference: e.value })
-                  }
-                  stars={5}
-                  cancel={false}
-                />
-              </div>
-              <div className={styles.fieldRating}>
-                <label
-                  htmlFor="culturePreference"
-                  className={styles.labelRating}
-                >
-                  Culture Preference:
-                </label>
-                <Rating
-                  value={Number(formData?.culturePreference)}
-                  onChange={(e) =>
-                    setFormData({ ...formData, culturePreference: e.value })
-                  }
-                  stars={5}
-                  cancel={false}
-                />
-              </div>
-              <div className={styles.fieldRating}>
-                <label
-                  htmlFor="diversityPreference"
-                  className={styles.labelRating}
-                >
-                  Diversity Preference:
-                </label>
-                <Rating
-                  value={Number(formData?.diversityPreference)}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      diversityPreference: e.value,
-                    })
+                    handleRatingChange("salaryPreference", e.value)
                   }
                   stars={5}
                   cancel={false}
@@ -378,10 +340,39 @@ const JobPreferencePanel = ({
                 <Rating
                   value={Number(formData?.workLifeBalancePreference)}
                   onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      workLifeBalancePreference: e.value,
-                    })
+                    handleRatingChange("workLifeBalancePreference", e.value)
+                  }
+                  stars={5}
+                  cancel={false}
+                />
+              </div>
+              <div className={styles.fieldRating}>
+                <label
+                  htmlFor="culturePreference"
+                  className={styles.labelRating}
+                >
+                  Culture Preference:
+                </label>
+                <Rating
+                  value={Number(formData?.culturePreference)}
+                  onChange={(e) =>
+                    handleRatingChange("culturePreference", e.value)
+                  }
+                  stars={5}
+                  cancel={false}
+                />
+              </div>
+              <div className={styles.fieldRating}>
+                <label
+                  htmlFor="diversityPreference"
+                  className={styles.labelRating}
+                >
+                  Diversity Preference:
+                </label>
+                <Rating
+                  value={Number(formData?.diversityPreference)}
+                  onChange={(e) =>
+                    handleRatingChange("diversityPreference", e.value)
                   }
                   stars={5}
                   cancel={false}
