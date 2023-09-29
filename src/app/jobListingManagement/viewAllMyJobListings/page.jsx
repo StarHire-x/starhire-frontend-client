@@ -59,7 +59,7 @@ const ViewAllMyJobListingsManagementPage = () => {
   }, [refreshData, userIdRef, accessToken]);
 
   const itemTemplate = (jobListing) => {
-    const cardLink = `/jobListingManagement/viewAllMyJobListings/viewApplications?id=${jobListing.jobListingId}`;
+    const cardLink = `/jobListingManagement/viewAllMyJobListings/viewJobApplications?id=${jobListing.jobListingId}`;
     <a href={cardLink} className={styles.cardLink}>
       <div className={styles.card}>
         <div className={styles.cardHeader}></div>
@@ -104,6 +104,10 @@ const ViewAllMyJobListingsManagementPage = () => {
       </a>
     );
   };
+
+  if (session.status === "unauthenticated") {
+    router?.push("/login");
+  }
 
   if (session.status === 'authenticated') {
     return (
