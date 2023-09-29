@@ -54,6 +54,7 @@ const EditJobExperienceForm = ({
               name="employerName"
               value={formData?.employerName}
               onChange={handleInputChange}
+              required
             />
           </div>
 
@@ -63,6 +64,7 @@ const EditJobExperienceForm = ({
               name="jobTitle"
               value={formData?.jobTitle}
               onChange={handleInputChange}
+              required
             />
           </div>
 
@@ -79,6 +81,7 @@ const EditJobExperienceForm = ({
                   startDate: e.value,
                 }))
               }
+              required
             />
           </div>
 
@@ -96,7 +99,7 @@ const EditJobExperienceForm = ({
                 if (e.checked) {
                   setFormData((prev) => ({
                     ...prev,
-                    endDate: null,
+                    endDate: "null",
                   }));
                 }
               }}
@@ -141,6 +144,7 @@ const EditJobExperienceForm = ({
               onChange={handleInputChange}
               rows={7} /* Adjust as needed */
               autoResize={true} /* If you want it to resize automatically */
+              required
             />
           </div>
         </div>

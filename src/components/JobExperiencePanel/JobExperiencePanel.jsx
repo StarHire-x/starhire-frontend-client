@@ -120,20 +120,34 @@ const JobExperiencePanel = ({
     e.preventDefault();
     const userId = formData.userId;
 
+    console.log("Hello")
+
     if (Object.keys(formErrors).length > 0) {
       // There are validation errors
       alert("Please fix the form errors before submitting.");
       return;
     }
 
-    const reqBody = {
-      jobSeekerId: userId,
-      employerName: formData.employerName,
-      jobTitle: formData.jobTitle,
-      startDate: formData.startDate,
-      endDate: formData.endDate,
-      jobDescription: formData.jobDescription,
-    };
+    let reqBody;
+
+    if(formData.endDate === "null") {
+      reqBody = {
+        jobSeekerId: userId,
+        employerName: formData.employerName,
+        jobTitle: formData.jobTitle,
+        startDate: formData.startDate,
+        jobDescription: formData.jobDescription,
+      };
+    } else {
+      reqBody = {
+        jobSeekerId: userId,
+        employerName: formData.employerName,
+        jobTitle: formData.jobTitle,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        jobDescription: formData.jobDescription,
+      };
+    }
 
     console.log(reqBody);
     try {
@@ -153,13 +167,32 @@ const JobExperiencePanel = ({
     e.preventDefault();
     const jobExperienceId = formData.jobExperienceId;
 
-    const reqBody = {
-      employerName: formData.employerName,
-      jobTitle: formData.jobTitle,
-      startDate: formData.startDate,
-      endDate: formData.endDate,
-      jobDescription: formData.jobDescription,
-    };
+    if (Object.keys(formErrors).length > 0) {
+      // There are validation errors
+      alert("Please fix the form errors before submitting.");
+      return;
+    }
+
+    let reqBody;
+
+    if (formData.endDate === "null") {
+      reqBody = {
+        jobSeekerId: userId,
+        employerName: formData.employerName,
+        jobTitle: formData.jobTitle,
+        startDate: formData.startDate,
+        jobDescription: formData.jobDescription,
+      };
+    } else {
+      reqBody = {
+        jobSeekerId: userId,
+        employerName: formData.employerName,
+        jobTitle: formData.jobTitle,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        jobDescription: formData.jobDescription,
+      };
+    }
     
     try {
       const response = await updateJobExperience(
