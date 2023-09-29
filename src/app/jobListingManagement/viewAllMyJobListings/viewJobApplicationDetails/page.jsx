@@ -36,6 +36,7 @@ const ViewJobApplicationDetails = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [jobSeeker, setJobSeeker] = useState(null);
+  const [recruiter, setRecruiter] = useState(null);
   const [jobApplication, setJobApplication] = useState(null);
   const [documents, setDocuments] = useState([]);
   const [jobListing, setJobListing] = useState(null);
@@ -77,24 +78,6 @@ const ViewJobApplicationDetails = () => {
   const handleOnBackClick = () => {
     return router.push(`/jobApplications?id=${jobListing?.jobListingId}`);
   };
-
-  /*
-  const updateStatus = async (status) => {
-    const request = {
-      jobApplicationStatus: status,
-    };
-    try {
-      await updateJobApplicationStatus(
-        request,
-        jobApplication?.jobApplicationId,
-        accessToken
-      );
-    } catch (error) {
-      console.log(error);
-    }
-    router.push(`/jobApplications?id=${jobListing?.jobListingId}`);
-  };
-  */
 
   const nodes = [
     {
@@ -141,50 +124,6 @@ const ViewJobApplicationDetails = () => {
     setSelectedDocuments(_selectedDocuments);
   };
 
-  // retrieve all jobApplication and jobSeeker details
-  /*
-  useEffect(() => {
-    const populateDetails = async () => {
-      try {
-        //const details = await  getJobSeekersByJobApplicationId(id, accessToken);
-        const details = await viewJobApplicationDetails(
-          jobApplicationId,
-          accessToken
-        );
-        setJobApplication(details);
-        setJobSeeker(details.jobSeeker);
-        setDocuments(details.documents);
-        setJobListing(details.jobListing);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    setIsLoading(true);
-    populateDetails();
-  }, [jobApplicationId, accessToken]);
-  */
-
-
-//Old
-/*
-  useEffect(() => {
-    const populateDetails = async () => {
-      try {
-        const details = await  getJobSeekersByJobApplicationId(id, accessToken);
-        setJobApplication(details);
-        setJobSeeker(details.jobSeeker);
-        setDocuments(details.documents);
-        setJobListing(details.jobListing);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    setIsLoading(false);
-    populateDetails();
-  }, [jobApplicationId, accessToken]);
-  */
   useEffect(() => {
     if (accessToken) {
       getJobSeekersByJobApplicationId(jobApplicationId, accessToken)
@@ -193,6 +132,7 @@ const ViewJobApplicationDetails = () => {
           setJobSeeker(details.jobSeeker);
           setDocuments(details.documents);
           setJobListing(details.jobListing);
+          setRecruiter(details.recruiter);
           setIsLoading(false);
           console.log(jobApplication);
         })
@@ -248,7 +188,7 @@ const ViewJobApplicationDetails = () => {
                 {jobSeeker?.contactNo}
               </p>
               <p className={styles.text}>
-                <b>Email: </b>
+                <b>Email Address: </b>
                 {jobSeeker?.email}
               </p>
               <p className={styles.text}>
@@ -315,36 +255,40 @@ const ViewJobApplicationDetails = () => {
               </div>
             </Card>
 
-            <Card className={styles.jobSeekerCard}>
-              <p className={styles.text}>
-                <b>Full Name: </b>
-                {jobSeeker?.fullName}
-              </p>
+            <Card
+              className={styles.jobSeekerCard}
+              title="Recruiter's Particulars"
+            >
+              {recruiter && recruiter.profilePictureUrl !== "" ? (
+                <img
+                  src={recruiter.profilePictureUrl}
+                  alt="user"
+                  className={styles.avatarRecruiter}
+                />
+              ) : (
+                <Image
+                  src={HumanIcon}
+                  alt="Profile Picture"
+                  className={styles.avatarRecruiter}
+                />
+              )}
               <p className={styles.text}>
                 <b>User ID: </b>
-                {jobSeeker?.userId}
+                {recruiter?.userId}
               </p>
-              {jobSeeker?.fullName && (
+              {recruiter?.fullName && (
                 <p className={styles.text}>
                   <b>Full Name: </b>
-                  {jobSeeker.fullName}
+                  {recruiter.fullName}
                 </p>
               )}
               <p className={styles.text}>
                 <b>Contact Number: </b>
-                {jobSeeker?.contactNo}
+                {recruiter?.contactNo}
               </p>
               <p className={styles.text}>
                 <b>Email: </b>
-                {jobSeeker?.email}
-              </p>
-              <p className={styles.text}>
-                <b>Date of Birth: </b>
-                {jobSeeker?.dateOfBirth}
-              </p>
-              <p className={styles.text}>
-                <b>Place of Residence: </b>
-                {jobSeeker?.homeAddress}
+                {recruiter?.email}
               </p>
             </Card>
           </div>
