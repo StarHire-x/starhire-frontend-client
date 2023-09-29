@@ -149,12 +149,20 @@ export default function viewJobListingDetailsJobSeeker() {
     }
   };
 
-  const footer = (
-    <div className="flex flex-wrap justify-content-end gap-2">
+  const cardFooter = (
+    <div className={styles.footerContainer}>
+      {isJobApplicationAbsent && (
+        <Button
+          label="Create Job Application"
+          className={`${styles.createButton} p-button-outlined p-button-secondary`}
+          icon="pi pi-plus"
+          onClick={() => setShowCreateJobApplicationDialog(true)}
+        />
+      )}
       <Button
         label="Save"
-        icon="pi pi-bookmark" // An icon to represent 'Save'
-        className="save-button p-button-outlined p-button-secondary"
+        className={`${styles.saveButton} p-button-outlined p-button-secondary`}
+        icon="pi pi-bookmark"
         onClick={handleSaveJobListing}
       />
     </div>
@@ -167,28 +175,25 @@ export default function viewJobListingDetailsJobSeeker() {
           style={{
             display: 'flex',
             height: '100vh',
-            'justify-content': 'center',
-            'align-items': 'center',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         />
       ) : (
         <Card
           title={jobListing.title}
           subTitle={jobListing.jobLocation}
-          footer={footer}
+          footer={cardFooter}
           className="my-card"
           style={{ borderRadius: '0' }}
         >
-          <div className="my-card.p-card-content">
+          <div className="my-card-content">
             <div className="company-info">
-              {jobListing.corporate.profilePictureUrl === '' ? (
-                <Image src={HumanIcon} alt="User" className="avatar" />
-              ) : (
-                <img
-                  src={jobListing.corporate.profilePictureUrl}
-                  className="avatar"
-                />
-              )}
+              <Image
+                src={jobListing.corporate.profilePictureUrl || HumanIcon}
+                alt="User"
+                className="avatar"
+              />
               <div className="company-details">
                 <p>{jobListing.corporate.userName}</p>
               </div>
@@ -196,36 +201,37 @@ export default function viewJobListingDetailsJobSeeker() {
 
             <strong>Job Overview</strong>
             <p>{jobListing.overview}</p>
+
             <strong>Job Responsibilities</strong>
             <p>{jobListing.responsibilities}</p>
+
             <strong>Job Requirements</strong>
             <p>{jobListing.requirements}</p>
+
             <strong>Average Salary</strong>
             <p>{'$' + jobListing.averageSalary + ' SGD'}</p>
+
             <strong>Listing Date</strong>
             <p>{formatDate(jobListing.listingDate)}</p>
+
             <strong>Job Start Date</strong>
             <p>{formatDate(jobListing.jobStartDate)}</p>
 
             <div className="contact-info">
               <strong>Contact Information</strong>
-              <p>{jobListing.corporate.email}</p>
-              <p className="second-p">{jobListing.corporate.contactNo}</p>
+              <p>Email: {jobListing.corporate.email}</p>
+              <p>Phone: {jobListing.corporate.contactNo}</p>
             </div>
 
             <strong>Corporate Details</strong>
             <p>{'UEN Number: ' + jobListing.corporate.companyRegistrationId}</p>
-            <p className="second-p">
-              {'Address: ' + jobListing.corporate.companyAddress}
-            </p>
+            <p>{'Address: ' + jobListing.corporate.companyAddress}</p>
 
-            <strong>Job Listing Details</strong>
-            <p>{formatDate(jobListing.listingDate)}</p>
-
-            <p>{'Job Listing ID: ' + jobListing.jobListingId}</p>
+            <strong>Job Listing ID</strong>
+            <p>{jobListing.jobListingId}</p>
           </div>
 
-          {/* Conditionally rendering the button based on the existence of jobListing.jobApplication */}
+          {/* Conditionally rendering the button based on the existence of jobListing.jobApplication
           {isJobApplicationAbsent && (
             <Button
               label="Create Job Application"
@@ -234,7 +240,7 @@ export default function viewJobListingDetailsJobSeeker() {
               severity="success"
               onClick={() => setShowCreateJobApplicationDialog(true)}
             />
-          )}
+          )} */}
 
           <Dialog
             header="Create Job Application"
