@@ -55,13 +55,16 @@ const ViewJobApplicationDetails = () => {
         return "success";
 
       case "Submitted":
-        return "info";
+        return "success";
 
       case "Processing":
         return "warning";
 
       case "To_Be_Submitted":
         return "null";
+
+      case "Accept":
+        return "success";
 
       case "Waiting_For_Interview":
         return null;
@@ -302,7 +305,7 @@ const ViewJobApplicationDetails = () => {
               severity="primary"
               onClick={() => handleOnBackClick()}
             />
-            {jobApplication?.jobApplicationStatus === "Submitted" && (
+            {jobApplication?.jobApplicationStatus === "Processing" && (
               <div className={styles.subButtons}>
                 <Button
                   label="Reject"
@@ -312,10 +315,10 @@ const ViewJobApplicationDetails = () => {
                   onClick={() => updateStatus("To_Be_Submitted")}
                 />
                 <Button
-                  label="Send Corporate"
-                  icon="pi pi-send"
+                  label="Accept"
+                  icon="pi pi-thumbs-up"
                   rounded
-                  severity="info"
+                  severity="success"
                   disabled={selectedDocuments.length != documents.length}
                   onClick={() => updateStatus("Processing")}
                 />
