@@ -2,29 +2,34 @@
   margin-left: auto;
   margin-right: auto;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   width: 1150px;
   gap: 15px;
   max-height: 790px;
   overflow-y: auto;
+  padding: 20px;
+}
+
+.headerTitle {
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
 }
 
 .dataViewContainer {
-  width: 1150px;
+  width: 100%;
 }
 
 .card {
   background-color: #edf6f9;
   padding: 10px;
-  width: 205px;
+  width: 100%;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-  overflow: hidden;
   border: 1px solid #edf6f9;
   max-width: 100%;
-  margin: 10px;
+  margin-bottom: 10px;
 }
 
 .card:hover {
@@ -33,22 +38,12 @@
 }
 
 .cardHeader {
-  border-bottom: 1px solid #edf6f9;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  font-family: 'Arial', sans-serif;
-  justify-content: center;
-}
-
-.cardHeader h4 {
-  font-size: 1.6em;
-  margin: 0;
-  color: #333;
-  font-weight: 600;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
 }
 
 .cardBody {
-  font-size: 1em;
   color: #555;
 }
 
@@ -65,60 +60,38 @@
 
 .cardRow span:first-child {
   font-weight: 600;
+  flex: 1;
 }
 
-.cardFooter {
-  margin-top: 20px;
-  text-align: right;
-}
+@media (max-width: 768px) {
+  /* Tablet breakpoint */
+  .container {
+    width: 100%;
+    padding: 0 15px;
+  }
 
-.cardFooter button {
-  background-color: #e29578;
-  border: none;
-  border-radius: 4px;
-  color: #edf6f9;
-  padding: 5px 10px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 0.8em;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
+  .card {
+    flex-direction: column;
+  }
 
-.cardFooter button:hover {
-  background-color: #e2947888;
-}
+  .cardRow {
+    flex-direction: column;
+    text-align: center;
+  }
 
-.buttonSpacing {
-  margin-right: 10px;
-}
-
-.cardDialog {
-  background-color: #edf6f9;
-  padding: 10px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-  overflow: hidden;
-  border: 1px solid #edf6f9;
-  width: 70vw;
-  max-width: 1250px;
+  .cardRow span:first-child {
+    margin-bottom: 5px;
+  }
 }
 
 @media (max-width: 480px) {
-  .card {
-    margin: 5px 0;
-  }
+  /* Mobile breakpoint */
   .cardRow {
     flex-direction: column;
   }
 
   .cardRow span {
-    margin-bottom: 5px;
-  }
-
-  .buttonSpacing {
-    margin-right: 0;
-    margin-bottom: 20px;
+    text-align: center;
+    margin-bottom: 10px;
   }
 }
