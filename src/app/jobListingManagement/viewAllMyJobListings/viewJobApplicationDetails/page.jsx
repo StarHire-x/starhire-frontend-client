@@ -193,7 +193,7 @@ const ViewJobApplicationDetails = () => {
               </p>
               <p className={styles.text}>
                 <b>Date of Birth: </b>
-                {jobSeeker?.dateOfBirth}
+                {convertTimestampToDate(jobSeeker?.dateOfBirth)}
               </p>
               <p className={styles.text}>
                 <b>Place of Residence: </b>
