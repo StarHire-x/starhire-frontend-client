@@ -210,23 +210,34 @@ export default function viewJobListingDetailsJobSeeker() {
     }
   };
 
+  const handleOnBackClick = () => {
+    router.push('/jobListing');
+  };
+
   const cardFooter = (
     <div className={styles.footerContainer}>
+      <Button
+        label="Back"
+        icon="pi pi-chevron-left"
+        className="p-mr-2 p-button-outlined p-button-secondary back-button"
+        onClick={() => router.back()}
+        rounded
+      />
       {isJobApplicationAbsent && (
         <Button
           label="Create Job Application"
-          rounded
-          className={`${styles.createButton} p-button-outlined p-button-secondary`}
+          className="p-mr-2 p-button-outlined p-button-secondary create-button"
           icon="pi pi-plus"
           onClick={() => setShowCreateJobApplicationDialog(true)}
+          rounded
         />
       )}
       <Button
         label={isJobSaved ? 'Unsave' : 'Save'}
-        rounded
-        className={`${styles.saveButton} p-button-outlined p-button-secondary`}
+        className="p-button-outlined p-button-secondary save-button"
         icon={isJobSaved ? 'pi pi-bookmark-off' : 'pi pi-bookmark'}
         onClick={handleSaveJobListing}
+        rounded
       />
     </div>
   );
