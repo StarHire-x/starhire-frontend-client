@@ -98,7 +98,14 @@ const ViewJobSeekerPage = () => {
     return (
       <div className="container">
         {isLoading ? (
-          <ProgressSpinner style={{"display": "flex", "height": "100vh", "justify-content": "center", "align-items": "center"}} />
+          <ProgressSpinner
+            style={{
+              display: "flex",
+              height: "100vh",
+              "justify-content": "center",
+              "align-items": "center",
+            }}
+          />
         ) : (
           <div>
             <Card
@@ -177,14 +184,21 @@ const ViewJobSeekerPage = () => {
                 </div>
 
                 <div className="contact-info">
-                  <strong>Attachments</strong>
-                  <p>{"Resume: " + "Attach Link here"}</p>
-                  <p className="second-p">
-                    {"L1 Certificate: " + "Attach Link here"}
-                  </p>
-                  <p className="second-p">
-                    {"L2 Certificate: " + "Attach Link here"}
-                  </p>
+                  <strong>Documents Submitted: </strong>
+                  <ul>
+                    {jobApplication.documents.map((document, index) => (
+                      <li key={index}>
+                        <a
+                          href={document.documentLink}
+                          className="blue-link"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {document.documentName}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
                 <div className="contact-info">

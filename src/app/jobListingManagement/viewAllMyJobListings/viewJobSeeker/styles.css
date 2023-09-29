@@ -147,6 +147,12 @@ body {
     border-top: 1px solid #eee;
     background-color: #f9f9f9;
   }
+
+  .blue-link {
+    color: blue;
+    /* You can add more styles if needed */
+    text-decoration: underline; /* Optionally, underline the links */
+  }
   
   @keyframes spin {
     0% {
