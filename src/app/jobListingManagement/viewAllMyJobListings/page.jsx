@@ -10,6 +10,7 @@ import { findAllJobListingsByCorporate } from '@/app/api/auth/jobListing/route';
 import styles from '../page.module.css';
 import 'primeflex/primeflex.css';
 import { useRouter } from 'next/navigation';
+import Enums from '@/common/enums/enums';
 
 const ViewAllMyJobListingsManagementPage = () => {
   const [jobListing, setJobListing] = useState(null);
@@ -37,11 +38,11 @@ const ViewAllMyJobListingsManagementPage = () => {
 
   const getStatus = (status) => {
     switch (status) {
-      case 'Active':
+      case Enums.ACTIVE:
         return 'success';
       case 'Unverified':
         return 'danger';
-      case 'Inactive':
+      case Enums.INACTIVE:
         return 'danger';
     }
   };

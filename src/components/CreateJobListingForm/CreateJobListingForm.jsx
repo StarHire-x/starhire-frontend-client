@@ -5,6 +5,7 @@ import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import styles from './page.module.css';
 import { InputTextarea } from 'primereact/inputtextarea';
+import Enums from "@/common/enums/enums";
 
 const CreateJobListingForm = ({ onCreate }) => {
   const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ const CreateJobListingForm = ({ onCreate }) => {
     // corporateId will be set during API call
   });
 
-  // const jobListingStatuses = ['Active', 'Unverified', 'Inactive'];
+  // const jobListingStatuses = [Enums.ACTIVE, 'Unverified', Enums.INACTIVE];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

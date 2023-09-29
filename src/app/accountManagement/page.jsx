@@ -22,6 +22,7 @@ import {
 import { getJobExperience } from "../api/auth/jobExperience/route";
 import JobExperiencePanel from "@/components/JobExperiencePanel/JobExperiencePanel";
 import { Dialog } from "primereact/dialog";
+import Enums from "@/common/enums/enums";
 
 const AccountManagement = () => {
   const session = useSession();
@@ -178,7 +179,7 @@ const AccountManagement = () => {
 
   const confirmChanges = async (e) => {
     e.preventDefault();
-    if (formData.status === "Inactive") {
+    if (formData.status === Enums.INACTIVE) {
       setDeactivateAccountDialog(true);
     } else {
       await saveChanges();
@@ -261,7 +262,7 @@ const AccountManagement = () => {
           </h3>
         </Dialog>
         <br />
-        {roleRef === "Job_Seeker" && (
+        {roleRef === Enums.JOBSEEKER && (
           <>
             <JobPreferencePanel
               formData={formData}

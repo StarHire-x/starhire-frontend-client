@@ -16,6 +16,7 @@ import 'primeflex/primeflex.css';
 import CreateJobListingForm from '@/components/CreateJobListingForm/CreateJobListingForm';
 import EditJobListingForm from '@/components/EditJobListingForm/EditJobListingForm';
 import { useRouter } from 'next/navigation';
+import Enums from '@/common/enums/enums';
 
 //this page is viewed by corporate
 const JobListingManagementPage = () => {
@@ -48,11 +49,11 @@ const JobListingManagementPage = () => {
 
   const getStatus = (status) => {
     switch (status) {
-      case 'Active':
+      case Enums.ACTIVE:
         return 'success';
       case 'Unverified':
         return 'danger';
-      case 'Inactive':
+      case Enums.INACTIVE:
         return 'danger';
     }
   };

@@ -10,6 +10,7 @@ import NavItem from '../navItem/NavItem';
 import HumanIcon from '../../../public/icon.png';
 import { UserContext } from '@/context/UserContext';
 import { getUserByUserId } from '@/app/api/auth/user/route';
+import Enums from '@/common/enums/enums';
 
 const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
   { text: 'Home', href: '/' },
@@ -107,7 +108,7 @@ const Navbar = () => {
           }`}
         >
           {session.status == 'authenticated' &&
-            session.data.user.role === 'Job_Seeker' &&
+            session.data.user.role === Enums.JOBSEEKER &&
             MENU_LIST_AUTHENTICATED_JOB_SEEKER.map((menu, idx) => (
               <div
                 onClick={() => {
@@ -144,7 +145,7 @@ const Navbar = () => {
             ))}
 
           {session.status == 'authenticated' &&
-            session.data.user.role === 'Corporate' &&
+            session.data.user.role === Enums.CORPORATE &&
             MENU_LIST_AUTHENTICATED_CORPORATE.map((menu, idx) => (
               <div
                 key={menu.text}

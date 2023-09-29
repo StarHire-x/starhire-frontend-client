@@ -11,6 +11,7 @@ import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import Enums from '@/common/enums/enums';
 
 const JobListingPage = () => {
   const [jobListings, setJobListings] = useState([]);
@@ -57,7 +58,7 @@ const JobListingPage = () => {
 
   const saveStatusChange = async (rowData) => {
     const jobListingId = rowData.jobListingId;
-    if (session.data.user.role === 'Job_Seeker') {
+    if (session.data.user.role === Enums.JOBSEEKER) {
       try {
         // Use router.push to navigate to another page with a query parameter
         let link = createLink(jobListingId);

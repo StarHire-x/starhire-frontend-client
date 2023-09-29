@@ -15,6 +15,7 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import Image from 'next/image';
 import "./styles.css";
 import { Joan } from 'next/font/google';
+import Enums from '@/common/enums/enums';
 
 const ViewJobSeekerPage = () => {
     const [jobApplication, setJobApplications] = useState(null);
@@ -84,13 +85,13 @@ const ViewJobSeekerPage = () => {
           label="Accept"
           icon="pi pi-check"
           className="approve-button p-button-outlined p-button-secondary"
-          onClick={() => showUserDialog('Active')}
+          onClick={() => showUserDialog(Enums.ACTIVE)}
         />
         <Button
           label="Reject"
           icon="pi pi-times"
           className="reject-button p-button-outlined p-button-secondary"
-          onClick={() => showUserDialog('Inactive')}
+          onClick={() => showUserDialog(Enums.INACTIVE)}
         />
       </div>
     );

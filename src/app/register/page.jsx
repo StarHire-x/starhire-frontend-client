@@ -9,6 +9,7 @@ import { registerUser } from "@/app/api/auth/register/route";
 import { createUser } from "../api/auth/user/route";
 import { RadioButton } from "primereact/radiobutton";
 import { ProgressSpinner } from "primereact/progressspinner";
+import Enums from "@/common/enums/enums";
 
 const Step1 = ({ formData, setFormData, onNext }) => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -49,25 +50,25 @@ const Step1 = ({ formData, setFormData, onNext }) => {
 
           <div className={styles.radio}>
             <RadioButton
-              inputId="Job_Seeker"
+              inputId={Enums.JOBSEEKER}
               name="role"
-              value="Job_Seeker"
+              value={Enums.JOBSEEKER}
               onChange={handleInputChange}
-              checked={formData.role === "Job_Seeker"}
+              checked={formData.role === Enums.JOBSEEKER}
               required
             />
-            <label htmlFor="Job_Seeker" className="ml-2">
+            <label htmlFor={Enums.JOBSEEKER} className="ml-2">
               Job Seeker
             </label>
             <RadioButton
-              inputId="Corporate"
+              inputId={Enums.CORPORATE}
               name="role"
-              value="Corporate"
+              value={Enums.CORPORATE}
               onChange={handleInputChange}
-              checked={formData.role === "Corporate"}
+              checked={formData.role === Enums.CORPORATE}
               required
             />
-            <label htmlFor="Corporate" className="ml-2">
+            <label htmlFor={Enums.CORPORATE} className="ml-2">
               Corporate
             </label>
           </div>
@@ -187,7 +188,7 @@ const Step3 = ({ formData, setFormData, onPrevious, onSubmit, err }) => {
       return;
     }
 
-    if (formData.role === "Corporate") {
+    if (formData.role === Enums.CORPORATE) {
       const { companyRegistrationId } = formData;
       if (!companyRegistrationId) {
         setErrorMessage("Please fill in your UEN Number!");
@@ -230,7 +231,7 @@ const Step3 = ({ formData, setFormData, onPrevious, onSubmit, err }) => {
             onChange={handleInputChange}
             required
           />
-          {formData.role === "Corporate" && (
+          {formData.role === Enums.CORPORATE && (
             <input
               type="text"
               name="companyRegistrationId"
