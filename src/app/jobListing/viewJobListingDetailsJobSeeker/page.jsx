@@ -195,6 +195,8 @@ export default function viewJobListingDetailsJobSeeker() {
                 src={jobListing.corporate.profilePictureUrl || HumanIcon}
                 alt="User"
                 className="avatar"
+                width={40}
+                height={40}
               />
               <div className="company-details">
                 <p>{jobListing.corporate.userName}</p>
