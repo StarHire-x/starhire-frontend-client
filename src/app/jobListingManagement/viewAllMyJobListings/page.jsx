@@ -105,6 +105,10 @@ const ViewAllMyJobListingsManagementPage = () => {
     );
   };
 
+  if (session.status === "unauthenticated") {
+    router?.push("/login");
+  }
+
   if (session.status === 'authenticated') {
     return (
       <div className={styles.container}>
