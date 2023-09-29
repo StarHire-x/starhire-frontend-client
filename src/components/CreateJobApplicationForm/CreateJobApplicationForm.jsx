@@ -134,7 +134,7 @@ const CreateJobApplicationForm = ({
                     onChange={(e) => handleFileChange(e, index)}
                   />
                 </div>
-                <div className={styles.field}>
+                <div className={styles.cardRow}>
                   <label>AWS S3 Link</label>
                   <input
                     type="url"
@@ -142,6 +142,7 @@ const CreateJobApplicationForm = ({
                     name={`documentLink-${index}`}
                     value={document.documentLink}
                     onChange={handleDocumentChange(index, "documentLink")}
+                    readOnly
                   />
                 </div>
                 {formData.documents.length > 1 && (

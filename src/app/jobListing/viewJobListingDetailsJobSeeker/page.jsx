@@ -13,7 +13,6 @@ import HumanIcon from '../../../../public/icon.png'; // Adjust the path
 import { Dialog } from 'primereact/dialog';
 import CreateJobApplicationForm from '@/components/CreateJobApplicationForm/CreateJobApplicationForm';
 import styles from './page.module.css'
-import { Button } from 'primereact/button';
 import {
   createJobApplication,
   findExistingJobApplication,
@@ -74,6 +73,15 @@ export default function viewJobListingDetailsJobSeeker() {
     if (Object.keys(formErrors).length > 0) {
       // There are validation errors
       alert("Please fix the form errors before submitting.");
+      return;
+    }
+
+    const areDocumentsFilled = formData.documents.every(
+      (doc) => doc.documentName.trim() !== "" && doc.documentLink.trim() !== ""
+    );
+
+    if (!areDocumentsFilled) {
+      alert("Please ensure all documents are properly filled up.");
       return;
     }
     
