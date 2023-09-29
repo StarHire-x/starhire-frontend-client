@@ -190,16 +190,6 @@ export default function viewJobListingDetailsJobSeeker() {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  // const handleSaveJobListing = async () => {
-  //   try {
-  //     const result = await saveJobListing(jobListing.jobListingId, accessToken);
-
-  //     alert('Job Listing Saved Successfully!');
-  //   } catch (error) {
-  //     alert('Failed to save job listing. Please try again later.');
-  //   }
-  // };
-
   const handleSaveJobListing = async () => {
     try {
       if (isJobSaved) {
