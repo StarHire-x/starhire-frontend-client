@@ -29,6 +29,7 @@ const CreateJobExperienceForm = ({
               name="employerName"
               value={formData?.employerName}
               onChange={handleInputChange}
+              required
             />
           </div>
 
@@ -38,6 +39,7 @@ const CreateJobExperienceForm = ({
               name="jobTitle"
               value={formData?.jobTitle}
               onChange={handleInputChange}
+              required
             />
           </div>
 
@@ -54,6 +56,7 @@ const CreateJobExperienceForm = ({
                   startDate: e.value,
                 }))
               }
+              required
             />
           </div>
 
@@ -71,7 +74,7 @@ const CreateJobExperienceForm = ({
                 if (e.checked) {
                   setFormData((prev) => ({
                     ...prev,
-                    endDate: null,
+                    endDate: "null",
                   }));
                 }
               }}
@@ -116,6 +119,7 @@ const CreateJobExperienceForm = ({
               onChange={handleInputChange}
               rows={7}
               autoResize={true}
+              required
             />
           </div>
         </div>
