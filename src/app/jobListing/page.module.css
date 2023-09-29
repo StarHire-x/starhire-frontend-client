@@ -1,33 +1,37 @@
 .container {
   margin-left: auto;
   margin-right: auto;
-  display: flex; /* Enable flexbox */
-  flex-wrap: wrap; /* Allow the items to wrap to the next line */
-  justify-content: center; /* Center the cards horizontally */
-  width: 1150px;
-  gap: 15px; /* Provide consistent gap between the cards. This will replace the margin if supported */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  max-width: 1150px;
+  gap: 15px;
   max-height: 790px;
   overflow-y: auto;
 }
 
+.headerTitle {
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
 .dataViewContainer {
-  width: 1150px;
+  width: 100%;
 }
 
 .card {
   background-color: #edf6f9;
   padding: 10px;
-  width: 205px;
+  width: 100%;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
   overflow: hidden;
   border: 1px solid #edf6f9;
-  max-width: 100%;
-  margin-left: 10px; /* half of desired space */
-  margin-right: 10px;
   margin-bottom: 10px;
-  margin-top: 10px;
 }
 
 .card:hover {
@@ -43,13 +47,6 @@
   justify-content: center;
 }
 
-.cardHeader h4 {
-  font-size: 1.6em;
-  margin: 0;
-  color: #333;
-  font-weight: 600;
-}
-
 .cardBody {
   font-size: 1em;
   color: #555;
@@ -60,14 +57,6 @@
   justify-content: space-between;
   margin-bottom: 5px;
   flex-wrap: wrap;
-}
-
-.cardRow:last-child {
-  margin-bottom: 0;
-}
-
-.cardRow span:first-child {
-  font-weight: 600;
 }
 
 .cardFooter {
@@ -89,7 +78,7 @@
 }
 
 .cardFooter button:hover {
-  background-color: #e2947888; /* Darker shade of colour on hover */
+  background-color: #e2947888;
 }
 
 .buttonSpacing {
@@ -108,23 +97,34 @@
   max-width: 1250px;
 }
 
-@media (max-width: 480px) {
-  /* Typical breakpoint for mobile phones */
-
+@media (max-width: 768px) {
+  /* Tablet breakpoint */
   .card {
-    margin-left: 0;
-    margin-right: 0;
+    flex-direction: column;
   }
+
   .cardRow {
-    flex-direction: column; /* Stack items vertically on smaller screens */
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .cardRow span:first-child {
+    margin-bottom: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Mobile breakpoint */
+  .cardRow {
+    flex-direction: column;
   }
 
   .cardRow span {
-    margin-bottom: 5px; /* Spacing between stacked items */
+    text-align: center;
+    margin-bottom: 10px;
   }
-
   .buttonSpacing {
-    margin-right: 0; /* Remove margin for smallest screens */
-    margin-bottom: 20px; /* Add vertical spacing between buttons */
+    margin-right: 0;
+    margin-bottom: 20px;
   }
 }
