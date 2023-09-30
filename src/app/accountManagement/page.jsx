@@ -14,11 +14,7 @@ import { Rating } from "primereact/rating";
 import { Button } from "primereact/button";
 import EditAccountForm from "@/components/EditAccountForm/EditAccountForm";
 import JobPreferencePanel from "@/components/JobPreferencePanel/JobPreferencePanel";
-import {
-  createJobPreference,
-  getExistingJobPreference,
-  updateJobPreference,
-} from "../api/auth/preference/route";
+import { getExistingJobPreference } from "../api/auth/preference/route";
 import { getJobExperience } from "../api/auth/jobExperience/route";
 import JobExperiencePanel from "@/components/JobExperiencePanel/JobExperiencePanel";
 import { Dialog } from "primereact/dialog";
@@ -125,6 +121,9 @@ const AccountManagement = () => {
             );
             setTotalStarsUsed(currentStarsUsed);
             return formData;
+          } else {
+            // 404 returned- User has no job preference
+            setIsJobPreferenceAbsent(true)
           }
         } catch (error) {
           console.log("Error fetching user preference: ", error.message);
@@ -135,18 +134,19 @@ const AccountManagement = () => {
         try {
           const response = await getJobExperience(userIdRef, sessionTokenRef);
           if (response.statusCode === 200) {
-            setJobExperience(response.data);
+            return response.data;
           }
         } catch (error) {
           console.log("Error fetching user job experience: ", error.message);
         }
       };
 
+
       populateFormDataWithUserInfo(formData).then((formData) =>
-        populateFormDataWithUserPreference(formData).then(() => {
-          retrieveJobExperience();
-        })
+        populateFormDataWithUserPreference(formData)
       );
+      retrieveJobExperience().then((result) => setJobExperience(result));
+
     }
   }, [session.status, userIdRef, roleRef, refreshData]);
 
