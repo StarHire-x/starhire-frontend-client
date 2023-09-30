@@ -165,7 +165,7 @@ const CreateJobApplicationForm = ({
                     />
                   </div>
                 )}
-                <div className={styles.cardRow}>
+                {/* <div className={styles.cardRow}>
                   <label>AWS S3 Link</label>
                   <input
                     type="url"
@@ -175,7 +175,7 @@ const CreateJobApplicationForm = ({
                     onChange={handleDocumentChange(index, 'documentLink')}
                     readOnly
                   />
-                </div>
+                </div> */}
                 {formData.documents.length > 1 && (
                   <div className={styles.buttonContainer}>
                     <Button
