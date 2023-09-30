@@ -20,17 +20,17 @@ const JobPreferencePanel = ({
   setTotalStarsUsed,
 }) => {
   // Dialog Box
-  const [visible, setVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleRatingChange = (category, value) => {
+    setErrorMessage("")
     // Calculate the new total stars used for the specific category
     const currentCategoryStars = formData[category] || 0;
     const newCategoryStarsUsed = totalStarsUsed - currentCategoryStars + value;
 
     // Check if the new total stars used across all categories exceeds 20
     if (totalStarsUsed - currentCategoryStars + value > 20) {
-      setErrorMessage("You cannot select more than 20 stars in total.");
+      setErrorMessage("You have selected more than 20 stars");
       return;
     }
 
@@ -46,6 +46,7 @@ const JobPreferencePanel = ({
     e.preventDefault();
 
     const reqBody = {
+      jobSeekerId: formData.userId,
       locationPreference: formData.locationPreference,
       culturePreference: formData.culturePreference,
       salaryPreference: formData.salaryPreference,
@@ -98,58 +99,11 @@ const JobPreferencePanel = ({
     <Panel header="Job Preference" toggleable>
       {isJobPreferenceAbsent ? (
         <>
-          <p className={styles.title}>Indicate your Job Preference</p>
-          <div className={styles.dialogueContainer}>
-            <p className={styles.subTitle}>
-              You have a maximum of 20 stars
+          <div className={styles.titleContainer}>
+            <p className={styles.title}>Indicate your Job Preference</p>
+            <p className={styles.subTitle}>You have a maximum of 20 stars</p>
+            <p className={styles.starCounter}>Number of stars used: {totalStarsUsed} / 20
             </p>
-            <Button
-              style={{ width: "30px", height: "30px", marginBottom: "30px" }}
-              severity="info"
-              onClick={() => setVisible(true)}
-              icon="pi pi-question"
-              outlined
-            ></Button>
-            <Dialog
-              header="What are job preferences?"
-              visible={visible}
-              style={{ width: "80vw" }}
-              onHide={() => setVisible(false)}
-            >
-              <p className={styles.dialogueText}>
-                These preferences serve as indicators of your prioritization
-                criteria when evaluating potential job opportunities.
-                <br />
-                <br />
-                You will be matched to suitable opportunities based on the
-                preferences that you have provided
-                <br />
-                <br />
-                Locations:
-                <br />5 star: {"<"} 1km of mrt/bus
-                <br />4 star: {"<"} 2km of mrt/bus
-                <br />3 star: {"<"} 3km of mrt/bus
-                <br />2 star: {"<"} 5km of mrt/bus
-                <br />1 star: {"<"} 10km of mrt/bus
-                <br />
-                <br />
-                Salary:
-                <br />5 star: {">"}$10,000
-                <br />4 star: {">"}$5,000
-                <br />3 star: {">"}$3,500
-                <br />2 star: {">"}$2,500
-                <br />1 star: {">"}$1,500
-                <br />
-                <br />
-                Work Life Balance:
-                <br />5 star: {">"}50 hrs / week
-                <br />4 star: {">"}40 hrs / week
-                <br />3 star: {">"}30 hrs / week
-                <br />2 star: {">"}20 hrs / week
-                <br />1 star: {">"}10 hrs / week
-                <br />
-              </p>
-            </Dialog>
           </div>
 
           {errorMessage && <p className={styles.error}>{errorMessage}</p>}
@@ -243,56 +197,11 @@ const JobPreferencePanel = ({
         </>
       ) : (
         <>
-          <p className={styles.title}>Update your Job Preference</p>
-          <div className={styles.dialogueContainer}>
+          <div className={styles.titleContainer}>
+            <p className={styles.title}>Update your Job Preference</p>
             <p className={styles.subTitle}>You have a maximum of 20 stars</p>
-            <Button
-              style={{ width: "30px", height: "30px", marginBottom: "30px" }}
-              severity="info"
-              onClick={() => setVisible(true)}
-              icon="pi pi-question"
-              outlined
-            ></Button>
-            <Dialog
-              header="What are job preferences?"
-              visible={visible}
-              style={{ width: "80vw" }}
-              onHide={() => setVisible(false)}
-            >
-              <p className={styles.dialogueText}>
-                These preferences serve as indicators of your prioritization
-                criteria when evaluating potential job opportunities.
-                <br />
-                <br />
-                You will be matched to suitable opportunities based on the
-                preferences that you have provided
-                <br />
-                <br />
-                Locations:
-                <br />5 star: {"<"} 1km of mrt/bus
-                <br />4 star: {"<"} 2km of mrt/bus
-                <br />3 star: {"<"} 3km of mrt/bus
-                <br />2 star: {"<"} 5km of mrt/bus
-                <br />1 star: {"<"} 10km of mrt/bus
-                <br />
-                <br />
-                Salary:
-                <br />5 star: {">"}$10,000
-                <br />4 star: {">"}$5,000
-                <br />3 star: {">"}$3,500
-                <br />2 star: {">"}$2,500
-                <br />1 star: {">"}$1,500
-                <br />
-                <br />
-                Work Life Balance:
-                <br />5 star: {">"}50 hrs / week
-                <br />4 star: {">"}40 hrs / week
-                <br />3 star: {">"}30 hrs / week
-                <br />2 star: {">"}20 hrs / week
-                <br />1 star: {">"}10 hrs / week
-                <br />
-              </p>
-            </Dialog>
+            <p className={styles.starCounter}>Number of stars used: {totalStarsUsed} / 20
+            </p>
           </div>
 
           {errorMessage && <p className={styles.error}>{errorMessage}</p>}
@@ -303,7 +212,7 @@ const JobPreferencePanel = ({
                   htmlFor="locationPreference"
                   className={styles.labelRating}
                 >
-                  Location Preference:
+                  Location:
                 </label>
                 <Rating
                   value={Number(formData?.locationPreference)}
@@ -319,7 +228,7 @@ const JobPreferencePanel = ({
                   htmlFor="salaryPreference"
                   className={styles.labelRating}
                 >
-                  Salary Preference:
+                  Salary:
                 </label>
                 <Rating
                   value={Number(formData?.salaryPreference)}
@@ -335,7 +244,7 @@ const JobPreferencePanel = ({
                   htmlFor="workLifeBalancePreference"
                   className={styles.labelRating}
                 >
-                  Work Life Balance Preference:
+                  Work Life Balance:
                 </label>
                 <Rating
                   value={Number(formData?.workLifeBalancePreference)}
@@ -351,7 +260,7 @@ const JobPreferencePanel = ({
                   htmlFor="culturePreference"
                   className={styles.labelRating}
                 >
-                  Culture Preference:
+                  Culture:
                 </label>
                 <Rating
                   value={Number(formData?.culturePreference)}
@@ -367,7 +276,7 @@ const JobPreferencePanel = ({
                   htmlFor="diversityPreference"
                   className={styles.labelRating}
                 >
-                  Diversity Preference:
+                  Diversity:
                 </label>
                 <Rating
                   value={Number(formData?.diversityPreference)}

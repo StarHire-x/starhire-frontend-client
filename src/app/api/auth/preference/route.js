@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { ConnectedOverlayScrollHandler } from "primereact/utils";
 
 export const createJobPreference = async (newJobPreference, accessToken) => {
   try {
@@ -15,10 +16,11 @@ export const createJobPreference = async (newJobPreference, accessToken) => {
     if (response.statusCode === 200) {
       return response.data;
     } else {
+      console.log("Encountered the following error when creating job preference: " + response.message);
       return NextResponse.json({ error: response.message }, { status: response.statusCode });
     }
   } catch (error) {
-    console.log("Encountered a problem when creating the job preference", error.message);
+    console.log("Encountered an unexpected problem when creating the job preference", error.message);
   }
 };
 

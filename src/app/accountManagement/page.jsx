@@ -90,35 +90,63 @@ const AccountManagement = () => {
     if (session.status === "unauthenticated") {
       router.push("/login");
     } else if (session.status !== "loading") {
-      getUserByUserId(userIdRef, roleRef, sessionTokenRef)
-        .then((user) => {
-          // const formattedDOB = formatDate(user.data.dateOfBirth);
-          setFormData(user.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching user:", error);
-        });
-
-      getExistingJobPreference(userIdRef, sessionTokenRef).then((response) => {
-        if (response.statusCode === 200) {
-          setFormData((prevState) => ({
-            ...prevState,
-            ...response.data,
-          }));
-        } else {
-          console.error("Error fetching job preference:", response.json());
-          setIsJobPreferenceAbsent(true);
+      const populateFormDataWithUserInfo = async (formData) => {
+        try {
+          const response = await getUserByUserId(
+            userIdRef,
+            roleRef,
+            sessionTokenRef
+          );
+          for (const key in response.data) {
+            formData[key] = response.data[key];
+          }
+          setFormData(formData);
+          return formData;
+        } catch (error) {
+          console.log("Error fetching user Info: ", error.message);
         }
-      });
+      };
 
-      // Set Job Experience testing code
-      getJobExperience(userIdRef, sessionTokenRef)
-        .then((jobExp) => {
-          setJobExperience(jobExp.data);
+      const populateFormDataWithUserPreference = async (formData) => {
+        try {
+          const response = await getExistingJobPreference(
+            userIdRef,
+            sessionTokenRef
+          );
+          if (response.statusCode === 200) {
+            for (const key in response.data) {
+              formData[key] = response.data[key];
+            }
+            setFormData(formData);
+            const { jobPreferenceId, ...currentPreference } = response.data;
+            const currentStarsUsed = Object.keys(currentPreference).reduce(
+              (total, key) => total + currentPreference[key],
+              0
+            );
+            setTotalStarsUsed(currentStarsUsed);
+            return formData;
+          }
+        } catch (error) {
+          console.log("Error fetching user preference: ", error.message);
+        }
+      };
+
+      const retrieveJobExperience = async () => {
+        try {
+          const response = await getJobExperience(userIdRef, sessionTokenRef);
+          if (response.statusCode === 200) {
+            setJobExperience(response.data);
+          }
+        } catch (error) {
+          console.log("Error fetching user job experience: ", error.message);
+        }
+      };
+
+      populateFormDataWithUserInfo(formData).then((formData) =>
+        populateFormDataWithUserPreference(formData).then(() => {
+          retrieveJobExperience();
         })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
+      );
     }
   }, [session.status, userIdRef, roleRef, refreshData]);
 
