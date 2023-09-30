@@ -177,7 +177,6 @@ const JobExperiencePanel = ({
 
     if (formData.endDate === "null") {
       reqBody = {
-        jobSeekerId: userId,
         employerName: formData.employerName,
         jobTitle: formData.jobTitle,
         startDate: formData.startDate,
@@ -185,7 +184,6 @@ const JobExperiencePanel = ({
       };
     } else {
       reqBody = {
-        jobSeekerId: userId,
         employerName: formData.employerName,
         jobTitle: formData.jobTitle,
         startDate: formData.startDate,
