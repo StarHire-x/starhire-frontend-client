@@ -138,7 +138,7 @@ const Login = () => {
         )}
         {!loading && <button className={styles.button}>Login</button>}
       </form>
-      <Link href="/register">I don&apos;t have an account </Link>
+      <Link href="/register">New to StarHire? Join Now! </Link>
       <Link href="/forgetPassword">Forget Password</Link>
     </div>
   );
