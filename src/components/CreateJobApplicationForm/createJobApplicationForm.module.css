@@ -10,6 +10,8 @@
   flex-direction: column;
   gap: 20px;
   width: 100%;
+  max-width: 80%;
+  margin: 0 auto; /* centers the form on the page */
 }
 
 .cardRow {
@@ -37,6 +39,7 @@
   flex: 2; /* Let the textarea take 2 parts of the space */
   min-width: 0; /* Ensure textarea respects flex parent boundaries */
   width: 100%; /* Ensure it takes the full width available in the flex container */
+  padding: 50px 100px;
 }
 
 .cardFooter {
@@ -75,8 +78,8 @@
 }
 
 .buttonContainer {
-    margin: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  margin: 10px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

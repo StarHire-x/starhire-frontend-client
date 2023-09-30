@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import styles from "./createJobApplicationForm.module.css";
-import { InputText } from "primereact/inputtext";
-import { InputNumber } from "primereact/inputnumber";
-import { InputTextarea } from "primereact/inputtextarea";
-import { Calendar } from "primereact/calendar";
-import { Button } from "primereact/button";
-import { Checkbox } from "primereact/checkbox";
-import { Panel } from "primereact/panel";
-import { uploadFile } from "@/app/api/auth/upload/route";
+import React, { useState } from 'react';
+import styles from './createJobApplicationForm.module.css';
+import { InputText } from 'primereact/inputtext';
+import { InputNumber } from 'primereact/inputnumber';
+import { InputTextarea } from 'primereact/inputtextarea';
+import { Calendar } from 'primereact/calendar';
+import { Button } from 'primereact/button';
+import { Checkbox } from 'primereact/checkbox';
+import { Panel } from 'primereact/panel';
+import { uploadFile } from '@/app/api/auth/upload/route';
 
 const CreateJobApplicationForm = ({
   formData,
@@ -28,7 +28,7 @@ const CreateJobApplicationForm = ({
       ...prevState,
       documents: [
         ...prevState.documents,
-        { documentName: "", documentLink: "" },
+        { documentName: '', documentLink: '' },
       ],
     }));
   };
@@ -50,7 +50,7 @@ const CreateJobApplicationForm = ({
       newDocuments[index].documentLink = response.url;
       setFormData((prevState) => ({ ...prevState, documents: newDocuments }));
     } catch (error) {
-      console.error("There was an error uploading the file", error);
+      console.error('There was an error uploading the file', error);
     }
   };
 
@@ -92,7 +92,7 @@ const CreateJobApplicationForm = ({
                 if (e.value <= formData.availableStartDate) {
                   setFormErrors((prev) => ({
                     ...prev,
-                    availableEndDate: "End date must be after start date.",
+                    availableEndDate: 'End date must be after start date.',
                   }));
                 } else {
                   setFormErrors((prev) => {
@@ -105,6 +105,21 @@ const CreateJobApplicationForm = ({
                   availableEndDate: e.value,
                 }));
               }}
+            />
+          </div>
+          <div className={styles.cardRow}>
+            <label>Remarks:</label>
+            <InputTextarea
+              id="remarks"
+              name="remarks"
+              value={formData?.remarks}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  remarks: e.target.value,
+                }))
+              }
+              rows={7}
             />
           </div>
           <Panel header="Documents" toggleable>
@@ -124,7 +139,7 @@ const CreateJobApplicationForm = ({
                   <InputText
                     name={`documentName-${index}`}
                     value={document.documentName}
-                    onChange={handleDocumentChange(index, "documentName")}
+                    onChange={handleDocumentChange(index, 'documentName')}
                   />
                 </div>
                 <div className={styles.cardRow}>
@@ -143,7 +158,7 @@ const CreateJobApplicationForm = ({
                       icon="pi pi-file-pdf"
                       onClick={(e) => {
                         e.stopPropagation(); // This stops the event from propagating up
-                        window.open(document.documentLink, "_blank");
+                        window.open(document.documentLink, '_blank');
                       }}
                       className="p-button-rounded p-button-danger"
                       aria-label="Open PDF"
@@ -157,7 +172,7 @@ const CreateJobApplicationForm = ({
                     id={`documentLink-${index}`}
                     name={`documentLink-${index}`}
                     value={document.documentLink}
-                    onChange={handleDocumentChange(index, "documentLink")}
+                    onChange={handleDocumentChange(index, 'documentLink')}
                     readOnly
                   />
                 </div>
@@ -178,7 +193,12 @@ const CreateJobApplicationForm = ({
           </Panel>
         </div>
         <div className={styles.buttonContainer}>
-          <Button label="Submit Job Application" rounded severity="success" raised />
+          <Button
+            label="Submit Job Application"
+            rounded
+            severity="success"
+            raised
+          />
         </div>
       </form>
     </div>
