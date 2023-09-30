@@ -9,6 +9,7 @@ import { forgetPassword, sendEmail } from "../api/auth/forgetPassword/route";
 //import ReactLoading from "react-loading";
 import { RadioButton } from "primereact/radiobutton";
 import { ProgressSpinner } from "primereact/progressspinner";
+import Enums from "@/common/enums/enums";
 
 const ForgetPassword = () => {
   const session = useSession();
@@ -79,25 +80,25 @@ const ForgetPassword = () => {
         <div className={styles.radio}>
           <p>I am a...</p>
           <RadioButton
-            inputId="Job_Seeker"
+            inputId={Enums.JOBSEEKER}
             name="role"
-            value="Job_Seeker"
+            value={Enums.JOBSEEKER}
             onChange={handleInputChange}
-            checked={formData.role === "Job_Seeker"}
+            checked={formData.role === Enums.JOBSEEKER}
             required
           />
-          <label htmlFor="Job_Seeker" className="ml-2">
+          <label htmlFor={Enums.JOBSEEKER} className="ml-2">
             Job Seeker
           </label>
           <RadioButton
-            inputId="Corporate"
+            inputId={Enums.CORPORATE}
             name="role"
-            value="Corporate"
+            value={Enums.CORPORATE}
             onChange={handleInputChange}
-            checked={formData.role === "Corporate"}
+            checked={formData.role === Enums.CORPORATE}
             required
           />
-          <label htmlFor="Corporate" className="ml-2">
+          <label htmlFor={Enums.CORPORATE} className="ml-2">
             Corporate
           </label>
         </div>

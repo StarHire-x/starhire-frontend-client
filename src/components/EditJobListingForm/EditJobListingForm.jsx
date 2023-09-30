@@ -131,7 +131,7 @@ const EditJobListingForm = ({ initialData, onSave }) => {
       </div>
 
       <div className={styles.cardFooter}>
-        <Button label="Save Changes" onClick={handleSubmit} />
+        <Button label="Save Changes" rounded onClick={handleSubmit} />
       </div>
     </div>
   );

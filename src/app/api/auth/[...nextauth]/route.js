@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { notFound } from "next/navigation";
 import bcrypt from "bcryptjs";
 import { getUserByUserId } from "../user/route";
+import Enums from "@/common/enums/enums";
 
 const handler = NextAuth({
   providers: [
@@ -73,7 +74,7 @@ const handler = NextAuth({
           (await getUserByUserId(token.userId, token.role, token.accessToken));
         const currentAccountStatus = result?.data?.status;
         console.log(`Current user account status: ${currentAccountStatus}`);
-        if (currentAccountStatus === "Inactive") {
+        if (currentAccountStatus === Enums.INACTIVE) {
           // sign out here since user no longer in database
           console.error(`SESSION API USER ERROR: ${error}`);
           session.error = "INVALID_USER";

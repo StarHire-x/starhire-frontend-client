@@ -16,6 +16,7 @@ import 'primeflex/primeflex.css';
 import CreateJobListingForm from '@/components/CreateJobListingForm/CreateJobListingForm';
 import EditJobListingForm from '@/components/EditJobListingForm/EditJobListingForm';
 import { useRouter } from 'next/navigation';
+import Enums from '@/common/enums/enums';
 
 //this page is viewed by corporate
 const JobListingManagementPage = () => {
@@ -48,11 +49,11 @@ const JobListingManagementPage = () => {
 
   const getStatus = (status) => {
     switch (status) {
-      case 'Active':
+      case Enums.ACTIVE:
         return 'success';
       case 'Unverified':
         return 'danger';
-      case 'Inactive':
+      case Enums.INACTIVE:
         return 'danger';
     }
   };
@@ -76,6 +77,7 @@ const JobListingManagementPage = () => {
       <Button
         label="Yes"
         icon="pi pi-check"
+        rounded
         onClick={() =>
           handleDeleteJobListing(selectedJobListingData.jobListingId)
         }
@@ -134,6 +136,7 @@ const JobListingManagementPage = () => {
           <Button
             label="Edit"
             icon="pi pi-pencil"
+            rounded
             className={styles.buttonSpacing}
             onClick={() => {
               setSelectedJobListingData(jobListing);
@@ -143,6 +146,7 @@ const JobListingManagementPage = () => {
           <Button
             label="Delete"
             icon="pi pi-trash"
+            rounded
             className={styles.buttonSpacing}
             onClick={() => {
               setSelectedJobListingData(jobListing);
@@ -219,6 +223,8 @@ const JobListingManagementPage = () => {
       <h2 className={styles.headerTitle}>Job Listing Management</h2>
       <Button
         label="Add A Job Listing"
+        rounded
+        style={{marginTop: "10px"}}
         onClick={() => setShowCreateDialog(true)}
       />
     </div>

@@ -8,6 +8,7 @@ import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
 import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
+import Enums from "@/common/enums/enums";
 
 const EditAccountForm = ({
   formData,
@@ -17,6 +18,7 @@ const EditAccountForm = ({
   saveChanges,
   session,
   removePdf,
+  confirmChanges
 }) => {
 
   const educationOptions = [
@@ -36,7 +38,7 @@ const EditAccountForm = ({
     <div className={styles.container}>
       <Card>
         <h1 className={styles.title}>My Account Details</h1>
-        <form className={styles.form} onSubmit={saveChanges}>
+        <form className={styles.form} onSubmit={confirmChanges}>
           <div className={styles.avatarContainer}>
             {formData?.profilePictureUrl && (
               <img
@@ -73,7 +75,7 @@ const EditAccountForm = ({
                 useGrouping={false}
               />
             </div>
-            {session.data.user.role === "Job_Seeker" && (
+            {session.data.user.role === Enums.JOBSEEKER && (
               <>
                 <div className={styles.field}>
                   <label htmlFor="fullName">Full Name:</label>
@@ -186,7 +188,7 @@ const EditAccountForm = ({
                 </div>
               </>
             )}
-            {session.data.user.role === "Corporate" && (
+            {session.data.user.role === Enums.CORPORATE && (
               <>
                 <div className={styles.field}>
                   <label htmlFor="companyName">Company Name:</label>
@@ -276,9 +278,9 @@ const EditAccountForm = ({
                 <RadioButton
                   inputId="status"
                   name="status"
-                  value="Active"
+                  value={Enums.ACTIVE}
                   onChange={handleInputChange}
-                  checked={formData.status === "Active"}
+                  checked={formData.status === Enums.ACTIVE}
                 />
                 <label htmlFor="notificationMode" className="ml-2">
                   Active
@@ -287,9 +289,9 @@ const EditAccountForm = ({
                 <RadioButton
                   inputId="status"
                   name="status"
-                  value="Inactive"
+                  value={Enums.INACTIVE}
                   onChange={handleInputChange}
-                  checked={formData.status === "Inactive"}
+                  checked={formData.status === Enums.INACTIVE}
                 />
                 <label htmlFor="notificationMode" className="ml-2">
                   Inactive

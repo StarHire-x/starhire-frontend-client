@@ -185,12 +185,6 @@ export const viewOneJobListing = async (jobListingId, accessToken) => {
 
 export const saveJobListing = async (jobListingId, accessToken) => {
   try {
-    console.log(
-      'Saving job listing with ID:',
-      jobListingId,
-      'using token:',
-      accessToken
-    );
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/saved-job-listing/save/${jobListingId}`,
       {
@@ -232,8 +226,6 @@ export const fetchSavedJobListings = async (userId, accessToken) => {
 
     // Directly parse the response as JSON, expecting an array
     const jobListings = await res.json();
-    console.log('Server Response:', jobListings);
-    console.log(jobListings);
 
     // Check if the response is an array and return it directly
     if (Array.isArray(jobListings)) {
@@ -244,6 +236,64 @@ export const fetchSavedJobListings = async (userId, accessToken) => {
   } catch (error) {
     console.log(
       'There was a problem fetching the assigned job listings for the job seeker',
+      error
+    );
+    throw error;
+  }
+};
+
+export const unsaveJobListing = async (jobListingId, accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/saved-job-listing/unsave/${jobListingId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: 'no-store',
+      }
+    );
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+
+    const text = await res.text();
+    return text ? JSON.parse(text) : {};
+  } catch (error) {
+    console.log('There was a problem un-saving the job listing', error);
+    throw error;
+  }
+};
+
+export const checkIfJobIsSaved = async (jobListingId, accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/saved-job-listing/is-saved/${jobListingId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: 'no-store',
+      }
+    );
+
+    if (res.status === 200) {
+      return { statusCode: 200 };
+    } else if (res.status === 404) {
+      return { statusCode: 404 };
+    } else {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+  } catch (error) {
+    console.log(
+      'There was a problem checking if the job listing is saved',
       error
     );
     throw error;
@@ -269,7 +319,6 @@ export const findAssignedJobListingsByJobSeeker = async (
 
     // Directly parse the response as JSON, expecting an array
     const jobListings = await res.json();
-    console.log(jobListings);
 
     // Check if the response is an array and return it directly
     if (Array.isArray(jobListings)) {

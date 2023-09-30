@@ -9,6 +9,7 @@ import { headers } from "../../../next.config";
 import bcrypt from "bcryptjs";
 import { RadioButton } from "primereact/radiobutton";
 import { ProgressSpinner } from "primereact/progressspinner";
+import Enums from "@/common/enums/enums";
 
 const Login = () => {
   const session = useSession();
@@ -110,25 +111,25 @@ const Login = () => {
         <div className={styles.radio}>
           <p>I am a:</p>
           <RadioButton
-            inputId="Job_Seeker"
+            inputId={Enums.JOBSEEKER}
             name="role"
-            value="Job_Seeker"
+            value={Enums.JOBSEEKER}
             onChange={handleInputChange}
-            checked={formData.role === "Job_Seeker"}
+            checked={formData.role === Enums.JOBSEEKER}
             required
           />
-          <label htmlFor="Job_Seeker" className="ml-2">
+          <label htmlFor={Enums.JOBSEEKER} className="ml-2">
             Job Seeker
           </label>
           <RadioButton
-            inputId="Corporate"
+            inputId={Enums.CORPORATE}
             name="role"
-            value="Corporate"
+            value={Enums.CORPORATE}
             onChange={handleInputChange}
-            checked={formData.role === "Corporate"}
+            checked={formData.role === Enums.CORPORATE}
             required
           />
-          <label htmlFor="Corporate" className="ml-2">
+          <label htmlFor={Enums.CORPORATE} className="ml-2">
             Corporate
           </label>
         </div>
@@ -137,7 +138,7 @@ const Login = () => {
         )}
         {!loading && <button className={styles.button}>Login</button>}
       </form>
-      <Link href="/register">I don&apos;t have an account </Link>
+      <Link href="/register">New to StarHire? Join Now! </Link>
       <Link href="/forgetPassword">Forget Password</Link>
     </div>
   );

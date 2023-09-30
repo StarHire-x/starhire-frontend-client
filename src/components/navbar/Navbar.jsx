@@ -1,33 +1,35 @@
-'use client';
-import Link from 'next/link';
-import Image from 'next/image';
-import React from 'react';
-import styles from './Navbar.module.css';
-import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
-import { signOut, useSession } from 'next-auth/react';
-import { useState, useEffect, useContext } from 'react';
-import NavItem from '../navItem/NavItem';
-import HumanIcon from '../../../public/icon.png';
-import { UserContext } from '@/context/UserContext';
-import { getUserByUserId } from '@/app/api/auth/user/route';
+"use client";
+import Link from "next/link";
+import Image from "next/image";
+import React from "react";
+import styles from "./Navbar.module.css";
+import DarkModeToggle from "../DarkModeToggle/DarkModeToggle";
+import { signOut, useSession } from "next-auth/react";
+import { useState, useEffect, useContext } from "react";
+import NavItem from "../navItem/NavItem";
+import HumanIcon from "../../../public/icon.png";
+import { UserContext } from "@/context/UserContext";
+import { getUserByUserId } from "@/app/api/auth/user/route";
+import Enums from "@/common/enums/enums";
+import { ThemeContext } from "@/context/ThemeContext";
 
 const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
-  { text: 'Home', href: '/' },
+  { text: "Home", href: "/" },
   {
-    text: 'Job Listings',
-    href: '#', // Use # as the href for dropdown
+    text: "Job Listings",
+    href: "#", // Use # as the href for dropdown
     subMenu: [
-      { text: 'View Job Listings Available', href: '/jobListing' },
+      { text: "View Available Job Listings", href: "/jobListing" },
       {
-        text: 'View Saved Job Listings',
-        href: '/jobListing/viewSavedJobListingsJobSeeker',
+        text: "View Saved Job Listings",
+        href: "/jobListing/viewSavedJobListingsJobSeeker",
       },
     ],
   },
-  { text: 'Forum', href: '/forum' },
-  { text: 'Events', href: '/events' },
-  { text: 'Contact', href: '/contact' },
-  { text: 'Chat', href: '/chat' },
+  { text: "Forum", href: "/forum" },
+  { text: "Events", href: "/events" },
+  { text: "Contact", href: "/contact" },
+  { text: "Chat", href: "/chat" },
 ];
 
 /*
@@ -42,29 +44,29 @@ const MENU_LIST_AUTHENTICATED_CORPORATE = [
 */
 
 const MENU_LIST_AUTHENTICATED_CORPORATE = [
-  { text: 'Home', href: '/' },
+  { text: "Home", href: "/" },
   {
-    text: 'Job Listing Management',
-    href: '#', // Use # as the href for dropdown
+    text: "Job Listing Management",
+    href: "#", // Use # as the href for dropdown
     subMenu: [
-      { text: 'Create Job Listing', href: '/jobListingManagement' },
-      { text: 'Edit Job Listing', href: '/jobListingManagement' },
+      { text: "Create Job Listing", href: "/jobListingManagement" },
+      { text: "Edit Job Listing", href: "/jobListingManagement" },
       {
-        text: 'View all my Job Listing',
-        href: '/jobListingManagement/viewAllMyJobListings',
+        text: "View all my Job Listing",
+        href: "/jobListingManagement/viewAllMyJobListings",
       },
       // Add more sub-menu items as needed
     ],
   },
-  { text: 'Forum', href: '/forum' },
-  { text: 'Events', href: '/events' },
-  { text: 'Contact', href: '/contact' },
-  { text: 'Chat', href: '/chat' },
+  { text: "Forum", href: "/forum" },
+  { text: "Events", href: "/events" },
+  { text: "Contact", href: "/contact" },
+  { text: "Chat", href: "/chat" },
 ];
 
 const MENU_LIST_UNAUTHENTICATED = [
-  { text: 'Home', href: '/' },
-  { text: 'About', href: '/about' },
+  { text: "Home", href: "/" },
+  { text: "About", href: "/about" },
 ];
 
 const Navbar = () => {
@@ -79,6 +81,9 @@ const Navbar = () => {
   // utilising use context to get the latest information
   const { userData } = useContext(UserContext);
   const [showSubMenu, setShowSubMenu] = useState(false);
+
+  const themeContext = useContext(ThemeContext);
+  const { toggle, mode } = themeContext;
 
   if (session && session.data && session.data.user) {
     userIdRef = session.data.user.userId;
@@ -102,12 +107,12 @@ const Navbar = () => {
           <div></div>
         </div>
         <div
-          className={`${navActive ? styles.active : ''} ${
-            styles.nav__menu_list
+          className={`${navActive ? styles.active : ""} ${
+            mode === "dark" ? styles.nav__menu_list : styles.nav__menu_list_light
           }`}
         >
-          {session.status == 'authenticated' &&
-            session.data.user.role === 'Job_Seeker' &&
+          {session.status == "authenticated" &&
+            session.data.user.role === Enums.JOBSEEKER &&
             MENU_LIST_AUTHENTICATED_JOB_SEEKER.map((menu, idx) => (
               <div
                 onClick={() => {
@@ -119,7 +124,7 @@ const Navbar = () => {
                 onMouseLeave={() => setShowSubMenu(false)} // Hide sub-menu on mouse leave
               >
                 <Link href={menu.href}>
-                  {' '}
+                  {" "}
                   {/* Use Link for the main menu item */}
                   <a>
                     <NavItem
@@ -133,7 +138,7 @@ const Navbar = () => {
                   <div className={styles.submenu}>
                     {menu.subMenu.map((subMenuItem, subIdx) => (
                       <Link href={subMenuItem.href} key={subIdx}>
-                        {' '}
+                        {" "}
                         {/* Use Link for sub-menu items */}
                         <a>{subMenuItem.text}</a>
                       </Link>
@@ -143,8 +148,8 @@ const Navbar = () => {
               </div>
             ))}
 
-          {session.status == 'authenticated' &&
-            session.data.user.role === 'Corporate' &&
+          {session.status == "authenticated" &&
+            session.data.user.role === Enums.CORPORATE &&
             MENU_LIST_AUTHENTICATED_CORPORATE.map((menu, idx) => (
               <div
                 key={menu.text}
@@ -152,7 +157,7 @@ const Navbar = () => {
                 onMouseLeave={() => setShowSubMenu(false)} // Hide sub-menu on mouse leave
               >
                 <Link href={menu.href}>
-                  {' '}
+                  {" "}
                   {/* Use Link for the main menu item */}
                   <a>
                     <NavItem
@@ -167,7 +172,7 @@ const Navbar = () => {
                   <div className={styles.submenu}>
                     {menu.subMenu.map((subMenuItem, subIdx) => (
                       <Link href={subMenuItem.href} key={subIdx}>
-                        {' '}
+                        {" "}
                         {/* Use Link for sub-menu items */}
                         <a>{subMenuItem.text}</a>
                       </Link>
@@ -177,7 +182,7 @@ const Navbar = () => {
               </div>
             ))}
 
-          {session.status == 'unauthenticated' &&
+          {session.status == "unauthenticated" &&
             MENU_LIST_UNAUTHENTICATED.map((menu, idx) => (
               <div
                 onClick={() => {
@@ -189,7 +194,7 @@ const Navbar = () => {
                 <NavItem active={activeIdx === idx} {...menu} />
               </div>
             ))}
-          {session.status === 'authenticated' && (
+          {session.status === "authenticated" && (
             <>
               <div className={styles.imageContainer}>
                 {userData?.profilePictureUrl ? (
@@ -216,10 +221,10 @@ const Navbar = () => {
               </button>
             </>
           )}
-          {session.status === 'unauthenticated' && (
+          {session.status === "unauthenticated" && (
             <button
               className={styles.login}
-              onClick={() => (window.location.href = '/login')}
+              onClick={() => (window.location.href = "/login")}
             >
               Login
             </button>

@@ -10,6 +10,7 @@ import { findAllJobListingsByCorporate } from '@/app/api/auth/jobListing/route';
 import styles from '../page.module.css';
 import 'primeflex/primeflex.css';
 import { useRouter } from 'next/navigation';
+import Enums from '@/common/enums/enums';
 
 const ViewAllMyJobListingsManagementPage = () => {
   const [jobListing, setJobListing] = useState(null);
@@ -37,11 +38,11 @@ const ViewAllMyJobListingsManagementPage = () => {
 
   const getStatus = (status) => {
     switch (status) {
-      case 'Active':
+      case Enums.ACTIVE:
         return 'success';
       case 'Unverified':
         return 'danger';
-      case 'Inactive':
+      case Enums.INACTIVE:
         return 'danger';
     }
   };
@@ -59,7 +60,7 @@ const ViewAllMyJobListingsManagementPage = () => {
   }, [refreshData, userIdRef, accessToken]);
 
   const itemTemplate = (jobListing) => {
-    const cardLink = `/jobListingManagement/viewAllMyJobListings/viewApplications?id=${jobListing.jobListingId}`;
+    const cardLink = `/jobListingManagement/viewAllMyJobListings/viewJobApplications?id=${jobListing.jobListingId}`;
     <a href={cardLink} className={styles.cardLink}>
       <div className={styles.card}>
         <div className={styles.cardHeader}></div>
@@ -104,6 +105,10 @@ const ViewAllMyJobListingsManagementPage = () => {
       </a>
     );
   };
+
+  if (session.status === "unauthenticated") {
+    router?.push("/login");
+  }
 
   if (session.status === 'authenticated') {
     return (

@@ -15,6 +15,7 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import Image from 'next/image';
 import "./styles.css";
 import { Joan } from 'next/font/google';
+import Enums from '@/common/enums/enums';
 
 const ViewJobSeekerPage = () => {
     const [jobApplication, setJobApplications] = useState(null);
@@ -84,13 +85,13 @@ const ViewJobSeekerPage = () => {
           label="Accept"
           icon="pi pi-check"
           className="approve-button p-button-outlined p-button-secondary"
-          onClick={() => showUserDialog('Active')}
+          onClick={() => showUserDialog(Enums.ACTIVE)}
         />
         <Button
           label="Reject"
           icon="pi pi-times"
           className="reject-button p-button-outlined p-button-secondary"
-          onClick={() => showUserDialog('Inactive')}
+          onClick={() => showUserDialog(Enums.INACTIVE)}
         />
       </div>
     );
@@ -98,7 +99,14 @@ const ViewJobSeekerPage = () => {
     return (
       <div className="container">
         {isLoading ? (
-          <ProgressSpinner style={{"display": "flex", "height": "100vh", "justify-content": "center", "align-items": "center"}} />
+          <ProgressSpinner
+            style={{
+              display: "flex",
+              height: "100vh",
+              "justify-content": "center",
+              "align-items": "center",
+            }}
+          />
         ) : (
           <div>
             <Card
@@ -177,14 +185,21 @@ const ViewJobSeekerPage = () => {
                 </div>
 
                 <div className="contact-info">
-                  <strong>Attachments</strong>
-                  <p>{"Resume: " + "Attach Link here"}</p>
-                  <p className="second-p">
-                    {"L1 Certificate: " + "Attach Link here"}
-                  </p>
-                  <p className="second-p">
-                    {"L2 Certificate: " + "Attach Link here"}
-                  </p>
+                  <strong>Documents Submitted: </strong>
+                  <ul>
+                    {jobApplication.documents.map((document, index) => (
+                      <li key={index}>
+                        <a
+                          href={document.documentLink}
+                          className="blue-link"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {document.documentName}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
                 <div className="contact-info">
