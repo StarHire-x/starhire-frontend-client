@@ -147,8 +147,9 @@ export default function viewJobListingDetailsJobSeeker() {
   // }, [accessToken, refreshData]);
 
   useEffect(() => {
-    console.log('useEffect triggered');
-
+    if (session.status === 'unauthenticated' || session.status === 'loading') {
+      router.push('/login');
+    }
     if (accessToken) {
       // Fetching the job listing details
       viewOneJobListing(id, accessToken)
