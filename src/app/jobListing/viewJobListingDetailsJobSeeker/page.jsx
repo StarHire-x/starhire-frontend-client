@@ -272,7 +272,7 @@ export default function viewJobListingDetailsJobSeeker() {
         rounded
       />
       <Button
-        label="Reject"
+        label="Not Interested"
         className={styles.rejectButton}
         icon="pi pi-trash"
         onClick={() => setShowRejectJobListingDialog(true)}
