@@ -23,14 +23,14 @@
 }
 
 .card {
-  background-color: #edf6f9;
+  background-color: #e0ecee;
   padding: 20px;
   width: 100%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
   overflow: hidden;
-  border: 1px solid #edf6f9;
+  border: 1px solid #e0ecee;
   margin-bottom: 10px;
   border-radius: 8px;
 }

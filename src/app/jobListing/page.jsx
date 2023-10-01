@@ -89,7 +89,8 @@ const JobListingPage = () => {
     return (
       <div className={styles.card}>
         <div className={styles.cardHeader}>
-          <h5>{jobListing.title}</h5>
+          <h3>{jobListing.title}</h3>
+          <h4>{jobListing.corporate.userName}</h4>
         </div>
         <div className={styles.cardBody}>
           <div className={styles.cardRow}>
