@@ -14,7 +14,7 @@ import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import Image from 'next/image';
-import HumanIcon from '../../../../public/icon.png'; // Adjust the path
+import HumanIcon from '../../../../public/icon.png';
 import { Dialog } from 'primereact/dialog';
 import CreateJobApplicationForm from '@/components/CreateJobApplicationForm/CreateJobApplicationForm';
 import styles from './page.module.css';
@@ -40,7 +40,7 @@ export default function viewJobListingDetailsJobSeeker() {
   const params = useSearchParams();
   const id = params.get('id');
 
-  const userId = session?.data?.user?.id; // Adjust as per the structure of your session object.
+  const userId = session?.data?.user?.id;
 
   const [jobListing, setJobListing] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -347,6 +347,11 @@ export default function viewJobListingDetailsJobSeeker() {
 
             <strong className={styles.fieldLabel}>Job Requirements</strong>
             <p className={styles.fieldContent}>{jobListing.requirements}</p>
+
+            <strong className={styles.fieldLabel}>Required Documents</strong>
+            <p className={styles.fieldContent}>
+              {jobListing.requiredDocuments}
+            </p>
 
             <strong className={styles.fieldLabel}>Average Salary</strong>
             <p className={styles.fieldContent}>
