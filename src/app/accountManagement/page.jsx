@@ -282,12 +282,12 @@ const AccountManagement = () => {
           footer={deactivateAccountDialogFooter}
           onHide={hideDeactivateAccountDialog}
         >
-          <h3>
+          <p>
             You may have accidentally selected Inactive for your account status.
             Are you sure you want to deactivate your account? Please note that
             this action is irreversible, and you need to contact our Admin to
             activate back your account if needed.
-          </h3>
+          </p>
         </Dialog>
         <br />
         {roleRef === Enums.JOBSEEKER && (
