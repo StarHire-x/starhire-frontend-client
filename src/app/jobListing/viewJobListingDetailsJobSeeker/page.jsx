@@ -8,7 +8,8 @@ import {
   saveJobListing,
   unsaveJobListing,
   checkIfJobIsSaved,
-} from '@/app/api/auth/jobListing/route';
+  removeJobListingAssignment,
+} from "@/app/api/auth/jobListing/route";
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
@@ -48,6 +49,12 @@ export default function viewJobListingDetailsJobSeeker() {
   console.log('Initial isJobSaved:', isJobSaved);
   const [showCreateJobApplicationDialog, setShowCreateJobApplicationDialog] =
     useState(false);
+  const [showRejectJobListingDialog, setShowRejectJobListingDialog] =
+    useState(false);
+
+  const hideRejectJobListingDialog = () => {
+    setShowRejectJobListingDialog(false);
+  }
 
   const hideCreateJobApplicationDialog = () => {
     setShowCreateJobApplicationDialog(false);
@@ -62,6 +69,7 @@ export default function viewJobListingDetailsJobSeeker() {
     availableStartDate: '',
     availableEndDate: '',
     submissionDate: '',
+    remarks: '',
     documents: [
       {
         documentName: '',
@@ -93,6 +101,7 @@ export default function viewJobListingDetailsJobSeeker() {
       jobApplicationStatus: 'Submitted',
       availableStartDate: formData.availableStartDate,
       availableEndDate: formData.availableEndDate,
+      remarks: formData.remarks,
       submissionDate: new Date(),
       documents: formData.documents,
     };
@@ -191,6 +200,28 @@ export default function viewJobListingDetailsJobSeeker() {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  const removeJobListing = async (jobSeekerId, jobListingId) => {
+    try {
+      const response = await removeJobListingAssignment(jobSeekerId, jobListingId, accessToken);
+      console.log('Job Listing disassociated with Job Seeker', response.message)
+      alert("Removed Job Listing Assignment successfully");
+    } catch (error) {
+      console.error("Error dissociating job listing:", error);
+    }
+    setShowRejectJobListingDialog(false);
+    router.push("/jobListing");
+  }
+
+  const deleteDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        onClick={() => removeJobListing(jobSeekerId, jobListing.jobListingId)}
+      />
+    </React.Fragment>
+  );
+
   const handleSaveJobListing = async () => {
     try {
       if (isJobSaved) {
@@ -234,10 +265,17 @@ export default function viewJobListingDetailsJobSeeker() {
         />
       )}
       <Button
-        label={isJobSaved ? 'Saved' : 'Save'}
+        label={isJobSaved ? "Saved" : "Save"}
         className={styles.saveButton}
-        icon={isJobSaved ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'}
+        icon={isJobSaved ? "pi pi-bookmark-fill" : "pi pi-bookmark"}
         onClick={handleSaveJobListing}
+        rounded
+      />
+      <Button
+        label="Not Interested"
+        className={styles.rejectButton}
+        icon="pi pi-trash"
+        onClick={() => setShowRejectJobListingDialog(true)}
         rounded
       />
     </div>
@@ -248,10 +286,10 @@ export default function viewJobListingDetailsJobSeeker() {
       {isLoading ? (
         <ProgressSpinner
           style={{
-            display: 'flex',
-            height: '100vh',
+            display: "flex",
+            height: "100vh",
             // justifyContent: 'center',
-            alignItems: 'center',
+            alignItems: "center",
           }}
         />
       ) : (
@@ -260,7 +298,7 @@ export default function viewJobListingDetailsJobSeeker() {
           subTitle={jobListing.jobLocation}
           footer={cardFooter}
           className="my-card"
-          style={{ borderRadius: '0' }}
+          style={{ borderRadius: "0" }}
         >
           <div className="my-card-content">
             <div className="company-info">
@@ -286,7 +324,7 @@ export default function viewJobListingDetailsJobSeeker() {
             <p>{jobListing.requirements}</p>
 
             <strong>Average Salary</strong>
-            <p>{'$' + jobListing.averageSalary + ' SGD'}</p>
+            <p>{"$" + jobListing.averageSalary + " SGD"}</p>
 
             <strong>Listing Date</strong>
             <p>{formatDate(jobListing.listingDate)}</p>
@@ -301,8 +339,8 @@ export default function viewJobListingDetailsJobSeeker() {
             </div>
 
             <strong>Corporate Details</strong>
-            <p>{'UEN Number: ' + jobListing.corporate.companyRegistrationId}</p>
-            <p>{'Address: ' + jobListing.corporate.companyAddress}</p>
+            <p>{"UEN Number: " + jobListing.corporate.companyRegistrationId}</p>
+            <p>{"Address: " + jobListing.corporate.companyAddress}</p>
 
             <strong>Job Listing ID</strong>
             <p>{jobListing.jobListingId}</p>
@@ -333,6 +371,16 @@ export default function viewJobListingDetailsJobSeeker() {
               formErrors={formErrors}
               setFormErrors={setFormErrors}
             />
+          </Dialog>
+
+          <Dialog
+            header="Reject Job Listing"
+            visible={showRejectJobListingDialog}
+            onHide={hideRejectJobListingDialog}
+            className={styles.cardDialog}
+            footer={deleteDialogFooter}
+          >
+            Are you sure you want to reject this job listing?
           </Dialog>
         </Card>
       )}

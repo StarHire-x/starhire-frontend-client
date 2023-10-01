@@ -89,7 +89,7 @@ const Login = () => {
     <div className={styles.container}>
       <h1 className={styles.title}>Login</h1>
       {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <form className={styles.form}>
         <input
           type="email"
           name="email"
@@ -136,7 +136,7 @@ const Login = () => {
         {loading && (
           <ProgressSpinner style={{ width: "50px", height: "50px" }} />
         )}
-        {!loading && <button className={styles.button}>Login</button>}
+        {!loading && <button className={styles.button} onClick={handleSubmit}>Login</button>}
       </form>
       <Link href="/register">New to StarHire? Join Now! </Link>
       <Link href="/forgetPassword">Forget Password</Link>
