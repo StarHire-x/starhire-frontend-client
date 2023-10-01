@@ -62,6 +62,7 @@ export default function viewJobListingDetailsJobSeeker() {
     availableStartDate: '',
     availableEndDate: '',
     submissionDate: '',
+    remarks: '',
     documents: [
       {
         documentName: '',
@@ -93,6 +94,7 @@ export default function viewJobListingDetailsJobSeeker() {
       jobApplicationStatus: 'Submitted',
       availableStartDate: formData.availableStartDate,
       availableEndDate: formData.availableEndDate,
+      remarks: formData.remarks,
       submissionDate: new Date(),
       documents: formData.documents,
     };
