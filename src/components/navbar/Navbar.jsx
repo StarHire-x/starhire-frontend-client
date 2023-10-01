@@ -53,7 +53,7 @@ const MENU_LIST_AUTHENTICATED_CORPORATE = [
       { text: "Create Job Listing", href: "/jobListingManagement" },
       { text: "Edit Job Listing", href: "/jobListingManagement" },
       {
-        text: "View all my Job Listing",
+        text: "View My Job Listings",
         href: "/jobListingManagement/viewAllMyJobListings",
       },
       // Add more sub-menu items as needed

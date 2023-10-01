@@ -219,7 +219,7 @@ const JobListingManagementPage = () => {
   };
 
   const header = (
-    <div className="p-d-flex p-jc-between">
+    <div className={styles.header}>
       <h2 className={styles.headerTitle}>Job Listing Management</h2>
       <Button
         label="Add A Job Listing"
