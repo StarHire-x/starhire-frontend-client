@@ -4,10 +4,12 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { fetchSavedJobListings } from '@/app/api/auth/jobListing/route';
 import { Card } from 'primereact/card';
+import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
 import { Tag } from 'primereact/tag';
 import styles from './page.module.css';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import Enums from '@/common/enums/enums';
 
 function ViewSavedJobListingsJobSeeker() {
   const [savedJobListings, setSavedJobListings] = useState([]);
@@ -46,6 +48,24 @@ function ViewSavedJobListingsJobSeeker() {
     }
   }, [refreshData, userIdRef, accessToken]);
 
+  const createLink = (id) => {
+    const link = `/jobListing/viewJobListingDetailsJobSeeker?id=${id}`;
+    return link;
+  };
+
+  const saveStatusChange = async (rowData) => {
+    const jobListingId = rowData.jobListingId;
+    if (session.data.user.role === Enums.JOBSEEKER) {
+      try {
+        // Use router.push to navigate to another page with a query parameter
+        let link = createLink(jobListingId);
+        router.push(link);
+      } catch (error) {
+        console.error('Error changing status:', error);
+      }
+    }
+  };
+
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
@@ -56,7 +76,7 @@ function ViewSavedJobListingsJobSeeker() {
     return (
       <div className={styles.card}>
         <div className={styles.cardHeader}>
-          <h5>{jobDetails.title}</h5>
+          <h3>{jobDetails.title}</h3>
         </div>
         <div className={styles.cardBody}>
           {/* Include similar details to mimic the UI */}
@@ -76,6 +96,15 @@ function ViewSavedJobListingsJobSeeker() {
             <span>Start Date:</span>
             <span>{formatDate(jobDetails.jobStartDate)}</span>
           </div>
+        </div>
+        <div className={styles.cardFooter}>
+          <Button
+            label="Details"
+            rounded
+            onClick={() => {
+              saveStatusChange(jobDetails);
+            }}
+          />
         </div>
       </div>
     );
