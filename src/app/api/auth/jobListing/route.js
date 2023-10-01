@@ -27,13 +27,17 @@ export const findAllJobListingsByCorporate = async (userId, accessToken) => {
 
 export const createJobListing = async (newJobListing, accessToken) => {
   try {
+    const transformedData = {
+      ...newJobListing,
+      requiredDocuments: newJobListing.requiredDocuments.join(','),
+    };
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/job-listing`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify(newJobListing),
+      body: JSON.stringify(transformedData),
       cache: 'no-store',
     });
     const response = await res.json();
@@ -51,6 +55,10 @@ export const createJobListing = async (newJobListing, accessToken) => {
 
 export const updateJobListing = async (request, id, accessToken) => {
   try {
+    const transformedData = {
+      ...request,
+      requiredDocuments: request.requiredDocuments.join(','),
+    };
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/${id}`,
       {
@@ -59,7 +67,7 @@ export const updateJobListing = async (request, id, accessToken) => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify(request),
+        body: JSON.stringify(transformedData),
       }
     );
     const response = await res.json();
@@ -344,25 +352,25 @@ export const removeJobListingAssignment = async (
     const res = await fetch(
       `http://localhost:8080/job-listing/rejectJobListing/${jobSeekerId}/${jobListingId}`,
       {
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
       }
     );
 
     const response = await res.json();
-    
+
     if (response.statusCode === 200) {
-      console.log("Hello");
+      console.log('Hello');
       return response;
     } else {
-      throw new Error(response.message || "An error occurred");
+      throw new Error(response.message || 'An error occurred');
     }
   } catch (error) {
     console.log(
-      "There was a problem assigning job listing to job seekers and assigning job listing to job seekers",
+      'There was a problem assigning job listing to job seekers and assigning job listing to job seekers',
       error
     );
     throw error;
