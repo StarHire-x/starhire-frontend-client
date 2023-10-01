@@ -48,46 +48,93 @@
 }
 
 .my-card {
-  width: 100%;
-  margin-top: 2rem;
-  padding: 2rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s, transform 0.3s;
 }
 
-.my-card-content {
+.my-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
+}
+
+/* .my-card-content {
   font-size: 1rem;
+} */
+
+.my-card .p-card-title {
+  margin-bottom: 0;
 }
 
-.company-info {
+.my-card .p-card-content {
+  padding-top: 0.5rem;
+}
+
+.my-card .p-card-content strong {
+  display: block !important;
+  margin-top: 10px;
+  margin-bottom: 1rem !important;
+  font-size: 1.1em;
+  color: #333;
+}
+
+.my-card .p-card-content p {
+  line-height: 1.5 !important;
+  margin-bottom: 2rem !important;
+  color: #555;
+}
+
+.fieldLabel {
+  margin-bottom: 8px; /* adjust as needed */
+}
+
+.fieldContent {
+  margin-bottom: 24px; /* adjust as needed to get the desired spacing between fields */
+}
+
+.loading-animation {
   display: flex;
-  flex-direction: row;
+  justify-content: center;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  height: 100vh;
+}
+
+.spinner {
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-top: 5px solid #007bff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
 }
 
 .avatar {
   width: 40px;
   height: 40px;
-  border-radius: 30%;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px; /* Adjust margin as needed */
+  margin-bottom: 25px; /* Adjust margin as needed */
 }
 
-.company-details p {
-  margin: 0;
-  font-size: 1.2rem;
-  font-weight: 600;
+.company-info {
+  display: flex;
+  align-items: center; /* Align items vertically in the middle */
+  margin-bottom: 16px;
 }
 
-.strong {
-  display: block;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-  font-size: 1.1rem;
-  font-weight: bold;
+.contact-info p {
+  margin-bottom: 0; /* Adjust the margin as needed to reduce the space */
 }
 
-.contact-info {
-  margin-top: 1rem;
+.second-p {
+  margin-bottom: 0; /* Removes margin for the second <p> element */
+}
+
+.company-details {
+  display: flex;
+  align-items: center;
 }
 
 .cardDialog {

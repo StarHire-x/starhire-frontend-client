@@ -9,7 +9,7 @@ import {
   unsaveJobListing,
   checkIfJobIsSaved,
   removeJobListingAssignment,
-} from "@/app/api/auth/jobListing/route";
+} from '@/app/api/auth/jobListing/route';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
@@ -54,7 +54,7 @@ export default function viewJobListingDetailsJobSeeker() {
 
   const hideRejectJobListingDialog = () => {
     setShowRejectJobListingDialog(false);
-  }
+  };
 
   const hideCreateJobApplicationDialog = () => {
     setShowCreateJobApplicationDialog(false);
@@ -202,15 +202,22 @@ export default function viewJobListingDetailsJobSeeker() {
 
   const removeJobListing = async (jobSeekerId, jobListingId) => {
     try {
-      const response = await removeJobListingAssignment(jobSeekerId, jobListingId, accessToken);
-      console.log('Job Listing disassociated with Job Seeker', response.message)
-      alert("Removed Job Listing Assignment successfully");
+      const response = await removeJobListingAssignment(
+        jobSeekerId,
+        jobListingId,
+        accessToken
+      );
+      console.log(
+        'Job Listing disassociated with Job Seeker',
+        response.message
+      );
+      alert('Removed Job Listing Assignment successfully');
     } catch (error) {
-      console.error("Error dissociating job listing:", error);
+      console.error('Error dissociating job listing:', error);
     }
     setShowRejectJobListingDialog(false);
-    router.push("/jobListing");
-  }
+    router.push('/jobListing');
+  };
 
   const deleteDialogFooter = (
     <React.Fragment>
@@ -265,9 +272,9 @@ export default function viewJobListingDetailsJobSeeker() {
         />
       )}
       <Button
-        label={isJobSaved ? "Saved" : "Save"}
+        label={isJobSaved ? 'Saved' : 'Save'}
         className={styles.saveButton}
-        icon={isJobSaved ? "pi pi-bookmark-fill" : "pi pi-bookmark"}
+        icon={isJobSaved ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'}
         onClick={handleSaveJobListing}
         rounded
       />
@@ -286,10 +293,10 @@ export default function viewJobListingDetailsJobSeeker() {
       {isLoading ? (
         <ProgressSpinner
           style={{
-            display: "flex",
-            height: "100vh",
-            // justifyContent: 'center',
-            alignItems: "center",
+            display: 'flex',
+            height: '100vh',
+            'justify-content': 'center',
+            'align-items': 'center',
           }}
         />
       ) : (
@@ -298,52 +305,78 @@ export default function viewJobListingDetailsJobSeeker() {
           subTitle={jobListing.jobLocation}
           footer={cardFooter}
           className="my-card"
-          style={{ borderRadius: "0" }}
+          style={{ borderRadius: '0' }}
         >
-          <div className="my-card-content">
+          <div className="my-card.p-card-content">
+            {/* <div className="company-info">
+              {jobListing.corporate.profilePictureUrl === '' ? (
+                <Image src={HumanIcon} alt="User" className="avatar" />
+              ) : (
+                <img
+                  src={jobListing.corporate.profilePictureUrl}
+                  className="avatar"
+                  width={30}
+                  height={30}
+                />
+              )}
+              <div className="company-details">
+                <p>{jobListing.corporate.userName}</p>
+              </div>
+            </div> */}
+
             <div className="company-info">
               <Image
                 src={jobListing.corporate.profilePictureUrl || HumanIcon}
                 alt="User"
                 className="avatar"
-                width={40}
-                height={40}
+                width={40} // This should match the CSS value
+                height={40} // This should match the CSS value
               />
               <div className="company-details">
-                <p>{jobListing.corporate.userName}</p>
+                <p className={styles.fieldContent}>
+                  {jobListing.corporate.userName}
+                </p>
               </div>
             </div>
 
-            <strong>Job Overview</strong>
-            <p>{jobListing.overview}</p>
+            <strong className={styles.fieldLabel}>Job Overview</strong>
+            <p className={styles.fieldContent}>{jobListing.overview}</p>
 
-            <strong>Job Responsibilities</strong>
-            <p>{jobListing.responsibilities}</p>
+            <strong className={styles.fieldLabel}>Job Responsibilities</strong>
+            <p className={styles.fieldContent}>{jobListing.responsibilities}</p>
 
-            <strong>Job Requirements</strong>
-            <p>{jobListing.requirements}</p>
+            <strong className={styles.fieldLabel}>Job Requirements</strong>
+            <p className={styles.fieldContent}>{jobListing.requirements}</p>
 
-            <strong>Average Salary</strong>
-            <p>{"$" + jobListing.averageSalary + " SGD"}</p>
+            <strong className={styles.fieldLabel}>Average Salary</strong>
+            <p className={styles.fieldContent}>
+              {'$' + jobListing.averageSalary + ' SGD'}
+            </p>
 
-            <strong>Listing Date</strong>
-            <p>{formatDate(jobListing.listingDate)}</p>
+            <strong className={styles.fieldLabel}>Listing Date</strong>
+            <p className={styles.fieldContent}>
+              {formatDate(jobListing.listingDate)}
+            </p>
 
-            <strong>Job Start Date</strong>
-            <p>{formatDate(jobListing.jobStartDate)}</p>
+            <strong className={styles.fieldLabel}>Job Start Date</strong>
+            <p className={styles.fieldContent}>
+              {formatDate(jobListing.jobStartDate)}
+            </p>
 
             <div className="contact-info">
-              <strong>Contact Information</strong>
-              <p>Email: {jobListing.corporate.email}</p>
-              <p>Phone: {jobListing.corporate.contactNo}</p>
+              <strong className={styles.fieldLabel}>Contact Information</strong>
+              <p>{jobListing.corporate.email}</p>
+              <p className="second-p">{jobListing.corporate.contactNo}</p>
             </div>
 
-            <strong>Corporate Details</strong>
-            <p>{"UEN Number: " + jobListing.corporate.companyRegistrationId}</p>
-            <p>{"Address: " + jobListing.corporate.companyAddress}</p>
+            {/* <strong>Corporate Details</strong>
+            <p>{'UEN Number: ' + jobListing.corporate.companyRegistrationId}</p>
+            <p className="second-p">
+              {'Address: ' + jobListing.corporate.companyAddress}
+            </p>
 
             <strong>Job Listing ID</strong>
-            <p>{jobListing.jobListingId}</p>
+            <p>{jobListing.jobListingId}</p> */}
           </div>
 
           {/* Conditionally rendering the button based on the existence of jobListing.jobApplication
