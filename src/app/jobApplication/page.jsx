@@ -188,7 +188,7 @@ const jobApplicationPage = () => {
           }}
         />
       ) : jobApplications.length === 0 ? (
-        <p>You have no assigned job listings yet.</p>
+        <p>You have no assigned job applications yet.</p>
       ) : (
         <DataView
           value={filteredApplications}

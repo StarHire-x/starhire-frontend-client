@@ -334,3 +334,37 @@ export const findAssignedJobListingsByJobSeeker = async (
     throw error;
   }
 };
+
+export const removeJobListingAssignment = async (
+  jobSeekerId,
+  jobListingId,
+  accessToken
+) => {
+  try {
+    const res = await fetch(
+      `http://localhost:8080/job-listing/rejectJobListing/${jobSeekerId}/${jobListingId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const response = await res.json();
+    
+    if (response.statusCode === 200) {
+      console.log("Hello");
+      return response;
+    } else {
+      throw new Error(response.message || "An error occurred");
+    }
+  } catch (error) {
+    console.log(
+      "There was a problem assigning job listing to job seekers and assigning job listing to job seekers",
+      error
+    );
+    throw error;
+  }
+};

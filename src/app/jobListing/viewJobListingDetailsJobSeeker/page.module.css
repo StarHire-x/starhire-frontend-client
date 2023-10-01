@@ -18,6 +18,7 @@
 
 .saveButton,
 .createButton,
+.rejectButton,
 .backButton {
   border: none !important;
   color: white !important;
@@ -40,6 +41,10 @@
 
 .backButton {
   background-color: #007bff !important;
+}
+
+.rejectButton {
+  background-color: #ff0000 !important;
 }
 
 .my-card {
