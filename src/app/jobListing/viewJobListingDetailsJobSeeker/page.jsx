@@ -234,9 +234,9 @@ export default function viewJobListingDetailsJobSeeker() {
         />
       )}
       <Button
-        label={isJobSaved ? 'Unsave' : 'Save'}
+        label={isJobSaved ? 'Saved' : 'Save'}
         className="p-button-outlined p-button-secondary save-button"
-        icon={isJobSaved ? 'pi pi-bookmark-off' : 'pi pi-bookmark'}
+        icon={isJobSaved ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'}
         onClick={handleSaveJobListing}
         rounded
       />
