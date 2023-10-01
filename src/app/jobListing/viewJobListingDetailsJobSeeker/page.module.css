@@ -16,9 +16,9 @@
   flex-wrap: nowrap;
 }
 
-.save-button,
-.create-button,
-.back-button {
+.saveButton,
+.createButton,
+.backButton {
   border: none !important;
   color: white !important;
   transition: all 0.3s !important;
@@ -30,15 +30,15 @@
   ) !important;
 }
 
-.save-button {
+.saveButton {
   background-color: #007bff !important;
 }
 
-.create-button {
+.createButton {
   background-color: #e29578 !important;
 }
 
-.back-button {
+.backButton {
   background-color: #007bff !important;
 }
 

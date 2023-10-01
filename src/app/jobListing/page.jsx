@@ -112,6 +112,7 @@ const JobListingPage = () => {
         <div className={styles.cardFooter}>
           <Button
             label="Details"
+            rounded
             onClick={() => {
               saveStatusChange(jobListing);
             }}

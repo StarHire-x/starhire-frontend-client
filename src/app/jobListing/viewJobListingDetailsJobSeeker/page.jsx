@@ -220,14 +220,14 @@ export default function viewJobListingDetailsJobSeeker() {
       <Button
         label="Back"
         icon="pi pi-chevron-left"
-        className="p-mr-2 p-button-outlined p-button-secondary back-button"
+        className={styles.backButton}
         onClick={() => router.back()}
         rounded
       />
       {isJobApplicationAbsent && (
         <Button
           label="Create Job Application"
-          className="p-mr-2 p-button-outlined p-button-secondary create-button"
+          className={styles.createButton}
           icon="pi pi-plus"
           onClick={() => setShowCreateJobApplicationDialog(true)}
           rounded
@@ -235,7 +235,7 @@ export default function viewJobListingDetailsJobSeeker() {
       )}
       <Button
         label={isJobSaved ? 'Saved' : 'Save'}
-        className="p-button-outlined p-button-secondary save-button"
+        className={styles.saveButton}
         icon={isJobSaved ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'}
         onClick={handleSaveJobListing}
         rounded
