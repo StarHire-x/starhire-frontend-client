@@ -76,6 +76,10 @@ const jobApplicationPage = () => {
     setShowViewJobApplicationDialog(false);
   };
 
+  const statusRemoveUnderscore = (status) => {
+    return status.replaceAll("_", " ");
+  }
+
   const accessToken =
     session.status === "authenticated" &&
     session.data &&
@@ -142,7 +146,7 @@ const jobApplicationPage = () => {
             <span>Status</span>
             <span>
               <Tag
-                value={jobApplication.jobApplicationStatus}
+                value={statusRemoveUnderscore(jobApplication.jobApplicationStatus)}
                 severity={getStatus(jobApplication.jobApplicationStatus)}
               />
             </span>
