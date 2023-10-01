@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
+import { MultiSelect } from 'primereact/multiselect';
 import { InputNumber } from 'primereact/inputnumber';
-import styles from './page.module.css';
+import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
-import Enums from "@/common/enums/enums";
+import styles from './page.module.css';
+import Enums from '@/common/enums/enums';
 
 const CreateJobListingForm = ({ onCreate }) => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,8 @@ const CreateJobListingForm = ({ onCreate }) => {
     overview: '',
     responsibilities: '',
     requirements: '',
+    requiredDocuments: [],
+    // otherCertifications: '',
     jobLocation: '',
     averageSalary: null,
     jobStartDate: null,
@@ -21,6 +24,11 @@ const CreateJobListingForm = ({ onCreate }) => {
   });
 
   // const jobListingStatuses = [Enums.ACTIVE, 'Unverified', Enums.INACTIVE];
+
+  const documentOptions = [
+    { label: 'Resume', value: 'Resume' },
+    { label: 'Cover Letter', value: 'Cover Letter' },
+  ];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -77,6 +85,31 @@ const CreateJobListingForm = ({ onCreate }) => {
           autoResize={true} /* If you want it to resize automatically */
         />
       </div>
+
+      <div className={styles.cardRow}>
+        <label htmlFor="requiredDocuments">Required Documents:</label>
+        <MultiSelect
+          id="requiredDocuments"
+          name="requiredDocuments"
+          value={formData.requiredDocuments}
+          options={documentOptions}
+          onChange={handleInputChange}
+          placeholder="Select"
+          filter
+        />
+      </div>
+
+      {/* {formData.requiredDocuments.includes('Other Certifications') && (
+        <div className={styles.cardRow}>
+          <label htmlFor="otherCertifications">Please Specify:</label>
+          <InputText
+            id="otherCertifications"
+            name="otherCertifications"
+            value={formData.otherCertifications}
+            onChange={handleInputChange}
+          />
+        </div>
+      )} */}
 
       <div className={styles.cardRow}>
         <label htmlFor="jobLocation">Job Location:</label>

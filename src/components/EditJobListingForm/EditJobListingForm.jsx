@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
+import { MultiSelect } from 'primereact/multiselect';
 import { InputNumber } from 'primereact/inputnumber';
-import styles from './page.module.css';
 import { InputTextarea } from 'primereact/inputtextarea';
+import styles from './page.module.css';
 
 const EditJobListingForm = ({ initialData, onSave }) => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,12 @@ const EditJobListingForm = ({ initialData, onSave }) => {
     overview: initialData?.overview || '',
     responsibilities: initialData?.responsibilities || '',
     requirements: initialData?.requirements || '',
+    requiredDocuments: Array.isArray(initialData?.requiredDocuments)
+      ? initialData?.requiredDocuments
+      : typeof initialData?.requiredDocuments === 'string'
+      ? initialData?.requiredDocuments.split(',')
+      : [],
+    // otherCertifications: initialData?.otherCertifications || '',
     jobLocation: initialData?.jobLocation || '',
     averageSalary: initialData?.averageSalary || null,
     jobStartDate: initialData?.jobStartDate || null,
@@ -21,6 +28,11 @@ const EditJobListingForm = ({ initialData, onSave }) => {
   //   const { name, value } = e.target;
   //   setFormData((prev) => ({ ...prev, [name]: value }));
   // };
+
+  const documentOptions = [
+    { label: 'Resume', value: 'Resume' },
+    { label: 'Cover Letter', value: 'Cover Letter' },
+  ];
 
   const handleInputChange = (e, nameOverride) => {
     let name, value;
@@ -96,6 +108,31 @@ const EditJobListingForm = ({ initialData, onSave }) => {
           autoResize={true} /* If you want it to resize automatically */
         />
       </div>
+
+      <div className={styles.cardRow}>
+        <label htmlFor="requiredDocuments">Required Documents:</label>
+        <MultiSelect
+          id="requiredDocuments"
+          name="requiredDocuments"
+          value={formData.requiredDocuments}
+          options={documentOptions}
+          onChange={handleInputChange}
+          placeholder="Select"
+          filter
+        />
+      </div>
+
+      {/* {formData.requiredDocuments.includes('Other Certifications') && (
+        <div className={styles.cardRow}>
+          <label htmlFor="otherCertifications">Please Specify:</label>
+          <InputText
+            id="otherCertifications"
+            name="otherCertifications"
+            value={formData.otherCertifications}
+            onChange={handleInputChange}
+          />
+        </div>
+      )} */}
 
       <div className={styles.cardRow}>
         <label htmlFor="jobLocation">Job Location:</label>
