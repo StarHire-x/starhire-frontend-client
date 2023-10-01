@@ -143,7 +143,20 @@
 }
 
 @media (max-width: 768px) {
-  /* Tablet breakpoint */
+  .footerContainer {
+    flex-direction: column; /* Stack the buttons vertically */
+    gap: 1rem; /* Spacing between buttons */
+    align-items: center; /* Center the buttons */
+  }
+
+  .saveButton,
+  .createButton,
+  .rejectButton,
+  .backButton {
+    margin-right: 0;
+    width: 100%; /* Makes buttons full width for easier touch access */
+    max-width: 300px; /* Limit the button width for aesthetics */
+  }
 
   .company-info {
     flex-direction: column;
@@ -153,29 +166,25 @@
 }
 
 @media (max-width: 480px) {
-  /* Mobile breakpoint */
-
   .container {
-    padding: 1rem;
+    padding: 0.5rem;
   }
 
   .my-card {
-    padding: 1rem;
-  }
-
-  .footerContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
+    padding: 0.5rem;
   }
 
   .avatar {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
   }
 
   .company-details p {
-    font-size: 1rem;
+    font-size: 0.9rem; /* You can adjust this if you feel it's too small */
+  }
+
+  /* Increase the font-size slightly for readability */
+  .my-card .p-card-content p {
+    font-size: 1.1rem;
   }
 }
