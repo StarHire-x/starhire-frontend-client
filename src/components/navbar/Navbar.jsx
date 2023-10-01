@@ -26,6 +26,7 @@ const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
       },
     ],
   },
+  { text: "Job Applications", href: "/jobApplication" },
   { text: "Forum", href: "/forum" },
   { text: "Events", href: "/events" },
   { text: "Contact", href: "/contact" },
