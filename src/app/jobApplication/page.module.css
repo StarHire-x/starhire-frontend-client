@@ -30,7 +30,7 @@
 
 .card {
   background-color: #e0ecee;
-  padding: 10px;
+  padding: 20px;
   width: 100%;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
@@ -38,6 +38,7 @@
   overflow: hidden;
   border: 1px solid #e0ecee;
   margin-bottom: 10px;
+  border-radius: 8px;
 }
 
 .card:hover {
@@ -61,12 +62,12 @@
 .cardRow {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
   flex-wrap: wrap;
 }
 
 .cardFooter {
-  margin-top: 20px;
+  margin-top: 25px;
   text-align: right;
 }
 

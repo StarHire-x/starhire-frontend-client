@@ -1,16 +1,16 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { Button } from "primereact/button";
-import { DataView } from "primereact/dataview";
-import { ProgressSpinner } from "primereact/progressspinner";
-import styles from "./page.module.css";
-import { getJobApplicationsByJobSeeker } from "../api/auth/jobApplication/route";
-import { Dialog } from "primereact/dialog";
-import { Tag } from "primereact/tag";
-import ViewJobApplicationForm from "@/components/ViewJobApplicationForm/ViewJobApplicationForm";
-import { Dropdown } from "primereact/dropdown";
+'use client';
+import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { Button } from 'primereact/button';
+import { DataView } from 'primereact/dataview';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import styles from './page.module.css';
+import { getJobApplicationsByJobSeeker } from '../api/auth/jobApplication/route';
+import { Dialog } from 'primereact/dialog';
+import { Tag } from 'primereact/tag';
+import ViewJobApplicationForm from '@/components/ViewJobApplicationForm/ViewJobApplicationForm';
+import { Dropdown } from 'primereact/dropdown';
 
 const jobApplicationPage = () => {
   const [jobApplications, setJobApplications] = useState([]);
@@ -19,28 +19,28 @@ const jobApplicationPage = () => {
   const session = useSession();
   const router = useRouter();
   const [formData, setFormData] = useState({
-    jobApplicationStatus: "",
-    availableStartDate: "",
-    availableEndDate: "",
-    submissionDate: "",
-    remarks: "",
+    jobApplicationStatus: '',
+    availableStartDate: '',
+    availableEndDate: '',
+    submissionDate: '',
+    remarks: '',
     documents: [
       {
-        documentName: "",
-        documentLink: "",
+        documentName: '',
+        documentLink: '',
       },
     ],
   });
 
-  const [filterStatus, setFilterStatus] = useState("");
+  const [filterStatus, setFilterStatus] = useState('');
 
   const statusOptions = [
-    { label: "Submitted", value: "Submitted" },
-    { label: "Processing", value: "Processing" },
-    { label: "To Be Submitted", value: "To_Be_Submitted" },
-    { label: "Waiting For Interview", value: "Waiting_For_Interview" },
-    { label: "Rejected", value: "Rejected" },
-    { label: "Accepted", value: "Accepted" },
+    { label: 'Submitted', value: 'Submitted' },
+    { label: 'Processing', value: 'Processing' },
+    { label: 'To Be Submitted', value: 'To_Be_Submitted' },
+    { label: 'Waiting For Interview', value: 'Waiting_For_Interview' },
+    { label: 'Rejected', value: 'Rejected' },
+    { label: 'Accepted', value: 'Accepted' },
   ];
 
   const filteredApplications = filterStatus
@@ -49,20 +49,20 @@ const jobApplicationPage = () => {
 
   const getStatus = (status) => {
     switch (status) {
-      case "Submitted":
-        return "info"; // or choose other severity based on your preference
-      case "Processing":
-        return "warning";
-      case "To_Be_Submitted":
-        return "danger"; // assuming this is a critical state before submission
-      case "Waiting_For_Interview":
-        return "info";
-      case "Rejected":
-        return "danger";
-      case "Accepted":
-        return "success";
+      case 'Submitted':
+        return 'info'; // or choose other severity based on your preference
+      case 'Processing':
+        return 'warning';
+      case 'To_Be_Submitted':
+        return 'danger'; // assuming this is a critical state before submission
+      case 'Waiting_For_Interview':
+        return 'info';
+      case 'Rejected':
+        return 'danger';
+      case 'Accepted':
+        return 'success';
       default:
-        return ""; 
+        return '';
     }
   };
 
@@ -77,36 +77,36 @@ const jobApplicationPage = () => {
   };
 
   const statusRemoveUnderscore = (status) => {
-    return status.replaceAll("_", " ");
-  }
+    return status.replaceAll('_', ' ');
+  };
 
   const accessToken =
-    session.status === "authenticated" &&
+    session.status === 'authenticated' &&
     session.data &&
     session.data.user.accessToken;
 
   const userIdRef =
-    session.status === "authenticated" &&
+    session.status === 'authenticated' &&
     session.data &&
     session.data.user.userId;
 
   const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    return new Date(dateString).toLocaleDateString("en-GB", options);
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString('en-GB', options);
   };
 
   useEffect(() => {
-    if (session.status === "unauthenticated" || session.status === "loading") {
-      router.push("/login");
-    } else if (session.status === "authenticated") {
+    if (session.status === 'unauthenticated' || session.status === 'loading') {
+      router.push('/login');
+    } else if (session.status === 'authenticated') {
       getJobApplicationsByJobSeeker(userIdRef, accessToken)
         .then((data) => {
           setJobApplications(data);
-          console.log("Received job applications:", data);
+          console.log('Received job applications:', data);
           setIsLoading(false);
         })
         .catch((error) => {
-          console.error("Error fetching job applications:", error);
+          console.error('Error fetching job applications:', error);
           setIsLoading(false);
         });
     }
@@ -114,7 +114,7 @@ const jobApplicationPage = () => {
 
   const header = (
     <div className={styles.headerContainer}>
-      <h2 className={styles.headerTitle}>Your Assigned Jobs</h2>
+      <h2 className={styles.headerTitle}>My Job Applications</h2>
       <Dropdown
         value={filterStatus}
         options={statusOptions}
@@ -123,8 +123,6 @@ const jobApplicationPage = () => {
       />
     </div>
   );
-
-  
 
   const itemTemplate = (jobApplication) => {
     return (
@@ -146,7 +144,9 @@ const jobApplicationPage = () => {
             <span>Status</span>
             <span>
               <Tag
-                value={statusRemoveUnderscore(jobApplication.jobApplicationStatus)}
+                value={statusRemoveUnderscore(
+                  jobApplication.jobApplicationStatus
+                )}
                 severity={getStatus(jobApplication.jobApplicationStatus)}
               />
             </span>
@@ -154,14 +154,14 @@ const jobApplicationPage = () => {
         </div>
         <div className={styles.cardFooter}>
           <Button
-            label="View More Details"
+            label="Details"
             rounded
             onClick={() => {
               setSelectedJobApplicationData(jobApplication);
               setShowViewJobApplicationDialog(jobApplication);
             }}
           />
-          {jobApplication.jobApplicationStatus === "To_Be_Submitted" && (
+          {jobApplication.jobApplicationStatus === 'To_Be_Submitted' && (
             <Button
               label="Edit Application"
               rounded
@@ -181,10 +181,10 @@ const jobApplicationPage = () => {
       {isLoading ? (
         <ProgressSpinner
           style={{
-            display: "flex",
-            height: "100vh",
-            "justify-content": "center",
-            "align-items": "center",
+            display: 'flex',
+            height: '100vh',
+            'justify-content': 'center',
+            'align-items': 'center',
           }}
         />
       ) : jobApplications.length === 0 ? (
