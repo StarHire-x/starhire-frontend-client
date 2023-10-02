@@ -260,7 +260,6 @@
   .submenu a {
     padding: 8px 16px; /* Add padding for each submenu item */
     display: block; /* Makes the whole area clickable */
-    color: #fff; /* Adjust based on your color scheme */
     text-decoration: none; /* Remove underlines from links */
   }
 
