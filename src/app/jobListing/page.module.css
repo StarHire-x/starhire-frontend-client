@@ -18,6 +18,10 @@
   font-weight: bold;
 }
 
+.savedJobsButton {
+  margin-top: -20px; /* Adjust this value as necessary to align the button */
+}
+
 .dataViewContainer {
   width: 100%;
 }

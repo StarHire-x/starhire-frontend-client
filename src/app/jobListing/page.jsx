@@ -80,8 +80,14 @@ const JobListingPage = () => {
   // };
 
   const header = (
-    <div className="p-d-flex p-jc-between">
+    <div className="p-d-flex p-jc-between p-ai-center">
       <h2 className={styles.headerTitle}>Your Assigned Jobs</h2>
+      <Button
+        className={styles.savedJobsButton}
+        label="My Saved Job Listings"
+        onClick={() => router.push('/jobListing/viewSavedJobListingsJobSeeker')}
+        rounded
+      />
     </div>
   );
 

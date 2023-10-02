@@ -249,10 +249,6 @@ export default function viewJobListingDetailsJobSeeker() {
     }
   };
 
-  const handleOnBackClick = () => {
-    router.push('/jobListing');
-  };
-
   const cardFooter = (
     <div className={styles.footerContainer}>
       <Button
