@@ -82,6 +82,7 @@ const JobListingPage = () => {
         label="My Saved Job Listings"
         onClick={() => router.push('/jobListing/viewSavedJobListingsJobSeeker')}
         rounded
+        size="small"
       />
       <div className="p-d-flex p-ai-center">
         <h2 className={styles.headerTitle}>Assigned Jobs</h2>
@@ -91,6 +92,7 @@ const JobListingPage = () => {
             value={filterKeyword}
             onChange={(e) => setFilterKeyword(e.target.value)}
             placeholder="Keyword Search"
+            style={{width: "180px"}}
           />
         </span>
       </div>

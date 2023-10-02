@@ -125,6 +125,7 @@ function ViewSavedJobListingsJobSeeker() {
           value={filterKeyword}
           onChange={(e) => setFilterKeyword(e.target.value)}
           placeholder="Keyword Search"
+          style={{width: "180px"}}
         />
       </span>
     </div>
