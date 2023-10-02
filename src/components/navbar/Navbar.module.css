@@ -1,76 +1,155 @@
 .logo {
-    font-weight: bold;
-    font-size: 22px;
+  font-weight: bold;
+  font-size: 22px;
 }
 
 .header{
-  position: sticky;
-  z-index: 30;
-  top: 0;
+position: sticky;
+z-index: 30;
+top: 0;
 }
 
 .nav{
-  display: flex;
-  padding: 16px;
-  justify-content: space-between;
-  align-items: center;
+display: flex;
+padding: 16px;
+justify-content: space-between;
+align-items: center;
 }
 
 .nav__menu_bar{
-  display: flex;
-  flex-direction: column;
-  row-gap: 6px;
-  cursor: pointer;
+display: flex;
+flex-direction: column;
+row-gap: 6px;
+cursor: pointer;
 }
 
 .nav__menu_bar div{
-  width: 40px;
-  height: 4px;
-  background-color: white;
-  border-radius: 2px;
+width: 40px;
+height: 4px;
+background-color: white;
+border-radius: 2px;
 }
 
 .nav__menu_list{
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  top: 60px;
-  width: 144px;
-  row-gap: 24px;
-  right: -288px;
-  padding: 24px 16px;
-  transition: all 0.2s;
-  /* min-height: calc(100vh - 60px); */
+display: flex;
+flex-direction: column;
+position: fixed;
+top: 60px;
+width: 144px;
+row-gap: 24px;
+right: -288px;
+padding: 24px 16px;
+transition: all 0.2s;
+/* min-height: calc(100vh - 60px); */
 }
 
 .nav__menu_list.active{
-  right: 0;
-  background-color: #00191c;
+right: 0;
+background-color: #00191c;
 }
 
 .nav__menu_list_light{
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  top: 60px;
-  width: 144px;
-  row-gap: 24px;
-  right: -288px;
-  padding: 24px 16px;
-  transition: all 0.2s;
-  /* min-height: calc(100vh - 60px); */
+display: flex;
+flex-direction: column;
+position: fixed;
+top: 60px;
+width: 144px;
+row-gap: 24px;
+right: -288px;
+padding: 24px 16px;
+transition: all 0.2s;
+/* min-height: calc(100vh - 60px); */
 }
 
 .nav__menu_list_light.active {
-  right: 0;
-  background-color: #edf6f9;
+right: 0;
+background-color: #edf6f9;
 }
 
- /* Style for the submenu */
- .submenu {
+
+.center{
+min-height: 600px;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.logout {
+  padding: 5px;
+  border: none;
+  background-color: #53c28b;
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.imageContainer {
+display: flex;
+flex-direction: column; /* To ensure children are stacked vertically */
+align-items: center;   /* Horizontally center the children */
+justify-content: center; /* Vertically center the children (though it's optional here) */
+gap: 1px; /* Gives a little space between the image and the h6 */
+}
+
+.avatar {
+width: 40px;
+height: 40px;
+border-radius: 50%; /* To make it circular */
+object-fit: cover; /* To ensure the image maintains its aspect ratio */
+margin-bottom: 0px /* Add some spacing below the image */
+}
+
+.login {
+  padding: 5px;
+  border: none;
+  background-color: #53c28b;
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+@media screen and (min-width: 900px) {
+.nav__menu_bar{
+  display: none;
+}
+
+.nav__menu_list{
+  position: unset;
+  flex-direction: row;
+  min-height: fit-content;
+  width: fit-content;
+  column-gap: 24px;
+  align-items: center;
+  height: auto;
+}
+
+.nav__menu_list_light{
+  position: unset;
+  flex-direction: row;
+  min-height: fit-content;
+  width: fit-content;
+  column-gap: 24px;
+  align-items: center;
+  height: auto;
+}
+
+.nav__menu_list > div {
+  position: relative;
+  /* display: inline-block; */
+  margin-right: 20px; /* Adjust the spacing between menu items */
+}
+
+.nav__menu_list_light > div {
+  position: relative;
+  /* display: inline-block; */
+  margin-right: 20px; /* Adjust the spacing between menu items */
+}
+
+/* Style for the submenu */
+.submenu {
   position: absolute;
-  top: 0; /* Adjust this value as needed to align the submenu with the main menu item */
-  left: 100%; /* Position the submenu to the right of the main menu item */
+  top: 100%;
+  left: 0;
   display: none;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -92,138 +171,13 @@
   background-color: #53c28b;
 }
 
-.nav__menu_list > div {
-  position: relative;
-  /* display: inline-block; */
-  margin-right: 20px; /* Adjust the spacing between menu items */
-  cursor: pointer; /* Add cursor pointer for better UX */
-}
-
 /* Show the submenu when the main menu item is hovered */
-.nav__menu_list.active > div:hover .submenu {
+.nav__menu_list > div:hover .submenu {
   display: block;
-  left: -280%; /* Position the submenu to the left of the main menu item */
-  top: 0%;
 }
 /* Show the submenu when the main menu item is hovered */
 .nav__menu_list_light > div:hover .submenu {
   display: block;
-  left: -170%; /* Position the submenu to the left of the main menu item */
-  top: 10%;
 }
 
-.center{
-  min-height: 600px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.logout {
-    padding: 5px;
-    border: none;
-    background-color: #53c28b;
-    color: white;
-    cursor: pointer;
-    border-radius: 3px;
-}
-
-.imageContainer {
-  display: flex;
-  flex-direction: column; /* To ensure children are stacked vertically */
-  align-items: center;   /* Horizontally center the children */
-  justify-content: center; /* Vertically center the children (though it's optional here) */
-  gap: 1px; /* Gives a little space between the image and the h6 */
-}
-
-.avatar {
-width: 40px;
-height: 40px;
-border-radius: 50%; /* To make it circular */
-object-fit: cover; /* To ensure the image maintains its aspect ratio */
-margin-bottom: 0px /* Add some spacing below the image */
-}
-
-.login {
-    padding: 5px;
-    border: none;
-    background-color: #53c28b;
-    color: white;
-    cursor: pointer;
-    border-radius: 3px;
-}
-
-@media screen and (min-width: 900px) {
-  .nav__menu_bar{
-    display: none;
-  }
-
-  .nav__menu_list{
-    position: unset;
-    flex-direction: row;
-    min-height: fit-content;
-    width: fit-content;
-    column-gap: 24px;
-    align-items: center;
-    height: auto;
-  }
-
-  .nav__menu_list_light{
-    position: unset;
-    flex-direction: row;
-    min-height: fit-content;
-    width: fit-content;
-    column-gap: 24px;
-    align-items: center;
-    height: auto;
-  }
-
-  .nav__menu_list > div {
-    position: relative;
-    /* display: inline-block; */
-    margin-right: 20px; /* Adjust the spacing between menu items */
-  }
-
-  .nav__menu_list_light > div {
-    position: relative;
-    /* display: inline-block; */
-    margin-right: 20px; /* Adjust the spacing between menu items */
-  }
-
-  /* Style for the submenu */
-  .submenu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    display: none;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border: 1px solid black; /* Add a border for the dropdown box */
-    z-index: 9999;
-  }
-  
-  /* Style for individual submenu items */
-  .submenu a {
-    padding: 8px 12px;
-    display: block;
-    color: #333;
-    text-decoration: none;
-    white-space: nowrap; /* Prevent text from wrapping */
-  }
-  
-  /* Hover state for submenu items */
-  .submenu a:hover {
-    background-color: #53c28b;
-  }
- 
-  /* Show the submenu when the main menu item is hovered */
-  .nav__menu_list > div:hover .submenu {
-    display: block;
-  }
-
-  /* Show the submenu when the main menu item is hovered */
-  .nav__menu_list_light > div:hover .submenu {
-    display: block;
-  }
-  
 }

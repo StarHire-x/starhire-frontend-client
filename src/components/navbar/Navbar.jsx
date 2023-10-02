@@ -119,6 +119,7 @@ const Navbar = () => {
                 onClick={() => {
                   setActiveIdx(idx);
                   setNavActive(false);
+                  setShowSubMenu(true);
                 }}
                 key={menu.text}
                 onMouseEnter={() => setShowSubMenu(true)} // Show sub-menu on hover
