@@ -136,6 +136,7 @@ const JobExperiencePanel = ({
         employerName: formData.employerName,
         jobTitle: formData.jobTitle,
         startDate: formData.startDate,
+        endDate: null,
         jobDescription: formData.jobDescription,
       };
     } else {
@@ -180,6 +181,7 @@ const JobExperiencePanel = ({
         employerName: formData.employerName,
         jobTitle: formData.jobTitle,
         startDate: formData.startDate,
+        endDate: null,
         jobDescription: formData.jobDescription,
       };
     } else {
