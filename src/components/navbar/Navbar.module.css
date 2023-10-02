@@ -66,6 +66,44 @@ right: 0;
 background-color: #edf6f9;
 }
 
+/* Style for the submenu */
+.submenu {
+position: absolute;
+top: 100%;
+left: 0;
+display: none;
+background-color: #fff;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+border: 1px solid black; /* Add a border for the dropdown box */
+z-index: 9999;
+}
+
+/* Style for individual submenu items */
+.submenu a {
+padding: 8px 12px;
+display: block;
+color: #333;
+text-decoration: none;
+white-space: nowrap; /* Prevent text from wrapping */
+}
+
+/* Hover state for submenu items */
+.submenu a:hover {
+background-color: #53c28b;
+}
+
+/* Show the submenu when the main menu item is hovered */
+.nav__menu_list > div:hover .submenu {
+  display: block;
+  top: 10%;
+  left: -170%;
+}
+/* Show the submenu when the main menu item is hovered */
+.nav__menu_list_light > div:hover .submenu {
+  display: block;
+  top: 10%;
+  left: -170%;
+}
 
 .center{
 min-height: 600px;
@@ -174,10 +212,14 @@ margin-bottom: 0px /* Add some spacing below the image */
 /* Show the submenu when the main menu item is hovered */
 .nav__menu_list > div:hover .submenu {
   display: block;
+  top: 100%;
+  left: 0;
 }
 /* Show the submenu when the main menu item is hovered */
 .nav__menu_list_light > div:hover .submenu {
   display: block;
+  top: 100%;
+  left: 0;
 }
 
 }
