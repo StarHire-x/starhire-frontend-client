@@ -66,11 +66,11 @@
   background-color: #edf6f9;
 }
 
-/* Style for the submenu */
-.submenu {
+ /* Style for the submenu */
+ .submenu {
   position: absolute;
-  top: 100%;
-  left: 0;
+  top: 0; /* Adjust this value as needed to align the submenu with the main menu item */
+  left: 100%; /* Position the submenu to the right of the main menu item */
   display: none;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -90,6 +90,26 @@
 /* Hover state for submenu items */
 .submenu a:hover {
   background-color: #53c28b;
+}
+
+.nav__menu_list > div {
+  position: relative;
+  /* display: inline-block; */
+  margin-right: 20px; /* Adjust the spacing between menu items */
+  cursor: pointer; /* Add cursor pointer for better UX */
+}
+
+/* Show the submenu when the main menu item is hovered */
+.nav__menu_list.active > div:hover .submenu {
+  display: block;
+  left: -280%; /* Position the submenu to the left of the main menu item */
+  top: 0%;
+}
+/* Show the submenu when the main menu item is hovered */
+.nav__menu_list_light > div:hover .submenu {
+  display: block;
+  left: -170%; /* Position the submenu to the left of the main menu item */
+  top: 10%;
 }
 
 .center{
@@ -200,6 +220,7 @@ margin-bottom: 0px /* Add some spacing below the image */
   .nav__menu_list > div:hover .submenu {
     display: block;
   }
+
   /* Show the submenu when the main menu item is hovered */
   .nav__menu_list_light > div:hover .submenu {
     display: block;
