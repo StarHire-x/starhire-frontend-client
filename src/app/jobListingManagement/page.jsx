@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
 import { Dialog } from 'primereact/dialog';
+import { ProgressSpinner } from 'primereact/progressspinner';
 import { Tag } from 'primereact/tag';
 import { useSession } from 'next-auth/react';
 import {
@@ -21,6 +22,7 @@ import Enums from '@/common/enums/enums';
 //this page is viewed by corporate
 const JobListingManagementPage = () => {
   const [jobListing, setJobListing] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -90,9 +92,13 @@ const JobListingManagementPage = () => {
       router.push('/login');
     } else if (session.status === 'authenticated') {
       findAllJobListingsByCorporate(userIdRef, accessToken)
-        .then((jobListing) => setJobListing(jobListing))
+        .then((jobListing) => {
+          setJobListing(jobListing);
+          setIsLoading(false);
+        })
         .catch((error) => {
           console.error('Error fetching user:', error);
+          setIsLoading(false);
         });
     }
   }, [refreshData, userIdRef, accessToken]);
@@ -101,7 +107,7 @@ const JobListingManagementPage = () => {
     return (
       <div className={styles.card}>
         <div className={styles.cardHeader}>
-          <h5>{jobListing.title}</h5>
+          <h3>{jobListing.title}</h3>
         </div>
         <div className={styles.cardBody}>
           <div className={styles.cardRow}>
@@ -218,36 +224,47 @@ const JobListingManagementPage = () => {
     setShowDeleteDialog(false);
   };
 
-  const header = (
-    <div className={styles.header}>
-      <h2 className={styles.headerTitle}>Job Listing Management</h2>
-      <Button
-        label="Add A Job Listing"
-        rounded
-        style={{marginTop: "10px"}}
-        onClick={() => setShowCreateDialog(true)}
-      />
-    </div>
-  );
+  // const header = (
+  //   <div className={styles.header}>
+  //     <h2 className={styles.headerTitle} style={{ marginBottom: '15px' }}>
+  //       Job Listing Management
+  //     </h2>
+  //     <Button
+  //       label="Add A Job Listing"
+  //       rounded
+  //       style={{ marginTop: '10px', marginBottom: '15px' }}
+  //       onClick={() => setShowCreateDialog(true)}
+  //     />
+  //   </div>
+  // );
+
+  if (isLoading) {
+    return (
+      <div className={styles.spinnerContainer}>
+        <ProgressSpinner />
+      </div>
+    );
+  }
 
   if (session.status === 'authenticated') {
     return (
-      <div className={styles.container}>
-        <DataView
-          value={jobListing}
-          className={styles.dataViewContainer}
-          layout="grid"
-          rows={10}
-          paginator
-          header={header}
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-          rowsPerPageOptions={[10, 25, 50]}
-          emptyMessage="No job listing found"
-          itemTemplate={itemTemplate}
-          pt={{
-            grid: { className: 'surface-ground' },
-          }}
-        />
+      <>
+        <div className={styles.header}>
+          <h1 className={styles.headerTitle} style={{ marginBottom: '15px' }}>
+            Job Listing Management
+          </h1>
+          <Button
+            className={styles.createJobListingButton}
+            label="Add A Job Listing"
+            rounded
+            style={{ marginTop: '10px', marginBottom: '15px' }}
+            onClick={() => setShowCreateDialog(true)}
+          />
+        </div>
+
+        <div className={styles.cardsGrid}>
+          {jobListing.map((job) => itemTemplate(job))}
+        </div>
 
         <Dialog
           header="Create Job Listing"
@@ -284,7 +301,7 @@ const JobListingManagementPage = () => {
             {showDeleteDialog && showDeleteDialog.jobListingId}?
           </h3>
         </Dialog>
-      </div>
+      </>
     );
   }
 };

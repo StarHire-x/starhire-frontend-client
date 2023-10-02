@@ -1,136 +1,101 @@
-.container {
-  margin-left: auto;
-  margin-right: auto;
+.header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  width: 100%;
-  padding: 30px;
-  max-width: 1150px;
-  gap: 20px;
-  max-height: 790px;
-  overflow-y: auto;
-}
-
-.headerTitle {
-  margin-bottom: 30px;
-  text-align: center;
-  font-weight: bold;
-}
-
-.savedJobsButton {
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-
-.dataViewContainer {
-  width: 100%;
-}
-
-.card {
-  background-color: #e0ecee;
   padding: 20px;
-  width: 100%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-  overflow: hidden;
-  border: 1px solid #e0ecee;
-  margin-bottom: 10px;
-  border-radius: 8px;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
-
-.cardHeader {
-  border-bottom: 1px solid #e0ecee;
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-  font-family: 'Arial', sans-serif;
-  justify-content: center;
-}
-
-.cardBody {
-  font-size: 1em;
-  color: #555;
+/* Grid layout for cards, making them appear in rows of up to 5 */
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px; /* Adjust for spacing between cards */
+  padding: 20px;
 }
 
 .cardRow {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
   flex-wrap: wrap;
 }
 
-.cardFooter {
-  margin-top: 25px;
-  text-align: right;
+.spinnerContainer {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.savedJobsButton {
+  margin-left: 20px;
+  border: #006d77;
+  background-color: #006d77;
+  color: #edf6f9;
+}
+
+.header .p-input-icon-left input.p-inputtext {
+  width: 250px;
+}
+
+.card {
+  background-color: #ffddd2;
+  border: 1px solid #ffddd2;
+  padding: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.cardHeader {
+  border-bottom: 2px solid #e0ecee;
+  margin-bottom: 25px;
 }
 
 .cardFooter button {
-  background-color: #e29578;
+  background-color: #edf6f9;
   border: none;
   border-radius: 4px;
-  color: white;
-  padding: 10px 15px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 0.9em;
+  color: #006d77;
+  padding: 8px 12px;
+  font-size: 0.85em;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .cardFooter button:hover {
   background-color: #e2947888;
-}
-
-.buttonSpacing {
-  margin-right: 15px;
-}
-
-.cardDialog {
-  background-color: #e0ecee;
-  padding: 10px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-  overflow: hidden;
-  border: 1px solid #e0ecee;
-  width: 70vw;
-  max-width: 1250px;
+  transform: scale(1.05);
 }
 
 @media (max-width: 768px) {
-  /* Tablet breakpoint */
-  .card {
+  .header {
     flex-direction: column;
+    align-items: flex-start;
   }
 
-  .cardRow {
-    flex-direction: column;
-    text-align: center;
+  .header h2.p-input-icon-left {
+    margin-top: 20px;
   }
 
-  .cardRow span:first-child {
-    margin-bottom: 10px;
+  .savedJobsButton {
+    margin-top: 10px;
+  }
+
+  .p-input-icon-left input {
+    width: 100%;
   }
 }
 
 @media (max-width: 480px) {
-  /* Mobile breakpoint */
   .cardRow {
     flex-direction: column;
-  }
-
-  .cardRow span {
-    text-align: center;
-    margin-bottom: 15px;
-  }
-  .buttonSpacing {
-    margin-right: 0;
-    margin-bottom: 25px;
+    align-items: center;
+    margin-bottom: 20px;
   }
 }

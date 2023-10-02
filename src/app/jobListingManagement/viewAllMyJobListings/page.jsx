@@ -1,15 +1,14 @@
-"use client"
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import { DataView } from 'primereact/dataview';
 import { Dialog } from 'primereact/dialog';
 import { Tag } from 'primereact/tag';
 import { useSession } from 'next-auth/react';
-
+import { useRouter } from 'next/navigation';
 import { findAllJobListingsByCorporate } from '@/app/api/auth/jobListing/route';
 import styles from '../page.module.css';
 import 'primeflex/primeflex.css';
-import { useRouter } from 'next/navigation';
 import Enums from '@/common/enums/enums';
 
 const ViewAllMyJobListingsManagementPage = () => {
@@ -65,7 +64,7 @@ const ViewAllMyJobListingsManagementPage = () => {
       <div className={styles.card}>
         <div className={styles.cardHeader}></div>
       </div>
-    </a>
+    </a>;
     return (
       <a href={cardLink} className={styles.cardLink}>
         <div className={styles.card}>
@@ -106,29 +105,45 @@ const ViewAllMyJobListingsManagementPage = () => {
     );
   };
 
-  if (session.status === "unauthenticated") {
-    router?.push("/login");
+  if (session.status === 'unauthenticated') {
+    router?.push('/login');
   }
+
+  // if (session.status === 'authenticated') {
+  //   return (
+  //     <div className={styles.container}>
+  //       <DataView
+  //         value={jobListing}
+  //         className={styles.dataViewContainer}
+  //         layout="grid"
+  //         rows={10}
+  //         paginator
+  //         header={<h2 className={styles.headerTitle}>My Job Listings</h2>}
+  //         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+  //         rowsPerPageOptions={[10, 25, 50]}
+  //         emptyMessage="No job listing found"
+  //         itemTemplate={itemTemplate}
+  //         pt={{
+  //           grid: { className: 'surface-ground' },
+  //         }}
+  //       />
+  //     </div>
+  //   );
+  // }
 
   if (session.status === 'authenticated') {
     return (
-      <div className={styles.container}>
-        <DataView
-          value={jobListing}
-          className={styles.dataViewContainer}
-          layout="grid"
-          rows={10}
-          paginator
-          header={<h2 className={styles.headerTitle}>My Job Listings</h2>}
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-          rowsPerPageOptions={[10, 25, 50]}
-          emptyMessage="No job listing found"
-          itemTemplate={itemTemplate}
-          pt={{
-            grid: { className: 'surface-ground' },
-          }}
-        />
-      </div>
+      <>
+        <div className={styles.header}>
+          <h1 className={styles.headerTitle} style={{ marginBottom: '15px' }}>
+            My Job Listings
+          </h1>
+        </div>
+
+        <div className={styles.cardsGrid}>
+          {jobListing && jobListing.map((job) => itemTemplate(job))}
+        </div>
+      </>
     );
   }
 };

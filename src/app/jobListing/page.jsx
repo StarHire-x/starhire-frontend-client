@@ -75,29 +75,51 @@ const JobListingPage = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  const header = (
-    <div className="p-d-flex p-ai-center p-jc-between">
-      <Button
-        className={styles.savedJobsButton}
-        label="My Saved Job Listings"
-        onClick={() => router.push('/jobListing/viewSavedJobListingsJobSeeker')}
-        rounded
-        size="small"
-      />
-      <div className="p-d-flex p-ai-center">
-        <h2 className={styles.headerTitle}>Assigned Jobs</h2>
-        <span className="p-input-icon-left p-ml-2">
-          <i className="pi pi-search" />
-          <InputText
-            value={filterKeyword}
-            onChange={(e) => setFilterKeyword(e.target.value)}
-            placeholder="Keyword Search"
-            style={{width: "180px"}}
-          />
-        </span>
-      </div>
-    </div>
-  );
+  // const header = (
+  //   <div className="p-d-flex p-ai-center p-jc-between">
+  //     <Button
+  //       className={styles.savedJobsButton}
+  //       label="My Saved Job Listings"
+  //       onClick={() => router.push('/jobListing/viewSavedJobListingsJobSeeker')}
+  //       rounded
+  //       size="small"
+  //     />
+  //     <div className="p-d-flex p-ai-center">
+  //       <h2 className={styles.headerTitle}>Assigned Jobs</h2>
+  //       <span className="p-input-icon-left p-ml-2">
+  //         <i className="pi pi-search" />
+  //         <InputText
+  //           value={filterKeyword}
+  //           onChange={(e) => setFilterKeyword(e.target.value)}
+  //           placeholder="Keyword Search"
+  //           style={{width: "180px"}}
+  //         />
+  //       </span>
+  //     </div>
+  //   </div>
+  // );
+
+  // const header = (
+  //   <div className="p-d-flex p-jc-center p-ai-center p-my-4">
+  //     <h2 className={styles.headerTitle}>Assigned Jobs</h2>
+  //     <span className="p-input-icon-left p-ml-2">
+  //       <i className="pi pi-search" />
+  //       <InputText
+  //         value={filterKeyword}
+  //         onChange={(e) => setFilterKeyword(e.target.value)}
+  //         placeholder="Keyword Search"
+  //         style={{ width: '250px' }}
+  //       />
+  //     </span>
+  //     <Button
+  //       className={styles.savedJobsButton}
+  //       label="My Saved Job Listings"
+  //       onClick={() => router.push('/jobListing/viewSavedJobListingsJobSeeker')}
+  //       rounded
+  //       size="small"
+  //     />
+  //   </div>
+  // );
 
   const filteredJobListings = jobListings.filter((jobListing) => {
     return jobListing.title.toLowerCase().includes(filterKeyword.toLowerCase());
@@ -141,32 +163,71 @@ const JobListingPage = () => {
     );
   };
 
+  // return (
+  //   <div className={styles.container}>
+  //     {isLoading ? (
+  //       <ProgressSpinner
+  //         style={{
+  //           display: 'flex',
+  //           height: '100vh',
+  //           'justify-content': 'center',
+  //           'align-items': 'center',
+  //         }}
+  //       />
+  //     ) : jobListings.length === 0 ? (
+  //       <p>You have no assigned job listings yet.</p>
+  //     ) : (
+  //       <DataView
+  //         value={filteredJobListings}
+  //         className={styles.dataViewContainer}
+  //         layout="grid"
+  //         rows={10}
+  //         paginator
+  //         header={header}
+  //         emptyMessage="You have no assigned job listings yet."
+  //         itemTemplate={itemTemplate}
+  //       />
+  //     )}
+  //   </div>
+  // );
+
+  if (isLoading) {
+    return (
+      <div className={styles.spinnerContainer}>
+        <ProgressSpinner />
+      </div>
+    );
+  }
+
   return (
-    <div className={styles.container}>
-      {isLoading ? (
-        <ProgressSpinner
-          style={{
-            display: 'flex',
-            height: '100vh',
-            'justify-content': 'center',
-            'align-items': 'center',
-          }}
+    <>
+      <div className={styles.header}>
+        <h1 className={styles.headerTitle} style={{ marginBottom: '15px' }}>
+          Assigned Jobs
+        </h1>
+        <span className="p-input-icon-left">
+          <i className="pi pi-search" />
+          <InputText
+            value={filterKeyword}
+            onChange={(e) => setFilterKeyword(e.target.value)}
+            placeholder="Keyword Search"
+            style={{ width: '265px' }}
+          />
+        </span>
+        <Button
+          className={styles.savedJobsButton}
+          label="My Saved Job Listings"
+          onClick={() =>
+            router.push('/jobListing/viewSavedJobListingsJobSeeker')
+          }
+          rounded
         />
-      ) : jobListings.length === 0 ? (
-        <p>You have no assigned job listings yet.</p>
-      ) : (
-        <DataView
-          value={filteredJobListings}
-          className={styles.dataViewContainer}
-          layout="grid"
-          rows={10}
-          paginator
-          header={header}
-          emptyMessage="You have no assigned job listings yet."
-          itemTemplate={itemTemplate}
-        />
-      )}
-    </div>
+      </div>
+
+      <div className={styles.cardsGrid}>
+        {filteredJobListings.map((jobListing) => itemTemplate(jobListing))}
+      </div>
+    </>
   );
 };
 
