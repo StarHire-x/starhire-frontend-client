@@ -328,9 +328,32 @@ export const findAssignedJobListingsByJobSeeker = async (
     // Directly parse the response as JSON, expecting an array
     const jobListings = await res.json();
 
-    // Check if the response is an array and return it directly
+    // Check if the response is an array
     if (Array.isArray(jobListings)) {
-      return jobListings;
+      // Fetch saved status for each job listing
+      const jobsWithSavedStatus = await Promise.all(
+        jobListings.map(async (job) => {
+          try {
+            const savedStatus = await checkIfJobIsSaved(
+              job.jobListingId,
+              accessToken
+            );
+            return {
+              ...job,
+              isSaved: savedStatus.statusCode === 200,
+            };
+          } catch (error) {
+            console.error(
+              `Error checking saved status for job ${job.jobListingId}:`,
+              error
+            );
+            // In case of an error, default to not saved
+            return { ...job, isSaved: false };
+          }
+        })
+      );
+
+      return jobsWithSavedStatus;
     } else {
       throw new Error('Unexpected response format from the server');
     }

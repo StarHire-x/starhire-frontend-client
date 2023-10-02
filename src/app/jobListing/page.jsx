@@ -1,13 +1,16 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
-import { DataView } from 'primereact/dataview';
 import { InputText } from 'primereact/inputtext';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import { findAssignedJobListingsByJobSeeker } from '../api/auth/jobListing/route';
+import {
+  findAssignedJobListingsByJobSeeker,
+  saveJobListing,
+  unsaveJobListing,
+} from '../api/auth/jobListing/route';
 import styles from './page.module.css';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -34,6 +37,9 @@ const JobListingPage = () => {
 
   console.log(session);
   console.log(userIdRef);
+
+  const params = useSearchParams();
+  const id = params.get('id');
 
   useEffect(() => {
     if (session.status === 'unauthenticated' || session.status === 'loading') {
@@ -75,55 +81,30 @@ const JobListingPage = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  // const header = (
-  //   <div className="p-d-flex p-ai-center p-jc-between">
-  //     <Button
-  //       className={styles.savedJobsButton}
-  //       label="My Saved Job Listings"
-  //       onClick={() => router.push('/jobListing/viewSavedJobListingsJobSeeker')}
-  //       rounded
-  //       size="small"
-  //     />
-  //     <div className="p-d-flex p-ai-center">
-  //       <h2 className={styles.headerTitle}>Assigned Jobs</h2>
-  //       <span className="p-input-icon-left p-ml-2">
-  //         <i className="pi pi-search" />
-  //         <InputText
-  //           value={filterKeyword}
-  //           onChange={(e) => setFilterKeyword(e.target.value)}
-  //           placeholder="Keyword Search"
-  //           style={{width: "180px"}}
-  //         />
-  //       </span>
-  //     </div>
-  //   </div>
-  // );
-
-  // const header = (
-  //   <div className="p-d-flex p-jc-center p-ai-center p-my-4">
-  //     <h2 className={styles.headerTitle}>Assigned Jobs</h2>
-  //     <span className="p-input-icon-left p-ml-2">
-  //       <i className="pi pi-search" />
-  //       <InputText
-  //         value={filterKeyword}
-  //         onChange={(e) => setFilterKeyword(e.target.value)}
-  //         placeholder="Keyword Search"
-  //         style={{ width: '250px' }}
-  //       />
-  //     </span>
-  //     <Button
-  //       className={styles.savedJobsButton}
-  //       label="My Saved Job Listings"
-  //       onClick={() => router.push('/jobListing/viewSavedJobListingsJobSeeker')}
-  //       rounded
-  //       size="small"
-  //     />
-  //   </div>
-  // );
-
   const filteredJobListings = jobListings.filter((jobListing) => {
     return jobListing.title.toLowerCase().includes(filterKeyword.toLowerCase());
   });
+
+  const handleSaveJobListing = async (jobListing) => {
+    try {
+      if (jobListing.isSaved) {
+        await unsaveJobListing(jobListing.jobListingId, accessToken);
+        alert('Job Listing Unsaved Successfully!');
+      } else {
+        await saveJobListing(jobListing.jobListingId, accessToken);
+        alert('Job Listing Saved Successfully!');
+      }
+      // Update the state to force a re-render
+      setJobListings([...jobListings]);
+      // Refresh the data after saving/un-saving
+      setRefreshData(!refreshData);
+    } catch (error) {
+      console.error('Error when saving/un-saving:', error);
+      alert(
+        `Error: ${error.message || 'Failed to save/un-save the job listing.'}`
+      );
+    }
+  };
 
   const itemTemplate = (jobListing) => {
     return (
@@ -158,38 +139,16 @@ const JobListingPage = () => {
               saveStatusChange(jobListing);
             }}
           />
+          <Button
+            className={styles.saveButton}
+            icon={jobListing.isSaved ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'}
+            onClick={() => handleSaveJobListing(jobListing)}
+            rounded
+          />
         </div>
       </div>
     );
   };
-
-  // return (
-  //   <div className={styles.container}>
-  //     {isLoading ? (
-  //       <ProgressSpinner
-  //         style={{
-  //           display: 'flex',
-  //           height: '100vh',
-  //           'justify-content': 'center',
-  //           'align-items': 'center',
-  //         }}
-  //       />
-  //     ) : jobListings.length === 0 ? (
-  //       <p>You have no assigned job listings yet.</p>
-  //     ) : (
-  //       <DataView
-  //         value={filteredJobListings}
-  //         className={styles.dataViewContainer}
-  //         layout="grid"
-  //         rows={10}
-  //         paginator
-  //         header={header}
-  //         emptyMessage="You have no assigned job listings yet."
-  //         itemTemplate={itemTemplate}
-  //       />
-  //     )}
-  //   </div>
-  // );
 
   if (isLoading) {
     return (
