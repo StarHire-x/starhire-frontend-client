@@ -6,15 +6,16 @@ import { fetchSavedJobListings } from '@/app/api/auth/jobListing/route';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
-import { Tag } from 'primereact/tag';
-import styles from './page.module.css';
+import { InputText } from 'primereact/inputtext';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import styles from './page.module.css';
 import Enums from '@/common/enums/enums';
 
 function ViewSavedJobListingsJobSeeker() {
   const [savedJobListings, setSavedJobListings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshData, setRefreshData] = useState(false);
+  const [filterKeyword, setFilterKeyword] = useState('');
   const session = useSession();
   const router = useRouter();
 
@@ -71,6 +72,12 @@ function ViewSavedJobListingsJobSeeker() {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  const filteredJobListings = savedJobListings.filter((jobListing) =>
+    jobListing.jobListing.title
+      .toLowerCase()
+      .includes(filterKeyword.toLowerCase())
+  );
+
   const itemTemplate = (savedJobListing) => {
     const jobDetails = savedJobListing.jobListing;
     return (
@@ -79,7 +86,6 @@ function ViewSavedJobListingsJobSeeker() {
           <h3>{jobDetails.title}</h3>
         </div>
         <div className={styles.cardBody}>
-          {/* Include similar details to mimic the UI */}
           <div className={styles.cardRow}>
             <span>Location:</span>
             <span>{jobDetails.jobLocation}</span>
@@ -110,6 +116,20 @@ function ViewSavedJobListingsJobSeeker() {
     );
   };
 
+  const header = (
+    <div className="p-d-flex p-ai-center p-jc-between">
+      <h2 className={styles.headerTitle}>My Saved Job Listings</h2>
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText
+          value={filterKeyword}
+          onChange={(e) => setFilterKeyword(e.target.value)}
+          placeholder="Keyword Search"
+        />
+      </span>
+    </div>
+  );
+
   if (isLoading) {
     return (
       <div className={styles.container}>
@@ -128,34 +148,17 @@ function ViewSavedJobListingsJobSeeker() {
   return (
     <div className={styles.container}>
       <DataView
-        value={savedJobListings}
+        value={filteredJobListings}
         className={styles.dataViewContainer}
         layout="grid"
         rows={10}
         paginator
-        header={<h2 className={styles.headerTitle}>My Saved Job Listings</h2>}
+        header={header}
         emptyMessage="No saved job listings found"
         itemTemplate={itemTemplate}
       />
     </div>
   );
-
-  // return (
-  //   <div className="container">
-  //     {savedJobListings.length === 0 ? (
-  //       <p>You have no saved job listings.</p>
-  //     ) : (
-  //       savedJobListings.map((savedJobListing) => (
-  //         <Card key={savedJobListing.savedJobListingId}>
-  //           {/* Render job listing details here */}
-  //           <h2>{savedJobListing.jobListing.title}</h2>
-  //           <p>{savedJobListing.jobListing.overview}</p>
-  //           {/* ... other job listing details */}
-  //         </Card>
-  //       ))
-  //     )}
-  //   </div>
-  // );
 }
 
 export default ViewSavedJobListingsJobSeeker;

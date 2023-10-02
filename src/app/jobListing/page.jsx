@@ -1,23 +1,24 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { InputText } from 'primereact/inputtext';
+import { ProgressSpinner } from 'primereact/progressspinner';
 import { findAssignedJobListingsByJobSeeker } from '../api/auth/jobListing/route';
 import styles from './page.module.css';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import { ProgressSpinner } from 'primereact/progressspinner';
 import Enums from '@/common/enums/enums';
 
 const JobListingPage = () => {
   const [jobListings, setJobListings] = useState([]);
-  // const [jobListing, setJobListing] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshData, setRefreshData] = useState(false);
+  const [filterKeyword, setFilterKeyword] = useState('');
   const session = useSession();
   const router = useRouter();
 
@@ -74,22 +75,31 @@ const JobListingPage = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  // const handleOnClick = (jobId) => {
-  //   // Navigate to the job details page for the clicked job
-  //   router.push(`/jobDetails/${jobId}`);
-  // };
-
   const header = (
-    <div className="p-d-flex p-jc-between p-ai-center">
-      <h2 className={styles.headerTitle}>Assigned Jobs</h2>
+    <div className="p-d-flex p-ai-center p-jc-between">
       <Button
         className={styles.savedJobsButton}
         label="My Saved Job Listings"
         onClick={() => router.push('/jobListing/viewSavedJobListingsJobSeeker')}
         rounded
       />
+      <div className="p-d-flex p-ai-center">
+        <h2 className={styles.headerTitle}>Assigned Jobs</h2>
+        <span className="p-input-icon-left p-ml-2">
+          <i className="pi pi-search" />
+          <InputText
+            value={filterKeyword}
+            onChange={(e) => setFilterKeyword(e.target.value)}
+            placeholder="Keyword Search"
+          />
+        </span>
+      </div>
     </div>
   );
+
+  const filteredJobListings = jobListings.filter((jobListing) => {
+    return jobListing.title.toLowerCase().includes(filterKeyword.toLowerCase());
+  });
 
   const itemTemplate = (jobListing) => {
     return (
@@ -144,7 +154,7 @@ const JobListingPage = () => {
         <p>You have no assigned job listings yet.</p>
       ) : (
         <DataView
-          value={jobListings}
+          value={filteredJobListings}
           className={styles.dataViewContainer}
           layout="grid"
           rows={10}
