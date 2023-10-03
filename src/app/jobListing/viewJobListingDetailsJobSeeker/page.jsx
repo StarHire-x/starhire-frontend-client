@@ -21,7 +21,7 @@ import styles from './page.module.css';
 import {
   createJobApplication,
   findExistingJobApplication,
-} from '@/app/api/auth/jobApplication/route';
+} from '@/app/api/jobApplication/route';
 
 export default function viewJobListingDetailsJobSeeker() {
   const session = useSession();

@@ -9,7 +9,7 @@ import { Checkbox } from "primereact/checkbox";
 import { Panel } from "primereact/panel";
 import { useEffect } from "react";
 import { Tag } from "primereact/tag";
-import { viewJobApplicationDetails } from "@/app/api/auth/jobApplication/route";
+import { viewJobApplicationDetails } from "@/app/api/jobApplication/route";
 
 const ViewJobApplicationForm = ({
   formData,
