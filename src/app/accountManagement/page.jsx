@@ -15,7 +15,7 @@ import { Button } from "primereact/button";
 import EditAccountForm from "@/components/EditAccountForm/EditAccountForm";
 import JobPreferencePanel from "@/components/JobPreferencePanel/JobPreferencePanel";
 import { getExistingJobPreference } from "../api/auth/preference/route";
-import { getJobExperience } from "../api/auth/jobExperience/route";
+import { getJobExperience } from "../api/jobExperience/route";
 import JobExperiencePanel from "@/components/JobExperiencePanel/JobExperiencePanel";
 import { Dialog } from "primereact/dialog";
 import Enums from "@/common/enums/enums";

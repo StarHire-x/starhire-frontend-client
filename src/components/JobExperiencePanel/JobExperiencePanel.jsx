@@ -11,7 +11,7 @@ import {
   createJobExperience,
   updateJobExperience,
   deleteJobExperience
-} from "@/app/api/auth/jobExperience/route";
+} from "@/app/api/jobExperience/route";
 import EditJobExperienceForm from "../EditJobExperienceForm/EditJobExperienceForm";
 
 const JobExperiencePanel = ({
