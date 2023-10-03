@@ -6,7 +6,7 @@ import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import styles from './page.module.css';
-import { getJobApplicationsByJobSeeker } from '../api/auth/jobApplication/route';
+import { getJobApplicationsByJobSeeker } from '../api/jobApplication/route';
 import { Dialog } from 'primereact/dialog';
 import { Tag } from 'primereact/tag';
 import ViewJobApplicationForm from '@/components/ViewJobApplicationForm/ViewJobApplicationForm';

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { viewJobApplicationDetails } from "@/app/api/auth/jobApplication/route";
+import { viewJobApplicationDetails } from "@/app/api/jobApplication/route";
 import { Card } from "primereact/card";
 import styles from "./page.module.css";
 import Image from "next/image";
@@ -13,10 +13,10 @@ import { Tag } from "primereact/tag";
 import { useRouter } from "next/navigation";
 import { Dropdown } from "@/components/Dropdown/Dropdown";
 import { Checkbox } from "primereact/checkbox";
-import { updateJobApplicationStatus } from "@/app/api/auth/jobApplication/route";
+import { updateJobApplicationStatus } from "@/app/api/jobApplication/route";
 import moment from "moment";
 import HumanIcon from "../../../../../public/icon.png"
-import { getJobSeekersByJobApplicationId } from '@/app/api/auth/jobListing/route';
+import { getJobSeekersByJobApplicationId } from '@/app/api/jobListing/route';
 
 const ViewJobApplicationDetails = () => {
   const session = useSession();

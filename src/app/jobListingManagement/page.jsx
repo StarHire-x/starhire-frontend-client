@@ -11,7 +11,7 @@ import {
   createJobListing,
   updateJobListing,
   removeJobListing,
-} from '../api/auth/jobListing/route';
+} from '../api/jobListing/route';
 import styles from './page.module.css';
 import 'primeflex/primeflex.css';
 import CreateJobListingForm from '@/components/CreateJobListingForm/CreateJobListingForm';

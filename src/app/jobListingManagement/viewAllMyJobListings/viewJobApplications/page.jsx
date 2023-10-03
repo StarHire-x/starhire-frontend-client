@@ -7,7 +7,7 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { useSession } from 'next-auth/react';
 
 
-import { getJobApplicationsByJobListingId } from '@/app/api/auth/jobListing/route';
+import { getJobApplicationsByJobListingId } from '@/app/api/jobListing/route';
 import styles from 'src/app/jobListingManagement/page.module.css';
 import 'primeflex/primeflex.css';
 import { useRouter } from 'next/navigation';
