@@ -27,7 +27,42 @@ const CreateJobListingForm = ({ onCreate }) => {
 
   const documentOptions = [
     { label: 'Resume', value: 'Resume' },
-    { label: 'Cover Letter', value: 'Cover Letter' },
+    {
+      label: 'Early Childhood Graduation Cert',
+      value: 'Early Childhood Graduation Cert',
+    },
+    {
+      label: 'English Language Proficiency Cert',
+      value: 'English Language Proficiency Cert',
+    },
+    {
+      label: 'Chinese Language Proficiency Cert',
+      value: 'Chinese Language Proficiency Cert',
+    },
+    {
+      label: 'Malay Language Proficiency Cert',
+      value: 'Malay Language Proficiency Cert',
+    },
+    {
+      label: 'Tamil Language Proficiency Cert',
+      value: 'Tamil Language Proficiency Cert',
+    },
+    {
+      label: 'L1 Level Cert',
+      value: 'L1 Level Cert',
+    },
+    {
+      label: 'L2 Level Cert',
+      value: 'L2 Level Cert',
+    },
+    {
+      label: 'EY1 Level Cert',
+      value: 'EY1 Level Cert',
+    },
+    {
+      label: 'EY1 Level Cert',
+      value: 'EY1 Level Cert',
+    },
   ];
 
   const handleInputChange = (e) => {
