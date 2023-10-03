@@ -6,7 +6,7 @@ import { Dialog } from 'primereact/dialog';
 import { Tag } from 'primereact/tag';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { findAllJobListingsByCorporate } from '@/app/api/auth/jobListing/route';
+import { findAllJobListingsByCorporate } from '@/app/api/jobListing/route';
 import styles from '../page.module.css';
 import 'primeflex/primeflex.css';
 import Enums from '@/common/enums/enums';

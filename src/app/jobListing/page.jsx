@@ -10,7 +10,7 @@ import {
   findAssignedJobListingsByJobSeeker,
   saveJobListing,
   unsaveJobListing,
-} from '../api/auth/jobListing/route';
+} from '../api/jobListing/route';
 import styles from './page.module.css';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';

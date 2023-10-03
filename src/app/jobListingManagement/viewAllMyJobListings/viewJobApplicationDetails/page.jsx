@@ -16,7 +16,7 @@ import { Checkbox } from "primereact/checkbox";
 import { updateJobApplicationStatus } from "@/app/api/jobApplication/route";
 import moment from "moment";
 import HumanIcon from "../../../../../public/icon.png"
-import { getJobSeekersByJobApplicationId } from '@/app/api/auth/jobListing/route';
+import { getJobSeekersByJobApplicationId } from '@/app/api/jobListing/route';
 
 const ViewJobApplicationDetails = () => {
   const session = useSession();

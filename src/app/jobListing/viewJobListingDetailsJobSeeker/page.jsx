@@ -9,7 +9,7 @@ import {
   unsaveJobListing,
   checkIfJobIsSaved,
   removeJobListingAssignment,
-} from '@/app/api/auth/jobListing/route';
+} from '@/app/api/jobListing/route';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';

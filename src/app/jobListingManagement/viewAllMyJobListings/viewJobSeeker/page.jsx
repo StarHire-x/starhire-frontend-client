@@ -5,7 +5,7 @@ import { Dialog } from 'primereact/dialog';
 import { Tag } from 'primereact/tag';
 import { useSession } from 'next-auth/react';
 import { Button } from 'primereact/button';
-import { getJobSeekersByJobApplicationId } from '@/app/api/auth/jobListing/route';
+import { getJobSeekersByJobApplicationId } from '@/app/api/jobListing/route';
 import styles from 'src/app/jobListingManagement/page.module.css';
 import 'primeflex/primeflex.css';
 import { useRouter } from 'next/navigation';

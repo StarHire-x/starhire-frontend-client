@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { fetchSavedJobListings } from '@/app/api/auth/jobListing/route';
+import { fetchSavedJobListings } from '@/app/api/jobListing/route';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
