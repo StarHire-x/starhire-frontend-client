@@ -125,7 +125,7 @@ function ViewSavedJobListingsJobSeeker() {
           value={filterKeyword}
           onChange={(e) => setFilterKeyword(e.target.value)}
           placeholder="Keyword Search"
-          style={{width: "180px"}}
+          style={{ width: '180px' }}
         />
       </span>
     </div>
@@ -133,32 +133,33 @@ function ViewSavedJobListingsJobSeeker() {
 
   if (isLoading) {
     return (
-      <div className={styles.container}>
-        <ProgressSpinner
-          style={{
-            display: 'flex',
-            height: '100vh',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        />
+      <div className={styles.spinnerContainer}>
+        <ProgressSpinner />
       </div>
     );
   }
 
   return (
-    <div className={styles.container}>
-      <DataView
-        value={filteredJobListings}
-        className={styles.dataViewContainer}
-        layout="grid"
-        rows={10}
-        paginator
-        header={header}
-        emptyMessage="No saved job listings found"
-        itemTemplate={itemTemplate}
-      />
-    </div>
+    <>
+      <div className={styles.header}>
+        <h1 className={styles.headerTitle} style={{ marginBottom: '15px' }}>
+          My Saved Job Listings
+        </h1>
+        <span className="p-input-icon-left">
+          <i className="pi pi-search" />
+          <InputText
+            value={filterKeyword}
+            onChange={(e) => setFilterKeyword(e.target.value)}
+            placeholder="Keyword Search"
+            style={{ width: '265px' }}
+          />
+        </span>
+      </div>
+
+      <div className={styles.cardsGrid}>
+        {filteredJobListings.map((jobListing) => itemTemplate(jobListing))}
+      </div>
+    </>
   );
 }
 
