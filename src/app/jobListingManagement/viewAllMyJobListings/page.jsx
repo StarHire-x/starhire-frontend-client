@@ -35,6 +35,7 @@ const ViewAllMyJobListingsManagementPage = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  /*
   const getStatus = (status) => {
     switch (status) {
       case Enums.ACTIVE:
@@ -45,6 +46,20 @@ const ViewAllMyJobListingsManagementPage = () => {
         return 'danger';
     }
   };
+  */
+
+  const getStatus = (status) => {
+    switch (status) {
+      case 'Approved':
+        return 'success';
+      case 'Unverified':
+        return 'danger';
+      case 'Rejected':
+        return 'danger';
+    }
+  };
+
+  
 
   useEffect(() => {
     if (session.status === 'unauthenticated' || session.status === 'loading') {
