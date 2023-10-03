@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect, useContext } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { getUserByUserId, updateUser } from "../api/auth/user/route";
-import { uploadFile } from "../api/auth/upload/route";
+import { uploadFile } from "../api/upload/route";
 import styles from "./page.module.css";
 import { UserContext } from "@/context/UserContext";
 import { RadioButton } from "primereact/radiobutton";

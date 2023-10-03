@@ -7,7 +7,7 @@ import { Calendar } from 'primereact/calendar';
 import { Button } from 'primereact/button';
 import { Checkbox } from 'primereact/checkbox';
 import { Panel } from 'primereact/panel';
-import { uploadFile } from '@/app/api/auth/upload/route';
+import { uploadFile } from '@/app/api/upload/route';
 
 const CreateJobApplicationForm = ({
   formData,
