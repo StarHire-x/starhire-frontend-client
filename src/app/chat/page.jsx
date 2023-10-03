@@ -24,7 +24,7 @@ import ChatSidebar from "./ChatSidebar";
 import ChatHeader from "./ChatHeader";
 import HumanIcon from "../../../public/icon.png";
 
-import { getAllUserChats, getOneUserChat } from "../api/auth/chat/route";
+import { getAllUserChats, getOneUserChat } from "../api/chat/route";
 import { uploadFile } from "../api/auth/upload/route";
 
 const Chat = () => {
