@@ -14,7 +14,7 @@ import { Rating } from "primereact/rating";
 import { Button } from "primereact/button";
 import EditAccountForm from "@/components/EditAccountForm/EditAccountForm";
 import JobPreferencePanel from "@/components/JobPreferencePanel/JobPreferencePanel";
-import { getExistingJobPreference } from "../api/auth/preference/route";
+import { getExistingJobPreference } from "../api/preference/route";
 import { getJobExperience } from "../api/jobExperience/route";
 import JobExperiencePanel from "@/components/JobExperiencePanel/JobExperiencePanel";
 import { Dialog } from "primereact/dialog";

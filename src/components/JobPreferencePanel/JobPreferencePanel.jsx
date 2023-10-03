@@ -7,7 +7,7 @@ import styles from "./jobPreferencePanel.module.css";
 import {
   createJobPreference,
   updateJobPreference,
-} from "@/app/api/auth/preference/route";
+} from "@/app/api/preference/route";
 
 const JobPreferencePanel = ({
   formData,
