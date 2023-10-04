@@ -29,14 +29,14 @@
 }
 
 .card {
-  background-color: #e0ecee;
+  background-color: #ffddd2;
   padding: 20px;
   width: 100%;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
   overflow: hidden;
-  border: 1px solid #e0ecee;
+  border: 1px solid #ffddd2;
   margin-bottom: 10px;
   border-radius: 8px;
 }
@@ -72,10 +72,10 @@
 }
 
 .cardFooter button {
-  background-color: #e29578;
+  background-color: #edf6f9;
   border: none;
   border-radius: 4px;
-  color: white;
+  color: #006d77;
   padding: 5px 10px;
   text-align: center;
   text-decoration: none;

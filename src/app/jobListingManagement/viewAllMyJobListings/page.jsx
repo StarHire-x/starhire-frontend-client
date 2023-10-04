@@ -59,8 +59,6 @@ const ViewAllMyJobListingsManagementPage = () => {
     }
   };
 
-  
-
   useEffect(() => {
     if (session.status === 'unauthenticated' || session.status === 'loading') {
       router.push('/login');
@@ -84,7 +82,7 @@ const ViewAllMyJobListingsManagementPage = () => {
       <a href={cardLink} className={styles.cardLink}>
         <div className={styles.card}>
           <div className={styles.cardHeader}>
-            <h5>{jobListing.title}</h5>
+            <h3>{jobListing.title}</h3>
           </div>
           <div className={styles.cardBody}>
             <div className={styles.cardRow}>
