@@ -104,6 +104,11 @@
   max-width: 1250px;
 }
 
+.editCardDialog {
+  width: 90vw;
+  max-width: 600px;
+}
+
 @media (max-width: 768px) {
   /* Tablet breakpoint */
   .card {

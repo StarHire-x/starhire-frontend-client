@@ -6,11 +6,12 @@ import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import styles from './page.module.css';
-import { getJobApplicationsByJobSeeker } from '../api/jobApplication/route';
+import { getJobApplicationsByJobSeeker, updateJobApplicationStatus } from '../api/jobApplication/route';
 import { Dialog } from 'primereact/dialog';
 import { Tag } from 'primereact/tag';
 import ViewJobApplicationForm from '@/components/ViewJobApplicationForm/ViewJobApplicationForm';
 import { Dropdown } from 'primereact/dropdown';
+import EditJobApplicationForm from '@/components/EditJobApplicationForm/EditJobApplicationForm';
 
 const jobApplicationPage = () => {
   const [jobApplications, setJobApplications] = useState([]);
@@ -19,6 +20,7 @@ const jobApplicationPage = () => {
   const session = useSession();
   const router = useRouter();
   const [formData, setFormData] = useState({
+    jobApplicationId: '',
     jobApplicationStatus: '',
     availableStartDate: '',
     availableEndDate: '',
@@ -69,12 +71,20 @@ const jobApplicationPage = () => {
   const [showViewJobApplicationDialog, setShowViewJobApplicationDialog] =
     useState(false);
 
+  const [formErrors, setFormErrors] = useState({});
+
+  const [showEditJobApplicationDialog, setShowEditJobApplicationDialog] = useState(false);
+
   const [selectedJobApplicationData, setSelectedJobApplicationData] =
     useState(null);
 
   const hideViewJobApplicationDialog = () => {
     setShowViewJobApplicationDialog(false);
   };
+
+  const hideEditJobApplicationDialog = () => {
+    setShowEditJobApplicationDialog(false);
+  }
 
   const statusRemoveUnderscore = (status) => {
     return status.replaceAll('_', ' ');
@@ -124,6 +134,51 @@ const jobApplicationPage = () => {
     </div>
   );
 
+  const editJobApplication = async (e) => {
+     e.preventDefault();
+     const jobApplicationId = formData.jobApplicationId;
+     if (Object.keys(formErrors).length > 0) {
+       // There are validation errors
+       alert("Please fix the form errors before submitting.");
+       return;
+     }
+
+     const areDocumentsFilled = formData.documents.every(
+       (doc) => doc.documentName.trim() !== "" && doc.documentLink.trim() !== ""
+     );
+
+     if (!areDocumentsFilled) {
+       alert("Please ensure all documents are properly filled up.");
+       return;
+     }
+
+     const reqBody = {
+       jobApplicationStatus: "Submitted",
+       availableStartDate: formData.availableStartDate,
+       availableEndDate: formData.availableEndDate,
+       remarks: formData.remarks,
+       submissionDate: new Date(),
+       documents: formData.documents,
+     };
+
+     console.log(reqBody);
+
+     try {
+       const response = await updateJobApplicationStatus(
+         reqBody,
+         jobApplicationId,
+         accessToken
+       );
+       console.log("Job Application successfully updated!");
+       alert("Job Application successfully updated!");
+       setRefreshData((prev) => !prev);
+     } catch (error) {
+       alert(error.message);
+     }
+     setSelectedJobApplicationData(null);
+     setShowEditJobApplicationDialog(false);
+  }
+
   const itemTemplate = (jobApplication) => {
     return (
       <div className={styles.card}>
@@ -168,6 +223,7 @@ const jobApplicationPage = () => {
               severity="info"
               onClick={() => {
                 setSelectedJobApplicationData(jobApplication);
+                setShowEditJobApplicationDialog(jobApplication);
               }}
             />
           )}
@@ -181,10 +237,10 @@ const jobApplicationPage = () => {
       {isLoading ? (
         <ProgressSpinner
           style={{
-            display: 'flex',
-            height: '100vh',
-            'justify-content': 'center',
-            'align-items': 'center',
+            display: "flex",
+            height: "100vh",
+            "justify-content": "center",
+            "align-items": "center",
           }}
         />
       ) : jobApplications.length === 0 ? (
@@ -214,6 +270,23 @@ const jobApplicationPage = () => {
           getStatus={getStatus}
           accessToken={accessToken}
           selectedJobApplicationData={selectedJobApplicationData}
+        />
+      </Dialog>
+
+      <Dialog
+        header="Edit Job Application"
+        visible={showEditJobApplicationDialog}
+        onHide={hideEditJobApplicationDialog}
+        className={styles.editCardDialog}
+      >
+        <EditJobApplicationForm
+          formData={formData}
+          setFormData={setFormData}
+          accessToken={accessToken}
+          selectedJobApplicationData={selectedJobApplicationData}
+          formErrors={formErrors}
+          setFormErrors={setFormErrors}
+          editJobApplication={editJobApplication}
         />
       </Dialog>
     </div>
