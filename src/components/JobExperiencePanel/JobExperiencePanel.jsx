@@ -41,6 +41,15 @@ const JobExperiencePanel = ({
     return new Date(dateString).toLocaleDateString("en-GB", options);
   };
 
+  const initialFormData = {
+    userId: "",
+    employerName: "",
+    jobTitle: "",
+    startDate: "",
+    endDate: "",
+    jobDescription: "",
+  };
+
   const jobExperienceHeader = (
     <div
       style={{
@@ -160,6 +169,7 @@ const JobExperiencePanel = ({
     } catch (error) {
       alert(error.message)
     }
+    setFormData(initialFormData);
     setShowCreateJobExperienceDialog(false);
   };
 
