@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -16,6 +16,7 @@ import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import Enums from '@/common/enums/enums';
+import { Toast } from "primereact/toast";
 
 const JobListingPage = () => {
   const [jobListings, setJobListings] = useState([]);
@@ -37,6 +38,7 @@ const JobListingPage = () => {
 
   console.log(session);
   console.log(userIdRef);
+  const toast = useRef(null);
 
   const params = useSearchParams();
   const id = params.get('id');
@@ -89,10 +91,22 @@ const JobListingPage = () => {
     try {
       if (jobListing.isSaved) {
         await unsaveJobListing(jobListing.jobListingId, accessToken);
-        alert('Job Listing Unsaved Successfully!');
+        //alert('Job Listing Unsaved Successfully!');
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Job Listing Unsaved Successfully!",
+          life: 5000,
+        });
       } else {
         await saveJobListing(jobListing.jobListingId, accessToken);
-        alert('Job Listing Saved Successfully!');
+        //alert('Job Listing Saved Successfully!');
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Job Listing Saved Successfully!",
+          life: 5000,
+        });
       }
       // Update the state to force a re-render
       setJobListings([...jobListings]);
@@ -100,9 +114,15 @@ const JobListingPage = () => {
       setRefreshData(!refreshData);
     } catch (error) {
       console.error('Error when saving/un-saving:', error);
-      alert(
-        `Error: ${error.message || 'Failed to save/un-save the job listing.'}`
-      );
+      // alert(
+      //   `Error: ${error.message || 'Failed to save/un-save the job listing.'}`
+      // );
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: error.message,
+        life: 5000,
+      });
     }
   };
 
@@ -160,8 +180,9 @@ const JobListingPage = () => {
 
   return (
     <>
+      <Toast ref={toast} />
       <div className={styles.header}>
-        <h1 className={styles.headerTitle} style={{ marginBottom: '15px' }}>
+        <h1 className={styles.headerTitle} style={{ marginBottom: "15px" }}>
           Assigned Jobs
         </h1>
         <span className="p-input-icon-left">
@@ -170,14 +191,14 @@ const JobListingPage = () => {
             value={filterKeyword}
             onChange={(e) => setFilterKeyword(e.target.value)}
             placeholder="Keyword Search"
-            style={{ width: '265px' }}
+            style={{ width: "265px" }}
           />
         </span>
         <Button
           className={styles.savedJobsButton}
           label="My Saved Job Listings"
           onClick={() =>
-            router.push('/jobListing/viewSavedJobListingsJobSeeker')
+            router.push("/jobListing/viewSavedJobListingsJobSeeker")
           }
           rounded
         />

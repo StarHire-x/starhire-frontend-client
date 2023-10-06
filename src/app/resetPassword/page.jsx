@@ -110,7 +110,7 @@ const ResetPassword = () => {
       try {
         setLoading(true);
         const response = await updateUserPassword(resetPassword, storedUserId);
-        alert("Password changed successfully");
+        //alert("Password changed successfully");
         localStorage.removeItem("passwordResetToken");
         localStorage.removeItem("passwordResetExpire");
         localStorage.removeItem("resetEmail");
