@@ -13,6 +13,7 @@ import Enums from "@/common/enums/enums";
 
 const Step1 = ({ formData, setFormData, onNext }) => {
   const [errorMessage, setErrorMessage] = useState("");
+
   const handleNext = () => {
     setErrorMessage("");
     const { role, userName, email } = formData;
@@ -298,7 +299,7 @@ const Register = () => {
         console.log(errorData);
         setErrorMessage(errorData.error);
       } else {
-        alert("Account has been created!");
+        // alert("Account has been created!");
         router.push("/login?success=Account has been created");
       }
     } catch (error) {
