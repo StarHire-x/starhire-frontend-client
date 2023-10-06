@@ -60,8 +60,8 @@ const CreateJobListingForm = ({ onCreate }) => {
       value: 'EY1 Level Cert',
     },
     {
-      label: 'EY1 Level Cert',
-      value: 'EY1 Level Cert',
+      label: 'EY2 Level Cert',
+      value: 'EY2 Level Cert',
     },
   ];
 
