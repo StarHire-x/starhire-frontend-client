@@ -23,7 +23,7 @@ import {
   findExistingJobApplication,
 } from '@/app/api/jobApplication/route';
 
-export default function viewJobListingDetailsJobSeeker() {
+export default function ViewJobListingDetailsJobSeeker() {
   const session = useSession();
   const router = useRouter();
 
