@@ -204,7 +204,7 @@ const jobApplicationPage = () => {
         detail: error.message,
         life: 5000,
       });
-      alert(error.message);
+      //alert(error.message);
     }
     setSelectedJobApplicationData(null);
     setShowEditJobApplicationDialog(false);
