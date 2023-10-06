@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Panel } from "primereact/panel";
 import { Rating } from "primereact/rating";
 import { Button } from "primereact/button";
@@ -8,6 +8,7 @@ import {
   createJobPreference,
   updateJobPreference,
 } from "@/app/api/preference/route";
+import { Toast } from "primereact/toast";
 
 const JobPreferencePanel = ({
   formData,
@@ -21,6 +22,8 @@ const JobPreferencePanel = ({
 }) => {
   // Dialog Box
   const [errorMessage, setErrorMessage] = useState("");
+
+  const toast = useRef(null);
 
   const handleRatingChange = (category, value) => {
     setErrorMessage("")
@@ -57,12 +60,24 @@ const JobPreferencePanel = ({
     try {
       const response = await createJobPreference(reqBody, sessionTokenRef);
       if (!response.error) {
-        alert("Job preference created successfully!");
+        // alert("Job preference created successfully!");
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Job preference created successfully!",
+          life: 5000,
+        });
         setRefreshData((prev) => !prev);
         setIsJobPreferenceAbsent(false);
       }
     } catch (error) {
       console.log("Failed to create job preference", error.message);
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: error.message,
+        life: 5000,
+      });
       setErrorMessage(error.message);
     }
   };
@@ -86,23 +101,38 @@ const JobPreferencePanel = ({
         sessionTokenRef
       );
       if (!response.error) {
-        alert("Job preference update successfully!");
+        // alert("Job preference update successfully!");
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Job preference updated successfully!",
+          life: 5000,
+        });
         setRefreshData((prev) => !prev);
       }
     } catch (error) {
       console.log("Failed to update job preference", error.message);
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: error.message,
+        life: 5000,
+      });
       setErrorMessage(error.message);
     }
   };
 
   return (
     <Panel header="Job Preference" toggleable>
+      <Toast ref={toast} />
+
       {isJobPreferenceAbsent ? (
         <>
           <div className={styles.titleContainer}>
             <p className={styles.title}>Indicate your Job Preference</p>
             <p className={styles.subTitle}>You have a maximum of 20 stars</p>
-            <p className={styles.starCounter}>Number of stars used: {totalStarsUsed} / 20
+            <p className={styles.starCounter}>
+              Number of stars used: {totalStarsUsed} / 20
             </p>
           </div>
 
@@ -200,7 +230,8 @@ const JobPreferencePanel = ({
           <div className={styles.titleContainer}>
             <p className={styles.title}>Update your Job Preference</p>
             <p className={styles.subTitle}>You have a maximum of 20 stars</p>
-            <p className={styles.starCounter}>Number of stars used: {totalStarsUsed} / 20
+            <p className={styles.starCounter}>
+              Number of stars used: {totalStarsUsed} / 20
             </p>
           </div>
 

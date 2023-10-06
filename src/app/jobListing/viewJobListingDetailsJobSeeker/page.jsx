@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -22,6 +22,7 @@ import {
   createJobApplication,
   findExistingJobApplication,
 } from '@/app/api/jobApplication/route';
+import { Toast } from "primereact/toast";
 
 export default function viewJobListingDetailsJobSeeker() {
   const session = useSession();
@@ -41,6 +42,8 @@ export default function viewJobListingDetailsJobSeeker() {
   const id = params.get('id');
 
   const userId = session?.data?.user?.id;
+
+  const toast = useRef(null);
 
   const [jobListing, setJobListing] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -286,13 +289,14 @@ export default function viewJobListingDetailsJobSeeker() {
 
   return (
     <div className="container">
+      <Toast ref={toast} />
       {isLoading ? (
         <ProgressSpinner
           style={{
-            display: 'flex',
-            height: '100vh',
-            'justify-content': 'center',
-            'align-items': 'center',
+            display: "flex",
+            height: "100vh",
+            "justify-content": "center",
+            "align-items": "center",
           }}
         />
       ) : (
@@ -301,7 +305,7 @@ export default function viewJobListingDetailsJobSeeker() {
           subTitle={jobListing.jobLocation}
           footer={cardFooter}
           className="my-card"
-          style={{ borderRadius: '0' }}
+          style={{ borderRadius: "0" }}
         >
           <div className="my-card.p-card-content">
             <div className="company-info">
@@ -335,7 +339,7 @@ export default function viewJobListingDetailsJobSeeker() {
 
             <strong className={styles.fieldLabel}>Average Salary</strong>
             <p className={styles.fieldContent}>
-              {'$' + jobListing.averageSalary + ' SGD'}
+              {"$" + jobListing.averageSalary + " SGD"}
             </p>
 
             <strong className={styles.fieldLabel}>Listing Date</strong>

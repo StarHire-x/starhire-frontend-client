@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Panel } from "primereact/panel";
 import { Button } from "primereact/button";
 import { DataView } from "primereact/dataview";
@@ -13,6 +13,7 @@ import {
   deleteJobExperience
 } from "@/app/api/jobExperience/route";
 import EditJobExperienceForm from "../EditJobExperienceForm/EditJobExperienceForm";
+import { Toast } from "primereact/toast";
 
 const JobExperiencePanel = ({
   formData,
@@ -49,6 +50,8 @@ const JobExperiencePanel = ({
     endDate: "",
     jobDescription: "",
   };
+
+  const toast = useRef(null);
 
   const jobExperienceHeader = (
     <div
@@ -133,7 +136,13 @@ const JobExperiencePanel = ({
 
     if (Object.keys(formErrors).length > 0) {
       // There are validation errors
-      alert("Please fix the form errors before submitting.");
+      //alert("Please fix the form errors before submitting.");
+      toast.current.show({
+        severity: "warn",
+        summary: "Warning",
+        detail: "Please fix the form errors before submitting.",
+        life: 5000,
+      });
       return;
     }
 
@@ -163,11 +172,23 @@ const JobExperiencePanel = ({
       const response = await createJobExperience(reqBody, sessionTokenRef);
       if (!response.error) {
         console.log("Job experience created successfully:", response);
-        alert("Job experience created successfully!");
+        //alert("Job experience created successfully!");
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Job experience created successfully!",
+          life: 5000,
+        });
         setRefreshData((prev) => !prev);
       }
     } catch (error) {
-      alert(error.message)
+      // alert(error.message)
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: error.message,
+        life: 5000,
+      });
     }
     setFormData(initialFormData);
     setShowCreateJobExperienceDialog(false);
@@ -179,7 +200,13 @@ const JobExperiencePanel = ({
 
     if (Object.keys(formErrors).length > 0) {
       // There are validation errors
-      alert("Please fix the form errors before submitting.");
+      //alert("Please fix the form errors before submitting.");
+      toast.current.show({
+        severity: "warn",
+        summary: "Warning",
+        detail: "Please fix the form errors before submitting.",
+        life: 5000,
+      });
       return;
     }
 
@@ -211,11 +238,21 @@ const JobExperiencePanel = ({
       );
       if (!response.error) {
         console.log("Job experience updated successfully:", response);
-        alert("Job experience updated successfully!");
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Job experience updated successfully!",
+          life: 5000,
+        });
         setRefreshData((prev) => !prev);
       }
     } catch (error) {
-      alert(error.message);
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: error.message,
+        life: 5000,
+      });
     }
     setSelectedJobExperienceData(null);
     setShowEditJobExperienceDialog(false);
@@ -225,11 +262,23 @@ const JobExperiencePanel = ({
     try {
       const response = await deleteJobExperience(jobExperienceId, sessionTokenRef)
       console.log('User is deleted', response);
-      alert('Deleted job experience successfully');
+      // alert('Deleted job experience successfully');
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: "Deleted job experience successfully!",
+        life: 5000,
+      });
       setRefreshData((prev) => !prev);
     } catch (error) {
       console.error("Error deleting job experience:", error);
-      alert("There was an error deleting the job experience:");
+      //alert("There was an error deleting the job experience:");
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: error.message,
+        life: 5000,
+      });
     }
     setSelectedJobExperienceData(null);
     setShowDeleteJobExperienceDialog(false);
@@ -286,6 +335,7 @@ const JobExperiencePanel = ({
   return (
     <Panel header="Job Experience" toggleable>
       <div className={styles.container}>
+        <Toast ref={toast} />
         <DataView
           value={sortFunction(jobExperience)}
           className={styles.dataViewContainer}

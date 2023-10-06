@@ -58,6 +58,8 @@ const AccountManagement = () => {
     visibilityOptions: "",
   });
 
+  const toast = useRef(null);
+
   // this is to do a reload of userContext if it is updated in someway
   const { userData, fetchUserData } = useContext(UserContext);
 
@@ -215,7 +217,7 @@ const AccountManagement = () => {
   };
 
   const saveChanges = async (e) => {
-    // e.preventDefault();
+    //e.preventDefault();
     const userId = formData.userId;
 
     const updateUserDetails = {
@@ -247,17 +249,29 @@ const AccountManagement = () => {
       );
 
       if (response) {
-        alert("Status changed successfully!");
+        //alert("Status changed successfully!");
         if (deactivateAccountDialog) {
           hideDeactivateAccountDialog();
         }
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Account details updated successfully!",
+          life: 5000,
+        });
         setRefreshData((prev) => !prev);
         // this is to do a reload of userContext if it is updated so that navbar can change
         fetchUserData();
       }
     } catch {
       console.log("Failed to update user");
-      alert("Failed to update user particulars");
+      // alert("Failed to update user particulars");
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: error.message,
+        life: 5000,
+      });
     }
   };
   if (session.status === "authenticated") {
@@ -272,6 +286,7 @@ const AccountManagement = () => {
           session={session}
           removePdf={removePdf}
           confirmChanges={confirmChanges}
+          toast={toast}
         />
         <Dialog
           visible={deactivateAccountDialog}
