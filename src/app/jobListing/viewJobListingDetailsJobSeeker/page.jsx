@@ -304,22 +304,6 @@ export default function viewJobListingDetailsJobSeeker() {
           style={{ borderRadius: '0' }}
         >
           <div className="my-card.p-card-content">
-            {/* <div className="company-info">
-              {jobListing.corporate.profilePictureUrl === '' ? (
-                <Image src={HumanIcon} alt="User" className="avatar" />
-              ) : (
-                <img
-                  src={jobListing.corporate.profilePictureUrl}
-                  className="avatar"
-                  width={30}
-                  height={30}
-                />
-              )}
-              <div className="company-details">
-                <p>{jobListing.corporate.userName}</p>
-              </div>
-            </div> */}
-
             <div className="company-info">
               <Image
                 src={jobListing.corporate.profilePictureUrl || HumanIcon}

@@ -386,7 +386,6 @@ export const removeJobListingAssignment = async (
     const response = await res.json();
 
     if (response.statusCode === 200) {
-      console.log('Hello');
       return response;
     } else {
       throw new Error(response.message || 'An error occurred');
