@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -15,8 +15,8 @@ import { Dropdown } from "@/components/Dropdown/Dropdown";
 import { Checkbox } from "primereact/checkbox";
 import { updateJobApplicationStatus } from "@/app/api/jobApplication/route";
 import moment from "moment";
-import HumanIcon from "../../../../../public/icon.png"
-import { getJobSeekersByJobApplicationId } from '@/app/api/jobListing/route';
+import HumanIcon from "../../../../../public/icon.png";
+import { getJobSeekersByJobApplicationId } from "@/app/api/jobListing/route";
 
 const ViewJobApplicationDetails = () => {
   const session = useSession();
@@ -80,7 +80,7 @@ const ViewJobApplicationDetails = () => {
 
   const handleOnBackClick = () => {
     //return router.push(`/jobApplications?id=${jobListing?.jobListingId}`);
-    return router.push(`viewJobApplications?id=${jobListing?.jobListingId}`)
+    return router.push(`viewJobApplications?id=${jobListing?.jobListingId}`);
   };
 
   const nodes = [
@@ -146,7 +146,6 @@ const ViewJobApplicationDetails = () => {
         });
     }
   }, [accessToken]);
-
 
   return (
     <>
@@ -312,7 +311,7 @@ const ViewJobApplicationDetails = () => {
                   icon="pi pi-thumbs-down"
                   rounded
                   severity="danger"
-                  onClick={() => updateStatus("To_Be_Submitted")}
+                  onClick={() => console.log("reject button clicked")}
                 />
                 <Button
                   label="Accept"
@@ -320,7 +319,17 @@ const ViewJobApplicationDetails = () => {
                   rounded
                   severity="success"
                   disabled={selectedDocuments.length != documents.length}
-                  onClick={() => updateStatus("Processing")}
+                  onClick={() => console.log("accept button clicked")}
+                />
+                <Button
+                  label="Proceed to Interview"
+                  icon="pi pi-users"
+                  rounded
+                  severity="info"
+                  disabled={selectedDocuments.length != documents.length}
+                  onClick={() =>
+                    console.log("proceed to interview button clicked")
+                  }
                 />
               </div>
             )}
