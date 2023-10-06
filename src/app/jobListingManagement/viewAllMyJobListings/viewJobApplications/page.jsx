@@ -1,134 +1,144 @@
-"use client"
+'use client';
 import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { DataView } from 'primereact/dataview';
 import { Dialog } from 'primereact/dialog';
 import { Tag } from 'primereact/tag';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import { useSession } from 'next-auth/react';
-
-
 import { getJobApplicationsByJobListingId } from '@/app/api/jobListing/route';
-import styles from 'src/app/jobListingManagement/page.module.css';
-import 'primeflex/primeflex.css';
-import { useRouter } from 'next/navigation';
+// import 'primeflex/primeflex.css';
 import { useSearchParams } from 'next/navigation';
-import "./styles.css";
+import styles from './page.module.css';
 
 const ViewJobApplicationsPage = () => {
-    const [jobApplications, setJobApplications] = useState(null);
-    const [refreshData, setRefreshData] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-    const session = useSession();
-    const router = useRouter();
-  
-    const userIdRef =
-      session.status === 'authenticated' &&
-      session.data &&
-      session.data.user.userId;
-  
-    const accessToken =
-      session.status === 'authenticated' &&
-      session.data &&
-      session.data.user.accessToken;
+  const [jobApplications, setJobApplications] = useState(null);
+  const [refreshData, setRefreshData] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const session = useSession();
+  const router = useRouter();
 
-    const params = useSearchParams();
-    const id = params.get("id");
+  const userIdRef =
+    session.status === 'authenticated' &&
+    session.data &&
+    session.data.user.userId;
 
-    const formatDate = (dateString) => {
-      const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-      return new Date(dateString).toLocaleDateString(undefined, options);
-    };
+  const accessToken =
+    session.status === 'authenticated' &&
+    session.data &&
+    session.data.user.accessToken;
 
-    useEffect(() => {
-      if (accessToken) {
-        getJobApplicationsByJobListingId(id, accessToken)
-          .then((response) => {
-            setJobApplications(response);
-            setIsLoading(false);
-          })
-          .catch((error) => {
-            console.error("Error fetching job listings:", error);
-            setIsLoading(false);
-          });
-      }
-    }, [userIdRef, accessToken]);
+  const params = useSearchParams();
+  const id = params.get('id');
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
 
-    const itemTemplate = (jobApplications) => {
-      const cardLink = `/jobListingManagement/viewAllMyJobListings/viewJobApplicationDetails?id=${jobApplications.jobApplicationId}`;
-      return (
-        <a href={cardLink} className={styles.cardLink}>
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <h3>{"Application ID: " + jobApplications.jobApplicationId}</h3>
+  useEffect(() => {
+    if (accessToken) {
+      getJobApplicationsByJobListingId(id, accessToken)
+        .then((response) => {
+          setJobApplications(response);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching job listings:', error);
+          setIsLoading(false);
+        });
+    }
+  }, [userIdRef, accessToken]);
+
+  const getStatus = (status) => {
+    switch (status) {
+      case 'Submitted':
+        return 'info';
+      case 'Processing':
+        return 'warning';
+      case 'Waiting':
+        return 'info';
+      case 'Rejected':
+        return 'warning';
+      case 'Accepted':
+        return 'info';
+      case 'Unverified':
+        return 'warning';
+      default:
+        return '';
+    }
+  };
+
+  const itemTemplate = (jobApplication) => {
+    const cardLink = `/jobListingManagement/viewAllMyJobListings/viewJobApplicationDetails?id=${jobApplication.jobApplicationId}`;
+    return (
+      <a href={cardLink} className={styles.cardLink}>
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <span>Job Application Id:</span>
+            <h5>{jobApplication.jobApplicationId}</h5>
+          </div>
+          <div className={styles.cardBody}>
+            <div className={styles.cardRow}>
+              <span>Available Start Date:</span>
+              <span>{formatDate(jobApplication.availableStartDate)}</span>
             </div>
-            <div className={styles.cardBody}>
-              {isLoading ? (
-                <ProgressSpinner style={{"display": "flex", "height": "100vh", "justify-content": "center", "align-items": "center"}} />
-              ) : (
-                <>
-                  <div className={styles.cardRow}>
-                    <span>Available start Date:</span>
-                    <span>
-                      {formatDate(jobApplications.availableStartDate)}
-                    </span>
-                  </div>
-                  <div className={styles.cardRow}>
-                    <span>Available End Date:</span>
-                    <span>{formatDate(jobApplications.availableEndDate)}</span>
-                  </div>
-                  <div className={styles.cardRow}>
-                    <span>Submitted on:</span>
-                    <span>{formatDate(jobApplications.submissionDate)}</span>
-                  </div>
-
-                  <div className={styles.cardRow}>
-                    <span>Status:</span>
-                    <span
-                      className={
-                        jobApplications.jobApplicationStatus === "Accepted"
-                          ? styles.greenText
-                          : styles.redText
-                      }
-                    >
-                      {jobApplications.jobApplicationStatus}
-                    </span>
-                  </div>
-                </>
-              )}
+            <div className={styles.cardRow}>
+              <span>Submission Date:</span>
+              <span>{formatDate(jobApplication.submissionDate)}</span>
+            </div>
+            <div className={styles.cardRow}>
+              <span>Status</span>
+              <span>
+                <Tag
+                  value={jobApplication.jobApplicationStatus}
+                  severity={getStatus(jobApplication.jobApplicationStatus)}
+                />
+              </span>
             </div>
           </div>
-        </a>
-      );
-    };
+        </div>
+      </a>
+    );
+  };
 
-    if (session.status === "unauthenticated") {
-      router?.push("/login");
-    }
-    
-    if (session.status === 'authenticated') {
-      return (
-        <div className={styles.container}>
+  if (session.status === 'unauthenticated') {
+    router?.push('/login');
+  }
+
+  if (session.status === 'authenticated') {
+    return (
+      <div className={styles.container}>
+        {isLoading ? (
+          <ProgressSpinner
+            style={{
+              display: 'flex',
+              height: '100vh',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          />
+        ) : (
           <DataView
             value={jobApplications}
             className={styles.dataViewContainer}
             layout="grid"
             rows={10}
             paginator
-            header={<h2 className={styles.headerTitle}>All Applications for Current Job Listing</h2>}
+            header={
+              <h2 className={styles.headerTitle}>
+                All Applications for Current Job Listing
+              </h2>
+            }
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             rowsPerPageOptions={[10, 25, 50]}
             emptyMessage="No Application found for this Job Listing"
             itemTemplate={itemTemplate}
-            pt={{
-              grid: { className: 'surface-ground' },
-            }}
           />
-        </div>
-      );
-    }
-
-    
-}
+        )}
+      </div>
+    );
+  }
+};
 
 export default ViewJobApplicationsPage;
