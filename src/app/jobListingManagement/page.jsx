@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
 import { Dialog } from 'primereact/dialog';
@@ -18,6 +18,7 @@ import CreateJobListingForm from '@/components/CreateJobListingForm/CreateJobLis
 import EditJobListingForm from '@/components/EditJobListingForm/EditJobListingForm';
 import { useRouter } from 'next/navigation';
 import Enums from '@/common/enums/enums';
+import { Toast } from "primereact/toast";
 
 //this page is viewed by corporate
 const JobListingManagementPage = () => {
@@ -43,6 +44,8 @@ const JobListingManagementPage = () => {
 
   console.log(session);
   console.log(userIdRef);
+
+  const toast = useRef(null);
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
@@ -172,14 +175,26 @@ const JobListingManagementPage = () => {
       };
       const response = await createJobListing(payload, accessToken);
       console.log('Created Job listing Successfully', response);
-      alert('Created job listing successfully');
+      // alert('Created job listing successfully');
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: "Created job listing successfully",
+        life: 5000,
+      });
       setRefreshData((prev) => !prev);
     } catch (error) {
       console.error(
         'There was an error creating the job listing:',
         error.message
       );
-      alert('There was an error creating the job listing:');
+      // alert('There was an error creating the job listing:');
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: error.message,
+        life: 5000,
+      });
     }
     setShowCreateDialog(false);
   };
@@ -197,14 +212,26 @@ const JobListingManagementPage = () => {
         accessToken
       );
       console.log('Updated Job listing Successfully', response);
-      alert('Updated job listing successfully');
+      // alert('Updated job listing successfully');
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: "Updated job listing successfully",
+        life: 5000,
+      });
       setRefreshData((prev) => !prev);
     } catch (error) {
       console.error(
         'There was an error updating the job listing:',
         error.message
       );
-      alert('There was an error updating the job listing:');
+      // alert('There was an error updating the job listing:');
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: error.message,
+        life: 5000,
+      });
     }
     setSelectedJobListingData(null);
     setShowEditDialog(false);
@@ -214,11 +241,23 @@ const JobListingManagementPage = () => {
     try {
       const response = await removeJobListing(jobListingId, accessToken);
       console.log('User is deleted', response);
-      alert('Deleted job listing successfully');
+      // alert('Deleted job listing successfully');
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: "Deleted job listing successfully",
+        life: 5000,
+      });
       setRefreshData((prev) => !prev);
     } catch (error) {
       console.error('Error deleting user:', error);
-      alert('There was an error deleting the job listing:');
+      // alert('There was an error deleting the job listing:');
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: error.message,
+        life: 5000,
+      });
     }
     setSelectedJobListingData(null);
     setShowDeleteDialog(false);
@@ -249,15 +288,16 @@ const JobListingManagementPage = () => {
   if (session.status === 'authenticated') {
     return (
       <>
+        <Toast ref={toast} />
         <div className={styles.header}>
-          <h1 className={styles.headerTitle} style={{ marginBottom: '15px' }}>
+          <h1 className={styles.headerTitle} style={{ marginBottom: "15px" }}>
             Job Listing Management
           </h1>
           <Button
             className={styles.createJobListingButton}
             label="Add A Job Listing"
             rounded
-            style={{ marginTop: '10px', marginBottom: '15px' }}
+            style={{ marginTop: "10px", marginBottom: "15px" }}
             onClick={() => setShowCreateDialog(true)}
           />
         </div>
@@ -297,7 +337,7 @@ const JobListingManagementPage = () => {
           footer={deleteDialogFooter}
         >
           <h3>
-            Confirm Delete Job ID:{' '}
+            Confirm Delete Job ID:{" "}
             {showDeleteDialog && showDeleteDialog.jobListingId}?
           </h3>
         </Dialog>
