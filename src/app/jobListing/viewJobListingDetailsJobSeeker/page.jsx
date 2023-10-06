@@ -1,52 +1,55 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+"use client";
+import React, { useEffect, useState, useRef } from "react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import {
   viewOneJobListing,
   saveJobListing,
   unsaveJobListing,
   checkIfJobIsSaved,
   removeJobListingAssignment,
-} from '@/app/api/jobListing/route';
-import { Card } from 'primereact/card';
-import { Button } from 'primereact/button';
-import { ProgressSpinner } from 'primereact/progressspinner';
-import Image from 'next/image';
-import HumanIcon from '../../../../public/icon.png';
-import { Dialog } from 'primereact/dialog';
-import CreateJobApplicationForm from '@/components/CreateJobApplicationForm/CreateJobApplicationForm';
-import styles from './page.module.css';
+} from "@/app/api/jobListing/route";
+import { Card } from "primereact/card";
+import { Button } from "primereact/button";
+import { ProgressSpinner } from "primereact/progressspinner";
+import Image from "next/image";
+import HumanIcon from "../../../../public/icon.png";
+import { Dialog } from "primereact/dialog";
+import CreateJobApplicationForm from "@/components/CreateJobApplicationForm/CreateJobApplicationForm";
+import styles from "./page.module.css";
 import {
   createJobApplication,
   findExistingJobApplication,
-} from '@/app/api/jobApplication/route';
+} from "@/app/api/jobApplication/route";
+import { Toast } from "primereact/toast";
 
 export default function viewJobListingDetailsJobSeeker() {
   const session = useSession();
   const router = useRouter();
 
   const jobSeekerId =
-    session.status === 'authenticated' &&
+    session.status === "authenticated" &&
     session.data &&
     session.data.user.userId;
 
   const accessToken =
-    session.status === 'authenticated' &&
+    session.status === "authenticated" &&
     session.data &&
     session.data.user.accessToken;
 
   const params = useSearchParams();
-  const id = params.get('id');
+  const id = params.get("id");
 
   const userId = session?.data?.user?.id;
+
+  const toast = useRef(null);
 
   const [jobListing, setJobListing] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [refreshData, setRefreshData] = useState(false);
   const [isJobSaved, setIsJobSaved] = useState(false);
-  console.log('Initial isJobSaved:', isJobSaved);
+  console.log("Initial isJobSaved:", isJobSaved);
   const [showCreateJobApplicationDialog, setShowCreateJobApplicationDialog] =
     useState(false);
   const [showRejectJobListingDialog, setShowRejectJobListingDialog] =
@@ -65,15 +68,15 @@ export default function viewJobListingDetailsJobSeeker() {
   const [isJobApplicationAbsent, setIsJobApplicationAbsent] = useState(false);
 
   const [formData, setFormData] = useState({
-    jobApplicationStatus: '',
-    availableStartDate: '',
-    availableEndDate: '',
-    submissionDate: '',
-    remarks: '',
+    jobApplicationStatus: "",
+    availableStartDate: "",
+    availableEndDate: "",
+    submissionDate: "",
+    remarks: "",
     documents: [
       {
-        documentName: '',
-        documentLink: '',
+        documentName: "",
+        documentLink: "",
       },
     ],
   });
@@ -82,23 +85,35 @@ export default function viewJobListingDetailsJobSeeker() {
     e.preventDefault();
     if (Object.keys(formErrors).length > 0) {
       // There are validation errors
-      alert('Please fix the form errors before submitting.');
+      //alert('Please fix the form errors before submitting.');
+      toast.current.show({
+        severity: "warn",
+        summary: "Warning",
+        detail: "Please fix the form errors before submitting.",
+        life: 5000,
+      });
       return;
     }
 
     const areDocumentsFilled = formData.documents.every(
-      (doc) => doc.documentName.trim() !== '' && doc.documentLink.trim() !== ''
+      (doc) => doc.documentName.trim() !== "" && doc.documentLink.trim() !== ""
     );
 
     if (!areDocumentsFilled) {
-      alert('Please ensure all documents are properly filled up.');
+      //alert('Please ensure all documents are properly filled up.');
+      toast.current.show({
+        severity: "warn",
+        summary: "Warning",
+        detail: "Please ensure all documents are properly filled up.",
+        life: 5000,
+      });
       return;
     }
 
     const reqBody = {
       jobListingId: jobListing.jobListingId,
       jobSeekerId: jobSeekerId,
-      jobApplicationStatus: 'Submitted',
+      jobApplicationStatus: "Submitted",
       availableStartDate: formData.availableStartDate,
       availableEndDate: formData.availableEndDate,
       remarks: formData.remarks,
@@ -111,12 +126,24 @@ export default function viewJobListingDetailsJobSeeker() {
     try {
       const response = await createJobApplication(reqBody, accessToken);
       if (!response.error) {
-        console.log('Job application created successfully:', response);
-        alert('Job application created successfully!');
+        console.log("Job application created successfully:", response);
+        //alert('Job application created successfully!');
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Job application created successfully!",
+          life: 5000,
+        });
         setRefreshData((prev) => !prev);
       }
     } catch (error) {
-      alert(error.message);
+      //alert(error.message);
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: error.message,
+        life: 5000,
+      });
     }
     setShowCreateJobApplicationDialog(false);
   };
@@ -156,8 +183,8 @@ export default function viewJobListingDetailsJobSeeker() {
   // }, [accessToken, refreshData]);
 
   useEffect(() => {
-    if (session.status === 'unauthenticated' || session.status === 'loading') {
-      router.push('/login');
+    if (session.status === "unauthenticated" || session.status === "loading") {
+      router.push("/login");
     }
     if (accessToken) {
       // Fetching the job listing details
@@ -167,7 +194,7 @@ export default function viewJobListingDetailsJobSeeker() {
           setIsLoading(false);
         })
         .catch((error) => {
-          console.error('Error fetching job details:', error);
+          console.error("Error fetching job details:", error);
           setIsLoading(false);
         });
 
@@ -177,7 +204,7 @@ export default function viewJobListingDetailsJobSeeker() {
           if (response.statusCode === 200) {
             setIsJobApplicationAbsent(false);
           } else {
-            console.error('Error fetching job preference:', response.json());
+            console.error("Error fetching job preference:", response.json());
             setIsJobApplicationAbsent(true);
           }
         }
@@ -189,14 +216,14 @@ export default function viewJobListingDetailsJobSeeker() {
           setIsJobSaved(response.statusCode === 200);
         })
         .catch((error) => {
-          console.error('Error checking if job is saved:', error);
+          console.error("Error checking if job is saved:", error);
         });
     }
   }, [accessToken, id, jobSeekerId, refreshData]);
 
   // Function to format date in "day-month-year" format
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+    const options = { year: "numeric", month: "numeric", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
@@ -208,15 +235,21 @@ export default function viewJobListingDetailsJobSeeker() {
         accessToken
       );
       console.log(
-        'Job Listing disassociated with Job Seeker',
+        "Job Listing disassociated with Job Seeker",
         response.message
       );
-      alert('Removed Job Listing Assignment successfully');
+      //alert('Removed Job Listing Assignment successfully');
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: "Removed Job Listing Assignment successfully",
+        life: 5000,
+      });
     } catch (error) {
-      console.error('Error dissociating job listing:', error);
+      console.error("Error dissociating job listing:", error);
     }
     setShowRejectJobListingDialog(false);
-    router.push('/jobListing');
+    router.push("/jobListing");
   };
 
   const deleteDialogFooter = (
@@ -234,18 +267,38 @@ export default function viewJobListingDetailsJobSeeker() {
       if (isJobSaved) {
         await unsaveJobListing(jobListing.jobListingId, accessToken);
         setIsJobSaved(false);
-        alert('Job Listing Unsaved Successfully!');
+        //alert("Job Listing Unsaved Successfully!");
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Job Listing Unsaved Successfully!",
+          life: 5000,
+        });
       } else {
         await saveJobListing(jobListing.jobListingId, accessToken);
         setIsJobSaved(true);
-        alert('Job Listing Saved Successfully!');
+        //alert("Job Listing Saved Successfully!");
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Job Listing Saved Successfully!",
+          life: 5000,
+        });
       }
     } catch (error) {
-      alert(
-        isJobSaved
-          ? 'Failed to unsave job listing. Please try again later.'
-          : 'Failed to save job listing. Please try again later.'
-      );
+      isJobSaved
+        ? toast.current.show({
+            severity: "error",
+            summary: "Error",
+            detail: "Failed to unsave job listing. Please try again later.",
+            life: 5000,
+          })
+        : toast.current.show({
+            severity: "error",
+            summary: "Error",
+            detail: "Failed to save job listing. Please try again later.",
+            life: 5000,
+          });
     }
   };
 
@@ -259,40 +312,50 @@ export default function viewJobListingDetailsJobSeeker() {
         rounded
       />
       {isJobApplicationAbsent && (
-        <Button
-          label="Create Job Application"
-          className={styles.createButton}
-          icon="pi pi-plus"
-          onClick={() => setShowCreateJobApplicationDialog(true)}
-          rounded
-        />
+        <>
+          <Button
+            label="Create Job Application"
+            className={styles.createButton}
+            icon="pi pi-plus"
+            onClick={() => setShowCreateJobApplicationDialog(true)}
+            rounded
+          />
+          <Button
+            label="Not Interested"
+            className={styles.rejectButton}
+            icon="pi pi-trash"
+            onClick={() => setShowRejectJobListingDialog(true)}
+            rounded
+          />
+        </>
       )}
       <Button
-        label={isJobSaved ? 'Saved' : 'Save'}
+        label={isJobSaved ? "Saved" : "Save"}
         className={styles.saveButton}
-        icon={isJobSaved ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'}
+        icon={isJobSaved ? "pi pi-bookmark-fill" : "pi pi-bookmark"}
         onClick={handleSaveJobListing}
         rounded
       />
-      <Button
+      {/* <Button
         label="Not Interested"
         className={styles.rejectButton}
         icon="pi pi-trash"
         onClick={() => setShowRejectJobListingDialog(true)}
         rounded
-      />
+      /> */}
     </div>
   );
 
   return (
     <div className="container">
+      <Toast ref={toast} />
       {isLoading ? (
         <ProgressSpinner
           style={{
-            display: 'flex',
-            height: '100vh',
-            'justify-content': 'center',
-            'align-items': 'center',
+            display: "flex",
+            height: "100vh",
+            "justify-content": "center",
+            "align-items": "center",
           }}
         />
       ) : (
@@ -301,7 +364,7 @@ export default function viewJobListingDetailsJobSeeker() {
           subTitle={jobListing.jobLocation}
           footer={cardFooter}
           className="my-card"
-          style={{ borderRadius: '0' }}
+          style={{ borderRadius: "0" }}
         >
           <div className="my-card.p-card-content">
             <div className="company-info">
@@ -335,7 +398,7 @@ export default function viewJobListingDetailsJobSeeker() {
 
             <strong className={styles.fieldLabel}>Average Salary</strong>
             <p className={styles.fieldContent}>
-              {'$' + jobListing.averageSalary + ' SGD'}
+              {"$" + jobListing.averageSalary + " SGD"}
             </p>
 
             <strong className={styles.fieldLabel}>Listing Date</strong>

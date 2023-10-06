@@ -9,6 +9,7 @@ import { Calendar } from "primereact/calendar";
 import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
 import Enums from "@/common/enums/enums";
+import { Toast } from "primereact/toast";
 
 const EditAccountForm = ({
   formData,
@@ -18,7 +19,8 @@ const EditAccountForm = ({
   saveChanges,
   session,
   removePdf,
-  confirmChanges
+  confirmChanges,
+  toast,
 }) => {
 
   const educationOptions = [
@@ -36,6 +38,7 @@ const EditAccountForm = ({
 
   return (
     <div className={styles.container}>
+      <Toast ref={toast} />
       <Card>
         <h1 className={styles.title}>My Account Details</h1>
         <form className={styles.form} onSubmit={confirmChanges}>
