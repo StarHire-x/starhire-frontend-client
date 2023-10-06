@@ -1,0 +1,271 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f7f8fc;
+  color: #333;
+  margin: 0;
+  /* margin: 40px auto; */
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  /* margin: 40px auto; */
+  padding: 0 20px;
+}
+
+.approve-button,
+.reject-button,
+.archive-button {
+  border: none !important;
+  color: white !important;
+  transition: all 0.3s !important;
+  margin-right: 30px;
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 100%
+  ) !important;
+}
+
+.approve-button {
+  background-color: #006d77 !important;
+}
+
+.reject-button {
+  background-color: #e29578 !important;
+}
+
+.archive-button {
+  background-color: #007bff !important;
+}
+
+.transparent-circle:before {
+  content: '';
+  display: inline-block;
+  width: 16px; /* Adjust the circle's width to your preference */
+  height: 16px; /* Adjust the circle's height to your preference */
+  border: 2px solid currentColor; /* Uses the current font color for the border */
+  border-radius: 50%; /* Makes it a circle */
+  vertical-align: middle; /* Aligns it with the text */
+  margin-right: 5px; /* Space between the circle and label */
+}
+
+.approve-button:hover,
+.reject-button:hover,
+.archive-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.my-card {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.my-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
+}
+
+.my-card .p-card-title {
+  margin-bottom: 0;
+}
+
+.my-card .p-card-content {
+  padding-top: 0.5rem;
+}
+
+.my-card .p-card-content strong {
+  display: block !important;
+  margin-top: 10px;
+  margin-bottom: 1rem !important;
+  font-size: 1.1em;
+  color: #333;
+}
+
+.my-card .p-card-content p {
+  line-height: 1.5 !important;
+  margin-bottom: 2rem !important;
+  color: #555;
+}
+
+/* .loading-animation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  } */
+
+/* .spinner {
+    border: 5px solid rgba(0, 0, 0, 0.1);
+    border-top: 5px solid #007bff;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  } */
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px; /* Adjust margin as needed */
+  margin-bottom: 25px; /* Adjust margin as needed */
+}
+
+.company-info {
+  display: flex;
+  align-items: center; /* Align items vertically in the middle */
+}
+
+.contact-info {
+  /* Add any additional styling you need for the container */
+}
+
+.contact-info p {
+  margin-bottom: 0; /* Adjust the margin as needed to reduce the space */
+}
+
+/* Add a specific class for the second <p> element if needed */
+.second-p {
+  margin-bottom: 0; /* Removes margin for the second <p> element */
+}
+
+p-dialog .p-dialog-header {
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px 5px 0 0;
+}
+
+p-dialog .p-dialog-footer {
+  border-top: 1px solid #eee;
+  background-color: #f9f9f9;
+}
+
+.blue-link {
+  color: blue;
+  /* You can add more styles if needed */
+  text-decoration: underline; /* Optionally, underline the links */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  min-height: 100vh;
+  overflow: auto;
+  scroll-behavior: auto;
+  gap: 30px;
+}
+
+.jobSeekerDetails {
+  display: flex;
+  position: relative;
+  height: 35vh;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-self: flex-start;
+  gap: 30px;
+}
+
+.jobSeekerApplication {
+  display: flex;
+  height: 60vh;
+  width: 100%;
+  flex-direction: row;
+  gap: 20px;
+  align-content: center;
+  justify-content: center;
+}
+
+.example::-webkit-scrollbar {
+  display: none;
+}
+.jobSeekerCard {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+.childCard {
+  width: 50%;
+  height: 100%;
+  overflow: auto;
+}
+
+.text {
+  font-size: 20px;
+  padding: 10px;
+}
+
+.avatar {
+  clip-path: circle();
+  object-fit: cover;
+  width: 35vh;
+  height: 35vh;
+  max-width: 30%;
+  max-height: 100%;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.backButton {
+  border: none !important;
+  color: white !important;
+  background-color: #007bff !important;
+  transition: all 0.3s !important;
+  margin-right: 30px;
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 100%
+  ) !important;
+}
+
+.subButtons {
+  display: flex;
+  gap: 10px;
+}
+
+.dates {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-bottom: 50px;
+  gap: 30px;
+}
+
+.checkboxes {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.childCheckbox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+}
