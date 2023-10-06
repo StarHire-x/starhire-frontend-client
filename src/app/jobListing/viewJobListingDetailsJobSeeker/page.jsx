@@ -239,12 +239,6 @@ export default function viewJobListingDetailsJobSeeker() {
         response.message
       );
       //alert('Removed Job Listing Assignment successfully');
-      toast.current.show({
-        severity: "success",
-        summary: "Success",
-        detail: "Removed Job Listing Assignment successfully",
-        life: 5000,
-      });
     } catch (error) {
       console.error("Error dissociating job listing:", error);
     }
