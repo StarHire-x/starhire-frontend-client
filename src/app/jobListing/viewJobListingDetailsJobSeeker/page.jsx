@@ -24,7 +24,7 @@ import {
 } from '@/app/api/jobApplication/route';
 import { Toast } from 'primereact/toast';
 
-export default function viewJobListingDetailsJobSeeker() {
+export default function ViewJobListingDetailsJobSeeker() {
   const session = useSession();
   const router = useRouter();
 

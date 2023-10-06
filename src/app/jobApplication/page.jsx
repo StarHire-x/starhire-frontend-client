@@ -17,7 +17,7 @@ import { Dropdown } from "primereact/dropdown";
 import EditJobApplicationForm from "@/components/EditJobApplicationForm/EditJobApplicationForm";
 import { Toast } from "primereact/toast";
 
-const jobApplicationPage = () => {
+const JobApplicationPage = () => {
   const [jobApplications, setJobApplications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshData, setRefreshData] = useState(false);
@@ -325,4 +325,4 @@ const jobApplicationPage = () => {
   );
 };
 
-export default jobApplicationPage;
+export default JobApplicationPage;
