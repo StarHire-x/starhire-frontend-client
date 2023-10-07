@@ -57,7 +57,7 @@ const EditJobApplicationForm = ({
       ...prevState,
       documents: [
         ...prevState.documents,
-        { documentName: "", documentLink: "" },
+        { mandatory: false, documentName: "", documentLink: "" },
       ],
     }));
   };
