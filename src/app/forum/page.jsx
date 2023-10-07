@@ -33,7 +33,6 @@ const ForumPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshData, setRefreshData] = useState(false);
   const [mounted, setMounted] = useState(false);
-  // const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
 
   useEffect(() => {
     setMounted(true);
@@ -59,19 +58,6 @@ const ForumPage = () => {
           </MediaQuery>
         </>
       )}
-
-      {/* {isTabletOrMobile ? (
-        <ForumMobileView
-          forumCategoryTitle={forumCategoryTitle}
-          setForumCategoryTitle={setForumCategoryTitle}
-        />
-       
-      ) : (
-         <ForumDesktopView
-          forumCategoryTitle={forumCategoryTitle}
-          setForumCategoryTitle={setForumCategoryTitle}
-        />
-      )} */}
     </>
   );
 };
