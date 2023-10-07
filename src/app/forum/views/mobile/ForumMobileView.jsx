@@ -1,4 +1,4 @@
-"user client";
+"use client";
 import { Button } from "primereact/button";
 import ForumCategoryMenuMobile from "../../components/ForumCategoryMenu/mobile/ForumCategoryMenuMobile";
 import styles from "./ForumMobileView.module.css";
