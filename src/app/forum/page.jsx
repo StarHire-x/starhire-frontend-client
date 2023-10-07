@@ -1,15 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import ForumCategoryMenu from "./components/ForumCategoryMenu/ForumCategoryMenu";
+import ForumCategoryMenu from "./components/ForumCategoryMenu/desktop/ForumCategoryMenu";
 import ForumCreatePostButton from "./components/ForumCreatePostButton/ForumCreatePostButton";
 import ForumGuidelinesCard from "./components/ForumGuidelines/ForumGuidelinesCard";
 import ForumSearchBar from "./components/ForumSearchBar/ForumSearchBar";
 // import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useMediaQuery } from "react-responsive";
+import MediaQuery, { useMediaQuery } from "react-responsive";
 import ForumDesktopView from "./views/desktop/ForumDesktopView";
+import ForumMobileView from "./views/mobile/ForumMobileView";
 
 const ForumPage = () => {
   const session = useSession();
@@ -31,19 +32,46 @@ const ForumPage = () => {
   const [forumCategoryTitle, setForumCategoryTitle] = useState("Recent Posts");
   const [isLoading, setIsLoading] = useState(true);
   const [refreshData, setRefreshData] = useState(false);
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
+  const [mounted, setMounted] = useState(false);
+  // const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <>
       <h2>Forum</h2>
-      {!isTabletOrMobile ? (
-        <ForumDesktopView
+
+      {mounted && (
+        <>
+          <MediaQuery minWidth={1225}>
+            <ForumDesktopView
+              forumCategoryTitle={forumCategoryTitle}
+              setForumCategoryTitle={setForumCategoryTitle}
+            />
+          </MediaQuery>
+          <MediaQuery minWidth={390} maxWidth={1224}>
+            <ForumMobileView
+              forumCategoryTitle={forumCategoryTitle}
+              setForumCategoryTitle={setForumCategoryTitle}
+            />
+          </MediaQuery>
+        </>
+      )}
+
+      {/* {isTabletOrMobile ? (
+        <ForumMobileView
           forumCategoryTitle={forumCategoryTitle}
           setForumCategoryTitle={setForumCategoryTitle}
         />
+       
       ) : (
-        <p>Mobile view here, to be developed</p>
-      )}
+         <ForumDesktopView
+          forumCategoryTitle={forumCategoryTitle}
+          setForumCategoryTitle={setForumCategoryTitle}
+        />
+      )} */}
     </>
   );
 };

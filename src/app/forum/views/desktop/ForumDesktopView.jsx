@@ -1,5 +1,5 @@
 "use client";
-import ForumCategoryMenu from '../../components/ForumCategoryMenu/ForumCategoryMenu';
+import ForumCategoryMenu from '../../components/ForumCategoryMenu/desktop/ForumCategoryMenu';
 import ForumCreatePostButton from '../../components/ForumCreatePostButton/ForumCreatePostButton';
 import ForumGuidelinesCard from '../../components/ForumGuidelines/ForumGuidelinesCard';
 import ForumSearchBar from '../../components/ForumSearchBar/ForumSearchBar';
