@@ -191,6 +191,18 @@ export default function ViewJobListingDetailsJobSeeker() {
       viewOneJobListing(id, accessToken)
         .then((data) => {
           setJobListing(data);
+          // Preload the form with mandatory documents that cannot be removed nor edited
+          const documentsList = data.requiredDocuments
+            ? data.requiredDocuments.split(",").map((name) => ({
+                mandatory: true,
+                documentName: name.trim(),
+                documentLink: "",
+              }))
+            : [];
+          setFormData((prevData) => ({
+            ...prevData,
+            documents: documentsList,
+          }));
           setIsLoading(false);
         })
         .catch((error) => {
