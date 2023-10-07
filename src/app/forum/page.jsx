@@ -40,8 +40,6 @@ const ForumPage = () => {
 
   return (
     <>
-      <h2>Forum</h2>
-
       {mounted && (
         <>
           <MediaQuery minWidth={1225}>
