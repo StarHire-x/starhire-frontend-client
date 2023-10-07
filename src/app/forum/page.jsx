@@ -48,7 +48,7 @@ const ForumPage = () => {
               setForumCategoryTitle={setForumCategoryTitle}
             />
           </MediaQuery>
-          <MediaQuery minWidth={390} maxWidth={1224}>
+          <MediaQuery maxWidth={1224}>
             <ForumMobileView
               forumCategoryTitle={forumCategoryTitle}
               setForumCategoryTitle={setForumCategoryTitle}
