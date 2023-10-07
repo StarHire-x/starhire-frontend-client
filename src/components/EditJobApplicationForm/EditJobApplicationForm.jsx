@@ -57,7 +57,7 @@ const EditJobApplicationForm = ({
       ...prevState,
       documents: [
         ...prevState.documents,
-        { documentName: "", documentLink: "" },
+        { mandatory: false, documentName: "", documentLink: "" },
       ],
     }));
   };
@@ -154,7 +154,7 @@ const EditJobApplicationForm = ({
           <Panel header="Documents" toggleable>
             <div className={styles.buttonContainer}>
               <Button
-                label="Add Document"
+                label="Add More Documents"
                 rounded
                 type="button"
                 onClick={addDocument}
@@ -169,6 +169,7 @@ const EditJobApplicationForm = ({
                     name={`documentName-${index}`}
                     value={document.documentName}
                     onChange={handleDocumentChange(index, "documentName")}
+                    readOnly={document.mandatory}
                   />
                 </div>
                 <div className={styles.cardRow}>
@@ -205,7 +206,7 @@ const EditJobApplicationForm = ({
                     readOnly
                   />
                 </div> */}
-                {formData.documents.length > 1 && (
+                {!document.mandatory && (
                   <div className={styles.buttonContainer}>
                     <Button
                       type="button"
