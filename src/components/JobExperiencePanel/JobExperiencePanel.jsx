@@ -254,6 +254,7 @@ const JobExperiencePanel = ({
         life: 5000,
       });
     }
+    setFormData(initialFormData);
     setSelectedJobExperienceData(null);
     setShowEditJobExperienceDialog(false);
   }
@@ -280,6 +281,7 @@ const JobExperiencePanel = ({
         life: 5000,
       });
     }
+    setFormData(initialFormData);
     setSelectedJobExperienceData(null);
     setShowDeleteJobExperienceDialog(false);
   };
