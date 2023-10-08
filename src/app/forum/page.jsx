@@ -11,11 +11,18 @@ import { useSession } from "next-auth/react";
 import MediaQuery, { useMediaQuery } from "react-responsive";
 import ForumDesktopView from "./views/desktop/ForumDesktopView";
 import ForumMobileView from "./views/mobile/ForumMobileView";
+import Enums from "@/common/enums/enums";
 
 const ForumPage = () => {
   const session = useSession();
   const router = useRouter();
-  if (session.status === "unauthenticated") {
+
+  const currentUserRole =
+    session.status === "authenticated" &&
+    session.data &&
+    session.data.user.role;
+
+  if (session.status === "unauthenticated" || currentUserRole !== Enums.JOBSEEKER) {
     router.push("/login");
   }
 
