@@ -46,6 +46,7 @@ const ForumPage = () => {
             <ForumDesktopView
               forumCategoryTitle={forumCategoryTitle}
               setForumCategoryTitle={setForumCategoryTitle}
+              userIdRef={userIdRef}
             />
           </MediaQuery>
           <MediaQuery maxWidth={1224}>

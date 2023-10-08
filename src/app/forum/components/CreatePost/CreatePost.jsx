@@ -1,12 +1,14 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./CreatePost.module.css";
 import { InputTextarea } from "primereact/inputtextarea";
 import { RadioButton } from "primereact/radiobutton";
 import { Checkbox } from "primereact/checkbox";
 import { Button } from "primereact/button";
+import { createPost } from "@/app/api/forum/route";
+import { Toast } from "primereact/toast";
 
-const CreatePost = () => {
+const CreatePost = (userIdRef) => {
   //hardcoded for now, will fetch from backend in the future.
   const forumCategories = [
     {
@@ -33,36 +35,35 @@ const CreatePost = () => {
     createdAt: new Date(),
     forumPostMessage: postContent,
     forumCategory: selectedCategory,
-    isAnonymous: '', //need change
-    jobSeekerId: '', //need change
+    isAnonymous: anonymous,
+    jobSeekerId: userIdRef,
   })
+  const toast = useRef(null);
 
-  const handlePostTitleChange = (e) => {
-    setPostTitle(e.target.value);
+  const handleSubmit = async () => {
+    try {
+      const response = await createPost(
+        formData,
+        accessToken
+      );
+      console.log("Forum post has been created");
+    } catch (error) {
+      console.error(
+        "There was an error creating the forum post",
+        error.message
+      )
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: "There was an error creating the forum post",
+        life: 5000,
+      });
+    }
   };
-
-  const handlePostContentChange = (e) => {
-    setPostContent(e.target.value);
-  };
-
-  const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value);
-  };
-
-  const handleAnonymousChange = (e) => {
-    setAnonymous(!anonymous);
-    console.log("ANONYMOUS HERE!!!!!!");
-    console.log(anonymous);
-  };
-
-  const handleGuideLineChange = (e) => {
-    setCheckedGuideLines(e.checked);
-  };
-
-  const handleSubmit = () => {};
 
   return (
     <>
+    <Toast ref={toast} />
       <div className={styles.header}>
         <h3>New Post</h3>
         <h5 className={styles.newPostMessage}>
@@ -77,7 +78,7 @@ const CreatePost = () => {
           rows={1}
           cols={75}
           value={postTitle}
-          onChange={(e) => handlePostTitleChange(e)}
+          onChange={(e) => setPostTitle(e.target.value)}
           disabled
           className={styles.textarea}
         />
@@ -88,7 +89,7 @@ const CreatePost = () => {
           rows={10}
           cols={75}
           value={postContent}
-          onChange={(e) => handlePostContentChange(e)}
+          onChange={(e) => setPostContent(e.target.value)}
           disabled
           className={styles.textarea}
         />
@@ -101,7 +102,7 @@ const CreatePost = () => {
               <RadioButton
                 value={category.label}
                 name="category"
-                onChange={(e) => handleCategoryChange(e)}
+                onChange={(e) => setSelectedCategory(e.target.value)}
                 checked={selectedCategory === category.label}
               />
               <label className={styles.categoryLabel}>{category.label}</label>
@@ -114,7 +115,7 @@ const CreatePost = () => {
           <div>
             <Checkbox
               inputId="anonymous"
-              onChange={(e) => handleAnonymousChange(e)}
+              onChange={(e) => setAnonymous(e.checked)}
               checked={anonymous}
             />
           </div>
@@ -129,7 +130,7 @@ const CreatePost = () => {
           <div>
             <Checkbox
               inputId="guideLines"
-              onChange={(e) => handleGuideLineChange(e)}
+              onChange={(e) =>  setCheckedGuideLines(e.checked)}
               checked={checkedGuideLines}
               required
             />
