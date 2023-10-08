@@ -19,3 +19,9 @@
   left: 50%;
   transform: translateX(-50%);
 }
+
+@media (max-width: 768px) {
+  .createPostDialog {
+    max-width: 90vw;
+  }
+}

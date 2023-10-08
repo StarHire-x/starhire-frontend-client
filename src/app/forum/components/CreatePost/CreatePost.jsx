@@ -8,7 +8,7 @@ import { Button } from "primereact/button";
 import { createPost } from "@/app/api/forum/route";
 import { Toast } from "primereact/toast";
 
-const CreatePost = ({userIdRef, accessToken, onSubmitSuccess}) => {
+const CreatePost = ({ userIdRef, accessToken, onSubmitSuccess }) => {
   //hardcoded for now, will fetch from backend in the future.
   const forumCategories = [
     {
@@ -36,6 +36,12 @@ const CreatePost = ({userIdRef, accessToken, onSubmitSuccess}) => {
     jobSeekerId: userIdRef.userIdRef,
   });
   const toast = useRef(null);
+
+  const [titleValid, setTitleValid] = useState(true);
+  const [contentValid, setContentValid] = useState(true);
+  const [categoryValid, setCategoryValid] = useState(true);
+  const [guideLinesValid, setGuideLinesValid] = useState(true);
+  const [formValid, setFormValid] = useState(true);
 
   const handlePostTitleChange = (e) => {
     setPostTitle(e.target.value);
@@ -84,22 +90,100 @@ const CreatePost = ({userIdRef, accessToken, onSubmitSuccess}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await createPost(formData, userIdRef.accessToken);
-      console.log("Forum post has been created");
-      resetForm();
-      onSubmitSuccess();
-    } catch (error) {
-      console.error(
-        "There was an error creating the forum post",
-        error.message
-      );
-      toast.current.show({
-        severity: "error",
-        summary: "Error",
-        detail: "There was an error creating the forum post",
-        life: 5000,
-      });
+
+    // Check title validity
+    if (!postTitle.trim()) {
+      setTitleValid(false);
+    } else {
+      setTitleValid(true);
+    }
+
+    // Check content validity
+    if (!postContent.trim()) {
+      setContentValid(false);
+    } else {
+      setContentValid(true);
+    }
+
+    // Check category validity
+    if (!selectedCategory) {
+      setCategoryValid(false);
+    } else {
+      setCategoryValid(true);
+    }
+
+    // Check guidelines validity
+    if (!checkedGuideLines) {
+      setGuideLinesValid(false);
+    } else {
+      setGuideLinesValid(true);
+    }
+
+    if (
+      postTitle.trim() &&
+      postContent.trim() &&
+      selectedCategory &&
+      checkedGuideLines
+    ) {
+      setFormValid(true);
+
+      try {
+        const response = await createPost(formData, userIdRef.accessToken);
+        console.log("Forum post has been created");
+        resetForm();
+        onSubmitSuccess();
+      } catch (error) {
+        console.error(
+          "There was an error creating the forum post",
+          error.message
+        );
+        toast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail: "There was an error creating the forum post",
+          life: 5000,
+        });
+      }
+    } else {
+      // The form is invalid, do not submit
+      setFormValid(false);
+
+      // Show a toast message for each empty field
+      if (!postTitle.trim()) {
+        toast.current.show({
+          severity: "warn",
+          summary: "Warning",
+          detail: "Please fill up the title",
+          life: 5000,
+        });
+      }
+
+      if (!postContent.trim()) {
+        toast.current.show({
+          severity: "warn",
+          summary: "Warning",
+          detail: "Please fill up the content",
+          life: 5000,
+        });
+      }
+
+      if (!selectedCategory) {
+        toast.current.show({
+          severity: "warn",
+          summary: "Warning",
+          detail: "Please select a category",
+          life: 5000,
+        });
+      }
+
+      if (!checkedGuideLines) {
+        toast.current.show({
+          severity: "warn",
+          summary: "Warning",
+          detail: "Please agree to the guidelines",
+          life: 5000,
+        });
+      }
     }
   };
 
@@ -112,7 +196,7 @@ const CreatePost = ({userIdRef, accessToken, onSubmitSuccess}) => {
   return (
     <>
       <Toast ref={toast} />
-      <form onSubmit={e => handleSubmit(e)}>
+      <form onSubmit={(e) => handleSubmit(e)}>
         <div className={styles.header}>
           <h3>New Post</h3>
           <h5 className={styles.newPostMessage}>
@@ -179,7 +263,6 @@ const CreatePost = ({userIdRef, accessToken, onSubmitSuccess}) => {
                 inputId="guideLines"
                 onChange={(e) => setCheckedGuideLines(e.checked)}
                 checked={checkedGuideLines}
-                required
               />
             </div>
             <label htmlFor="guideLines" className={styles.guideLinesText}>
