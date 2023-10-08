@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./editAccountForm.module.css"
 import { RadioButton } from "primereact/radiobutton";
 import { Card } from "primereact/card";
@@ -10,6 +10,8 @@ import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
 import Enums from "@/common/enums/enums";
 import { Toast } from "primereact/toast";
+import { Dialog } from "primereact/dialog";
+import Following from "../Following/Following";
 
 const EditAccountForm = ({
   formData,
@@ -36,11 +38,28 @@ const EditAccountForm = ({
     { label: "Limited (Hide Sensitive Details)", value: "Limited" },
   ];
 
+  const [showMyFollowingsDialog, setShowMyFollowingsDialog] =
+    useState(false);
+
+  const hideMyFollowingsDialog = () => {
+    setShowMyFollowingsDialog(false);
+  };
+
   return (
     <div className={styles.container}>
       <Toast ref={toast} />
       <Card>
         <h1 className={styles.title}>My Account Details</h1>
+        {session.data.user.role === Enums.JOBSEEKER && (
+          <div className={styles.followingContainer}>
+            <Button
+              label="My Following"
+              severity="info"
+              raised
+              onClick={() => setShowMyFollowingsDialog(true)}
+            />
+          </div>
+        )}
         <form className={styles.form} onSubmit={confirmChanges}>
           <div className={styles.avatarContainer}>
             {formData?.profilePictureUrl && (
@@ -308,6 +327,15 @@ const EditAccountForm = ({
           </div>
         </form>
       </Card>
+
+      <Dialog
+        header="My Followings"
+        visible={showMyFollowingsDialog}
+        onHide={hideMyFollowingsDialog}
+        className={styles.cardFollowing}
+      >
+        <Following />
+      </Dialog>
     </div>
   );
 };
