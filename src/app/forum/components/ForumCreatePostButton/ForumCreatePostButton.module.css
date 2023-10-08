@@ -1,3 +1,12 @@
 .createPostBtn {
-  background-color: #53c28b;
+  border: #006d77 !important;
+  background-color: #006d77 !important;
+  color: #edf6f9 !important;
+}
+
+.createPostBtn:hover {
+  border: #2196F3 !important;
+  background-color: #2196F3 !important;
+  color: #edf6f9 !important;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s
 }

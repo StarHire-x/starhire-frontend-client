@@ -22,7 +22,7 @@ const ForumDesktopView = ({ forumCategoryTitle, setForumCategoryTitle }) => {
               <ForumCreatePostButton />
             </div>
           </div>
-          <h2>{forumCategoryTitle}</h2>
+          <h2 style={{marginTop: "10px"}}>{forumCategoryTitle}</h2>
           <div className={styles.postsContainer}></div>
         </div>
         <div className={styles.guideLinesContainer}>

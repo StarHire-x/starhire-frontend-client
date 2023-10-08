@@ -6,7 +6,7 @@ import styles from './ForumCreatePostButton.module.css';
 const ForumCreatePostButton = () => {
   return (
     <>
-      <Button size="small" className={styles.createPostBtn} label="Create Post" icon="pi pi-plus" />
+      <Button size="small" rounded className={styles.createPostBtn} label="Create Post" icon="pi pi-plus" />
     </>
   );
 };
