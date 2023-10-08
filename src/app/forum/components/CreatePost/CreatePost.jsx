@@ -20,7 +20,7 @@ const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess }
   const [formData, setFormData] = useState({
     createdAt: new Date(),
     isAnonymous: false,
-    jobSeekerId: userIdRef.userIdRef,
+    jobSeekerId: userIdRef,
   });
   const toast = useRef(null);
 
