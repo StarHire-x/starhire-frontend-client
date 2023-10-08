@@ -118,7 +118,7 @@ const CreatePost = ({userIdRef, accessToken, onSubmitSuccess}) => {
           <h5 className={styles.newPostMessage}>
             Your post is tied to your account. Please read the forum guidelines
             and be responsible when creating a post on StarHire's forum to avoid
-            post removal. Happy Posting!
+            post removal. Happy posting!
           </h5>
         </div>
         <div className={styles.postTitleContainer}>
