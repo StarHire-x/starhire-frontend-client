@@ -216,7 +216,7 @@ const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess }
           <h4 className={styles.categoriesHeader}>Category</h4>
           <div className={styles.categories}>
             {forumCategories.map((category) => (
-              <div className={styles.categoryLabelContainer}>
+              <div key={category.label} className={styles.categoryLabelContainer}>
                 <RadioButton
                   value={category.label}
                   name="category"
