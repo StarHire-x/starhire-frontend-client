@@ -74,6 +74,8 @@ const ForumPage = () => {
             <ForumMobileView
               forumCategoryTitle={forumCategoryTitle}
               setForumCategoryTitle={setForumCategoryTitle}
+              userIdRef={userIdRef}
+              accessToken={accessToken}
               forumCategories={mockForumCategories}
             />
           </MediaQuery>

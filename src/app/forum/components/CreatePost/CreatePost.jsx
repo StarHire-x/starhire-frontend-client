@@ -8,22 +8,9 @@ import { Button } from "primereact/button";
 import { createPost } from "@/app/api/forum/route";
 import { Toast } from "primereact/toast";
 
-const CreatePost = ({ userIdRef, accessToken, onSubmitSuccess }) => {
-  //hardcoded for now, will fetch from backend in the future.
-  const forumCategories = [
-    {
-      label: "Events",
-    },
-    {
-      label: "Career",
-    },
-    {
-      label: "Miscellaneous",
-    },
-    {
-      label: "Confession",
-    },
-  ];
+const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess }) => {
+  
+  forumCategories = forumCategories?.filter((forumCategory) => forumCategory.label !== 'My Posts'); // don't want show 'My Posts' as an option for user to select
 
   const [postTitle, setPostTitle] = useState("");
   const [postContent, setPostContent] = useState("");
@@ -128,7 +115,7 @@ const CreatePost = ({ userIdRef, accessToken, onSubmitSuccess }) => {
       setFormValid(true);
 
       try {
-        const response = await createPost(formData, userIdRef.accessToken);
+        const response = await createPost(formData, accessToken);
         console.log("Forum post has been created");
         resetForm();
         onSubmitSuccess();

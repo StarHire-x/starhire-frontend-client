@@ -19,7 +19,7 @@ const ForumDesktopView = ({ forumCategoryTitle, setForumCategoryTitle, userIdRef
               <ForumSearchBar />
             </div>
             <div className={styles.createPostBtnContainer}>
-              <ForumCreatePostButton userIdRef={userIdRef} accessToken={accessToken}/>
+              <ForumCreatePostButton userIdRef={userIdRef} accessToken={accessToken} forumCategories={forumCategories}/>
             </div>
           </div>
           <h2 style={{marginTop: "10px"}}>{forumCategoryTitle}</h2>
