@@ -8,7 +8,7 @@ import { Button } from "primereact/button";
 import { createPost } from "@/app/api/forum/route";
 import { Toast } from "primereact/toast";
 
-const CreatePost = (userIdRef) => {
+const CreatePost = (userIdRef, accessToken) => {
   //hardcoded for now, will fetch from backend in the future.
   const forumCategories = [
     {
@@ -79,7 +79,6 @@ const CreatePost = (userIdRef) => {
           cols={75}
           value={postTitle}
           onChange={(e) => setPostTitle(e.target.value)}
-          disabled
           className={styles.textarea}
         />
       </div>
@@ -90,7 +89,6 @@ const CreatePost = (userIdRef) => {
           cols={75}
           value={postContent}
           onChange={(e) => setPostContent(e.target.value)}
-          disabled
           className={styles.textarea}
         />
       </div>

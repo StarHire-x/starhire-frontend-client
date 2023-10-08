@@ -6,7 +6,7 @@ import styles from "./ForumCreatePostButton.module.css";
 import CreatePost from "../CreatePost/CreatePost";
 import { Dialog } from "primereact/dialog";
 
-const ForumCreatePostButton = (userIdRef) => {
+const ForumCreatePostButton = (userIdRef, accessToken) => {
   const[visible, setVisible] = useState(false);
 
   const handleOnClick = () => {
@@ -28,7 +28,7 @@ const ForumCreatePostButton = (userIdRef) => {
         onClick={handleOnClick}
       />
       <Dialog header="Create Post" visible={visible} onHide={onHideDialog} className={styles.createPostDialog} draggable={false}>
-        <CreatePost userIdRef={userIdRef}/>
+        <CreatePost userIdRef={userIdRef} accessToken={accessToken}/>
       </Dialog>
     </>
   );

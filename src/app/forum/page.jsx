@@ -47,6 +47,7 @@ const ForumPage = () => {
               forumCategoryTitle={forumCategoryTitle}
               setForumCategoryTitle={setForumCategoryTitle}
               userIdRef={userIdRef}
+              accessToken={accessToken}
             />
           </MediaQuery>
           <MediaQuery maxWidth={1224}>

@@ -5,7 +5,7 @@ import ForumGuidelinesCard from "../../components/ForumGuidelines/ForumGuideline
 import ForumSearchBar from "../../components/ForumSearchBar/ForumSearchBar";
 import styles from "./ForumDesktopView.module.css";
 
-const ForumDesktopView = ({ forumCategoryTitle, setForumCategoryTitle, userIdRef }) => {
+const ForumDesktopView = ({ forumCategoryTitle, setForumCategoryTitle, userIdRef, accessToken }) => {
   return (
     <>
       <h2 style={{paddingLeft: "20px"}}>Forum</h2>
@@ -19,7 +19,7 @@ const ForumDesktopView = ({ forumCategoryTitle, setForumCategoryTitle, userIdRef
               <ForumSearchBar />
             </div>
             <div className={styles.createPostBtnContainer}>
-              <ForumCreatePostButton userIdRef={userIdRef}/>
+              <ForumCreatePostButton userIdRef={userIdRef} accessToken={accessToken}/>
             </div>
           </div>
           <h2 style={{marginTop: "10px"}}>{forumCategoryTitle}</h2>
