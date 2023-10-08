@@ -7,15 +7,19 @@ import CreatePost from "../CreatePost/CreatePost";
 import { Dialog } from "primereact/dialog";
 
 const ForumCreatePostButton = (userIdRef, accessToken) => {
-  const[visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const handleOnClick = () => {
     setVisible(true);
-  }
+  };
 
   const onHideDialog = () => {
     setVisible(false);
-  }
+  };
+
+  const handleFormSubmitSuccess = () => {
+    onHideDialog();
+  };
 
   return (
     <>
@@ -27,8 +31,18 @@ const ForumCreatePostButton = (userIdRef, accessToken) => {
         icon="pi pi-plus"
         onClick={handleOnClick}
       />
-      <Dialog header="Create Post" visible={visible} onHide={onHideDialog} className={styles.createPostDialog} draggable={false}>
-        <CreatePost userIdRef={userIdRef} accessToken={accessToken}/>
+      <Dialog
+        header="Create Post"
+        visible={visible}
+        onHide={onHideDialog}
+        className={styles.createPostDialog}
+        draggable={false}
+      >
+        <CreatePost
+          userIdRef={userIdRef}
+          accessToken={accessToken}
+          onSubmitSuccess={handleFormSubmitSuccess}
+        />
       </Dialog>
     </>
   );

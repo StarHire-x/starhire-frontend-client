@@ -8,7 +8,7 @@ import { Button } from "primereact/button";
 import { createPost } from "@/app/api/forum/route";
 import { Toast } from "primereact/toast";
 
-const CreatePost = ({userIdRef, accessToken}) => {
+const CreatePost = ({userIdRef, accessToken, onSubmitSuccess}) => {
   //hardcoded for now, will fetch from backend in the future.
   const forumCategories = [
     {
@@ -88,6 +88,7 @@ const CreatePost = ({userIdRef, accessToken}) => {
       const response = await createPost(formData, userIdRef.accessToken);
       console.log("Forum post has been created");
       resetForm();
+      onSubmitSuccess();
     } catch (error) {
       console.error(
         "There was an error creating the forum post",
