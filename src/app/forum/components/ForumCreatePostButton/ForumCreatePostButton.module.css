@@ -13,5 +13,9 @@
 }
 
 .createPostDialog {
-  max-width: 40vw;
+  max-width: 50vw;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }

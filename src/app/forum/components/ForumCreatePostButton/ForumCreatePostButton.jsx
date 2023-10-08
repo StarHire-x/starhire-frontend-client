@@ -27,7 +27,7 @@ const ForumCreatePostButton = () => {
         icon="pi pi-plus"
         onClick={handleOnClick}
       />
-      <Dialog visible={visible} onHide={onHideDialog} className={styles.createPostDialog}>
+      <Dialog header="Create Post" visible={visible} onHide={onHideDialog} className={styles.createPostDialog} draggable={false}>
         <CreatePost />
       </Dialog>
     </>

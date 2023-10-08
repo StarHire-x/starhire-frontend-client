@@ -1,0 +1,17 @@
+.header {
+}
+
+.newPostMessage {
+    margin-top: 10px;
+}
+
+.postTitleContainer, .postContentContainer {
+    margin-top: 20px;
+}
+
+.postTitleHeader, .postContentHeader {
+    margin-bottom: 5px;
+}
+
+.categories {
+}
