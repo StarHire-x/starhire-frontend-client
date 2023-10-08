@@ -71,6 +71,13 @@
   align-items: center;
 }
 
+.followingContainer {
+  grid-column: span 2;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
 .radioFields {
   display: flex;
   flex-direction: column;
@@ -82,6 +89,18 @@
   flex-direction: row;
   align-items: column;
   gap: 8px;
+}
+
+.cardFollowing {
+  background-color: #ffffff;    /* White background */
+    border-radius: 8px;           /* Rounded corners */
+    max-width: 500px;             /* Maximum width of the dialog box */
+    margin: 40px auto;            /* Centering the dialog box on the page with 40px margin from top and bottom */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), /* Horizontal shadow, vertical shadow, blur, spread and color */
+                0 6px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;                /* Padding inside the dialog box */
+    position: relative;           /* Set position to relative to allow absolute positioning within the dialog */
+    overflow: hidden; 
 }
 
 .fileField {
