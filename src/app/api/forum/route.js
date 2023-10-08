@@ -15,9 +15,11 @@ export const createPost = async (newPost, accessToken) => {
       }
     );
     const response = await res.json();
+    console.log("FROM ROUTE.JS!!!");
+    console.log(response);
 
     if (response.statusCode === 200) {
-      return response.data;
+      return response;
     } else {
       throw new Error(response.message || "An error occurred");
     }

@@ -8,7 +8,7 @@ import { Button } from "primereact/button";
 import { createPost } from "@/app/api/forum/route";
 import { Toast } from "primereact/toast";
 
-const CreatePost = (userIdRef, accessToken) => {
+const CreatePost = ({userIdRef, accessToken}) => {
   //hardcoded for now, will fetch from backend in the future.
   const forumCategories = [
     {
@@ -33,7 +33,7 @@ const CreatePost = (userIdRef, accessToken) => {
   const [formData, setFormData] = useState({
     createdAt: new Date(),
     isAnonymous: false,
-    jobSeekerId: userIdRef,
+    jobSeekerId: userIdRef.userIdRef,
   });
   const toast = useRef(null);
 
@@ -69,9 +69,10 @@ const CreatePost = (userIdRef, accessToken) => {
     }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const response = await createPost(formData, accessToken);
+      const response = await createPost(formData, userIdRef.accessToken);
       console.log("Forum post has been created");
     } catch (error) {
       console.error(
@@ -87,15 +88,16 @@ const CreatePost = (userIdRef, accessToken) => {
     }
   };
 
-  const buttonClick = () => {
-    console.log("PRINT OUT HERE");
-    console.log(formData);
-  };
+  // const buttonClick = () => {
+  //   console.log("SEE HERE!!");
+  //   console.log("userid", userIdRef.userIdRef)
+  //   console.log("access token", userIdRef.accessToken)
+  // }
 
   return (
     <>
       <Toast ref={toast} />
-      <form>
+      <form onSubmit={e => handleSubmit(e)}>
         <div className={styles.header}>
           <h3>New Post</h3>
           <h5 className={styles.newPostMessage}>
@@ -173,7 +175,7 @@ const CreatePost = (userIdRef, accessToken) => {
           </div>
         </div>
         <div className={styles.submitButtonContainer}>
-          <Button label="Submit" size="small" rounded onClick={buttonClick} />
+          <Button label="Submit" size="small" rounded />
         </div>
       </form>
     </>
