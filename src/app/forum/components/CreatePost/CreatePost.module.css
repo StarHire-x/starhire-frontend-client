@@ -9,6 +9,7 @@
 .postTitleContainer,
 .postContentContainer,
 .categoriesContainer,
+.anonymousContainer,
 .guideLinesContainer {
   margin-top: 20px;
 }
@@ -34,11 +35,13 @@
 	margin-left: 5px;
 }
 
-.guideLines {
+.guideLines,
+.anonymous {
 	display: flex;
 }
 
-.guideLinesText {
+.guideLinesText,
+.anonymousText {
 	margin-left: 5px;
 }
 

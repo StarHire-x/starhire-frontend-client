@@ -27,6 +27,15 @@ const CreatePost = () => {
   const [postContent, setPostContent] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [checkedGuideLines, setCheckedGuideLines] = useState("");
+  const [anonymous, setAnonymous] = useState(false);
+  const [formData, setFormData] = useState ({
+    forumPostTitle: postTitle,
+    createdAt: new Date(),
+    forumPostMessage: postContent,
+    forumCategory: selectedCategory,
+    isAnonymous: '', //need change
+    jobSeekerId: '', //need change
+  })
 
   const handlePostTitleChange = (e) => {
     setPostTitle(e.target.value);
@@ -40,11 +49,17 @@ const CreatePost = () => {
     setSelectedCategory(e.target.value);
   };
 
+  const handleAnonymousChange = (e) => {
+    setAnonymous(!anonymous);
+    console.log("ANONYMOUS HERE!!!!!!");
+    console.log(anonymous);
+  };
+
   const handleGuideLineChange = (e) => {
     setCheckedGuideLines(e.checked);
   };
 
-  const submitPost = () => {};
+  const handleSubmit = () => {};
 
   return (
     <>
@@ -94,6 +109,20 @@ const CreatePost = () => {
           ))}
         </div>
       </div>
+      <div className={styles.anonymousContainer}>
+      <div className={styles.anonymous}>
+          <div>
+            <Checkbox
+              inputId="anonymous"
+              onChange={(e) => handleAnonymousChange(e)}
+              checked={anonymous}
+            />
+          </div>
+          <label htmlFor="anonymous" className={styles.anonymousText}>
+            Do you wish your post to be anonymous?
+          </label>
+        </div>
+      </div>
       <div className={styles.guideLinesContainer}>
         <h4 className={styles.guideLinesHeader}>Guidelines</h4>
         <div className={styles.guideLines}>
@@ -112,7 +141,7 @@ const CreatePost = () => {
         </div>
       </div>
       <div className={styles.submitButtonContainer}>
-        <Button label="Submit" size="small" rounded onClick={submitPost} />
+        <Button label="Submit" size="small" rounded onClick={handleSubmit} />
       </div>
     </>
   );
