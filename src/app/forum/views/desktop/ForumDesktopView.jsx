@@ -8,7 +8,7 @@ import styles from "./ForumDesktopView.module.css";
 const ForumDesktopView = ({ forumCategoryTitle, setForumCategoryTitle }) => {
   return (
     <>
-      <h2>Forum</h2>
+      <h2 style={{paddingLeft: "20px"}}>Forum</h2>
       <div className={styles.pageContainer}>
         <div className={styles.categoriesMenuContainer}>
           <ForumCategoryMenu setForumCategoryTitle={setForumCategoryTitle} />
