@@ -5,13 +5,13 @@ import ForumGuidelinesCard from "../../components/ForumGuidelines/ForumGuideline
 import ForumSearchBar from "../../components/ForumSearchBar/ForumSearchBar";
 import styles from "./ForumDesktopView.module.css";
 
-const ForumDesktopView = ({ forumCategoryTitle, setForumCategoryTitle, userIdRef, accessToken }) => {
+const ForumDesktopView = ({ forumCategoryTitle, setForumCategoryTitle, userIdRef, accessToken, forumCategories }) => {
   return (
     <>
       <h2 style={{paddingLeft: "20px"}}>Forum</h2>
       <div className={styles.pageContainer}>
         <div className={styles.categoriesMenuContainer}>
-          <ForumCategoryMenu setForumCategoryTitle={setForumCategoryTitle} />
+          <ForumCategoryMenu forumCategories={forumCategories} setForumCategoryTitle={setForumCategoryTitle} />
         </div>
         <div className={styles.middleContainer}>
           <div className={styles.topMiddleContainer}>

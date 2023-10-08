@@ -7,7 +7,7 @@ import ForumSearchBar from "../../components/ForumSearchBar/ForumSearchBar";
 import { Dialog } from "primereact/dialog";
 import ForumGuidelinesCard from "../../components/ForumGuidelines/ForumGuidelinesCard";
 import { useState } from "react";
-const ForumMobileView = ({ forumCategoryTitle, setForumCategoryTitle }) => {
+const ForumMobileView = ({ forumCategoryTitle, setForumCategoryTitle, forumCategories }) => {
     const [guideLinesVisibility, setGuideLinesVisibility] = useState(false);
   return (
     <>
@@ -26,6 +26,7 @@ const ForumMobileView = ({ forumCategoryTitle, setForumCategoryTitle }) => {
             <ForumCategoryMenuMobile
               setForumCategoryTitle={setForumCategoryTitle}
               forumCategoryTitle={forumCategoryTitle}
+              forumCategories={forumCategories}
             />
           </div>
         </div>

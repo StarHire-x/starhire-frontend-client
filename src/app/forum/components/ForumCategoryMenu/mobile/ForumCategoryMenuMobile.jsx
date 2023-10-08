@@ -5,31 +5,41 @@ import { Dropdown } from "primereact/dropdown";
 const ForumCategoryMenuMobile = ({
   setForumCategoryTitle,
   forumCategoryTitle,
+  forumCategories
 }) => {
-  const forumCategories = [
-    {
-      name: "My Posts",
-    },
-    {
-      name: "Events",
-    },
-    {
-      name: "Career",
-    },
-    {
-      name: "Miscellaneous",
-    },
-    {
-      name: "Confession",
-    },
-  ];
+
+
+  const finalForumCategories = forumCategories?.map((forumCategory) => {
+    const finalForumCategory = {
+      name: forumCategory.label
+    };
+    return finalForumCategory;
+  })
+
+  // const forumCategories = [
+  //   {
+  //     name: "My Posts",
+  //   },
+  //   {
+  //     name: "Events",
+  //   },
+  //   {
+  //     name: "Career",
+  //   },
+  //   {
+  //     name: "Miscellaneous",
+  //   },
+  //   {
+  //     name: "Confession",
+  //   },
+  // ];
 
   return (
     <>
       <Dropdown
         value={forumCategoryTitle}
         onChange={(e) => setForumCategoryTitle(e.value.name)}
-        options={forumCategories}
+        options={finalForumCategories}
         optionLabel="name"
         placeholder="Select a forum category"
       />

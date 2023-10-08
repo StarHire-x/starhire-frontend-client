@@ -34,6 +34,25 @@ const ForumPage = () => {
   const [refreshData, setRefreshData] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+  // this mockForumCategories will act like the retrieved categories from DB for now
+  const mockForumCategories = [
+    {
+      label: "Events",
+    },
+    {
+      label: "Career",
+    },
+    {
+      label: "Miscellaneous",
+    },
+    {
+      label: "Confession",
+    },
+  ];
+
+  const myPostMenu = {label: "My Posts"};
+  mockForumCategories?.unshift(myPostMenu); // show 'My Posts' menu as first option
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -48,12 +67,14 @@ const ForumPage = () => {
               setForumCategoryTitle={setForumCategoryTitle}
               userIdRef={userIdRef}
               accessToken={accessToken}
+              forumCategories={mockForumCategories}
             />
           </MediaQuery>
           <MediaQuery maxWidth={1224}>
             <ForumMobileView
               forumCategoryTitle={forumCategoryTitle}
               setForumCategoryTitle={setForumCategoryTitle}
+              forumCategories={mockForumCategories}
             />
           </MediaQuery>
         </>
