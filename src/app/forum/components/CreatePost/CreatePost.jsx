@@ -3,10 +3,30 @@ import { useState, useEffect } from "react";
 import styles from "./CreatePost.module.css";
 import { InputTextarea } from "primereact/inputtextarea";
 import { RadioButton } from "primereact/radiobutton";
+import { Checkbox } from "primereact/checkbox";
+import { Button } from "primereact/button";
 
 const CreatePost = () => {
+  //hardcoded for now, will fetch from backend in the future.
+  const forumCategories = [
+    {
+      label: "Events",
+    },
+    {
+      label: "Career",
+    },
+    {
+      label: "Miscellaneous",
+    },
+    {
+      label: "Confession",
+    },
+  ];
+
   const [postTitle, setPostTitle] = useState("");
   const [postContent, setPostContent] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [checkedGuideLines, setCheckedGuideLines] = useState("");
 
   const handlePostTitleChange = (e) => {
     setPostTitle(e.target.value);
@@ -15,6 +35,16 @@ const CreatePost = () => {
   const handlePostContentChange = (e) => {
     setPostContent(e.target.value);
   };
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  const handleGuideLineChange = (e) => {
+    setCheckedGuideLines(e.checked);
+  };
+
+  const submitPost = () => {};
 
   return (
     <>
@@ -33,6 +63,8 @@ const CreatePost = () => {
           cols={75}
           value={postTitle}
           onChange={(e) => handlePostTitleChange(e)}
+          disabled
+          className={styles.textarea}
         />
       </div>
       <div className={styles.postContentContainer}>
@@ -42,10 +74,45 @@ const CreatePost = () => {
           cols={75}
           value={postContent}
           onChange={(e) => handlePostContentChange(e)}
+          disabled
+          className={styles.textarea}
         />
       </div>
-      <div className={styles.categories}>
-
+      <div className={styles.categoriesContainer}>
+        <h4 className={styles.categoriesHeader}>Category</h4>
+        <div className={styles.categories}>
+          {forumCategories.map((category) => (
+            <div className={styles.categoryLabelContainer}>
+              <RadioButton
+                value={category.label}
+                name="category"
+                onChange={(e) => handleCategoryChange(e)}
+                checked={selectedCategory === category.label}
+              />
+              <label className={styles.categoryLabel}>{category.label}</label>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className={styles.guideLinesContainer}>
+        <h4 className={styles.guideLinesHeader}>Guidelines</h4>
+        <div className={styles.guideLines}>
+          <div>
+            <Checkbox
+              inputId="guideLines"
+              onChange={(e) => handleGuideLineChange(e)}
+              checked={checkedGuideLines}
+              required
+            />
+          </div>
+          <label htmlFor="guideLines" className={styles.guideLinesText}>
+            I have read and understand the community guidelines. I am aware that
+            my post may be edited or rejected to uphold community guidelines.
+          </label>
+        </div>
+      </div>
+      <div className={styles.submitButtonContainer}>
+        <Button label="Submit" size="small" rounded onClick={submitPost} />
       </div>
     </>
   );

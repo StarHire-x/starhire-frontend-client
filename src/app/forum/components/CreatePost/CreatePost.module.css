@@ -1,17 +1,54 @@
 .header {
 }
 
+.textarea {
+	width: 46vw !important;
+}
+
 .newPostMessage {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
-.postTitleContainer, .postContentContainer {
-    margin-top: 20px;
+.postTitleContainer,
+.postContentContainer,
+.categoriesContainer,
+.guideLinesContainer {
+  margin-top: 20px;
 }
 
-.postTitleHeader, .postContentHeader {
-    margin-bottom: 5px;
+.postTitleHeader,
+.postContentHeader,
+.categoriesHeader,
+.guideLinesHeader {
+  margin-bottom: 5px;
 }
 
 .categories {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.categoryLabelContainer:not(:first-child) {
+  margin-left: 10px;
+}
+
+.categoryLabel {
+	margin-left: 5px;
+}
+
+.guideLines {
+	display: flex;
+}
+
+.guideLinesText {
+	margin-left: 5px;
+}
+
+.submitButtonContainer {
+	display: flex;
+  justify-content: center; 
+  align-items: center; 
+  height: 100%;
+	margin-top: 20px;
 }
