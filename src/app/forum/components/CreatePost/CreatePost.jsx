@@ -71,7 +71,7 @@ const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess }
     setFormData({
       createdAt: new Date(),
       isAnonymous: false,
-      jobSeekerId: userIdRef.userIdRef,
+      jobSeekerId: userIdRef,
     });
   };
 
