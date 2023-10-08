@@ -69,11 +69,25 @@ const CreatePost = ({userIdRef, accessToken}) => {
     }));
   };
 
+  const resetForm = () => {
+    setPostTitle("");
+    setPostContent("");
+    setSelectedCategory("");
+    setCheckedGuideLines("");
+    setAnonymous(false);
+    setFormData({
+      createdAt: new Date(),
+      isAnonymous: false,
+      jobSeekerId: userIdRef.userIdRef,
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await createPost(formData, userIdRef.accessToken);
       console.log("Forum post has been created");
+      resetForm();
     } catch (error) {
       console.error(
         "There was an error creating the forum post",
