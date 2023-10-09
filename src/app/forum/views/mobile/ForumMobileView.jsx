@@ -29,6 +29,14 @@ const ForumMobileView = ({
           onClick={() => setGuideLinesVisibility(true)}
         />
       </div>
+      <div className={styles.createPostBtnContainer}>
+          <ForumCreatePostButton
+            forumCategories={forumCategories}
+            userIdRef={userIdRef}
+            accessToken={accessToken}
+            setRefreshData={setRefreshData}
+          />
+        </div>
 
       <div className={styles.pageContainer}>
         <Dialog
@@ -51,14 +59,6 @@ const ForumMobileView = ({
         <h2>{forumCategoryTitle}</h2>
         <div className={styles.postsContainer}>
           <ForumPosts forumPosts={forumPosts} />
-        </div>
-        <div className={styles.createPostBtnContainer}>
-          <ForumCreatePostButton
-            forumCategories={forumCategories}
-            userIdRef={userIdRef}
-            accessToken={accessToken}
-            setRefreshData={setRefreshData}
-          />
         </div>
       </div>
     </>

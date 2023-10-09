@@ -3,6 +3,7 @@
   flex-direction: row;
   margin-top: 5vh;
   margin-bottom: 5vh;
+  justify-content: center;
 }
 
 .infoButton {
@@ -23,9 +24,8 @@
 }
 
 .createPostBtnContainer {
-  position: fixed;
-  right: 4vw;
-  bottom: 24vh;
+
+  
 }
 
 .utilityContainer {
