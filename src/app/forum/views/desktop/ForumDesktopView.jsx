@@ -22,14 +22,12 @@ const ForumDesktopView = ({
 
   useEffect(() => {
     const fetchData = async () => {
-      if (forumCategoryTitle !== "My Posts" && forumCategoryTitle !== "Recent Posts") { //don't fetch "My Posts" here. It will be a different API method. Don't remove this line else will have console log error.
+      if (forumCategoryTitle !== "My Posts" && forumCategoryTitle !== "Recent Posts") { //don't fetch "My Posts" & "Recents Posts" here. It will be a different API method. Don't remove this line else will have console log error.
         const forumCategoryId = forumCategoryTitleToId[forumCategoryTitle];
         const response = await getAllForumPostsByForumCategory(
           forumCategoryId,
           accessToken
         );
-        console.log("HERE!!");
-        console.log(response);
       }
     };
     fetchData();
