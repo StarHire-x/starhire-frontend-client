@@ -30,7 +30,7 @@ const ForumPage = () => {
 
   if (
     session.status === "unauthenticated" ||
-    currentUserRole !== Enums.JOBSEEKER
+    (session.status === "authenticated" && currentUserRole !== Enums.JOBSEEKER)
   ) {
     router.push("/login");
   }
@@ -57,17 +57,19 @@ const ForumPage = () => {
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getAllForumCategories(accessToken);
-        const myPostMenu = { forumCategoryTitle: "My Posts" };
-        response.unshift(myPostMenu); // show 'My Posts' menu as first option
-        setForumCategories(response);
-      } catch (error) {
-        console.error("Error fetching forum categories:", error);
-      }
-    };
-    fetchData();
+    if (accessToken) {
+      const fetchData = async () => {
+        try {
+          const response = await getAllForumCategories(accessToken);
+          const myPostMenu = { forumCategoryTitle: "My Posts" };
+          response.unshift(myPostMenu); // show 'My Posts' menu as first option
+          setForumCategories(response);
+        } catch (error) {
+          console.error("Error fetching forum categories:", error);
+        }
+      };
+      fetchData();
+    }
   }, [accessToken]);
 
   const forumCategoryTitleToId = {};
@@ -80,7 +82,8 @@ const ForumPage = () => {
     const fetchData = async () => {
       if (
         forumCategoryTitle !== "My Posts" &&
-        forumCategoryTitle !== "Recent Posts"
+        forumCategoryTitle !== "Recent Posts" &&
+        accessToken
       ) {
         //don't fetch "My Posts" & "Recents Posts" here. It will be a different API method. Don't remove this line else will have console log error.
         const forumCategoryId = forumCategoryTitleToId[forumCategoryTitle];
@@ -89,33 +92,42 @@ const ForumPage = () => {
           accessToken
         );
         setForumPosts(response);
-      }
-    };
-    fetchData();
-  }, [accessToken, forumCategoryTitle]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (forumCategoryTitle === "My Posts") {
+      } else if (forumCategoryTitle === "My Posts" && accessToken) {
         const response = await getAllForumPostsByJobSeeker(
           userIdRef,
           accessToken
         );
+        setForumPosts(response);
+      } else if (forumCategoryTitle === "Recent Posts" && accessToken) {
+        const response = await getAllSortedForumPosts(accessToken);
         setForumPosts(response);
       }
     };
     fetchData();
   }, [userIdRef, accessToken, forumCategoryTitle]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (forumCategoryTitle === "Recent Posts") {
-        const response = await getAllSortedForumPosts(accessToken);
-        setForumPosts(response);
-      }
-    };
-    fetchData();
-  }, [accessToken, forumCategoryTitle]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (forumCategoryTitle === "My Posts" && accessToken) {
+  //       const response = await getAllForumPostsByJobSeeker(
+  //         userIdRef,
+  //         accessToken
+  //       );
+  //       setForumPosts(response);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [userIdRef, accessToken, forumCategoryTitle]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (forumCategoryTitle === "Recent Posts" && accessToken) {
+  //       const response = await getAllSortedForumPosts(accessToken);
+  //       setForumPosts(response);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [accessToken, forumCategoryTitle]);
 
   return (
     <>
