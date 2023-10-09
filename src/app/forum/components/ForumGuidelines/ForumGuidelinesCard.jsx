@@ -29,7 +29,7 @@ const ForumGuidelinesCard = () => {
           admin@starhire.sg
         </p>
         <br/>
-        <p>Post's ID that are posted may not be in sequence.</p>
+        <p>Post&apos;s ID that are posted may not be in sequence.</p>
         <br/>
         <p>COMMENTS</p>
         <p>
