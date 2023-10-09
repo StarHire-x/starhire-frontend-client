@@ -49,7 +49,6 @@ const MENU_LIST_AUTHENTICATED_CORPORATE = [
       // Add more sub-menu items as needed
     ],
   },
-  { text: 'Forum', href: '/forum' },
   { text: 'Events', href: '/events' },
   { text: 'Contact', href: '/contact' },
   { text: 'Chat', href: '/chat' },

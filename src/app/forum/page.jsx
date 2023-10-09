@@ -23,7 +23,7 @@ const ForumPage = () => {
     session.data &&
     session.data.user.role;
 
-  if (session.status === "unauthenticated" || currentUserRole !== Enums.JOBSEEKER) {
+  if (session.status === "unauthenticated") {
     router.push("/login");
   }
 

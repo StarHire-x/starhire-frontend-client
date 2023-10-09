@@ -44,7 +44,7 @@ const JobListingPage = () => {
   const id = params.get('id');
 
   useEffect(() => {
-    if (session.status === 'unauthenticated' || session.status === 'loading') {
+    if (session.status === 'unauthenticated') {
       router.push('/login');
     } else if (session.status === 'authenticated') {
       findAssignedJobListingsByJobSeeker(userIdRef, accessToken)
