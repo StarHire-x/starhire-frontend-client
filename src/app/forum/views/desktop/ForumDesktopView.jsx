@@ -1,5 +1,4 @@
 "use client";
-import { getAllForumPostsByForumCategory } from "@/app/api/forum/route";
 import ForumCategoryMenu from "../../components/ForumCategoryMenu/desktop/ForumCategoryMenu";
 import ForumCreatePostButton from "../../components/ForumCreatePostButton/ForumCreatePostButton";
 import ForumGuidelinesCard from "../../components/ForumGuidelines/ForumGuidelinesCard";
@@ -13,25 +12,8 @@ const ForumDesktopView = ({
   userIdRef,
   accessToken,
   forumCategories,
+  forumPosts
 }) => {
-  const forumCategoryTitleToId = {};
-  forumCategories.forEach((category) => {
-    forumCategoryTitleToId[category.forumCategoryTitle] =
-      category.forumCategoryId;
-  });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (forumCategoryTitle !== "My Posts" && forumCategoryTitle !== "Recent Posts") { //don't fetch "My Posts" & "Recents Posts" here. It will be a different API method. Don't remove this line else will have console log error.
-        const forumCategoryId = forumCategoryTitleToId[forumCategoryTitle];
-        const response = await getAllForumPostsByForumCategory(
-          forumCategoryId,
-          accessToken
-        );
-      }
-    };
-    fetchData();
-  }, [accessToken, forumCategoryTitle]);
 
   return (
     <>

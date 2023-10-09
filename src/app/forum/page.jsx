@@ -13,6 +13,7 @@ import ForumDesktopView from "./views/desktop/ForumDesktopView";
 import ForumMobileView from "./views/mobile/ForumMobileView";
 import Enums from "@/common/enums/enums";
 import { getAllForumCategories } from "../api/forum/route";
+import { getAllForumPostsByForumCategory } from "@/app/api/forum/route";
 
 const ForumPage = () => {
   const session = useSession();
@@ -39,6 +40,7 @@ const ForumPage = () => {
 
   const [forumCategoryTitle, setForumCategoryTitle] = useState("Recent Posts");
   const [forumCategories, setForumCategories] = useState([]);
+  const [forumPosts, setForumPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshData, setRefreshData] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -61,6 +63,26 @@ const ForumPage = () => {
     fetchData();
   }, [accessToken]);
 
+  const forumCategoryTitleToId = {};
+  forumCategories.forEach((category) => {
+    forumCategoryTitleToId[category.forumCategoryTitle] =
+      category.forumCategoryId;
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (forumCategoryTitle !== "My Posts" && forumCategoryTitle !== "Recent Posts") { //don't fetch "My Posts" & "Recents Posts" here. It will be a different API method. Don't remove this line else will have console log error.
+        const forumCategoryId = forumCategoryTitleToId[forumCategoryTitle];
+        const response = await getAllForumPostsByForumCategory(
+          forumCategoryId,
+          accessToken
+        );
+        setForumPosts(response);
+      }
+    };
+    fetchData();
+  }, [accessToken, forumCategoryTitle]);
+
   return (
     <>
       {mounted && (
@@ -72,6 +94,7 @@ const ForumPage = () => {
               userIdRef={userIdRef}
               accessToken={accessToken}
               forumCategories={forumCategories}
+              forumPosts={forumPosts}
             />
           </MediaQuery>
           <MediaQuery maxWidth={1224}>
@@ -81,6 +104,7 @@ const ForumPage = () => {
               userIdRef={userIdRef}
               accessToken={accessToken}
               forumCategories={forumCategories}
+              forumPosts={forumPosts}
             />
           </MediaQuery>
         </>

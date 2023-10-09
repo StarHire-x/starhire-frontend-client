@@ -13,6 +13,7 @@ const ForumMobileView = ({
   forumCategories,
   userIdRef,
   accessToken,
+  forumPosts,
 }) => {
   const [guideLinesVisibility, setGuideLinesVisibility] = useState(false);
   return (
