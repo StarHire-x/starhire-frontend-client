@@ -43,22 +43,6 @@ const ForumPage = () => {
   const [refreshData, setRefreshData] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // this mockForumCategories will act like the retrieved categories from DB for now
-  const mockForumCategories = [
-    {
-      label: "Events",
-    },
-    {
-      label: "Career",
-    },
-    {
-      label: "Miscellaneous",
-    },
-    {
-      label: "Confession",
-    },
-  ];
-
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -76,11 +60,6 @@ const ForumPage = () => {
     };
     fetchData();
   }, [accessToken]);
-
-  // useEffect(() => {
-  //   console.log("LOOK HERE");
-  //   console.log(forumCategories.map(category => category.forumCategoryTitle))
-  // }, [forumCategories]);
 
   return (
     <>
@@ -101,7 +80,7 @@ const ForumPage = () => {
               setForumCategoryTitle={setForumCategoryTitle}
               userIdRef={userIdRef}
               accessToken={accessToken}
-              forumCategories={mockForumCategories}
+              forumCategories={forumCategories}
             />
           </MediaQuery>
         </>

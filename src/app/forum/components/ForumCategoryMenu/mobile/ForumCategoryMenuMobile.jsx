@@ -9,7 +9,7 @@ const ForumCategoryMenuMobile = ({
 }) => {
   const finalForumCategories = forumCategories?.map((forumCategory) => {
     const finalForumCategory = {
-      name: forumCategory.label,
+      name: forumCategory.forumCategoryTitle,
     };
     return finalForumCategory;
   });
