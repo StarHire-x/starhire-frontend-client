@@ -9,7 +9,7 @@ const ForumPosts = ({ forumPosts }) => {
     console.log("HERE");
     console.log(forumPosts);
   const formatRawDate = (rawDate) => {
-    return moment(rawDate).format("DD MMMM YYYY");
+    return moment(rawDate).format("DD MMMM YYYY, hh:mm A");
   }
 
   const onCommentClick = () => {
