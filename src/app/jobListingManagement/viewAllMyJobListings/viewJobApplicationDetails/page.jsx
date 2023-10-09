@@ -48,10 +48,23 @@ const ViewJobApplicationDetails = () => {
   const [userDialog, setUserDialog] = useState(false);
   const [status, setStatus] = useState(null);
 
-  const [interviewDateTime, setInterviewDateTime] = useState(null);
+  const [interviewDateTimes, setInterviewDateTimes] = useState([]);
   const [showArrangeInterviewDialog, setShowArrangeInterviewDialog] = useState(false);
   const [interviewDate, setInterviewDate] = useState(""); // State to store the interview date
+  const [interviewTime, setInterviewTime] = useState(""); // State to store the interview time
   const [interviewNotes, setInterviewNotes] = useState("");
+
+  const addInterviewDateTime = () => {
+    if (interviewDate) {
+      const newEntry = {
+        date: interviewDate.toLocaleString(), // Convert to string
+      };
+  
+      setInterviewDateTimes([...interviewDateTimes, newEntry]);
+      setInterviewDate("");
+    }
+  };
+  
 
   const handleArrangeInterview = () => {
     setShowArrangeInterviewDialog(true);
@@ -74,9 +87,12 @@ const ViewJobApplicationDetails = () => {
         icon="pi pi-check"
         outlined
         onClick={() => {
-          console.log("Interview Date:", interviewDateTime);
+          console.log("Interview Date-Times:", interviewDateTimes);
           console.log("Interview Notes:", interviewNotes);
 
+          // Clear the interviewDateTimes array after saving
+          setInterviewDateTimes([]);
+          setInterviewNotes("");
           hideArrangeInterviewDialog();
         }}
       />
@@ -86,6 +102,71 @@ const ViewJobApplicationDetails = () => {
   const convertTimestampToDate = (timestamp) => {
     return moment(timestamp).format("DD/MM/YYYY");
   };
+
+  const formattedDate = (timestamp) => {
+    return moment(timestamp).format("DD/MM/YYYY HH:mm");
+  };
+
+  const removeInterviewDateTime = (index) => {
+    const updatedDateTimes = [...interviewDateTimes];
+    updatedDateTimes.splice(index, 1);
+    setInterviewDateTimes(updatedDateTimes);
+  };
+
+  const renderInterviewDateTimes = () => {
+    return interviewDateTimes.map((entry, index) => (
+      <div key={index} className={styles.interviewDateTimeEntry}>
+        <span>Date: {moment(entry.date, "YYYY-MM-DD HH:mm:ss").format("DD/MM/YYYY HH:mm")}</span>
+        <Button
+          label="Remove"
+          icon="pi pi-trash"
+          onClick={() => removeInterviewDateTime(index)}
+          className="p-button-danger"
+        />
+      </div>
+    ));
+  };
+   
+
+
+  /*
+  const renderInterviewDateTimes = () => {
+    return interviewDateTimes.map((entry, index) => {
+      const dateObj = new Date(entry.date);
+      if (!isNaN(dateObj.getTime())) {
+        // Check if the dateObj is a valid Date
+        const formattedDate = moment(dateObj).format("DD/MM/YYYY HH:mm");
+        return (
+          <div key={index} className={styles.interviewDateTimeEntry}>
+            <span>Date: {formattedDate}</span>
+            <Button
+              label="Remove"
+              icon="pi pi-trash"
+              onClick={() => removeInterviewDateTime(index)}
+              className="p-button-danger"
+            />
+          </div>
+        );
+      } else {
+        // Handle invalid date here, e.g., by displaying an error message
+        return (
+          <div key={index} className={styles.interviewDateTimeEntry}>
+            <span>Error: Invalid Date</span>
+            <Button
+              label="Remove"
+              icon="pi pi-trash"
+              onClick={() => removeInterviewDateTime(index)}
+              className="p-button-danger"
+            />
+          </div>
+        );
+      }
+    });
+  };
+  */
+  
+  
+
 
   const getSeverity = (status) => {
     switch (status) {
@@ -435,12 +516,13 @@ const ViewJobApplicationDetails = () => {
                   onHide={hideArrangeInterviewDialog}
                 >
                   <div>
-                    <label htmlFor="interviewDate">Interview Date and Time:</label>
+                    <label htmlFor="interviewDate">Interview Date:</label>
                     <Calendar
                       id="interviewDate"
-                      showTime 
-                      value={interviewDateTime}
-                      onChange={(e) => setInterviewDateTime(e.value)}
+                      showTime
+                      showSeconds={false}
+                      value={interviewDate}
+                      onChange={(e) => setInterviewDate(e.value)}
                     />
                   </div>
                   <div>
@@ -451,6 +533,18 @@ const ViewJobApplicationDetails = () => {
                       onChange={(e) => setInterviewNotes(e.target.value)}
                     />
                   </div>
+                  <Button
+                    label="Add Interview Date-Time"
+                    icon="pi pi-plus"
+                    onClick={addInterviewDateTime}
+                    className="p-button-success"
+                  />
+                  {interviewDateTimes.length > 0 && (
+                    <div>
+                      <label>Selected Interview Date-Times:</label>
+                      {renderInterviewDateTimes()}
+                    </div>
+                  )}
                 </Dialog>
               </div>
             )}
