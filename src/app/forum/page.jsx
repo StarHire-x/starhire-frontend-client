@@ -12,6 +12,7 @@ import MediaQuery, { useMediaQuery } from "react-responsive";
 import ForumDesktopView from "./views/desktop/ForumDesktopView";
 import ForumMobileView from "./views/mobile/ForumMobileView";
 import Enums from "@/common/enums/enums";
+import { getAllForumCategories } from "../api/forum/route";
 
 const ForumPage = () => {
   const session = useSession();
@@ -63,6 +64,20 @@ const ForumPage = () => {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getAllForumCategories(accessToken);
+        console.log("HERE!!");
+        console.log(response);
+      } catch (error) {
+        console.error("Error fetching forum categories:", error);
+      }
+    };
+
+    fetchData();
+  }, [accessToken]);
 
   return (
     <>

@@ -41,13 +41,12 @@ export const getAllForumCategories = async (accessToken) => {
       }
     );
 
-    const response = await res.json();
-    console.log(response);
-    if (response.statusCode === 200) {
-      return response.data;
-    } else {
-      throw new Error(response.message || 'An error occurred');
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
     }
+    return await res.json();
+    
   } catch (error) {
     console.log('There was a problem fetching the forum categories', error);
     throw error;
