@@ -27,7 +27,6 @@
 .categoryTag {
   margin-left: 10px;
   padding: 5px 10px; 
-  background-color: rgba(55, 175, 145, 0.699);
   color: white; 
   border-radius: 20px;
   display: flex;
@@ -35,21 +34,21 @@
   font-size: 14px;
 }
 
-.categoryTag-Events {
-  background-color: rgba(175, 55, 175, 0.699); /* Background color for the pill shape */
+.categoryTagEvents {
+  background-color: rgba(211, 23, 211, 0.699);
 
 }
 
-.categoryTag-Miscellaneous {
-  background-color: rgba(55, 175, 145, 0.699); /* Background color for the pill shape */
+.categoryTagMiscellaneous {
+  background-color: rgba(31, 195, 154, 0.699); 
 }
 
-.categoryTag-Confessions {
-  background-color: rgba(140, 138, 46, 0.699); /* Background color for the pill shape */
+.categoryTagConfessions {
+  background-color: rgba(178, 129, 15, 0.699); 
 }
 
-.categoryTag-Career {
-  background-color: rgba(171, 58, 84, 0.699); /* Background color for the pill shape */
+.categoryTagCareer {
+  background-color: rgba(19, 19, 195, 0.699);
 }
 
 .dateTimeText {
@@ -72,11 +71,12 @@
   justify-content: space-between;
 }
 
-/* .commentButton {
-  border: #006d77 !important;
-  background-color: none !important;
+.commentButton {
+  background: transparent !important;
+  color: black !important;
+  border: transparent !important;
   width: 30px !important;
-  height: 18px !important;
+  height: 30px !important;
 }
 
 .commentButton:hover {
@@ -85,4 +85,4 @@
   color: #edf6f9 !important;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
     box-shadow 0.2s;
-} */
+}

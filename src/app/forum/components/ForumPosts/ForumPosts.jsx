@@ -15,8 +15,6 @@ const ForumPosts = ({ forumPosts }) => {
   };
 
   const itemTemplate = (data) => {
-    const categoryClass = `categoryTag-${data.forumCategory.forumCategoryTitle}`;
-    console.log(categoryClass);
 
     return (
       <div className={styles.postContainer}>
@@ -24,7 +22,15 @@ const ForumPosts = ({ forumPosts }) => {
 
         <div className={styles.postInfo}>
           <div className={styles.idTag}>#{data.forumPostId}</div>
-          <div className={styles.categoryTag}>
+          <div className={`${styles.categoryTag} ${
+            data.forumCategory.forumCategoryTitle === "Events"
+            ? styles.categoryTagEvents
+            : data.forumCategory.forumCategoryTitle === "Miscellaneous"
+            ? styles.categoryTagMiscellaneous
+            : data.forumCategory.forumCategoryTitle === "Confessions"
+            ? styles.categoryTagConfessions
+            : styles.categoryTagCareer
+          }`}>
             {data.forumCategory.forumCategoryTitle}
           </div>
         </div>
