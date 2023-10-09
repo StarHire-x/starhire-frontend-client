@@ -116,13 +116,13 @@ const Navbar = () => {
                 // onMouseEnter={() => setShowSubMenu(true)} // Show sub-menu on hover
                 // onMouseLeave={() => setShowSubMenu(false)} // Hide sub-menu on mouse leave
               >
-                <Link href={menu.href}>
+                {/* <Link href={menu.href}> */}
                   <NavItem
                     active={activeIdx === idx}
                     text={menu.text}
                     href={menu.href}
                   />
-                </Link>
+                {/* </Link> */}
               </div>
             ))}
 

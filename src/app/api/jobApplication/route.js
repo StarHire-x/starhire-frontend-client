@@ -72,7 +72,8 @@ export const updateJobApplicationStatus = async (request, id, accessToken) => {
     });
 
     if (res.ok) {
-      return;
+      console.log(res);
+      return res;
     } else {
       throw new Error(errorData.message || "An error occurred");
     }

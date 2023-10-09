@@ -7,12 +7,15 @@ import ForumSearchBar from "../../components/ForumSearchBar/ForumSearchBar";
 import { Dialog } from "primereact/dialog";
 import ForumGuidelinesCard from "../../components/ForumGuidelines/ForumGuidelinesCard";
 import { useState } from "react";
+import ForumPosts from "../../components/ForumPosts/ForumPosts";
 const ForumMobileView = ({
   forumCategoryTitle,
   setForumCategoryTitle,
   forumCategories,
   userIdRef,
   accessToken,
+  forumPosts,
+  setRefreshData
 }) => {
   const [guideLinesVisibility, setGuideLinesVisibility] = useState(false);
   return (
@@ -26,6 +29,14 @@ const ForumMobileView = ({
           onClick={() => setGuideLinesVisibility(true)}
         />
       </div>
+      <div className={styles.createPostBtnContainer}>
+          <ForumCreatePostButton
+            forumCategories={forumCategories}
+            userIdRef={userIdRef}
+            accessToken={accessToken}
+            setRefreshData={setRefreshData}
+          />
+        </div>
 
       <div className={styles.pageContainer}>
         <Dialog
@@ -46,13 +57,8 @@ const ForumMobileView = ({
           </div>
         </div>
         <h2>{forumCategoryTitle}</h2>
-        <div className={styles.postsContainer}></div>
-        <div className={styles.createPostBtnContainer}>
-          <ForumCreatePostButton
-            forumCategories={forumCategories}
-            userIdRef={userIdRef}
-            accessToken={accessToken}
-          />
+        <div className={styles.postsContainer}>
+          <ForumPosts forumPosts={forumPosts} />
         </div>
       </div>
     </>
