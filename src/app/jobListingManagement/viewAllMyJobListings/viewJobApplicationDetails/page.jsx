@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { viewJobApplicationDetails } from "@/app/api/jobApplication/route";
@@ -17,6 +17,7 @@ import { updateJobApplicationStatus } from "@/app/api/jobApplication/route";
 import moment from "moment";
 import HumanIcon from "../../../../../public/icon.png";
 import { getJobSeekersByJobApplicationId } from "@/app/api/jobListing/route";
+import { Dialog } from "primereact/dialog";
 
 const ViewJobApplicationDetails = () => {
   const session = useSession();
@@ -41,6 +42,8 @@ const ViewJobApplicationDetails = () => {
   const [documents, setDocuments] = useState([]);
   const [jobListing, setJobListing] = useState(null);
   const [selectedDocuments, setSelectedDocuments] = useState([]);
+  const [userDialog, setUserDialog] = useState(false);
+  const [status, setStatus] = useState(null);
 
   const convertTimestampToDate = (timestamp) => {
     return moment(timestamp).format("DD/MM/YYYY");
@@ -80,8 +83,59 @@ const ViewJobApplicationDetails = () => {
 
   const handleOnBackClick = () => {
     //return router.push(`/jobApplications?id=${jobListing?.jobListingId}`);
-    return router.push(`viewJobApplications?id=${jobListing?.jobListingId}`);
+    router.back();
+    //return router.push(`viewJobApplications?id=${jobListing?.jobListingId}`);
   };
+
+  const updateJobApplication = async (newStatus) => {
+    try {
+      const request = {
+        jobApplicationStatus: newStatus,
+      };
+      const response = await updateJobApplicationStatus(request, jobApplicationId, accessToken);
+      console.log("Status is " + response.status);
+
+      if (response.status === 200) {
+        router.back();
+      } else {
+        toast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail: "Something went wrong! ERROR CODE:" + response.statusCode,
+          life: 5000,
+        });
+      }
+      console.log("Status changed successfully:", response);
+    } catch (error) {
+      console.error("Error changing status:", error);
+    }
+  };
+
+  const hideDialog = () => {
+    setUserDialog(false);
+  };
+
+  const showUserDialog = (action) => {
+    setUserDialog(true);
+    setStatus(action);
+  };
+
+  const userDialogFooter = (
+    <React.Fragment>
+      <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        outlined
+        onClick={() => {
+          updateJobApplication(status);
+          //hideDialog();
+        }}
+      />
+    </React.Fragment>
+  );
+
+
 
   const nodes = [
     {
@@ -138,7 +192,7 @@ const ViewJobApplicationDetails = () => {
           setJobListing(details.jobListing);
           setRecruiter(details.recruiter);
           setIsLoading(false);
-          console.log(jobApplication);
+          //console.log(jobApplication);
         })
         .catch((error) => {
           console.error("Error fetching job listings:", error);
@@ -311,7 +365,7 @@ const ViewJobApplicationDetails = () => {
                   icon="pi pi-thumbs-down"
                   rounded
                   severity="danger"
-                  onClick={() => console.log("reject button clicked")}
+                  onClick={() => showUserDialog("Rejected")}
                 />
                 <Button
                   label="Accept"
@@ -331,6 +385,16 @@ const ViewJobApplicationDetails = () => {
                     console.log("proceed to interview button clicked")
                   }
                 />
+
+                <Dialog
+                  visible={userDialog}
+                  style={{ width: "32rem" }}
+                  breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+                  header="Are you sure?"
+                  className="p-fluid"
+                  footer={userDialogFooter}
+                  onHide={hideDialog}
+                ></Dialog>
               </div>
             )}
           </div>
