@@ -7,6 +7,7 @@ import ForumSearchBar from "../../components/ForumSearchBar/ForumSearchBar";
 import { Dialog } from "primereact/dialog";
 import ForumGuidelinesCard from "../../components/ForumGuidelines/ForumGuidelinesCard";
 import { useState } from "react";
+import ForumPosts from "../../components/ForumPosts/ForumPosts";
 const ForumMobileView = ({
   forumCategoryTitle,
   setForumCategoryTitle,
@@ -47,7 +48,9 @@ const ForumMobileView = ({
           </div>
         </div>
         <h2>{forumCategoryTitle}</h2>
-        <div className={styles.postsContainer}></div>
+        <div className={styles.postsContainer}>
+          <ForumPosts forumPosts={forumPosts} />
+        </div>
         <div className={styles.createPostBtnContainer}>
           <ForumCreatePostButton
             forumCategories={forumCategories}
