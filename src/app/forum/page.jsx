@@ -12,7 +12,11 @@ import MediaQuery, { useMediaQuery } from "react-responsive";
 import ForumDesktopView from "./views/desktop/ForumDesktopView";
 import ForumMobileView from "./views/mobile/ForumMobileView";
 import Enums from "@/common/enums/enums";
-import { getAllForumCategories } from "../api/forum/route";
+import {
+  getAllForumCategories,
+  getAllForumPostsByJobSeeker,
+  getAllSortedForumPosts,
+} from "../api/forum/route";
 import { getAllForumPostsByForumCategory } from "@/app/api/forum/route";
 
 const ForumPage = () => {
@@ -24,7 +28,10 @@ const ForumPage = () => {
     session.data &&
     session.data.user.role;
 
-  if (session.status === "unauthenticated" || currentUserRole !== Enums.JOBSEEKER) {
+  if (
+    session.status === "unauthenticated" ||
+    currentUserRole !== Enums.JOBSEEKER
+  ) {
     router.push("/login");
   }
 
@@ -53,7 +60,7 @@ const ForumPage = () => {
     const fetchData = async () => {
       try {
         const response = await getAllForumCategories(accessToken);
-        const myPostMenu = {forumCategoryTitle: "My Posts"};
+        const myPostMenu = { forumCategoryTitle: "My Posts" };
         response.unshift(myPostMenu); // show 'My Posts' menu as first option
         setForumCategories(response);
       } catch (error) {
@@ -71,12 +78,39 @@ const ForumPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (forumCategoryTitle !== "My Posts" && forumCategoryTitle !== "Recent Posts") { //don't fetch "My Posts" & "Recents Posts" here. It will be a different API method. Don't remove this line else will have console log error.
+      if (
+        forumCategoryTitle !== "My Posts" &&
+        forumCategoryTitle !== "Recent Posts"
+      ) {
+        //don't fetch "My Posts" & "Recents Posts" here. It will be a different API method. Don't remove this line else will have console log error.
         const forumCategoryId = forumCategoryTitleToId[forumCategoryTitle];
         const response = await getAllForumPostsByForumCategory(
           forumCategoryId,
           accessToken
         );
+        setForumPosts(response);
+      }
+    };
+    fetchData();
+  }, [accessToken, forumCategoryTitle]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (forumCategoryTitle === "My Posts") {
+        const response = await getAllForumPostsByJobSeeker(
+          userIdRef,
+          accessToken
+        );
+        setForumPosts(response);
+      }
+    };
+    fetchData();
+  }, [userIdRef, accessToken, forumCategoryTitle]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (forumCategoryTitle === "Recent Posts") {
+        const response = await getAllSortedForumPosts(accessToken);
         setForumPosts(response);
       }
     };

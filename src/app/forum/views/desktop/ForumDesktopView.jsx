@@ -3,6 +3,7 @@ import ForumCategoryMenu from "../../components/ForumCategoryMenu/desktop/ForumC
 import ForumCreatePostButton from "../../components/ForumCreatePostButton/ForumCreatePostButton";
 import ForumGuidelinesCard from "../../components/ForumGuidelines/ForumGuidelinesCard";
 import ForumSearchBar from "../../components/ForumSearchBar/ForumSearchBar";
+import ForumPosts from "../../components/ForumPosts/ForumPosts";
 import styles from "./ForumDesktopView.module.css";
 import { useEffect } from "react";
 
@@ -39,7 +40,9 @@ const ForumDesktopView = ({
             </div>
           </div>
           <h2 style={{ marginTop: "10px" }}>{forumCategoryTitle}</h2>
-          <div className={styles.postsContainer}></div>
+          <div className={styles.postsContainer}>
+            <ForumPosts forumPosts={forumPosts}/>
+          </div>
         </div>
         <div className={styles.guideLinesContainer}>
           <ForumGuidelinesCard />

@@ -56,7 +56,7 @@ export const getAllForumCategories = async (accessToken) => {
 export const getAllForumPostsByForumCategory = async (forumCategoryId, accessToken) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/forum-categories/${forumCategoryId}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/forum-posts/forum-category/${forumCategoryId}`,
       {
         method: 'GET',
         headers: {
@@ -82,7 +82,7 @@ export const getAllForumPostsByForumCategory = async (forumCategoryId, accessTok
 export const getAllForumPostsByJobSeeker = async (jobSeekerId, accessToken) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/forum-categories/jobSeeker/${jobSeekerId}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/forum-posts/jobSeeker/${jobSeekerId}`,
       {
         method: 'GET',
         headers: {
@@ -101,6 +101,32 @@ export const getAllForumPostsByJobSeeker = async (jobSeekerId, accessToken) => {
     
   } catch (error) {
     console.log('There was a problem fetching the forum categories', error);
+    throw error;
+  }
+};
+
+export const getAllSortedForumPosts = async (accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/forum-posts`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: 'no-store',
+      }
+    );
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+    return await res.json();
+    
+  } catch (error) {
+    console.log('There was a problem fetching the forum posts', error);
     throw error;
   }
 };
