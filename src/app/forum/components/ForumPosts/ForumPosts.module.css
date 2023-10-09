@@ -21,7 +21,7 @@
   border-radius: 20px;
   display: flex;
   align-items: center;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .categoryTag {
@@ -31,7 +31,7 @@
   border-radius: 20px;
   display: flex;
   align-items: center;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .categoryTagEvents {
@@ -58,7 +58,7 @@
   background-color: rgb(189, 188, 188); 
   color: white; 
   border-radius: 20px;
-  font-size: 11px;
+  font-size: 10px;
 }
 
 .content {
