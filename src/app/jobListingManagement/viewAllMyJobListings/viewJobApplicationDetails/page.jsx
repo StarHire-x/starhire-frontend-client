@@ -372,7 +372,6 @@ const ViewJobApplicationDetails = () => {
                   icon="pi pi-thumbs-up"
                   rounded
                   severity="success"
-                  disabled={selectedDocuments.length != documents.length}
                   onClick={() => showUserDialog("Accepted")}
                 />
                 <Button
@@ -380,7 +379,6 @@ const ViewJobApplicationDetails = () => {
                   icon="pi pi-users"
                   rounded
                   severity="info"
-                  disabled={selectedDocuments.length != documents.length}
                   onClick={() =>
                     console.log("proceed to interview button clicked")
                   }
