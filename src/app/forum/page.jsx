@@ -38,6 +38,7 @@ const ForumPage = () => {
     session.data.user.userId;
 
   const [forumCategoryTitle, setForumCategoryTitle] = useState("Recent Posts");
+  const [forumCategories, setForumCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshData, setRefreshData] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -58,9 +59,6 @@ const ForumPage = () => {
     },
   ];
 
-  const myPostMenu = {label: "My Posts"};
-  mockForumCategories?.unshift(myPostMenu); // show 'My Posts' menu as first option
-
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -69,15 +67,20 @@ const ForumPage = () => {
     const fetchData = async () => {
       try {
         const response = await getAllForumCategories(accessToken);
-        console.log("HERE!!");
-        console.log(response);
+        const myPostMenu = {forumCategoryTitle: "My Posts"};
+        response.unshift(myPostMenu); // show 'My Posts' menu as first option
+        setForumCategories(response);
       } catch (error) {
         console.error("Error fetching forum categories:", error);
       }
     };
-
     fetchData();
   }, [accessToken]);
+
+  // useEffect(() => {
+  //   console.log("LOOK HERE");
+  //   console.log(forumCategories.map(category => category.forumCategoryTitle))
+  // }, [forumCategories]);
 
   return (
     <>
@@ -89,7 +92,7 @@ const ForumPage = () => {
               setForumCategoryTitle={setForumCategoryTitle}
               userIdRef={userIdRef}
               accessToken={accessToken}
-              forumCategories={mockForumCategories}
+              forumCategories={forumCategories}
             />
           </MediaQuery>
           <MediaQuery maxWidth={1224}>
