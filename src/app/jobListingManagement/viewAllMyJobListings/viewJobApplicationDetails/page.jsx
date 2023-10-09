@@ -48,7 +48,7 @@ const ViewJobApplicationDetails = () => {
   const [userDialog, setUserDialog] = useState(false);
   const [status, setStatus] = useState(null);
 
-  const [showInterviewForm, setShowInterviewForm] = useState(false);
+  const [interviewDateTime, setInterviewDateTime] = useState(null);
   const [showArrangeInterviewDialog, setShowArrangeInterviewDialog] = useState(false);
   const [interviewDate, setInterviewDate] = useState(""); // State to store the interview date
   const [interviewNotes, setInterviewNotes] = useState("");
@@ -443,11 +443,12 @@ const ViewJobApplicationDetails = () => {
                   onHide={hideArrangeInterviewDialog}
                 >
                   <div>
-                    <label htmlFor="interviewDate">Interview Date:</label>
+                    <label htmlFor="interviewDate">Interview Date and Time:</label>
                     <Calendar
                       id="interviewDate"
-                      value={interviewDate}
-                      onChange={(e) => setInterviewDate(e.value)}
+                      showTime 
+                      value={interviewDateTime}
+                      onChange={(e) => setInterviewDateTime(e.value)}
                     />
                   </div>
                   <div>
