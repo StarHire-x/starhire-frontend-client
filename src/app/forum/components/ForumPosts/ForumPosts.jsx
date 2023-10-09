@@ -6,8 +6,6 @@ import styles from "./ForumPosts.module.css";
 import moment from "moment";
 
 const ForumPosts = ({ forumPosts }) => {
-    console.log("HERE");
-    console.log(forumPosts);
   const formatRawDate = (rawDate) => {
     return moment(rawDate).format("DD MMMM YYYY, hh:mm A");
   }
