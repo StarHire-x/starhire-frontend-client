@@ -13,7 +13,8 @@ const ForumDesktopView = ({
   userIdRef,
   accessToken,
   forumCategories,
-  forumPosts
+  forumPosts,
+  setRefreshData
 }) => {
 
   return (
@@ -36,6 +37,7 @@ const ForumDesktopView = ({
                 userIdRef={userIdRef}
                 accessToken={accessToken}
                 forumCategories={forumCategories}
+                setRefreshData={setRefreshData}
               />
             </div>
           </div>
