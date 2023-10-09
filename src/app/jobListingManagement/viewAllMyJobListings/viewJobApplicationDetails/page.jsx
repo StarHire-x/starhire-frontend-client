@@ -74,12 +74,9 @@ const ViewJobApplicationDetails = () => {
         icon="pi pi-check"
         outlined
         onClick={() => {
-          // Handle saving interview details here
-          // You can use interviewDate and interviewNotes states to send data to your API
           console.log("Interview Date:", interviewDateTime);
           console.log("Interview Notes:", interviewNotes);
 
-          // After saving, close the dialog
           hideArrangeInterviewDialog();
         }}
       />
@@ -123,9 +120,7 @@ const ViewJobApplicationDetails = () => {
   };
 
   const handleOnBackClick = () => {
-    //return router.push(`/jobApplications?id=${jobListing?.jobListingId}`);
     router.back();
-    //return router.push(`viewJobApplications?id=${jobListing?.jobListingId}`);
   };
 
   const updateJobApplication = async (newStatus) => {
@@ -170,13 +165,10 @@ const ViewJobApplicationDetails = () => {
         outlined
         onClick={() => {
           updateJobApplication(status);
-          //hideDialog();
         }}
       />
     </React.Fragment>
   );
-
-
 
   const nodes = [
     {
