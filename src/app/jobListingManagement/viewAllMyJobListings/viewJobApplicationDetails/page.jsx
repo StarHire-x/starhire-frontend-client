@@ -76,7 +76,7 @@ const ViewJobApplicationDetails = () => {
         onClick={() => {
           // Handle saving interview details here
           // You can use interviewDate and interviewNotes states to send data to your API
-          console.log("Interview Date:", interviewDate);
+          console.log("Interview Date:", interviewDateTime);
           console.log("Interview Notes:", interviewNotes);
 
           // After saving, close the dialog
