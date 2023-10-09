@@ -43,7 +43,7 @@ const ForumGuidelinesCard = () => {
   return (
     <>
       <Card className={styles.forumGuideLinesCard} title="Forum Guidelines">
-        <p>{forumGuideLines()}</p>
+        {forumGuideLines()}
       </Card>
     </>
   );
