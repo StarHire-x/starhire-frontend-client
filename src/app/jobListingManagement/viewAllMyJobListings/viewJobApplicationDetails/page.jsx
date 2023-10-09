@@ -18,6 +18,9 @@ import moment from "moment";
 import HumanIcon from "../../../../../public/icon.png";
 import { getJobSeekersByJobApplicationId } from "@/app/api/jobListing/route";
 import { Dialog } from "primereact/dialog";
+import { Calendar } from "primereact/calendar";
+import { InputTextarea } from "primereact/inputtextarea";
+
 
 const ViewJobApplicationDetails = () => {
   const session = useSession();
@@ -44,6 +47,44 @@ const ViewJobApplicationDetails = () => {
   const [selectedDocuments, setSelectedDocuments] = useState([]);
   const [userDialog, setUserDialog] = useState(false);
   const [status, setStatus] = useState(null);
+
+  const [showInterviewForm, setShowInterviewForm] = useState(false);
+  const [showArrangeInterviewDialog, setShowArrangeInterviewDialog] = useState(false);
+  const [interviewDate, setInterviewDate] = useState(""); // State to store the interview date
+  const [interviewNotes, setInterviewNotes] = useState("");
+
+  const handleArrangeInterview = () => {
+    setShowArrangeInterviewDialog(true);
+  };
+
+  const hideArrangeInterviewDialog = () => {
+    setShowArrangeInterviewDialog(false);
+  };
+
+  const arrangeInterviewDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="Cancel"
+        icon="pi pi-times"
+        outlined
+        onClick={hideArrangeInterviewDialog}
+      />
+      <Button
+        label="Save"
+        icon="pi pi-check"
+        outlined
+        onClick={() => {
+          // Handle saving interview details here
+          // You can use interviewDate and interviewNotes states to send data to your API
+          console.log("Interview Date:", interviewDate);
+          console.log("Interview Notes:", interviewNotes);
+
+          // After saving, close the dialog
+          hideArrangeInterviewDialog();
+        }}
+      />
+    </React.Fragment>
+  );
 
   const convertTimestampToDate = (timestamp) => {
     return moment(timestamp).format("DD/MM/YYYY");
@@ -375,13 +416,11 @@ const ViewJobApplicationDetails = () => {
                   onClick={() => showUserDialog("Accepted")}
                 />
                 <Button
-                  label="Proceed to Interview"
-                  icon="pi pi-users"
+                  label="Arrange Interview"
+                  icon="pi pi-calendar"
                   rounded
                   severity="info"
-                  onClick={() =>
-                    console.log("proceed to interview button clicked")
-                  }
+                  onClick={handleArrangeInterview}
                 />
 
                 <Dialog
@@ -393,6 +432,33 @@ const ViewJobApplicationDetails = () => {
                   footer={userDialogFooter}
                   onHide={hideDialog}
                 ></Dialog>
+
+                <Dialog
+                  visible={showArrangeInterviewDialog}
+                  style={{ width: "32rem" }}
+                  breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+                  header="Arrange Interview"
+                  className="p-fluid"
+                  footer={arrangeInterviewDialogFooter}
+                  onHide={hideArrangeInterviewDialog}
+                >
+                  <div>
+                    <label htmlFor="interviewDate">Interview Date:</label>
+                    <Calendar
+                      id="interviewDate"
+                      value={interviewDate}
+                      onChange={(e) => setInterviewDate(e.value)}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="interviewNotes">Interview Notes:</label>
+                    <InputTextarea
+                      id="interviewNotes"
+                      value={interviewNotes}
+                      onChange={(e) => setInterviewNotes(e.target.value)}
+                    />
+                  </div>
+                </Dialog>
               </div>
             )}
           </div>
