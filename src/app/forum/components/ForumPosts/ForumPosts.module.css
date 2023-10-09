@@ -1,33 +1,88 @@
-.postContainer{ 
-    height: 30vh;
-    width: 30vw;
+.postContainer {
+  width: 30vw;
 }
 
 .postTitle {
-    
+  font-size: 23px;
+  font-weight: bold;
+  margin-top: 10px;
 }
-    
-.postInfo{
 
+.postInfo {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 5px;
 }
 
 .idTag {
-
+  padding: 5px 10px; 
+  background-color: #007bff; 
+  color: white; 
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
 }
 
 .categoryTag {
+  margin-left: 10px;
+  padding: 5px 10px; 
+  background-color: rgba(55, 175, 145, 0.699);
+  color: white; 
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
 
+.categoryTag-Events {
+  background-color: rgba(175, 55, 175, 0.699); /* Background color for the pill shape */
+
+}
+
+.categoryTag-Miscellaneous {
+  background-color: rgba(55, 175, 145, 0.699); /* Background color for the pill shape */
+}
+
+.categoryTag-Confessions {
+  background-color: rgba(140, 138, 46, 0.699); /* Background color for the pill shape */
+}
+
+.categoryTag-Career {
+  background-color: rgba(171, 58, 84, 0.699); /* Background color for the pill shape */
 }
 
 .dateTimeText {
-
+  margin-top: 5px;
+  align-self: flex-end;
+  padding: 5px 10px; 
+  background-color: rgb(189, 188, 188); 
+  color: white; 
+  border-radius: 20px;
+  font-size: 11px;
 }
 
 .content {
-
+  margin-top: 15px;
 }
 
 .footer {
-
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
 }
 
+/* .commentButton {
+  border: #006d77 !important;
+  background-color: none !important;
+  width: 30px !important;
+  height: 18px !important;
+}
+
+.commentButton:hover {
+  border: #2196f3 !important;
+  background-color: #2196f3 !important;
+  color: #edf6f9 !important;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+} */
