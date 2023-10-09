@@ -1,12 +1,17 @@
 import styles from "./following.module.css";
 import React, { useEffect, useState, useRef } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
-import { followCorporate, getAllCorporateSocial, unfollowCorporate } from "@/app/api/auth/user/route";
+import {
+  followCorporate,
+  getAllCorporateSocial,
+  unfollowCorporate,
+} from "@/app/api/auth/user/route";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Toast } from "primereact/toast";
+import Image from "next/image";
+import { Dialog } from "primereact/dialog";
 
 const Following = ({}) => {
   const [filterKeyword, setFilterKeyword] = useState("");
@@ -14,7 +19,9 @@ const Following = ({}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshData, setRefreshData] = useState(false);
   const session = useSession();
-  const router = useRouter();
+  const [showCorporateDetailsDialog, setShowCorporateDetailsDialog] =
+    useState(false);
+  const [selectedCorporate, setSelectedCorporate] = useState(null);
 
   const toast = useRef(null);
 
@@ -30,25 +37,25 @@ const Following = ({}) => {
 
   const handleFollowingStatus = async (corporate, following) => {
     try {
-        if(!following) {
-            await followCorporate(corporate.userId, userIdRef, accessToken);
-            toast.current.show({
-              severity: "success",
-              summary: "Success",
-              detail: `You are following ${corporate.companyName} `,
-              life: 5000,
-            });
-        } else {
-            await unfollowCorporate(corporate.userId, userIdRef, accessToken);
-            toast.current.show({
-              severity: "success",
-              summary: "Success",
-              detail: `You unfollowed ${corporate.companyName} `,
-              life: 5000,
-            });
-        }
-        setCorporates([...corporates]);
-        setRefreshData(!refreshData);
+      if (!following) {
+        await followCorporate(corporate.userId, userIdRef, accessToken);
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: `You are following ${corporate.companyName} `,
+          life: 5000,
+        });
+      } else {
+        await unfollowCorporate(corporate.userId, userIdRef, accessToken);
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: `You unfollowed ${corporate.companyName} `,
+          life: 5000,
+        });
+      }
+      setCorporates([...corporates]);
+      setRefreshData(!refreshData);
     } catch (error) {
       console.error("Error when saving/un-saving:", error);
       toast.current.show({
@@ -60,28 +67,28 @@ const Following = ({}) => {
     }
   };
 
+  const hideCorporateDetailsDialog = () => {
+    setShowCorporateDetailsDialog(false);
+  };
+
   useEffect(() => {
-    if (session.status === "unauthenticated" || session.status === "loading") {
-      router.push("/login");
-    } else if (session.status === "authenticated") {
-      getAllCorporateSocial(accessToken)
-        .then((data) => {
-          setCorporates(data);
-          console.log("Received Corporate:", data);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error fetching corporate:", error);
-          setIsLoading(false);
-        });
-    }
+    getAllCorporateSocial(accessToken)
+      .then((data) => {
+        setCorporates(data);
+        console.log("Received Corporate:", data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching corporate:", error);
+        setIsLoading(false);
+      });
   }, [refreshData, accessToken]);
 
   const filteredCorporate = corporates.filter((corporate) => {
-    return corporate.companyName.toLowerCase().includes(filterKeyword.toLowerCase());
+    return corporate.companyName
+      .toLowerCase()
+      .includes(filterKeyword.toLowerCase());
   });
-
-  
 
   const itemTemplate = (corporate) => {
     const isCurrentlyFollowing =
@@ -113,7 +120,10 @@ const Following = ({}) => {
             rounded
             severity="info"
             size="small"
-            onClick={(e) => e.preventDefault()}
+            onClick={() => {
+              setSelectedCorporate(corporate);
+              setShowCorporateDetailsDialog(true);
+            }}
           />
 
           <Button
@@ -156,6 +166,34 @@ const Following = ({}) => {
       <div className={styles.cardGrid}>
         {filteredCorporate.map((item) => itemTemplate(item))}
       </div>
+
+      <Dialog
+        header="Corporate Details"
+        visible={showCorporateDetailsDialog}
+        onHide={hideCorporateDetailsDialog}
+        className={styles.cardFollowing}
+      >
+        {selectedCorporate && (
+          <div>
+            {selectedCorporate.profilePictureUrl !== "" ? (
+              <img
+                alt={selectedCorporate.profilePictureUrl}
+                src={selectedCorporate.profilePictureUrl}
+                className={styles.avatarImageContainer}
+              />
+            ) : (
+              <Image
+                src={HumanIcon}
+                alt="Icon"
+                className={styles.avatarImageContainer}
+              />
+            )}
+            <h3>Corporate Name: {selectedCorporate.companyName}</h3>
+            <p>Corporate Email: {selectedCorporate.email}</p>
+            <p>Corporate contact: {selectedCorporate.contactNo}</p>
+          </div>
+        )}
+      </Dialog>
     </>
   );
 };

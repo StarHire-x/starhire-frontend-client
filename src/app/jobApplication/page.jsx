@@ -113,7 +113,7 @@ const JobApplicationPage = () => {
   };
 
   useEffect(() => {
-    if (session.status === "unauthenticated" || session.status === "loading") {
+    if (session.status === "unauthenticated") {
       router.push("/login");
     } else if (session.status === "authenticated") {
       getJobApplicationsByJobSeeker(userIdRef, accessToken)

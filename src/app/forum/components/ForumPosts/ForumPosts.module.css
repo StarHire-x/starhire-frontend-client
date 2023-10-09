@@ -1,0 +1,88 @@
+.postContainer {
+  width: 30vw;
+}
+
+.postTitle {
+  font-size: 23px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.postInfo {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 5px;
+}
+
+.idTag {
+  padding: 5px 10px; 
+  background-color: #007bff; 
+  color: white; 
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+}
+
+.categoryTag {
+  margin-left: 10px;
+  padding: 5px 10px; 
+  color: white; 
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+}
+
+.categoryTagEvents {
+  background-color: rgba(211, 23, 211, 0.699);
+
+}
+
+.categoryTagMiscellaneous {
+  background-color: rgba(31, 195, 154, 0.699); 
+}
+
+.categoryTagConfessions {
+  background-color: rgba(178, 129, 15, 0.699); 
+}
+
+.categoryTagCareer {
+  background-color: rgba(19, 19, 195, 0.699);
+}
+
+.dateTimeText {
+  margin-top: 5px;
+  align-self: flex-end;
+  padding: 5px 10px; 
+  background-color: rgb(189, 188, 188); 
+  color: white; 
+  border-radius: 20px;
+  font-size: 10px;
+}
+
+.content {
+  margin-top: 15px;
+}
+
+.footer {
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.commentButton {
+  background: transparent !important;
+  color: black !important;
+  border: transparent !important;
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.commentButton:hover {
+  border: #2196f3 !important;
+  background-color: #2196f3 !important;
+  color: #edf6f9 !important;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+}

@@ -7,6 +7,7 @@ const ForumCategoryMenuMobile = ({
   forumCategoryTitle,
   forumCategories,
 }) => {
+  console.log(forumCategoryTitle);
   const finalForumCategories = forumCategories?.map((forumCategory) => {
     const finalForumCategory = {
       name: forumCategory.forumCategoryTitle,
@@ -17,7 +18,7 @@ const ForumCategoryMenuMobile = ({
   return (
     <>
       <Dropdown
-        value={forumCategoryTitle}
+        value={{name: forumCategoryTitle}}
         onChange={(e) => setForumCategoryTitle(e.value.name)}
         options={finalForumCategories}
         optionLabel="name"

@@ -8,7 +8,7 @@ import { Button } from "primereact/button";
 import { createPost } from "@/app/api/forum/route";
 import { Toast } from "primereact/toast";
 
-const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess }) => {
+const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess, setRefreshData }) => {
   
   forumCategories = forumCategories?.filter((forumCategory) => forumCategory.forumCategoryTitle !== 'My Posts'); // don't want show 'My Posts' as an option for user to select
 
@@ -125,6 +125,7 @@ const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess }
         console.log("Forum post has been created");
         resetForm();
         onSubmitSuccess();
+        setRefreshData((prev) => !prev); // refresh the forum posts once post creation
       } catch (error) {
         console.error(
           "There was an error creating the forum post",
@@ -194,7 +195,7 @@ const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess }
           <h3>New Post</h3>
           <h5 className={styles.newPostMessage}>
             Your post is tied to your account. Please read the forum guidelines
-            and be responsible when creating a post on StarHire's forum to avoid
+            and be responsible when creating a post on StarHire&apos;s forum to avoid
             post removal. Happy posting!
           </h5>
         </div>

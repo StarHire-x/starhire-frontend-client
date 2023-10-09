@@ -49,7 +49,6 @@ const MENU_LIST_AUTHENTICATED_CORPORATE = [
       // Add more sub-menu items as needed
     ],
   },
-  { text: 'Forum', href: '/forum' },
   { text: 'Events', href: '/events' },
   { text: 'Contact', href: '/contact' },
   { text: 'Chat', href: '/chat' },
@@ -117,13 +116,13 @@ const Navbar = () => {
                 // onMouseEnter={() => setShowSubMenu(true)} // Show sub-menu on hover
                 // onMouseLeave={() => setShowSubMenu(false)} // Hide sub-menu on mouse leave
               >
-                <Link href={menu.href}>
+                {/* <Link href={menu.href}> */}
                   <NavItem
                     active={activeIdx === idx}
                     text={menu.text}
                     href={menu.href}
                   />
-                </Link>
+                {/* </Link> */}
               </div>
             ))}
 

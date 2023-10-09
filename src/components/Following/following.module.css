@@ -1,17 +1,18 @@
 .card {
-  background-color: #ffddd2;
-  border: 1px solid #ffddd2;
+  background-color: #edfbf1;
+  border: 1px solid white;
   padding: 10px;
   border-radius: 8px;
   cursor: pointer;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
+  margin-bottom: 5px;
 }
 
-.header { 
-    margin-bottom: 10px;
+.header {
+  margin-bottom: 10px;
 }
 
 .cardButtons {
@@ -22,7 +23,7 @@
   display: flex;
   flex-direction: column; /* To ensure children are stacked vertically */
   justify-content: flex-start; /* Vertically center the children (though it's optional here) */
-  width: 100px;
+  width: 200px;
 }
 
 .avatarImageContainer {
@@ -35,10 +36,23 @@
 
 .cardGrid {
   width: 100%;
-  height: 100%;  /* Ensure it takes up the full width of its container */
+  height: 100%; /* Ensure it takes up the full width of its container */
 }
 
 .cardTitle {
-    display: flex;
-    justify-content: flex-start;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.cardFollowing {
+  background-color: #ffffff; /* White background */
+  border-radius: 8px; /* Rounded corners */
+  max-width: 500px; /* Maximum width of the dialog box */
+  margin: 40px auto; /* Centering the dialog box on the page with 40px margin from top and bottom */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1),
+    /* Horizontal shadow, vertical shadow, blur, spread and color */ 0 6px 20px
+      rgba(0, 0, 0, 0.1);
+  padding: 20px; /* Padding inside the dialog box */
+  position: relative; /* Set position to relative to allow absolute positioning within the dialog */
+  overflow: hidden;
 }
