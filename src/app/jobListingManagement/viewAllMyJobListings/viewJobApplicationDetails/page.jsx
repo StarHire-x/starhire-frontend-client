@@ -373,7 +373,7 @@ const ViewJobApplicationDetails = () => {
                   rounded
                   severity="success"
                   disabled={selectedDocuments.length != documents.length}
-                  onClick={() => console.log("accept button clicked")}
+                  onClick={() => showUserDialog("Accepted")}
                 />
                 <Button
                   label="Proceed to Interview"
