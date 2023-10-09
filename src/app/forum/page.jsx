@@ -92,33 +92,42 @@ const ForumPage = () => {
           accessToken
         );
         setForumPosts(response);
-      }
-    };
-    fetchData();
-  }, [accessToken, forumCategoryTitle]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (forumCategoryTitle === "My Posts" && accessToken) {
+      } else if (forumCategoryTitle === "My Posts" && accessToken) {
         const response = await getAllForumPostsByJobSeeker(
           userIdRef,
           accessToken
         );
+        setForumPosts(response);
+      } else if (forumCategoryTitle === "Recent Posts" && accessToken) {
+        const response = await getAllSortedForumPosts(accessToken);
         setForumPosts(response);
       }
     };
     fetchData();
   }, [userIdRef, accessToken, forumCategoryTitle]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (forumCategoryTitle === "Recent Posts" && accessToken) {
-        const response = await getAllSortedForumPosts(accessToken);
-        setForumPosts(response);
-      }
-    };
-    fetchData();
-  }, [accessToken, forumCategoryTitle]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (forumCategoryTitle === "My Posts" && accessToken) {
+  //       const response = await getAllForumPostsByJobSeeker(
+  //         userIdRef,
+  //         accessToken
+  //       );
+  //       setForumPosts(response);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [userIdRef, accessToken, forumCategoryTitle]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (forumCategoryTitle === "Recent Posts" && accessToken) {
+  //       const response = await getAllSortedForumPosts(accessToken);
+  //       setForumPosts(response);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [accessToken, forumCategoryTitle]);
 
   return (
     <>
