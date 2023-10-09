@@ -10,7 +10,7 @@ import { Toast } from "primereact/toast";
 
 const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess }) => {
   
-  forumCategories = forumCategories?.filter((forumCategory) => forumCategory.label !== 'My Posts'); // don't want show 'My Posts' as an option for user to select
+  forumCategories = forumCategories?.filter((forumCategory) => forumCategory.forumCategoryTitle !== 'My Posts'); // don't want show 'My Posts' as an option for user to select
 
   const forumCategoryTitleToId = {};
   forumCategories.forEach((category) => {
