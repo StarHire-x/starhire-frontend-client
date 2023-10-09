@@ -12,6 +12,11 @@ const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess }
   
   forumCategories = forumCategories?.filter((forumCategory) => forumCategory.label !== 'My Posts'); // don't want show 'My Posts' as an option for user to select
 
+  const forumCategoryTitleToId = {};
+  forumCategories.forEach((category) => {
+    forumCategoryTitleToId[category.forumCategoryTitle] = category.forumCategoryId;
+  });
+
   const [postTitle, setPostTitle] = useState("");
   const [postContent, setPostContent] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -48,9 +53,10 @@ const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess }
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
+    const selectedCategoryId = forumCategoryTitleToId[e.target.value];
     setFormData((prevData) => ({
       ...prevData,
-      forumCategory: e.target.value,
+      forumCategoryId: selectedCategoryId,
     }));
   };
 
@@ -216,14 +222,14 @@ const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess }
           <h4 className={styles.categoriesHeader}>Category</h4>
           <div className={styles.categories}>
             {forumCategories.map((category) => (
-              <div key={category.label} className={styles.categoryLabelContainer}>
+              <div key={category.forumCategoryTitle} className={styles.categoryLabelContainer}>
                 <RadioButton
-                  value={category.label}
+                  value={category.forumCategoryTitle}
                   name="category"
                   onChange={(e) => handleCategoryChange(e)}
-                  checked={selectedCategory === category.label}
+                  checked={selectedCategory === category.forumCategoryTitle}
                 />
-                <label className={styles.categoryLabel}>{category.label}</label>
+                <label className={styles.categoryLabel}>{category.forumCategoryTitle}</label>
               </div>
             ))}
           </div>
