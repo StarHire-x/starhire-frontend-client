@@ -8,7 +8,7 @@ import { Button } from "primereact/button";
 import { createPost } from "@/app/api/forum/route";
 import { Toast } from "primereact/toast";
 
-const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess }) => {
+const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess, setRefreshData }) => {
   
   forumCategories = forumCategories?.filter((forumCategory) => forumCategory.forumCategoryTitle !== 'My Posts'); // don't want show 'My Posts' as an option for user to select
 
@@ -125,6 +125,7 @@ const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess }
         console.log("Forum post has been created");
         resetForm();
         onSubmitSuccess();
+        setRefreshData((prev) => !prev); // refresh the forum posts once post creation
       } catch (error) {
         console.error(
           "There was an error creating the forum post",

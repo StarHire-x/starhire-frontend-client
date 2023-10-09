@@ -104,7 +104,7 @@ const ForumPage = () => {
       }
     };
     fetchData();
-  }, [userIdRef, accessToken, forumCategoryTitle]);
+  }, [userIdRef, accessToken, forumCategoryTitle, refreshData]);
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -141,6 +141,7 @@ const ForumPage = () => {
               accessToken={accessToken}
               forumCategories={forumCategories}
               forumPosts={forumPosts}
+              setRefreshData={setRefreshData}
             />
           </MediaQuery>
           <MediaQuery maxWidth={1224}>
@@ -151,6 +152,7 @@ const ForumPage = () => {
               accessToken={accessToken}
               forumCategories={forumCategories}
               forumPosts={forumPosts}
+              setRefreshData={setRefreshData}
             />
           </MediaQuery>
         </>

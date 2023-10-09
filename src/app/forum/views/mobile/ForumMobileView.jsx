@@ -15,6 +15,7 @@ const ForumMobileView = ({
   userIdRef,
   accessToken,
   forumPosts,
+  setRefreshData
 }) => {
   const [guideLinesVisibility, setGuideLinesVisibility] = useState(false);
   return (
@@ -56,6 +57,7 @@ const ForumMobileView = ({
             forumCategories={forumCategories}
             userIdRef={userIdRef}
             accessToken={accessToken}
+            setRefreshData={setRefreshData}
           />
         </div>
       </div>
