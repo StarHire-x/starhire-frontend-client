@@ -126,47 +126,6 @@ const ViewJobApplicationDetails = () => {
       </div>
     ));
   };
-   
-
-
-  /*
-  const renderInterviewDateTimes = () => {
-    return interviewDateTimes.map((entry, index) => {
-      const dateObj = new Date(entry.date);
-      if (!isNaN(dateObj.getTime())) {
-        // Check if the dateObj is a valid Date
-        const formattedDate = moment(dateObj).format("DD/MM/YYYY HH:mm");
-        return (
-          <div key={index} className={styles.interviewDateTimeEntry}>
-            <span>Date: {formattedDate}</span>
-            <Button
-              label="Remove"
-              icon="pi pi-trash"
-              onClick={() => removeInterviewDateTime(index)}
-              className="p-button-danger"
-            />
-          </div>
-        );
-      } else {
-        // Handle invalid date here, e.g., by displaying an error message
-        return (
-          <div key={index} className={styles.interviewDateTimeEntry}>
-            <span>Error: Invalid Date</span>
-            <Button
-              label="Remove"
-              icon="pi pi-trash"
-              onClick={() => removeInterviewDateTime(index)}
-              className="p-button-danger"
-            />
-          </div>
-        );
-      }
-    });
-  };
-  */
-  
-  
-
 
   const getSeverity = (status) => {
     switch (status) {
