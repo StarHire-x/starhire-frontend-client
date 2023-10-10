@@ -139,3 +139,20 @@
 .allCommentsContainer {
 
 }
+
+@media (max-width: 561px) {
+  .leaveCommentFooter {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .commentButtonContainer {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center; 
+    margin-top: 5px;
+  }
+  
+  
+}

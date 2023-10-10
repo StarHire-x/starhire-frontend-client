@@ -112,3 +112,10 @@
   left: 50%;
   transform: translateX(-50%);
 }
+
+@media (max-width: 768px) {
+  .postContainer {
+    width: 70vw;
+  }
+  
+}
