@@ -15,22 +15,25 @@ const ForumPosts = ({ forumPosts }) => {
   };
 
   const itemTemplate = (data) => {
-
     return (
       <div className={styles.postContainer}>
         <div className={styles.postTitle}>{data.forumPostTitle}</div>
-
+        <div className={styles.userId}>
+          Posted By: {data.jobSeeker.userName}
+        </div>
         <div className={styles.postInfo}>
           <div className={styles.idTag}>#{data.forumPostId}</div>
-          <div className={`${styles.categoryTag} ${
-            data.forumCategory.forumCategoryTitle === "Events"
-            ? styles.categoryTagEvents
-            : data.forumCategory.forumCategoryTitle === "Miscellaneous"
-            ? styles.categoryTagMiscellaneous
-            : data.forumCategory.forumCategoryTitle === "Confessions"
-            ? styles.categoryTagConfessions
-            : styles.categoryTagCareer
-          }`}>
+          <div
+            className={`${styles.categoryTag} ${
+              data.forumCategory.forumCategoryTitle === "Events"
+                ? styles.categoryTagEvents
+                : data.forumCategory.forumCategoryTitle === "Miscellaneous"
+                ? styles.categoryTagMiscellaneous
+                : data.forumCategory.forumCategoryTitle === "Confessions"
+                ? styles.categoryTagConfessions
+                : styles.categoryTagCareer
+            }`}
+          >
             {data.forumCategory.forumCategoryTitle}
           </div>
         </div>

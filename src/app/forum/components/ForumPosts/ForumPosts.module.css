@@ -61,6 +61,15 @@
   font-size: 10px;
 }
 
+.userId {
+  margin-top: 5px;
+  align-self: flex-end;
+  background: transparent;
+  color: black; 
+  border-radius: 20px;
+  font-size: 10px;
+}
+
 .content {
   margin-top: 15px;
 }
