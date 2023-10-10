@@ -19,6 +19,9 @@
 }
 
 .postTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   font-size: 23px;
   font-weight: bold;
 }
@@ -138,6 +141,14 @@
 
 .allCommentsContainer {
 
+}
+
+.deleteButton {
+  background: transparent !important;
+  color: black !important;
+  border: transparent !important;
+  width: 30px !important;
+  height: 30px !important;
 }
 
 @media (max-width: 561px) {

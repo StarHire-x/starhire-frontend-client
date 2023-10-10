@@ -135,6 +135,7 @@ const ForumPosts = ({
         userIdRef={userIdRef}
         accessToken={accessToken}
         setRefreshData={setRefreshData}
+        hideCommentDialog={hideDialog}
       />
 
       <Dialog
@@ -148,6 +149,7 @@ const ForumPosts = ({
           accessToken={accessToken}
           postData={postData}
           setRefreshData={setRefreshData}
+          openDeleteDialog={openDeleteDialog}
         />
       </Dialog>
     </>
