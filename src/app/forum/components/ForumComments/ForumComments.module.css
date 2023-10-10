@@ -1,19 +1,26 @@
 .commentContainer {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     max-height: 50vh;
     min-height: 15vh;
 }
 
-.commentMsg {
+.commentMsgCard {
     display: flex;
     align-items: center;
+    width: 100%;
+    height: 90%;
+}
+
+.commentAndDateTimeSection {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin-left: 2%;
 }
 
 .commentTimeStamp {
-    display: flex;
-    align-items: flex-end;
+    
 }
 
 .userProfilePhoto {
@@ -26,4 +33,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 8%;
+}
+
+@media (max-width: 768px) {
+  
 }

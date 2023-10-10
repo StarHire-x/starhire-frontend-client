@@ -4,6 +4,7 @@ import styles from "./ForumComments.module.css";
 import moment from "moment";
 import Image from "next/image";
 import HumanIcon from "../../../../../public/icon.png";
+import { Card } from "primereact/card";
 
 const ForumComments = ({ forumComments }) => {
   const formatRawDate = (rawDate) => {
@@ -20,15 +21,15 @@ const ForumComments = ({ forumComments }) => {
                 <Image
                   className={styles.userProfilePhoto}
                   alt="Profile Photo"
-                  width={60}
-                  height={60}
+                  width={40}
+                  height={40}
                   src={data?.jobSeeker.profilePictureUrl}
                 />
               ) : (
                 <Image
                   alt="Profile Photo"
-                  width={60}
-                  height={60}
+                  width={40}
+                  height={40}
                   src={HumanIcon}
                 />
               )}
@@ -37,9 +38,13 @@ const ForumComments = ({ forumComments }) => {
               {data?.jobSeeker.userName}
             </div>
           </div>
-          <div className={styles.commentMsg}>{data?.forumCommentMessage}</div>
-          <div className={styles.commentTimeStamp}>
-            {formatRawDate(data?.createdAt)}
+          <div className={styles.commentAndDateTimeSection}>
+            <Card className={styles.commentMsgCard}>
+              {data?.forumCommentMessage}
+            </Card>
+            <div className={styles.commentTimeStamp}>
+              {formatRawDate(data?.createdAt)}
+            </div>
           </div>
         </div>
       </>
