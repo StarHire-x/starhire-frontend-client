@@ -10,25 +10,19 @@ import { useSession } from 'next-auth/react';
 import {
   findAllJobListingsByCorporate,
   createJobListing,
-  //updateJobListing,
-  //removeJobListing,
 } from '@/app/api/jobListing/route';
 
 import styles from './page.module.css';
 import 'primeflex/primeflex.css';
 import CreateJobListingForm from '@/components/CreateJobListingForm/CreateJobListingForm';
-//import EditJobListingForm from '@/components/EditJobListingForm/EditJobListingForm';
 import { useRouter } from 'next/navigation';
 import Enums from '@/common/enums/enums';
 import { Toast } from "primereact/toast";
 
-//this page is viewed by corporate
 const JobListingManagementPage = () => {
   const [jobListing, setJobListing] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
-  const [showEditDialog, setShowEditDialog] = useState(false);
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [selectedJobListingData, setSelectedJobListingData] = useState(null);
   const [refreshData, setRefreshData] = useState(false);
   const session = useSession();
@@ -133,7 +127,6 @@ const JobListingManagementPage = () => {
       };
       const response = await createJobListing(payload, accessToken);
       console.log('Created Job listing Successfully', response);
-      // alert('Created job listing successfully');
       toast.current.show({
         severity: "success",
         summary: "Success",
@@ -146,7 +139,6 @@ const JobListingManagementPage = () => {
         'There was an error creating the job listing:',
         error.message
       );
-      // alert('There was an error creating the job listing:');
       toast.current.show({
         severity: "error",
         summary: "Error",
@@ -171,11 +163,11 @@ const JobListingManagementPage = () => {
         <Toast ref={toast} />
         <div className={styles.header}>
           <h1 className={styles.headerTitle} style={{ marginBottom: "15px" }}>
-            Job Listing Management
+            Ticket Management
           </h1>
           <Button
             className={styles.createJobListingButton}
-            label="Add A Job Listing"
+            label="Submit a Ticket"
             rounded
             style={{ marginTop: "10px", marginBottom: "15px" }}
             onClick={() => setShowCreateDialog(true)}
