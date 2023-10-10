@@ -53,6 +53,17 @@ const ViewJobApplicationDetails = () => {
   const [interviewDate, setInterviewDate] = useState(""); // State to store the interview date
   const [interviewTime, setInterviewTime] = useState(""); // State to store the interview time
   const [interviewNotes, setInterviewNotes] = useState("");
+  const [confirmSendDialog, setConfirmSendDialog] = useState(false);
+
+  const showConfirmSendDialog = () => {
+    setConfirmSendDialog(true);
+  };
+
+  const hideConfirmSendDialog = () => {
+    setConfirmSendDialog(false);
+  };
+  
+
 
   const addInterviewDateTime = () => {
     if (interviewDate) {
@@ -74,26 +85,63 @@ const ViewJobApplicationDetails = () => {
     setShowArrangeInterviewDialog(false);
   };
 
-  const arrangeInterviewDialogFooter = (
+  const confirmSendDialogFooter = (
     <React.Fragment>
       <Button
         label="Cancel"
         icon="pi pi-times"
         outlined
-        onClick={hideArrangeInterviewDialog}
+        onClick={hideConfirmSendDialog}
       />
       <Button
-        label="Save"
+        label="Confirm"
         icon="pi pi-check"
         outlined
         onClick={() => {
+          console.log("Sending to Recruiter...");
+          // Add the chat logic here
+
           console.log("Interview Date-Times:", interviewDateTimes);
           console.log("Interview Notes:", interviewNotes);
 
-          // Clear the interviewDateTimes array after saving
           setInterviewDateTimes([]);
           setInterviewNotes("");
+
+          hideConfirmSendDialog();
           hideArrangeInterviewDialog();
+        }}
+      />
+    </React.Fragment>
+  );
+  
+  const confirmSendDialogContent = (
+    <div>
+      <p>Are you sure you want to send this to the recruiter?</p>
+    </div>
+  );
+  
+
+  const arrangeInterviewDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="Discard"
+        icon="pi pi-times"
+        outlined
+        onClick={hideArrangeInterviewDialog}
+      />
+      <Button
+        label="Send to Recruiter"
+        icon="pi pi-check"
+        outlined
+        onClick={() => {
+          //console.log("Interview Date-Times:", interviewDateTimes);
+          //console.log("Interview Notes:", interviewNotes);
+
+          // Clear the interviewDateTimes array after saving
+          //setInterviewDateTimes([]);
+          //setInterviewNotes("");
+          //hideArrangeInterviewDialog();
+          showConfirmSendDialog();
         }}
       />
     </React.Fragment>
@@ -466,8 +514,19 @@ const ViewJobApplicationDetails = () => {
                 ></Dialog>
 
                 <Dialog
-                  visible={showArrangeInterviewDialog}
+                  visible={confirmSendDialog}
                   style={{ width: "32rem" }}
+                  header="Are you sure?"
+                  className="p-fluid"
+                  footer={confirmSendDialogFooter}
+                  onHide={hideConfirmSendDialog}
+                >
+                  {confirmSendDialogContent}
+                </Dialog>
+
+                <Dialog
+                  visible={showArrangeInterviewDialog}
+                  style={{ width: "52rem" }}
                   breakpoints={{ "960px": "75vw", "641px": "90vw" }}
                   header="Arrange Interview"
                   className="p-fluid"
@@ -475,13 +534,16 @@ const ViewJobApplicationDetails = () => {
                   onHide={hideArrangeInterviewDialog}
                 >
                   <div>
-                    <label htmlFor="interviewDate">Choose Interview Date and Time:</label>
+                    <label htmlFor="interviewDate">
+                      Choose Interview Date and Time:
+                    </label>
                     <Calendar
                       id="interviewDate"
                       showTime
                       showSeconds={false}
                       value={interviewDate}
                       minDate={new Date()}
+                      dateFormat="dd/mm/yy"
                       onChange={(e) => setInterviewDate(e.value)}
                     />
                   </div>
@@ -506,6 +568,7 @@ const ViewJobApplicationDetails = () => {
                     </div>
                   )}
                 </Dialog>
+
               </div>
             )}
           </div>
