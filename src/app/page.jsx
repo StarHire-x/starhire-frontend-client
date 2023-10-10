@@ -15,31 +15,34 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.item}>
-        <h1 className={styles.title}>Early Childhood Industry.</h1>
-        <p className={styles.subTitle}>Candidate Sourcing</p>
-        <p className={styles.subTitle}>Job Matching</p>
-        <p className={styles.subTitle}>An All-in-one Platform</p>
+      <div className={styles.titleContainer}>
+        <h1 className={styles.title}>The Next StarHire</h1>
+        <Image src={Hero} alt="Picture" className={styles.img} />
+      </div>
+      <div>
+        <p className={styles.subTitle}>
+          Education&apos;s best talent marketplace
+        </p>
+      </div>
+      <div>
         {!accessToken && (
           <div className={styles.buttonContainer}>
             <button
-              className={styles.register}
-              onClick={() => (window.location.href = "/register")}
+              className={styles.jobSearchButton}
+              onClick={() => (window.location.href = "/login")}
             >
-              Register
+              Job Search
             </button>
 
             <button
-              className={styles.login}
+              className={styles.findTalentButton}
               onClick={() => (window.location.href = "/login")}
             >
-              Login
+              Find Talent
             </button>
           </div>
         )}
       </div>
-      <div className={styles.item}></div>
-      <Image src={Hero} alt="Picture" className={styles.img} />
     </div>
   );
 }
