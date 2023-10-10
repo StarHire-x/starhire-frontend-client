@@ -1,5 +1,4 @@
 .postContainer {
-  width: 33vw;
 }
 
 .postTitle {
@@ -114,8 +113,5 @@
 }
 
 @media (max-width: 768px) {
-  .postContainer {
-    width: 70vw;
-  }
   
 }
