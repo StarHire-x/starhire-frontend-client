@@ -20,6 +20,7 @@ import CreateATicketForm from '@/components/CreateATicketForm/CreateATicketForm'
 import { useRouter } from 'next/navigation';
 import Enums from '@/common/enums/enums';
 import { Toast } from "primereact/toast";
+import { useSearchParams } from 'next/navigation';
 
 const CreateATicketPage = () => {
   //const [jobListing, setJobListing] = useState(null);
@@ -47,6 +48,9 @@ const CreateATicketPage = () => {
 
     console.log(userIdRef);
     console.log(userLoggedIn);
+
+    const params = useSearchParams();
+    const problem = params.get('problem');
 
 
   const toast = useRef(null);
@@ -136,11 +140,13 @@ const CreateATicketPage = () => {
         payload = {
           ...newTicket,
           corporateId: userIdRef,
+          ticketCategory: problem,
         };
       } else {
         payload = {
           ...newTicket,
           jobSeekerId: userIdRef,
+          ticketCategory: problem,
         };
       }
       console.log(payload);

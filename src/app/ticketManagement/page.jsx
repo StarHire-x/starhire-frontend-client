@@ -10,7 +10,8 @@ const TicketManagement = () => {
     alignItems: "center", // Center align items vertically
     marginBottom: "20px", // Adjust the margin-bottom value to control vertical spacing
   };
-
+  //const cardLink = `/jobListingManagement/viewAllMyJobListings/viewJobApplicationDetails?id=${jobApplication.jobApplicationId}`;
+  const generalQuestionsUrl = '/ticketManagement/createATicket?problem=website';
   return (
     <div className={styles.container}>
       <h1>Ticket Management</h1>
@@ -34,7 +35,7 @@ const TicketManagement = () => {
           </a>
         </div>
         <div>
-          <a href="/ticketManagement/createATicket">
+        <a href={generalQuestionsUrl}>
             <CustomCard image="/icon.png" />
             <p>General Questions</p>
           </a>
