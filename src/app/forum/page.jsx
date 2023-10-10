@@ -48,6 +48,11 @@ const ForumPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshData, setRefreshData] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearchQueryChange = (query) => {
+    setSearchQuery(query);
+  }
 
   useEffect(() => {
     setMounted(true);
@@ -103,28 +108,6 @@ const ForumPage = () => {
     fetchData();
   }, [userIdRef, accessToken, forumCategoryTitle, refreshData]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     if (forumCategoryTitle === "My Posts" && accessToken) {
-  //       const response = await getAllForumPostsByJobSeeker(
-  //         userIdRef,
-  //         accessToken
-  //       );
-  //       setForumPosts(response);
-  //     }
-  //   };
-  //   fetchData();
-  // }, [userIdRef, accessToken, forumCategoryTitle]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     if (forumCategoryTitle === "Recent Posts" && accessToken) {
-  //       const response = await getAllSortedForumPosts(accessToken);
-  //       setForumPosts(response);
-  //     }
-  //   };
-  //   fetchData();
-  // }, [accessToken, forumCategoryTitle]);
 
   return (
     <>
@@ -139,6 +122,8 @@ const ForumPage = () => {
               forumCategories={forumCategories}
               forumPosts={forumPosts}
               setRefreshData={setRefreshData}
+              onSearchQueryChange={handleSearchQueryChange}
+              searchQuery={searchQuery}
             />
           </MediaQuery>
           <MediaQuery maxWidth={1224}>
