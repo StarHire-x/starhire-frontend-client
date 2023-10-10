@@ -12,6 +12,8 @@ import {
   createJobListing,
 } from '@/app/api/jobListing/route';
 
+import { createTicket } from '@/app/api/Ticket/route'; 
+
 import styles from './page.module.css';
 import 'primeflex/primeflex.css';
 import CreateJobListingForm from '@/components/CreateJobListingForm/CreateJobListingForm';
@@ -119,14 +121,15 @@ const CreateATicketPage = () => {
   };
 */
 
-  const handleTicketCreation = async (newJobListing) => {
+  const handleTicketCreation = async (newTicket) => {
     try {
       const payload = {
-        ...newJobListing,
+        ...newTicket,
         corporateId: userIdRef,
       };
-      const response = await createJobListing(payload, accessToken);
-      console.log('Created Job listing Successfully', response);
+      console.log(payload);
+      const response = await createTicket(payload, accessToken);
+      console.log('Created Ticket Successfully', response);
       toast.current.show({
         severity: "success",
         summary: "Success",
@@ -136,7 +139,7 @@ const CreateATicketPage = () => {
       setRefreshData((prev) => !prev);
     } catch (error) {
       console.error(
-        'There was an error creating the job listing:',
+        'There was an error creating the ticket',
         error.message
       );
       toast.current.show({
@@ -157,7 +160,7 @@ const CreateATicketPage = () => {
     );
   }
 
-  if (session.status === 'authenticated') {
+  if (session.status === 'authenticated' || session.status === 'unauthenticated') {
     return (
       <>
         <Toast ref={toast} />
