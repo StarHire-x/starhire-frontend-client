@@ -8,13 +8,21 @@ import { Button } from "primereact/button";
 import { createPost } from "@/app/api/forum/route";
 import { Toast } from "primereact/toast";
 
-const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess, setRefreshData }) => {
-  
-  forumCategories = forumCategories?.filter((forumCategory) => forumCategory.forumCategoryTitle !== 'My Posts'); // don't want show 'My Posts' as an option for user to select
+const CreatePost = ({
+  userIdRef,
+  accessToken,
+  forumCategories,
+  onSubmitSuccess,
+  setRefreshData,
+}) => {
+  forumCategories = forumCategories?.filter(
+    (forumCategory) => forumCategory.forumCategoryTitle !== "My Posts"
+  ); // don't want show 'My Posts' as an option for user to select
 
   const forumCategoryTitleToId = {};
   forumCategories.forEach((category) => {
-    forumCategoryTitleToId[category.forumCategoryTitle] = category.forumCategoryId;
+    forumCategoryTitleToId[category.forumCategoryTitle] =
+      category.forumCategoryId;
   });
 
   const [postTitle, setPostTitle] = useState("");
@@ -29,6 +37,7 @@ const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess, 
     jobSeekerId: userIdRef,
   });
   const toast = useRef(null);
+  const maxCharacterCount = 8000;
 
   const [titleValid, setTitleValid] = useState(true);
   const [contentValid, setContentValid] = useState(true);
@@ -45,11 +54,14 @@ const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess, 
   };
 
   const handlePostContentChange = (e) => {
-    setPostContent(e.target.value);
-    setFormData((prevData) => ({
-      ...prevData,
-      forumPostMessage: e.target.value,
-    }));
+    const inputValue = e.target.value;
+    if (inputValue.length <= maxCharacterCount) {
+      setPostContent(e.target.value);
+      setFormData((prevData) => ({
+        ...prevData,
+        forumPostMessage: e.target.value,
+      }));
+    }
   };
 
   const handleCategoryChange = (e) => {
@@ -197,8 +209,8 @@ const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess, 
           <h3>New Post</h3>
           <h5 className={styles.newPostMessage}>
             Your post is tied to your account. Please read the forum guidelines
-            and be responsible when creating a post on StarHire&apos;s forum to avoid
-            post removal. Happy posting!
+            and be responsible when creating a post on StarHire&apos;s forum to
+            avoid post removal. Happy posting!
           </h5>
         </div>
         <div className={styles.postTitleContainer}>
@@ -220,19 +232,27 @@ const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess, 
             onChange={(e) => handlePostContentChange(e)}
             className={styles.textarea}
           />
+          <div className={styles.characterCount}>
+            {maxCharacterCount - postContent.length} characters left
+          </div>
         </div>
         <div className={styles.categoriesContainer}>
           <h4 className={styles.categoriesHeader}>Category</h4>
           <div className={styles.categories}>
             {forumCategories.map((category) => (
-              <div key={category.forumCategoryTitle} className={styles.categoryLabelContainer}>
+              <div
+                key={category.forumCategoryTitle}
+                className={styles.categoryLabelContainer}
+              >
                 <RadioButton
                   value={category.forumCategoryTitle}
                   name="category"
                   onChange={(e) => handleCategoryChange(e)}
                   checked={selectedCategory === category.forumCategoryTitle}
                 />
-                <label className={styles.categoryLabel}>{category.forumCategoryTitle}</label>
+                <label className={styles.categoryLabel}>
+                  {category.forumCategoryTitle}
+                </label>
               </div>
             ))}
           </div>
