@@ -1,0 +1,57 @@
+/* Card.module.css */
+
+/* Card.module.css */
+
+.card {
+  width: 300px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.cardImage {
+  width: 100%; /* Adjust the width as needed */
+  max-height: 10px; /* Adjust the maximum height as needed */
+  object-fit: cover; /* Maintain aspect ratio and cover the container */
+}
+
+.cardContent {
+  padding: 16px;
+}
+
+.cardContent h2 {
+  font-size: 20px;
+  margin-top: 0;
+}
+
+.cardContent p {
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.cardContent a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  font-size: 16px;
+  display: block;
+}
+
+/* CustomCard.css */
+.custom-card-image {
+  max-width: 10%; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+
+
+  
+  /* Add more styles as needed */
+  
+  
+  

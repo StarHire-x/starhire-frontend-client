@@ -32,7 +32,7 @@ const Footer = () => {
     <div className={styles.container}>
       <p>©2023 StarHire. All rights reserved</p>
         <p className={styles.reportIssue}>
-          <a href="ticketManagement">Help Center</a>
+          <a href="/ticketManagement">Help Center</a>
         </p>
     </div>
   );
