@@ -8,7 +8,7 @@ import { Dialog } from "primereact/dialog";
 import CreateComment from "../CreateCommentModal/CreateComment";
 import { useState } from "react";
 
-const ForumPosts = ({ forumPosts, userIdRef, accessToken }) => {
+const ForumPosts = ({ forumPosts, userIdRef, accessToken, setRefreshData }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [postData, setPostData] = useState("");
 
@@ -91,6 +91,7 @@ const ForumPosts = ({ forumPosts, userIdRef, accessToken }) => {
           userIdRef={userIdRef}
           accessToken={accessToken}
           postData={postData}
+          setRefreshData={setRefreshData}
         />
       </Dialog>
     </>

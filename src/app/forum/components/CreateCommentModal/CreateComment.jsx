@@ -7,7 +7,7 @@ import moment from "moment";
 import { Button } from "primereact/button";
 import { createComment } from "@/app/api/forum/route";
 
-const CreateComment = ({ userIdRef, accessToken, postData }) => {
+const CreateComment = ({ userIdRef, accessToken, postData, setRefreshData }) => {
   const [comment, setComment] = useState("");
   const maxCharacterCount = 8000;
 
@@ -35,6 +35,7 @@ const CreateComment = ({ userIdRef, accessToken, postData }) => {
   };
 
   const resetForm = () => {
+    setComment("");
     setFormData({
       createdAt: new Date(),
       isAnonymous: false,
@@ -50,6 +51,7 @@ const CreateComment = ({ userIdRef, accessToken, postData }) => {
       const response = await createComment(formData, accessToken);
       console.log("Forum comment has been created");
       resetForm();
+      setRefreshData((prev) => !prev);
     } catch (error) {
       console.error(
         "There was an error creating the forum comment",

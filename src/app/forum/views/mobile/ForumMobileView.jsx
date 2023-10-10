@@ -62,6 +62,7 @@ const ForumMobileView = ({
             forumPosts={forumPosts}
             userIdRef={userIdRef}
             accessToken={accessToken}
+            setRefreshData={setRefreshData}
           />
         </div>
       </div>
