@@ -8,9 +8,19 @@ import { Dialog } from "primereact/dialog";
 import CreateComment from "../CreateCommentModal/CreateComment";
 import { useState } from "react";
 
-const ForumPosts = ({ forumPosts, userIdRef, accessToken, setRefreshData }) => {
+const ForumPosts = ({
+  forumPosts,
+  userIdRef,
+  accessToken,
+  setRefreshData,
+  searchQuery,
+}) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [postData, setPostData] = useState("");
+
+  const filteredPosts = forumPosts.filter((post) =>
+    post.forumPostTitle.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const formatRawDate = (rawDate) => {
     return moment(rawDate).format("DD MMMM YYYY, hh:mm A");
@@ -86,7 +96,7 @@ const ForumPosts = ({ forumPosts, userIdRef, accessToken, setRefreshData }) => {
     <>
       <div className={styles.card}>
         <DataScroller
-          value={forumPosts}
+          value={filteredPosts}
           itemTemplate={itemTemplate}
           rows={5}
           inline

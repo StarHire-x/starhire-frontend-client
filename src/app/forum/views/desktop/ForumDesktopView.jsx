@@ -14,9 +14,10 @@ const ForumDesktopView = ({
   accessToken,
   forumCategories,
   forumPosts,
-  setRefreshData
+  setRefreshData,
+  onSearchQueryChange,
+  searchQuery,
 }) => {
-
   return (
     <>
       <h2 style={{ paddingLeft: "20px" }}>Forum</h2>
@@ -30,7 +31,10 @@ const ForumDesktopView = ({
         <div className={styles.middleContainer}>
           <div className={styles.topMiddleContainer}>
             <div className={styles.searchBarContainer}>
-              <ForumSearchBar />
+              <ForumSearchBar
+                onSearchQueryChange={onSearchQueryChange}
+                searchQuery={searchQuery}
+              />
             </div>
             <div className={styles.createPostBtnContainer}>
               <ForumCreatePostButton
@@ -43,7 +47,13 @@ const ForumDesktopView = ({
           </div>
           <h2 style={{ marginTop: "10px" }}>{forumCategoryTitle}</h2>
           <div className={styles.postsContainer}>
-            <ForumPosts forumPosts={forumPosts} userIdRef={userIdRef} accessToken={accessToken} setRefreshData={setRefreshData}/>
+            <ForumPosts
+              forumPosts={forumPosts}
+              userIdRef={userIdRef}
+              accessToken={accessToken}
+              setRefreshData={setRefreshData}
+              searchQuery={searchQuery}
+            />
           </div>
         </div>
         <div className={styles.guideLinesContainer}>
