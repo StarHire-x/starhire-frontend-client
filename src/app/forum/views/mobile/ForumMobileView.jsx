@@ -15,7 +15,7 @@ const ForumMobileView = ({
   userIdRef,
   accessToken,
   forumPosts,
-  setRefreshData
+  setRefreshData,
 }) => {
   const [guideLinesVisibility, setGuideLinesVisibility] = useState(false);
   return (
@@ -30,13 +30,13 @@ const ForumMobileView = ({
         />
       </div>
       <div className={styles.createPostBtnContainer}>
-          <ForumCreatePostButton
-            forumCategories={forumCategories}
-            userIdRef={userIdRef}
-            accessToken={accessToken}
-            setRefreshData={setRefreshData}
-          />
-        </div>
+        <ForumCreatePostButton
+          forumCategories={forumCategories}
+          userIdRef={userIdRef}
+          accessToken={accessToken}
+          setRefreshData={setRefreshData}
+        />
+      </div>
 
       <div className={styles.pageContainer}>
         <Dialog
@@ -58,7 +58,11 @@ const ForumMobileView = ({
         </div>
         <h2>{forumCategoryTitle}</h2>
         <div className={styles.postsContainer}>
-          <ForumPosts forumPosts={forumPosts} />
+          <ForumPosts
+            forumPosts={forumPosts}
+            userIdRef={userIdRef}
+            accessToken={accessToken}
+          />
         </div>
       </div>
     </>

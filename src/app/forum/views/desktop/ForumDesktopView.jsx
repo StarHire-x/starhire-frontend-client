@@ -43,7 +43,7 @@ const ForumDesktopView = ({
           </div>
           <h2 style={{ marginTop: "10px" }}>{forumCategoryTitle}</h2>
           <div className={styles.postsContainer}>
-            <ForumPosts forumPosts={forumPosts}/>
+            <ForumPosts forumPosts={forumPosts} userIdRef={userIdRef} accessToken={accessToken}/>
           </div>
         </div>
         <div className={styles.guideLinesContainer}>
