@@ -119,7 +119,7 @@ const CreateComment = ({
           </div>
           <div className={styles.leaveCommentContent}>
             <InputTextarea
-              rows={2}
+              rows={5}
               cols={75}
               value={comment}
               onChange={(e) => handleCommentChange(e)}
