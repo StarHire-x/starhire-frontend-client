@@ -17,6 +17,7 @@ import styles from './page.module.css';
 import 'primeflex/primeflex.css';
 import CreateJobListingForm from '@/components/CreateJobListingForm/CreateJobListingForm';
 import CreateATicketForm from '@/components/CreateATicketForm/CreateATicketForm';
+import CreateATicketFormUnLoggedIn from '@/components/CreateATicketForm/CreateATicketFormUnLoggedIn';
 import { useRouter } from 'next/navigation';
 import Enums from '@/common/enums/enums';
 import { Toast } from "primereact/toast";
@@ -46,12 +47,8 @@ const CreateATicketPage = () => {
     session.data &&
     session.data.user.role;
 
-    //console.log(userIdRef);
-    //console.log(userLoggedIn);
-
-    const params = useSearchParams();
-    const problem = params.get('problem');
-
+  const params = useSearchParams();
+  const problem = params.get('problem');
 
   const toast = useRef(null);
 
@@ -211,9 +208,12 @@ const CreateATicketPage = () => {
           onHide={hideCreateDialog}
           className={styles.cardDialog}
         >
-          <CreateATicketForm  onCreate={handleTicketCreation} />
+          {session.status === "unauthenticated" ? (
+            <CreateATicketFormUnLoggedIn onCreate={handleTicketCreation} />
+          ) : (
+            <CreateATicketForm onCreate={handleTicketCreation} />
+          )}
         </Dialog>
-
       </>
     );
   }

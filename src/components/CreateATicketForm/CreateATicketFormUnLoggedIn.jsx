@@ -1,35 +1,44 @@
 import React, { useState } from 'react';
 import { Button } from 'primereact/button';
-import { MultiSelect } from 'primereact/multiselect';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { Dialog } from 'primereact/dialog'; // Import Dialog
+import { Dialog } from 'primereact/dialog';
 import styles from './page.module.css';
 
-const CreateATicketForm = ({ onCreate }) => {
+const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
   const [formData, setFormData] = useState({
     ticketName: '',
     ticketDescription: '',
     isResolved: false,
+    email: '', 
+    username: '', 
   });
 
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+  const [emailError, setEmailError] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  //This still needs to be tested
   const handleSubmit = () => {
-    // Show the confirmation dialog
-    setShowConfirmationDialog(true);
+    if (!formData.email.trim()) {
+      setEmailError('Email address is required');
+    } else {
+      setEmailError('');
+      const updatedDescription = `${formData.email} ${formData.username} - ${formData.ticketDescription}`;
+      setFormData((prev) => ({
+        ...prev,
+        ticketDescription: updatedDescription,
+      }));
+      setShowConfirmationDialog(true);
+    }
   };
 
   const handleConfirmation = () => {
-    // Close the confirmation dialog
     setShowConfirmationDialog(false);
-
-    // Perform the actual submission
     if (onCreate) onCreate(formData);
   };
 
@@ -49,7 +58,7 @@ const CreateATicketForm = ({ onCreate }) => {
       </div>
 
       <div className={styles.cardRow}>
-        <label htmlFor="jobDescription">Problem Description:</label>
+        <label htmlFor="ticketDescription">Problem Description:</label>
         <InputTextarea
           id="ticketDescription"
           name="ticketDescription"
@@ -60,11 +69,30 @@ const CreateATicketForm = ({ onCreate }) => {
         />
       </div>
 
+      <div className={styles.cardRow}>
+        <label>Email Address:</label>
+        <InputText
+          name="email"
+          value={formData.email}
+          onChange={handleInputChange}
+          required // Add the required attribute
+        />
+        {emailError && <small className={styles.errorText}>{emailError}</small>}
+      </div>
+
+      <div className={styles.cardRow}>
+        <label>Username:</label>
+        <InputText
+          name="username"
+          value={formData.username}
+          onChange={handleInputChange}
+        />
+      </div>
+
       <div className={styles.cardFooter}>
         <Button label="Send" rounded onClick={handleSubmit} />
       </div>
 
-      {/* Confirmation Dialog */}
       <Dialog
         header="Confirmation"
         visible={showConfirmationDialog}
@@ -83,6 +111,5 @@ const CreateATicketForm = ({ onCreate }) => {
   );
 };
 
-export default CreateATicketForm;
-
+export default CreateATicketFormUnLoggedIn;
 
