@@ -12,6 +12,7 @@ import {
 import { Checkbox } from "primereact/checkbox";
 import { Toast } from "primereact/toast";
 import ForumComments from "../ForumComments/ForumComments";
+import Utility from "@/common/helper/utility";
 
 const CreateComment = ({
   userIdRef,
@@ -158,7 +159,7 @@ const CreateComment = ({
         <div className={styles.content}>{postData.forumPostMessage}</div>
         <div className={styles.footer}>
           <div className={styles.dateTimeText}>
-            {formatRawDate(postData.createdAt)}
+            {Utility.timeAgo(postData.createdAt)}
           </div>
         </div>
       </Card>
