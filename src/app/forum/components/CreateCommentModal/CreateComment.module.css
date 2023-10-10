@@ -1,3 +1,11 @@
+.textarea {
+	width: 57vw !important;
+  margin-top: 5px;
+  border-radius: 15px;
+  border: 1px solid rgba(128, 128, 128, 0.202);
+  background-color: rgba(250, 250, 250, 0.858);
+}
+
 .dialogHeader {
   justify-content: center;
   text-align: center;
@@ -7,6 +15,7 @@
   margin-top: 10px;
   background-color: rgba(250, 250, 250, 0.858);
   border-radius: 20px;
+  border: 1px solid rgba(128, 128, 128, 0.202);
 }
 
 .postTitle {
@@ -86,10 +95,22 @@
   justify-content: space-between;
 }
 
-.leaveCommentContainer {
+.leaveCommentContainer,
+.allCommentsContainer {
   margin-top: 20px;
+  padding: 10px
 }
 
 .leaveCommentHeader {
+}
+
+.leaveCommentContent {
+}
+
+.characterCount {
+  margin-top: 5px;
+}
+
+.allCommentsContainer {
 
 }
