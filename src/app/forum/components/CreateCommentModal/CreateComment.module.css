@@ -85,3 +85,11 @@
   display: flex;
   justify-content: space-between;
 }
+
+.leaveCommentContainer {
+  margin-top: 20px;
+}
+
+.leaveCommentHeader {
+
+}

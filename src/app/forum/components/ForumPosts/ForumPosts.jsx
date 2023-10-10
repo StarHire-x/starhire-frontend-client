@@ -18,7 +18,7 @@ const ForumPosts = ({ forumPosts, userIdRef, accessToken }) => {
 
   const openDialog = (data) => {
     setDialogOpen(true);
-    setPostData(data);
+    setPostData(data); //pass the data of the post to CreateCommentModal
   };
 
   const hideDialog = () => {

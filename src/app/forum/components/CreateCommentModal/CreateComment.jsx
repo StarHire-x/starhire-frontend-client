@@ -45,6 +45,12 @@ const CreateComment = ({ userIdRef, accessToken, postData }) => {
           </div>
         </div>
       </Card>
+
+      <div className={styles.leaveCommentContainer}>
+        <div className={styles.leaveCommentHeader}>
+          <h3>Leave a comment!</h3>
+        </div>
+      </div>
     </>
   );
 };
