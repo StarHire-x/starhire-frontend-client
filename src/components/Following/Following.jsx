@@ -116,21 +116,24 @@ const Following = ({}) => {
         </div>
         <div className={styles.cardButtons}>
           <Button
-            label="View More Details"
-            rounded
-            severity="info"
             size="small"
+            icon="pi pi-info"
+            rounded
+            outlined
+            className={styles.buttonIcon}
             onClick={() => {
               setSelectedCorporate(corporate);
               setShowCorporateDetailsDialog(true);
             }}
           />
-
           <Button
-            label={isCurrentlyFollowing ? "Unfollow" : "Follow"}
-            rounded
-            severity={isCurrentlyFollowing ? "danger" : "success"}
             size="small"
+            label={isCurrentlyFollowing ? "Unfollow" : "Follow"}
+            icon={isCurrentlyFollowing ? "pi pi-times" : "pi pi-plus"}
+            rounded
+            outlined
+            severity={isCurrentlyFollowing ? "danger" : "success"}
+            className={styles.buttonIcon}
             onClick={(e) =>
               handleFollowingStatus(corporate, isCurrentlyFollowing)
             }
@@ -174,23 +177,38 @@ const Following = ({}) => {
         className={styles.cardFollowing}
       >
         {selectedCorporate && (
-          <div>
+          <div className={styles.centerContent}>
             {selectedCorporate.profilePictureUrl !== "" ? (
               <img
                 alt={selectedCorporate.profilePictureUrl}
                 src={selectedCorporate.profilePictureUrl}
-                className={styles.avatarImageContainer}
+                className={styles.corporateImage}
               />
             ) : (
               <Image
                 src={HumanIcon}
                 alt="Icon"
-                className={styles.avatarImageContainer}
+                className={styles.corporateImage}
               />
             )}
-            <h3>Corporate Name: {selectedCorporate.companyName}</h3>
-            <p>Corporate Email: {selectedCorporate.email}</p>
-            <p>Corporate contact: {selectedCorporate.contactNo}</p>
+            <div className={styles.inlineField}>
+              <label htmlFor="corporateName" className="font-bold">
+              Corporate Name:
+              </label>
+              <p>{selectedCorporate.companyName}</p>
+            </div>
+            <div className={styles.inlineField}>
+              <label htmlFor="corporateEmail" className="font-bold">
+              Corporate Email:
+              </label>
+              <p>{selectedCorporate.email}</p>
+            </div>
+            <div className={styles.inlineField}>
+              <label htmlFor="corporateContact" className="font-bold">
+              Corporate contact:
+              </label>
+              <p>{selectedCorporate.contactNo}</p>
+            </div>
           </div>
         )}
       </Dialog>

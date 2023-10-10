@@ -13,10 +13,19 @@
 
 .header {
   margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
 }
 
 .cardButtons {
   display: flex;
+  justify-content: space-around;
+  width: 200px;
+}
+
+.buttonIcon {
+  margin-right: 2px;
+  margin-left: 2px;
 }
 
 .imageContainer {
@@ -47,7 +56,7 @@
 .cardFollowing {
   background-color: #ffffff; /* White background */
   border-radius: 8px; /* Rounded corners */
-  max-width: 500px; /* Maximum width of the dialog box */
+  width: 500px; /* Maximum width of the dialog box */
   margin: 40px auto; /* Centering the dialog box on the page with 40px margin from top and bottom */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1),
     /* Horizontal shadow, vertical shadow, blur, spread and color */ 0 6px 20px
@@ -55,4 +64,43 @@
   padding: 20px; /* Padding inside the dialog box */
   position: relative; /* Set position to relative to allow absolute positioning within the dialog */
   overflow: hidden;
+}
+
+ /* View more details dialog */
+ .centerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%; /* or you can set to a specific height if needed */
+  padding: 20px;
+}
+
+.corporateImage {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%; /* To make it circular */
+  object-fit: cover; /* To ensure the image maintains its aspect ratio */
+  margin-bottom: 10px; /* Add some spacing below the image */
+}
+
+.inlineField {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adjust this to set spacing between label and value */
+  padding: 10px 0;
+  width: 100%; /* Give a consistent width to all fields for alignment */
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.inlineField label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  width: 30%; /* To make sure labels have a consistent width */
+}
+
+.inlineField p {
+  font-size: 1em;
+  color: #555;
+  flex-grow: 1; /* To ensure the content takes up the remaining width */
 }
