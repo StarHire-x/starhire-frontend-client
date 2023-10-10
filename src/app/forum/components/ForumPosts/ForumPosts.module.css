@@ -1,5 +1,5 @@
 .postContainer {
-  width: 30vw;
+  width: 33vw;
 }
 
 .postTitle {
@@ -73,6 +73,13 @@
 .content {
   margin-top: 15px;
   text-align: justify;
+}
+
+.showMore {
+  margin-left: 10px;
+  cursor: pointer;
+  color: blue;
+  margin-left: 10px;
 }
 
 .footer {

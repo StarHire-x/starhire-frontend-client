@@ -25,6 +25,12 @@ const ForumPosts = ({ forumPosts, userIdRef, accessToken, setRefreshData }) => {
     setDialogOpen(false);
   };
 
+  const truncatedMessage = (data) => {
+    return data.forumPostMessage.length > 500
+      ? data.forumPostMessage.substring(0, 500) + " ..."
+      : data.forumPostMessage;
+  };
+
   const itemTemplate = (data) => {
     return (
       <div className={styles.postContainer}>
@@ -51,7 +57,14 @@ const ForumPosts = ({ forumPosts, userIdRef, accessToken, setRefreshData }) => {
           </div>
         </div>
 
-        <div className={styles.content}>{data.forumPostMessage}</div>
+        <div className={styles.content}>
+          {truncatedMessage(data)}
+          {data.forumPostMessage.length > 500 && (
+            <span className={styles.showMore} onClick={() => openDialog(data)}>
+              Show More
+            </span>
+          )}
+        </div>
 
         <div className={styles.footer}>
           <div className={styles.dateTimeText}>
