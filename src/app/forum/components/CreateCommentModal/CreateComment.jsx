@@ -4,6 +4,7 @@ import styles from "./CreateComment.module.css";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Card } from "primereact/card";
 import moment from "moment";
+import { Button } from "primereact/button";
 
 const CreateComment = ({ userIdRef, accessToken, postData }) => {
   const [comment, setComment] = useState("");
@@ -38,6 +39,30 @@ const CreateComment = ({ userIdRef, accessToken, postData }) => {
         forumCommentMessage: e.target.value,
       }));
     }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      createdAt: new Date(),
+      isAnonymous: false,
+      // forumPostId: "",
+      jobSeekerId: userIdRef,
+      forumCommentMessage: "",
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    // e.preventDefault();
+    // try {
+    //   const response = await createPost(formData, accessToken);
+    //   console.log("Forum comment has been created");
+    //   resetForm();
+    // } catch (error) {
+    //   console.error(
+    //     "There was an error creating the forum comment",
+    //     error.message
+    //   );
+    // }
   };
 
   return (
@@ -77,19 +102,28 @@ const CreateComment = ({ userIdRef, accessToken, postData }) => {
       </Card>
 
       <div className={styles.leaveCommentContainer}>
-        <div className={styles.leaveCommentHeader}>
-          <h3>Leave a comment!</h3>
-        </div>
-        <div className={styles.leaveCommentContent}>
-          <InputTextarea
-            rows={2}
-            cols={75}
-            value={comment}
-            onChange={(e) => handleCommentChange(e)}
-            className={styles.textarea}
-          />
-        </div>
-        <div className={styles.characterCount}>{maxCharacterCount - comment.length} characters left</div>
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <div className={styles.leaveCommentHeader}>
+            <h3>Leave a comment!</h3>
+          </div>
+          <div className={styles.leaveCommentContent}>
+            <InputTextarea
+              rows={2}
+              cols={75}
+              value={comment}
+              onChange={(e) => handleCommentChange(e)}
+              className={styles.textarea}
+            />
+          </div>
+          <div className={styles.leaveCommentFooter}>
+            <div className={styles.characterCount}>
+              {maxCharacterCount - comment.length} characters left
+            </div>
+            <div className={styles.commentButtonContainer}>
+              <Button icon="pi pi-arrow-right" size="small" className={styles.commentButton}/>
+            </div>
+          </div>
+        </form>
       </div>
       <div className={styles.allCommentsContainer}>
         <div className={styles.allCommentsHeader}>

@@ -107,8 +107,25 @@
 .leaveCommentContent {
 }
 
+.leaveCommentFooter {
+  display: flex;
+  justify-content: space-between;
+}
+
 .characterCount {
   margin-top: 5px;
+}
+
+.commentButtonContainer {
+	display: flex;
+  justify-content: center; 
+  align-items: center; 
+}
+
+.commentButton {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 20px;
 }
 
 .allCommentsContainer {
