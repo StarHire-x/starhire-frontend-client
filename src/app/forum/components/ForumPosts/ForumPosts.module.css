@@ -77,8 +77,10 @@
 .showMore {
   margin-left: 10px;
   cursor: pointer;
-  color: blue;
+  color: rgb(0, 0, 0);
   margin-left: 10px;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 .footer {
