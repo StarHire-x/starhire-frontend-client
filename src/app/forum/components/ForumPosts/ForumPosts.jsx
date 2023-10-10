@@ -7,6 +7,7 @@ import moment from "moment";
 import { Dialog } from "primereact/dialog";
 import CreateComment from "../CreateCommentModal/CreateComment";
 import { useState } from "react";
+import Utility from "@/common/helper/utility";
 
 const ForumPosts = ({
   forumPosts,
@@ -78,7 +79,7 @@ const ForumPosts = ({
 
         <div className={styles.footer}>
           <div className={styles.dateTimeText}>
-            {formatRawDate(data.createdAt)}
+            {Utility.timeAgo(data.createdAt)}
           </div>
           <Button
             size="small"

@@ -1,41 +1,67 @@
 .commentContainer {
-    display: flex;
-    flex-direction: row;
-    max-height: 50vh;
-    min-height: 15vh;
+  display: flex;
+  flex-direction: row;
+  max-height: 50vh;
+  min-height: 15vh;
 }
 
 .commentMsgCard {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 90%;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 90%;
 }
 
 .commentAndDateTimeSection {
-    display: flex;
-    flex-direction: column;
-    width: 90%;
-    margin-left: 2%;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin-left: 2%;
 }
 
 .commentTimeStamp {
-    
+    margin-top: 1vh;
+    margin-bottom: 1vh;
 }
 
 .userProfilePhoto {
-    border-radius: 50%;
-    object-fit: cover;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .userSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 8%;
+}
+
+@media (max-width: 1224px) {
+  .commentContainer {
+    display: flex;
+    flex-direction: row;
+    min-height: 10vh;
+    max-width: 40vw;
+    align-items: center;
+  }
+
+  .commentAndDateTimeSection {
+    display: flex;
+    flex-direction: column;
+    /* margin-left: 5vw; */
+  }
+
+  .userSection {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 8%;
-}
+    width: 20vw;
+  }
 
-@media (max-width: 768px) {
-  
+  .commentTimeStamp {
+    margin-top: 3vh;
+    margin-bottom: 1vh;
+}
 }

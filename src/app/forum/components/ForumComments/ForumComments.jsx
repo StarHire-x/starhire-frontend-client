@@ -5,6 +5,7 @@ import moment from "moment";
 import Image from "next/image";
 import HumanIcon from "../../../../../public/icon.png";
 import { Card } from "primereact/card";
+import Utility from "@/common/helper/utility";
 
 const ForumComments = ({ forumComments }) => {
   const formatRawDate = (rawDate) => {
@@ -43,7 +44,7 @@ const ForumComments = ({ forumComments }) => {
               {data?.forumCommentMessage}
             </Card>
             <div className={styles.commentTimeStamp}>
-              {formatRawDate(data?.createdAt)}
+              {Utility.timeAgo(data?.createdAt)}
             </div>
           </div>
         </div>
