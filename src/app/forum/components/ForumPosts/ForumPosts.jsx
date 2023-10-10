@@ -10,13 +10,15 @@ import { useState } from "react";
 
 const ForumPosts = ({ forumPosts, userIdRef, accessToken }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [postData, setPostData] = useState("");
 
   const formatRawDate = (rawDate) => {
     return moment(rawDate).format("DD MMMM YYYY, hh:mm A");
   };
 
-  const openDialog = () => {
+  const openDialog = (data) => {
     setDialogOpen(true);
+    setPostData(data);
   };
 
   const hideDialog = () => {
@@ -24,8 +26,6 @@ const ForumPosts = ({ forumPosts, userIdRef, accessToken }) => {
   };
 
   const itemTemplate = (data) => {
-    console.log(data);
-
     return (
       <div className={styles.postContainer}>
         <div className={styles.postTitle}>{data.forumPostTitle}</div>
@@ -61,7 +61,7 @@ const ForumPosts = ({ forumPosts, userIdRef, accessToken }) => {
             size="small"
             icon="pi pi-comments"
             rounded
-            onClick={openDialog}
+            onClick={() => openDialog(data)}
             className={styles.commentButton}
           ></Button>
         </div>
@@ -82,12 +82,16 @@ const ForumPosts = ({ forumPosts, userIdRef, accessToken }) => {
         />
       </div>
       <Dialog
-        header="Leave a comment!"
         visible={dialogOpen}
         onHide={hideDialog}
         className={styles.createCommentModal}
+        draggable={false}
       >
-        <CreateComment userIdRef={userIdRef} accessToken={accessToken} />
+        <CreateComment
+          userIdRef={userIdRef}
+          accessToken={accessToken}
+          postData={postData}
+        />
       </Dialog>
     </>
   );
