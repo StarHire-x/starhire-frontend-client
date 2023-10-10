@@ -85,6 +85,7 @@ const ForumPosts = ({ forumPosts, userIdRef, accessToken }) => {
         header="Leave a comment!"
         visible={dialogOpen}
         onHide={hideDialog}
+        className={styles.createCommentModal}
       >
         <CreateComment userIdRef={userIdRef} accessToken={accessToken} />
       </Dialog>
