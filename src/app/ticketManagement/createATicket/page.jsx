@@ -9,7 +9,6 @@ import { useSession } from 'next-auth/react';
 
 import {
   findAllJobListingsByCorporate,
-  createJobListing,
 } from '@/app/api/jobListing/route';
 
 import { createTicket } from '@/app/api/Ticket/route'; 
@@ -23,10 +22,10 @@ import Enums from '@/common/enums/enums';
 import { Toast } from "primereact/toast";
 
 const CreateATicketPage = () => {
-  const [jobListing, setJobListing] = useState(null);
+  //const [jobListing, setJobListing] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
-  const [selectedJobListingData, setSelectedJobListingData] = useState(null);
+  //const [selectedJobListingData, setSelectedJobListingData] = useState(null);
   const [refreshData, setRefreshData] = useState(false);
   const session = useSession();
   const router = useRouter();
@@ -40,6 +39,15 @@ const CreateATicketPage = () => {
     session.status === 'authenticated' &&
     session.data &&
     session.data.user.accessToken;
+
+  const userLoggedIn =
+    session.status === 'authenticated' &&
+    session.data &&
+    session.data.user.role;
+
+    console.log(userIdRef);
+    console.log(userLoggedIn);
+
 
   const toast = useRef(null);
 
@@ -122,11 +130,19 @@ const CreateATicketPage = () => {
 */
 
   const handleTicketCreation = async (newTicket) => {
+    let payload;
     try {
-      const payload = {
-        ...newTicket,
-        corporateId: userIdRef,
-      };
+      if (userLoggedIn === "Corporate") {
+        payload = {
+          ...newTicket,
+          corporateId: userIdRef,
+        };
+      } else {
+        payload = {
+          ...newTicket,
+          jobSeekerId: userIdRef,
+        };
+      }
       console.log(payload);
       const response = await createTicket(payload, accessToken);
       console.log('Created Ticket Successfully', response);
