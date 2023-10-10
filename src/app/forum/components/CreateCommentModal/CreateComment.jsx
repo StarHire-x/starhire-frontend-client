@@ -7,6 +7,7 @@ import moment from "moment";
 import { Button } from "primereact/button";
 import { createComment } from "@/app/api/forum/route";
 import { Checkbox } from "primereact/checkbox";
+import { Toast } from "primereact/toast";
 
 const CreateComment = ({
   userIdRef,
@@ -15,8 +16,11 @@ const CreateComment = ({
   setRefreshData,
 }) => {
   const [comment, setComment] = useState("");
+  const [commentValid, setCommentValid] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
+  const [formValid, setFormValid] = useState(true);
   const maxCharacterCount = 8000;
+  const toast = useRef(null);
 
   const formatRawDate = (rawDate) => {
     return moment(rawDate).format("DD MMMM YYYY, hh:mm A");
@@ -34,6 +38,7 @@ const CreateComment = ({
     const inputValue = e.target.value;
     if (inputValue.length <= maxCharacterCount) {
       setComment(inputValue);
+      setCommentValid(inputValue.trim() !== ''); 
       setFormData((prevData) => ({
         ...prevData,
         forumCommentMessage: e.target.value,
@@ -52,6 +57,7 @@ const CreateComment = ({
   const resetForm = () => {
     setComment("");
     setAnonymous(false);
+    setCommentValid(false);
     setFormData({
       createdAt: new Date(),
       isAnonymous: false,
@@ -63,21 +69,47 @@ const CreateComment = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await createComment(formData, accessToken);
-      console.log("Forum comment has been created");
-      resetForm();
-      setRefreshData((prev) => !prev);
-    } catch (error) {
-      console.error(
-        "There was an error creating the forum comment",
-        error.message
-      );
+    if (commentValid) {
+      setFormValid(true);
+
+      try {
+        const response = await createComment(formData, accessToken);
+        console.log("Forum comment has been created");
+        resetForm();
+        setRefreshData((prev) => !prev);
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Your comment has been posted",
+          life: 5000,
+        });
+      } catch (error) {
+        console.error(
+          "There was an error creating the forum comment",
+          error.message
+        );
+        toast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail: "There was an error creating the forum comment",
+          life: 5000,
+        });
+      }
+    } else {
+      setFormValid(false);
+
+      toast.current.show({
+        severity: "warn",
+        summary: "Warning",
+        detail: "Please leave a comment",
+        life: 5000,
+      });
     }
   };
 
   return (
     <>
+      <Toast ref={toast} />
       <div className={styles.dialogHeader}>
         <h1>Post #{postData.forumPostId}</h1>
       </div>
