@@ -13,6 +13,7 @@ const DeletePostCard = ({
   userIdRef,
   accessToken,
   setRefreshData,
+  hideCommentDialog
 }) => {
   const toast = useRef(null);
   const deletePost = async () => {
@@ -30,6 +31,7 @@ const DeletePostCard = ({
         life: 5000,
       });
       hideDeleteDialog();
+      hideCommentDialog();
     } catch (error) {
       console.error("There was an error deleting this post", error.message);
       toast.current.show({

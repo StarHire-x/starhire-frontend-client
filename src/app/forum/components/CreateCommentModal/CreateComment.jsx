@@ -19,6 +19,7 @@ const CreateComment = ({
   accessToken,
   postData,
   setRefreshData,
+  openDeleteDialog
 }) => {
   const [comment, setComment] = useState("");
   const [commentValid, setCommentValid] = useState(false);
@@ -134,7 +135,18 @@ const CreateComment = ({
         <h1>Post #{postData.forumPostId}</h1>
       </div>
       <Card className={styles.postCard}>
-        <div className={styles.postTitle}>{postData.forumPostTitle}</div>
+        <div className={styles.postTitle}>
+          <div>{postData.forumPostTitle}</div>
+          {postData.jobSeeker.userId === userIdRef && (
+            <Button
+              size="small"
+              icon="pi pi-delete-left"
+              rounded
+              onClick={() => openDeleteDialog(postData)}
+              className={styles.deleteButton}
+            ></Button>
+          )}
+        </div>
         <div className={styles.userId}>
           {postData.isAnonymous === false
             ? `Posted By: ${postData.jobSeeker.userName}`
