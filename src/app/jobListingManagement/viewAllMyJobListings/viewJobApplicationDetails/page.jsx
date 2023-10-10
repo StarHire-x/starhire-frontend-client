@@ -18,6 +18,9 @@ import moment from "moment";
 import HumanIcon from "../../../../../public/icon.png";
 import { getJobSeekersByJobApplicationId } from "@/app/api/jobListing/route";
 import { Dialog } from "primereact/dialog";
+import { Calendar } from "primereact/calendar";
+import { InputTextarea } from "primereact/inputtextarea";
+
 
 const ViewJobApplicationDetails = () => {
   const session = useSession();
@@ -45,8 +48,131 @@ const ViewJobApplicationDetails = () => {
   const [userDialog, setUserDialog] = useState(false);
   const [status, setStatus] = useState(null);
 
+  const [interviewDateTimes, setInterviewDateTimes] = useState([]);
+  const [showArrangeInterviewDialog, setShowArrangeInterviewDialog] = useState(false);
+  const [interviewDate, setInterviewDate] = useState(""); // State to store the interview date
+  const [interviewTime, setInterviewTime] = useState(""); // State to store the interview time
+  const [interviewNotes, setInterviewNotes] = useState("");
+  const [confirmSendDialog, setConfirmSendDialog] = useState(false);
+
+  const showConfirmSendDialog = () => {
+    setConfirmSendDialog(true);
+  };
+
+  const hideConfirmSendDialog = () => {
+    setConfirmSendDialog(false);
+  };
+  
+
+
+  const addInterviewDateTime = () => {
+    if (interviewDate) {
+      const newEntry = {
+        date: interviewDate.toLocaleString(), // Convert to string
+      };
+  
+      setInterviewDateTimes([...interviewDateTimes, newEntry]);
+      setInterviewDate("");
+    }
+  };
+  
+
+  const handleArrangeInterview = () => {
+    setShowArrangeInterviewDialog(true);
+  };
+
+  const hideArrangeInterviewDialog = () => {
+    setShowArrangeInterviewDialog(false);
+  };
+
+  const confirmSendDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="Cancel"
+        icon="pi pi-times"
+        outlined
+        onClick={hideConfirmSendDialog}
+      />
+      <Button
+        label="Confirm"
+        icon="pi pi-check"
+        outlined
+        onClick={() => {
+          console.log("Sending to Recruiter...");
+          // Add the chat logic here
+
+          console.log("Interview Date-Times:", interviewDateTimes);
+          console.log("Interview Notes:", interviewNotes);
+
+          setInterviewDateTimes([]);
+          setInterviewNotes("");
+
+          hideConfirmSendDialog();
+          hideArrangeInterviewDialog();
+        }}
+      />
+    </React.Fragment>
+  );
+  
+  const confirmSendDialogContent = (
+    <div>
+      <p>Are you sure you want to send this to the recruiter?</p>
+    </div>
+  );
+  
+
+  const arrangeInterviewDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="Discard"
+        icon="pi pi-times"
+        outlined
+        onClick={hideArrangeInterviewDialog}
+      />
+      <Button
+        label="Send to Recruiter"
+        icon="pi pi-check"
+        outlined
+        onClick={() => {
+          //console.log("Interview Date-Times:", interviewDateTimes);
+          //console.log("Interview Notes:", interviewNotes);
+
+          // Clear the interviewDateTimes array after saving
+          //setInterviewDateTimes([]);
+          //setInterviewNotes("");
+          //hideArrangeInterviewDialog();
+          showConfirmSendDialog();
+        }}
+      />
+    </React.Fragment>
+  );
+
   const convertTimestampToDate = (timestamp) => {
     return moment(timestamp).format("DD/MM/YYYY");
+  };
+
+  const formattedDate = (timestamp) => {
+    return moment(timestamp).format("DD/MM/YYYY HH:mm");
+  };
+
+  const removeInterviewDateTime = (index) => {
+    const updatedDateTimes = [...interviewDateTimes];
+    updatedDateTimes.splice(index, 1);
+    setInterviewDateTimes(updatedDateTimes);
+  };
+
+  const renderInterviewDateTimes = () => {
+    return interviewDateTimes.map((entry, index) => (
+      <div key={index} className={styles.interviewDateTimeEntry}>
+        <span>Date: {moment(entry.date, "YYYY-MM-DD HH:mm:ss").format("DD/MM/YYYY HH:mm")}</span>
+        <Button
+          label="Remove"
+          icon="pi pi-trash"
+          onClick={() => removeInterviewDateTime(index)}
+          className="p-button-danger"
+        />
+      </div>
+    ));
   };
 
   const getSeverity = (status) => {
@@ -82,9 +208,7 @@ const ViewJobApplicationDetails = () => {
   };
 
   const handleOnBackClick = () => {
-    //return router.push(`/jobApplications?id=${jobListing?.jobListingId}`);
     router.back();
-    //return router.push(`viewJobApplications?id=${jobListing?.jobListingId}`);
   };
 
   const updateJobApplication = async (newStatus) => {
@@ -129,13 +253,10 @@ const ViewJobApplicationDetails = () => {
         outlined
         onClick={() => {
           updateJobApplication(status);
-          //hideDialog();
         }}
       />
     </React.Fragment>
   );
-
-
 
   const nodes = [
     {
@@ -375,13 +496,11 @@ const ViewJobApplicationDetails = () => {
                   onClick={() => showUserDialog("Accepted")}
                 />
                 <Button
-                  label="Proceed to Interview"
-                  icon="pi pi-users"
+                  label="Arrange Interview"
+                  icon="pi pi-calendar"
                   rounded
                   severity="info"
-                  onClick={() =>
-                    console.log("proceed to interview button clicked")
-                  }
+                  onClick={handleArrangeInterview}
                 />
 
                 <Dialog
@@ -393,6 +512,63 @@ const ViewJobApplicationDetails = () => {
                   footer={userDialogFooter}
                   onHide={hideDialog}
                 ></Dialog>
+
+                <Dialog
+                  visible={confirmSendDialog}
+                  style={{ width: "32rem" }}
+                  header="Are you sure?"
+                  className="p-fluid"
+                  footer={confirmSendDialogFooter}
+                  onHide={hideConfirmSendDialog}
+                >
+                  {confirmSendDialogContent}
+                </Dialog>
+
+                <Dialog
+                  visible={showArrangeInterviewDialog}
+                  style={{ width: "52rem" }}
+                  breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+                  header="Arrange Interview"
+                  className="p-fluid"
+                  footer={arrangeInterviewDialogFooter}
+                  onHide={hideArrangeInterviewDialog}
+                >
+                  <div>
+                    <label htmlFor="interviewDate">
+                      Choose Interview Date and Time:
+                    </label>
+                    <Calendar
+                      id="interviewDate"
+                      showTime
+                      showSeconds={false}
+                      value={interviewDate}
+                      minDate={new Date()}
+                      dateFormat="dd/mm/yy"
+                      onChange={(e) => setInterviewDate(e.value)}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="interviewNotes">Interview Notes:</label>
+                    <InputTextarea
+                      id="interviewNotes"
+                      value={interviewNotes}
+                      onChange={(e) => setInterviewNotes(e.target.value)}
+                    />
+                  </div>
+                  <Button
+                    label="Add Interview Date-Time"
+                    icon="pi pi-plus"
+                    onClick={addInterviewDateTime}
+                    className="p-button-success"
+                  />
+                  {interviewDateTimes.length > 0 && (
+                    <div>
+                      <label>Selected Interview Date-Times:</label>
+                      {renderInterviewDateTimes()}
+                    </div>
+                  )}
+                </Dialog>
+
               </div>
             )}
           </div>
