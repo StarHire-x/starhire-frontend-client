@@ -475,12 +475,13 @@ const ViewJobApplicationDetails = () => {
                   onHide={hideArrangeInterviewDialog}
                 >
                   <div>
-                    <label htmlFor="interviewDate">Interview Date:</label>
+                    <label htmlFor="interviewDate">Choose Interview Date and Time:</label>
                     <Calendar
                       id="interviewDate"
                       showTime
                       showSeconds={false}
                       value={interviewDate}
+                      minDate={new Date()}
                       onChange={(e) => setInterviewDate(e.value)}
                     />
                   </div>
