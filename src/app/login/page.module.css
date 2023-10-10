@@ -17,38 +17,56 @@
 }
 
 .title {
-  font-size: 72px;
-  background: linear-gradient(to bottom, #194c33, #bbb);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 54px;
+  color: #194c33;
 }
 
 .form {
-  width: 300px;
+  width: 400px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
+}
+
+.inputContainer {
+  width: 400px;
+  position: relative; /* Set to relative so that the button can be positioned absolutely within this container */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inputContainer p {
+  color: rgb(0, 0, 0);
 }
 
 .input {
   padding: 20px;
   background-color: transparent;
   border: 2px solid #bbb;
-  color: #bbb;
+  color: black;
   border-radius: 5px;
   font-size: 20px;
   font-weight: bold;
+  width: 100%; /* Ensure input takes full width of the container */
+  box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
 }
 
-.button {
-  width: 300px;
-  padding: 20px;
-  cursor: pointer;
-  background-color: #53c28b;
+.showPasswordButton {
+  position: absolute; /* Position the button absolutely within the inputContainer */
+  top: 45%; /* Center the button vertically */
+  right: 15px; /* Position the button 10px from the right edge of the inputContainer */
+  transform: translateY(-50%); /* Center the button vertically */
+  background: none;
   border: none;
-  border-radius: 5px;
-  color: #eee;
-  font-weight: bold;
+  cursor: pointer;
+  color: #0041a9;
+  font-size: 15px;
+}
+
+.forgotPassword {
+  color: #0041a9;
+  margin-top: 15px;
 }
 
 .radio {
@@ -56,6 +74,22 @@
   flex-direction: row;
   align-items: center;
   gap: 10px; /* Adjust the spacing between the radio button and label */
+  justify-content: center;
+}
+
+.button {
+  width: 400px;
+  padding: 15px;
+  cursor: pointer;
+  background-color: #53c28b;
+  border: none;
+  border-radius: 30px;
+  color: #eee;
+  font-size: 17px;
+}
+
+.button:hover {
+  background-color: #1dbf6e;
 }
 
 .radio input[type="radio"] {
@@ -63,8 +97,59 @@
   margin-right: 4px; /* Adjust the spacing between the radio button and label text */
 }
 
+.orContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Optional: for some space between the lines and the text */
+}
+
+.orSeparator {
+  flex-grow: 1;
+  height: 1px; /* Adjust thickness of the line */
+  background-color: grey;
+  width: 180px;
+}
+
+.orText {
+  color: black; /* Or whatever color is desired for the text */
+  font-size: 14px; /* Adjust text size as needed */
+}
+
+.registerButton {
+  width: 400px;
+  padding: 15px;
+  cursor: pointer;
+  border: 0.5px solid black;
+  border-radius: 30px;
+  color: #eee;
+  font-size: 17px;
+  color: black;
+  background-color: #edf6f9;
+}
+
+.registerButton:hover {
+  background-color: #dedede;
+}
+
 @media screen and (max-width: 768px) {
   .title {
-    font-size: 50px;
+    font-size: 40px;
+  }
+  .form {
+    width: 300px;
+  }
+  .inputContainer {
+    width: 300px;
+  }
+  .button {
+    width: 300px;
+  }
+  .orSeparator {
+    width: 130px;
+  }
+  .registerButton {
+    width: 300px;
   }
 }

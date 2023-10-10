@@ -22,6 +22,7 @@ const Login = () => {
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -29,6 +30,10 @@ const Login = () => {
       ...formData,
       [name]: value,
     });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   if (session.status === "loading") {
@@ -87,27 +92,43 @@ const Login = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Login</h1>
+      <h1 className={styles.title}>Join StarHire</h1>
       {errorMessage && <p className={styles.error}>{errorMessage}</p>}
       <form className={styles.form}>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          className={styles.input}
-          value={formData.email}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          className={styles.input}
-          value={formData.password}
-          onChange={handleInputChange}
-          required
-        />
+        <div className={styles.inputContainer}>
+          <p>Email</p>
+          <input
+            type="email"
+            name="email"
+            className={styles.input}
+            value={formData.email}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        <div className={styles.inputContainer}>
+          <p>Password</p>
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            className={styles.input}
+            value={formData.password}
+            onChange={handleInputChange}
+            required
+          />
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className={styles.showPasswordButton}
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+          <Link className={styles.forgotPassword} href="/forgetPassword">
+            Forgot Password?
+          </Link>
+        </div>
+
         <div className={styles.radio}>
           <p>I am a:</p>
           <RadioButton
@@ -136,10 +157,23 @@ const Login = () => {
         {loading && (
           <ProgressSpinner style={{ width: "50px", height: "50px" }} />
         )}
-        {!loading && <button className={styles.button} onClick={handleSubmit}>Login</button>}
+        {!loading && (
+          <button className={styles.button} onClick={handleSubmit}>
+            Sign in
+          </button>
+        )}
       </form>
-      <Link href="/register">New to StarHire? Join Now! </Link>
-      <Link href="/forgetPassword">Forget Password</Link>
+      <div className={styles.orContainer}>
+        <div className={styles.orSeparator}></div>
+        <span className={styles.orText}>or</span>
+        <div className={styles.orSeparator}></div>
+      </div>
+      <button
+        className={styles.registerButton}
+        onClick={() => router.push("/register")}
+      >
+        New to StarHire? Join Now!
+      </button>
     </div>
   );
 };
