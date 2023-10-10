@@ -16,6 +16,8 @@ const ForumMobileView = ({
   accessToken,
   forumPosts,
   setRefreshData,
+  onSearchQueryChange,
+  searchQuery,
 }) => {
   const [guideLinesVisibility, setGuideLinesVisibility] = useState(false);
   return (
@@ -47,7 +49,10 @@ const ForumMobileView = ({
           <ForumGuidelinesCard />
         </Dialog>
         <div className={styles.utilityContainer}>
-          <ForumSearchBar />
+          <ForumSearchBar
+            onSearchQueryChange={onSearchQueryChange}
+            searchQuery={searchQuery}
+          />
           <div className={styles.categoryMenuContainer}>
             <ForumCategoryMenuMobile
               setForumCategoryTitle={setForumCategoryTitle}
@@ -63,6 +68,7 @@ const ForumMobileView = ({
             userIdRef={userIdRef}
             accessToken={accessToken}
             setRefreshData={setRefreshData}
+            searchQuery={searchQuery}
           />
         </div>
       </div>

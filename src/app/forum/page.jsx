@@ -135,6 +135,8 @@ const ForumPage = () => {
               forumCategories={forumCategories}
               forumPosts={forumPosts}
               setRefreshData={setRefreshData}
+              onSearchQueryChange={handleSearchQueryChange}
+              searchQuery={searchQuery}
             />
           </MediaQuery>
         </>
