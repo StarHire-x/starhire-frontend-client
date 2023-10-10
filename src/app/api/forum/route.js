@@ -37,7 +37,7 @@ export const createComment = async (newComment, accessToken) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify(newPost),
+        body: JSON.stringify(newComment),
         cache: "no-store",
       }
     );

@@ -5,6 +5,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Card } from "primereact/card";
 import moment from "moment";
 import { Button } from "primereact/button";
+import { createComment } from "@/app/api/forum/route";
 
 const CreateComment = ({ userIdRef, accessToken, postData }) => {
   const [comment, setComment] = useState("");
@@ -17,18 +18,10 @@ const CreateComment = ({ userIdRef, accessToken, postData }) => {
   const [formData, setFormData] = useState({
     createdAt: new Date(),
     isAnonymous: false,
-    // forumPostId: "",
+    forumPostId: postData.forumPostId,
     jobSeekerId: userIdRef,
     forumCommentMessage: "",
   });
-
-  // const handleCommentChange = (e) => {
-  //   setComment(e.target.value);
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     forumCommentMessage: e.target.value,
-  //   }));
-  // };
 
   const handleCommentChange = (e) => {
     const inputValue = e.target.value;
@@ -45,24 +38,24 @@ const CreateComment = ({ userIdRef, accessToken, postData }) => {
     setFormData({
       createdAt: new Date(),
       isAnonymous: false,
-      // forumPostId: "",
+      forumPostId: postData.forumPostId,
       jobSeekerId: userIdRef,
       forumCommentMessage: "",
     });
   };
 
   const handleSubmit = async (e) => {
-    // e.preventDefault();
-    // try {
-    //   const response = await createPost(formData, accessToken);
-    //   console.log("Forum comment has been created");
-    //   resetForm();
-    // } catch (error) {
-    //   console.error(
-    //     "There was an error creating the forum comment",
-    //     error.message
-    //   );
-    // }
+    e.preventDefault();
+    try {
+      const response = await createComment(formData, accessToken);
+      console.log("Forum comment has been created");
+      resetForm();
+    } catch (error) {
+      console.error(
+        "There was an error creating the forum comment",
+        error.message
+      );
+    }
   };
 
   return (
