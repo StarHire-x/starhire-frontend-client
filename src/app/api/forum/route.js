@@ -158,3 +158,29 @@ export const getAllSortedForumPosts = async (accessToken) => {
   }
 };
 
+
+export const getAllForumCommentsByForumPostId = async (forumPostId, accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/forum-comments/forumPost/${forumPostId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: 'no-store',
+      }
+    );
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+    return await res.json();
+    
+  } catch (error) {
+    console.log('There was a problem fetching the forum categories', error);
+    throw error;
+  }
+};
