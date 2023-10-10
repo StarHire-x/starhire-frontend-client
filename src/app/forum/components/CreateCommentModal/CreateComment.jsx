@@ -8,6 +8,7 @@ import { Button } from "primereact/button";
 import { createComment } from "@/app/api/forum/route";
 import { Checkbox } from "primereact/checkbox";
 import { Toast } from "primereact/toast";
+import ForumComments from "../ForumComments/ForumComments";
 
 const CreateComment = ({
   userIdRef,
@@ -185,7 +186,9 @@ const CreateComment = ({
       <div className={styles.allCommentsContainer}>
         <div className={styles.allCommentsHeader}>
           <h3>All Comments</h3>
+          <p>{postData?.forumComments.length} comments</p>
         </div>
+        <ForumComments forumComments={postData?.forumComments} />
       </div>
     </>
   );

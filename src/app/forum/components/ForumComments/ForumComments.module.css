@@ -1,0 +1,29 @@
+.commentContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-height: 50vh;
+    min-height: 15vh;
+}
+
+.commentMsg {
+    display: flex;
+    align-items: center;
+}
+
+.commentTimeStamp {
+    display: flex;
+    align-items: flex-end;
+}
+
+.userProfilePhoto {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.userSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
