@@ -91,6 +91,7 @@
 .commentButton:hover {
   border: #2196f3 !important;
   background-color: #2196f3 !important;
+  border: #2196f3 !important ;
   color: #edf6f9 !important;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
     box-shadow 0.2s;
