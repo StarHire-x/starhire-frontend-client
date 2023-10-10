@@ -122,6 +122,14 @@
   align-items: center; 
 }
 
+.anonymous {
+
+}
+
+.anonymousText {
+  margin-left: 5px;
+}
+
 .commentButton {
   width: 30px !important;
   height: 30px !important;

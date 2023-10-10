@@ -6,9 +6,16 @@ import { Card } from "primereact/card";
 import moment from "moment";
 import { Button } from "primereact/button";
 import { createComment } from "@/app/api/forum/route";
+import { Checkbox } from "primereact/checkbox";
 
-const CreateComment = ({ userIdRef, accessToken, postData, setRefreshData }) => {
+const CreateComment = ({
+  userIdRef,
+  accessToken,
+  postData,
+  setRefreshData,
+}) => {
   const [comment, setComment] = useState("");
+  const [anonymous, setAnonymous] = useState(false);
   const maxCharacterCount = 8000;
 
   const formatRawDate = (rawDate) => {
@@ -34,8 +41,17 @@ const CreateComment = ({ userIdRef, accessToken, postData, setRefreshData }) => 
     }
   };
 
+  const handleAnonymousChange = (e) => {
+    setAnonymous(e.checked);
+    setFormData((prevData) => ({
+      ...prevData,
+      isAnonymous: e.checked,
+    }));
+  };
+
   const resetForm = () => {
     setComment("");
+    setAnonymous(false);
     setFormData({
       createdAt: new Date(),
       isAnonymous: false,
@@ -111,11 +127,25 @@ const CreateComment = ({ userIdRef, accessToken, postData, setRefreshData }) => 
             />
           </div>
           <div className={styles.leaveCommentFooter}>
+            <div className={styles.anonymous}>
+              <Checkbox
+                inputId="anonymous"
+                onChange={(e) => handleAnonymousChange(e)}
+                checked={anonymous}
+              />
+              <label htmlFor="anonymous" className={styles.anonymousText}>
+                Anonymous?
+              </label>
+            </div>
             <div className={styles.characterCount}>
               {maxCharacterCount - comment.length} characters left
             </div>
             <div className={styles.commentButtonContainer}>
-              <Button icon="pi pi-arrow-right" size="small" className={styles.commentButton}/>
+              <Button
+                icon="pi pi-arrow-right"
+                size="small"
+                className={styles.commentButton}
+              />
             </div>
           </div>
         </form>
