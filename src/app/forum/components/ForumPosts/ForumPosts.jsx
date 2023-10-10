@@ -15,11 +15,14 @@ const ForumPosts = ({ forumPosts }) => {
   };
 
   const itemTemplate = (data) => {
+  console.log(data);
+
     return (
       <div className={styles.postContainer}>
         <div className={styles.postTitle}>{data.forumPostTitle}</div>
         <div className={styles.userId}>
-          Posted By: {data.jobSeeker.userName}
+          {data.isAnonymous === false ?
+            `Posted By: ${data.jobSeeker.userName}` : "Posted By: Anonymous"}
         </div>
         <div className={styles.postInfo}>
           <div className={styles.idTag}>#{data.forumPostId}</div>
