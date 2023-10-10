@@ -24,7 +24,7 @@ import { useSearchParams } from 'next/navigation';
 
 const CreateATicketPage = () => {
   //const [jobListing, setJobListing] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   //const [selectedJobListingData, setSelectedJobListingData] = useState(null);
   const [refreshData, setRefreshData] = useState(false);
@@ -46,8 +46,8 @@ const CreateATicketPage = () => {
     session.data &&
     session.data.user.role;
 
-    console.log(userIdRef);
-    console.log(userLoggedIn);
+    //console.log(userIdRef);
+    //console.log(userLoggedIn);
 
     const params = useSearchParams();
     const problem = params.get('problem');
@@ -76,6 +76,7 @@ const CreateATicketPage = () => {
     setShowCreateDialog(false);
   };
 
+  /*
   useEffect(() => {
     if (session.status === 'unauthenticated') {
       router.push('/login');
@@ -91,6 +92,7 @@ const CreateATicketPage = () => {
         });
     }
   }, [refreshData, userIdRef, accessToken]);
+  */
 
   /*
   const itemTemplate = (jobListing) => {
@@ -149,13 +151,13 @@ const CreateATicketPage = () => {
           ticketCategory: problem,
         };
       }
-      console.log(payload);
+      //console.log(payload);
       const response = await createTicket(payload, accessToken);
-      console.log('Created Ticket Successfully', response);
+      //console.log('Created Ticket Successfully', response);
       toast.current.show({
         severity: "success",
         summary: "Success",
-        detail: "Created job listing successfully",
+        detail: "Your Ticket has been sent to our Admin Team for review",
         life: 5000,
       });
       setRefreshData((prev) => !prev);
