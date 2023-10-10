@@ -4,7 +4,8 @@ const Enums = {
     CORPORATE: 'Corporate',
     JOBSEEKER: 'Job_Seeker',
     INACTIVE: 'Inactive',
-    ACTIVE: 'Active'
+    ACTIVE: 'Active',
+    PENDING: 'Pending'
 };
 
 export default Enums;

@@ -7,6 +7,7 @@ import { Checkbox } from "primereact/checkbox";
 import { Button } from "primereact/button";
 import { createPost } from "@/app/api/forum/route";
 import { Toast } from "primereact/toast";
+import Enums from "@/common/enums/enums";
 
 const CreatePost = ({
   userIdRef,
@@ -33,7 +34,7 @@ const CreatePost = ({
   const [formData, setFormData] = useState({
     createdAt: new Date(),
     isAnonymous: false,
-    forumPostStatus: "Inactive",
+    forumPostStatus: Enums.PENDING,
     jobSeekerId: userIdRef,
   });
   const toast = useRef(null);
@@ -90,7 +91,7 @@ const CreatePost = ({
     setFormData({
       createdAt: new Date(),
       isAnonymous: false,
-      forumPostStatus: "Inactive",
+      forumPostStatus: Enums.PENDING,
       jobSeekerId: userIdRef,
     });
   };
