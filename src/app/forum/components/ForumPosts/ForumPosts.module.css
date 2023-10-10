@@ -2,10 +2,14 @@
 }
 
 .postTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   font-size: 23px;
   font-weight: bold;
   margin-top: 10px;
 }
+
 
 .postInfo {
   display: flex;

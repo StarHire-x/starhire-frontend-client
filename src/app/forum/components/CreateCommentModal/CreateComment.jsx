@@ -5,9 +5,14 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Card } from "primereact/card";
 import moment from "moment";
 import { Button } from "primereact/button";
-import { createComment } from "@/app/api/forum/route";
+import {
+  createComment,
+  getAllForumCommentsByForumPostId,
+} from "@/app/api/forum/route";
 import { Checkbox } from "primereact/checkbox";
 import { Toast } from "primereact/toast";
+import ForumComments from "../ForumComments/ForumComments";
+import Utility from "@/common/helper/utility";
 
 const CreateComment = ({
   userIdRef,
@@ -19,8 +24,22 @@ const CreateComment = ({
   const [commentValid, setCommentValid] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
   const [formValid, setFormValid] = useState(true);
+  const [refreshComments, setRefreshComments] = useState(false);
+  const [comments, setComments] = useState([]);
   const maxCharacterCount = 8000;
   const toast = useRef(null);
+
+  useEffect(() => {
+    // retrieve api comment here
+    console.log("Comments refreshed!");
+    if (accessToken && postData?.forumPostId) {
+      getAllForumCommentsByForumPostId(postData?.forumPostId, accessToken).then(
+        (data) => setComments(data)
+      );
+    }
+
+    // setComments(postData?.forumComments);
+  }, [refreshComments, accessToken]);
 
   const formatRawDate = (rawDate) => {
     return moment(rawDate).format("DD MMMM YYYY, hh:mm A");
@@ -38,7 +57,7 @@ const CreateComment = ({
     const inputValue = e.target.value;
     if (inputValue.length <= maxCharacterCount) {
       setComment(inputValue);
-      setCommentValid(inputValue.trim() !== ''); 
+      setCommentValid(inputValue.trim() !== "");
       setFormData((prevData) => ({
         ...prevData,
         forumCommentMessage: e.target.value,
@@ -77,6 +96,7 @@ const CreateComment = ({
         console.log("Forum comment has been created");
         resetForm();
         setRefreshData((prev) => !prev);
+        setRefreshComments((prev) => !prev);
         toast.current.show({
           severity: "success",
           summary: "Success",
@@ -139,7 +159,7 @@ const CreateComment = ({
         <div className={styles.content}>{postData.forumPostMessage}</div>
         <div className={styles.footer}>
           <div className={styles.dateTimeText}>
-            {formatRawDate(postData.createdAt)}
+            {Utility.timeAgo(postData.createdAt)}
           </div>
         </div>
       </Card>
@@ -185,7 +205,9 @@ const CreateComment = ({
       <div className={styles.allCommentsContainer}>
         <div className={styles.allCommentsHeader}>
           <h3>All Comments</h3>
+          <p>{comments.length} comments</p>
         </div>
+        <ForumComments forumComments={comments} />
       </div>
     </>
   );

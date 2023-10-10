@@ -7,6 +7,8 @@ import moment from "moment";
 import { Dialog } from "primereact/dialog";
 import CreateComment from "../CreateCommentModal/CreateComment";
 import { useState } from "react";
+import Utility from "@/common/helper/utility";
+import DeletePostCard from "../DeletePostCard/DeletePostCard";
 
 const ForumPosts = ({
   forumPosts,
@@ -16,6 +18,7 @@ const ForumPosts = ({
   searchQuery,
 }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [postData, setPostData] = useState("");
 
   const filteredPosts = forumPosts.filter((post) =>
@@ -35,6 +38,15 @@ const ForumPosts = ({
     setDialogOpen(false);
   };
 
+  const openDeleteDialog = (data) => {
+    setDeleteDialogOpen(true);
+    setPostData(data);
+  };
+
+  const hideDeleteDialog = () => {
+    setDeleteDialogOpen(false);
+  };
+
   const truncatedMessage = (data) => {
     return data.forumPostMessage.length > 500
       ? data.forumPostMessage.substring(0, 500) + " ..."
@@ -44,7 +56,18 @@ const ForumPosts = ({
   const itemTemplate = (data) => {
     return (
       <div className={styles.postContainer}>
-        <div className={styles.postTitle}>{data.forumPostTitle}</div>
+        <div className={styles.postTitle}>
+          <div className={styles.postTitleText}>{data.forumPostTitle}</div>
+          {data.jobSeeker.userId === userIdRef && (
+            <Button
+              size="small"
+              icon="pi pi-delete-left"
+              rounded
+              onClick={() => openDeleteDialog(data)}
+              className={styles.commentButton}
+            ></Button>
+          )}
+        </div>
         <div className={styles.userId}>
           {data.isAnonymous === false
             ? `Posted By: ${data.jobSeeker.userName}`
@@ -78,7 +101,7 @@ const ForumPosts = ({
 
         <div className={styles.footer}>
           <div className={styles.dateTimeText}>
-            {formatRawDate(data.createdAt)}
+            {Utility.timeAgo(data.createdAt)}
           </div>
           <Button
             size="small"
@@ -104,6 +127,16 @@ const ForumPosts = ({
           header="Scroll Down to Load More"
         />
       </div>
+
+      <DeletePostCard
+        forumPost={postData}
+        hideDeleteDialog={hideDeleteDialog}
+        deleteDialogOpen={deleteDialogOpen}
+        userIdRef={userIdRef}
+        accessToken={accessToken}
+        setRefreshData={setRefreshData}
+      />
+
       <Dialog
         visible={dialogOpen}
         onHide={hideDialog}
