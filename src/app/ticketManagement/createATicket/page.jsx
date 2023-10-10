@@ -15,11 +15,12 @@ import {
 import styles from './page.module.css';
 import 'primeflex/primeflex.css';
 import CreateJobListingForm from '@/components/CreateJobListingForm/CreateJobListingForm';
+import CreateATicketForm from '@/components/CreateATicketForm/CreateATicketForm';
 import { useRouter } from 'next/navigation';
 import Enums from '@/common/enums/enums';
 import { Toast } from "primereact/toast";
 
-const JobListingManagementPage = () => {
+const CreateATicketPage = () => {
   const [jobListing, setJobListing] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
@@ -37,9 +38,6 @@ const JobListingManagementPage = () => {
     session.status === 'authenticated' &&
     session.data &&
     session.data.user.accessToken;
-
-  console.log(session);
-  console.log(userIdRef);
 
   const toast = useRef(null);
 
@@ -80,6 +78,7 @@ const JobListingManagementPage = () => {
     }
   }, [refreshData, userIdRef, accessToken]);
 
+  /*
   const itemTemplate = (jobListing) => {
     return (
       <div className={styles.card}>
@@ -118,8 +117,9 @@ const JobListingManagementPage = () => {
       </div>
     );
   };
+*/
 
-  const handleJobListingCreation = async (newJobListing) => {
+  const handleTicketCreation = async (newJobListing) => {
     try {
       const payload = {
         ...newJobListing,
@@ -175,16 +175,16 @@ const JobListingManagementPage = () => {
         </div>
 
         <div className={styles.cardsGrid}>
-          {jobListing.map((job) => itemTemplate(job))}
+          {/* {jobListing.map((job) => itemTemplate(job))} */}
         </div>
 
         <Dialog
-          header="Create Job Listing"
+          header="Create a Ticket"
           visible={showCreateDialog}
           onHide={hideCreateDialog}
           className={styles.cardDialog}
         >
-          <CreateJobListingForm onCreate={handleJobListingCreation} />
+          <CreateATicketForm  onCreate={handleTicketCreation} />
         </Dialog>
 
       </>
@@ -192,4 +192,4 @@ const JobListingManagementPage = () => {
   }
 };
 
-export default JobListingManagementPage;
+export default CreateATicketPage;
