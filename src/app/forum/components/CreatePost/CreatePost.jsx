@@ -25,6 +25,7 @@ const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess, 
   const [formData, setFormData] = useState({
     createdAt: new Date(),
     isAnonymous: false,
+    forumPostStatus: "Inactive",
     jobSeekerId: userIdRef,
   });
   const toast = useRef(null);
@@ -77,6 +78,7 @@ const CreatePost = ({ userIdRef, accessToken, forumCategories, onSubmitSuccess, 
     setFormData({
       createdAt: new Date(),
       isAnonymous: false,
+      forumPostStatus: "Inactive",
       jobSeekerId: userIdRef,
     });
   };
