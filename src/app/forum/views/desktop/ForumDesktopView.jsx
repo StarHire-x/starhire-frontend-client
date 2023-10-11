@@ -17,6 +17,8 @@ const ForumDesktopView = ({
   setRefreshData,
   onSearchQueryChange,
   searchQuery,
+  forumGuideLinesByCategory,
+  setForumGuideLinesByCategory
 }) => {
   return (
     <>
@@ -26,6 +28,7 @@ const ForumDesktopView = ({
           <ForumCategoryMenu
             forumCategories={forumCategories}
             setForumCategoryTitle={setForumCategoryTitle}
+            setForumGuideLinesByCategory={setForumGuideLinesByCategory}
           />
         </div>
         <div className={styles.middleContainer}>
@@ -57,7 +60,7 @@ const ForumDesktopView = ({
           </div>
         </div>
         <div className={styles.guideLinesContainer}>
-          <ForumGuidelinesCard />
+          <ForumGuidelinesCard forumCategoryTitle={forumCategoryTitle} forumGuideLinesByCategory={forumGuideLinesByCategory} />
         </div>
       </div>
     </>

@@ -43,6 +43,7 @@ const ForumPage = () => {
     session.data.user.userId;
 
   const [forumCategoryTitle, setForumCategoryTitle] = useState("Recent Posts");
+  const [forumGuideLinesByCategory, setForumGuideLinesByCategory] = useState("");
   const [forumCategories, setForumCategories] = useState([]);
   const [forumPosts, setForumPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -117,6 +118,8 @@ const ForumPage = () => {
             <ForumDesktopView
               forumCategoryTitle={forumCategoryTitle}
               setForumCategoryTitle={setForumCategoryTitle}
+              forumGuideLinesByCategory={forumGuideLinesByCategory}
+              setForumGuideLinesByCategory={setForumGuideLinesByCategory}
               userIdRef={userIdRef}
               accessToken={accessToken}
               forumCategories={forumCategories}
@@ -130,6 +133,8 @@ const ForumPage = () => {
             <ForumMobileView
               forumCategoryTitle={forumCategoryTitle}
               setForumCategoryTitle={setForumCategoryTitle}
+              forumGuideLinesByCategory={forumGuideLinesByCategory}
+              setForumGuideLinesByCategory={setForumGuideLinesByCategory}
               userIdRef={userIdRef}
               accessToken={accessToken}
               forumCategories={forumCategories}
