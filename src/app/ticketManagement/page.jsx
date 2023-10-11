@@ -4,6 +4,7 @@ import styles from "./ticketManagement.module.css";
 import CustomCard from "./Card"; 
 
 const TicketManagement = () => {
+
   const cardContainerStyle = {
     display: "flex",
     justifyContent: "space-between",
@@ -19,7 +20,7 @@ const TicketManagement = () => {
 
   return (
     <div className={styles.container}>
-      <h1>Ticket Management</h1>
+      <h1>How can we help you today?</h1>
       <div style={cardContainerStyle}>
         <div>
         <a href={eventIssuesUrl}>
