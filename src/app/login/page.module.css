@@ -17,7 +17,7 @@
 }
 
 .title {
-  font-size: 54px;
+  font-size: 40px;
   color: #194c33;
   margin-bottom: 10px;
 }
@@ -136,7 +136,7 @@
 
 @media screen and (max-width: 768px) {
   .title {
-    font-size: 40px;
+    font-size: 30px;
   }
   .form {
     width: 300px;
