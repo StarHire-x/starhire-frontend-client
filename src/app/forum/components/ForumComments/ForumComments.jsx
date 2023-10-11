@@ -36,7 +36,9 @@ const ForumComments = ({ forumComments }) => {
               )}
             </div>
             <div className={styles.userNameText}>
-              {data?.jobSeeker.userName}
+              {data.isAnonymous === false
+                ? data?.jobSeeker.userName
+                : "Anonymous"}
             </div>
           </div>
           <div className={styles.commentAndDateTimeSection}>
