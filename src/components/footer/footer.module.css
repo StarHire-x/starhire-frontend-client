@@ -1,35 +1,46 @@
 .container {
-    height: 50px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-align: center;
+  position: relative; /* Added relative position */
+  height: 50px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Updated to center content */
 }
 
-.social {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.icon {
-    opacity: 0.6;
-    cursor: pointer;
+.centered {
+  text-align: center;
 }
 
 .reportIssue {
-    font-size: 18px; /* Adjust the font size as needed */
-    margin-top: 10px; /* Add some spacing between the copyright text and the link */
+  position: absolute; /* Updated to absolute position */
+  right: 0; /* Positioned to the right */
+  font-size: 14px;
+  color: black;
+  color: #007bff;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.reportIssue:hover {
+  color: #0056b3;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
   }
-  
-  .reportIssue a {
-    text-decoration: underline; /* Add an underline to indicate it's a link */
-    color: #007bff; /* Change the color to a clickable blue (you can use your preferred color) */
-    cursor: pointer; /* Change the cursor to a pointer to indicate interactivity */
-    transition: color 0.3s; /* Add a smooth color transition on hover */
+
+  .centered {
+      text-align: center;
+      order: 1; /* Make p tag above the link */
   }
-  
-  .reportIssue a:hover {
-    color: #0056b3; /* Change the color when hovering over the link */
+
+  .reportIssue {
+      position: static; /* Reset the position */
+      order: 2; /* Position after the p tag */
+      margin-top: 10px; /* Optional: Add some space between the p tag and link */
+      margin-bottom: 10px;;
   }
+}
