@@ -548,7 +548,7 @@ const ViewJobApplicationDetails = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="interviewNotes">Interview Notes:</label>
+                    <label htmlFor="interviewNotes">Add Interview details (Including Video meeting links)</label>
                     <InputTextarea
                       id="interviewNotes"
                       value={interviewNotes}
