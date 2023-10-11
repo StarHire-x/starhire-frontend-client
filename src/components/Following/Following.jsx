@@ -13,11 +13,13 @@ import { Toast } from "primereact/toast";
 import Image from "next/image";
 import { Dialog } from "primereact/dialog";
 
-const Following = ({}) => {
+const Following = ({
+  refreshData,
+  setRefreshData
+}) => {
   const [filterKeyword, setFilterKeyword] = useState("");
   const [corporates, setCorporates] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [refreshData, setRefreshData] = useState(false);
   const session = useSession();
   const [showCorporateDetailsDialog, setShowCorporateDetailsDialog] =
     useState(false);
@@ -55,7 +57,7 @@ const Following = ({}) => {
         });
       }
       setCorporates([...corporates]);
-      setRefreshData(!refreshData);
+      setRefreshData((prev) => !prev);
     } catch (error) {
       console.error("Error when saving/un-saving:", error);
       toast.current.show({

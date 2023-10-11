@@ -23,7 +23,10 @@ const EditAccountForm = ({
   session,
   removePdf,
   confirmChanges,
+  numOfFollowings,
   toast,
+  refreshData,
+  setRefreshData,
 }) => {
 
   const educationOptions = [
@@ -56,6 +59,9 @@ const EditAccountForm = ({
             <Button
               label="My Following"
               severity="info"
+              outlined
+              badge={numOfFollowings}
+              badgeClassName="p-badge-success"
               raised
               onClick={() => setShowMyFollowingsDialog(true)}
             />
@@ -335,7 +341,9 @@ const EditAccountForm = ({
         onHide={hideMyFollowingsDialog}
         className={styles.cardFollowing}
       >
-        <Following />
+        <Following 
+        refreshData={refreshData}
+        setRefreshData={setRefreshData} />
       </Dialog>
     </div>
   );
