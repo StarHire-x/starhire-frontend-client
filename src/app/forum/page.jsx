@@ -64,9 +64,10 @@ const ForumPage = () => {
       const fetchData = async () => {
         try {
           const response = await getAllForumCategories(accessToken);
+          const filteredResponse = response.filter((forumCategory) => !forumCategory.isArchived); // only display active forum categories
           const myPostMenu = { forumCategoryTitle: "My Posts" };
-          response.unshift(myPostMenu); // show 'My Posts' menu as first option
-          setForumCategories(response);
+          filteredResponse.unshift(myPostMenu); // show 'My Posts' menu as first option
+          setForumCategories(filteredResponse);
         } catch (error) {
           console.error("Error fetching forum categories:", error);
         }
