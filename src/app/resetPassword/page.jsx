@@ -22,6 +22,7 @@ const ResetPassword = () => {
   const [storedRole, setStoredRole] = useState("");
   const [storedEmail, setStoredEmail] = useState("");
   const [storedUserId, setStoredUserId] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     tokenId: "",
@@ -30,6 +31,10 @@ const ResetPassword = () => {
     confirmPassword: "",
     role: "",
   });
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -130,45 +135,72 @@ const ResetPassword = () => {
     <div className={styles.container}>
       <h1 className={styles.title}>Reset Password</h1>
       {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="tokenId"
-          placeholder="Token Id"
-          className={styles.input}
-          value={formData.tokenId}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          className={styles.input}
-          value={formData.email}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          className={styles.input}
-          value={formData.password}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm Password"
-          className={styles.input}
-          value={formData.confirmPassword}
-          onChange={handleInputChange}
-          required
-        />
+      <form className={styles.form}>
+      <div className={styles.inputContainer}>
+          <p>Email</p>
+          <input
+            type="email"
+            name="email"
+            className={styles.input}
+            value={formData.email}
+            onChange={handleInputChange}
+            required
+            disabled
+          />
+        </div>
+        <div className={styles.inputContainer}>
+          <p>Token Id</p>
+          <input
+            type="text"
+            name="tokenId"
+            className={styles.input}
+            value={formData.tokenId}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+
+        <div className={styles.inputContainer}>
+          <p>Password</p>
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            className={styles.input}
+            value={formData.password}
+            onChange={handleInputChange}
+            required
+          />
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className={styles.showPasswordButton}
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
+
+        <div className={styles.inputContainer}>
+          <p>Confirm Password</p>
+          <input
+            type={showPassword ? "text" : "password"}
+            name="confirmPassword"
+            className={styles.input}
+            value={formData.confirmPassword}
+            onChange={handleInputChange}
+            required
+          />
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className={styles.showPasswordButton}
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
+
         <div className={styles.radio}>
-          <p>I am a...</p>
+          <p>I am a:</p>
           <RadioButton
             inputId={Enums.JOBSEEKER}
             name="role"
@@ -195,10 +227,12 @@ const ResetPassword = () => {
         {loading && (
           <ProgressSpinner style={{ width: "50px", height: "50px" }} />
         )}
-        {!loading && <button className={styles.button}>Reset Password</button>}
+        {!loading && (
+          <button className={styles.button} onClick={handleSubmit}>
+            Reset Password
+          </button>
+        )}
       </form>
-      <Link href="/register">I don&apos;t have an account </Link>
-      <Link href="/login">Login with an existing account</Link>
     </div>
   );
 };
