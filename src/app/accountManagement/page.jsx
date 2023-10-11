@@ -160,6 +160,13 @@ const AccountManagement = () => {
     });
   };
 
+  const handleInputNumberChange = (name, value) => {
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     const inputId = e.target.id; // Get the ID of the input that triggered the event
@@ -281,6 +288,7 @@ const AccountManagement = () => {
           formData={formData}
           setFormData={setFormData}
           handleInputChange={handleInputChange}
+          handleInputNumberChange={handleInputNumberChange}
           handleFileChange={handleFileChange}
           saveChanges={saveChanges}
           session={session}
