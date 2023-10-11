@@ -236,3 +236,36 @@ export const unfollowCorporate = async (
     throw error;
   }
 };
+
+export const getMyFollowings = async (
+  jobSeekerId,
+  accessToken
+) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/job-seeker/followings/${jobSeekerId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: "no-store",
+      }
+    );
+
+    const response = await res.json();
+
+    if (response.statusCode === 200) {
+      return response.data;
+    } else {
+      throw new Error(response.message || "An error occurred");
+    }
+  } catch (error) {
+    console.log(
+      "There was a problem obtaining the job application from job seeker",
+      error
+    );
+    throw error;
+  }
+};

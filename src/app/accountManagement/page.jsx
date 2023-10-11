@@ -2,7 +2,7 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { getUserByUserId, updateUser } from "../api/auth/user/route";
+import { getMyFollowings, getUserByUserId, updateUser } from "../api/auth/user/route";
 import { uploadFile } from "../api/upload/route";
 import styles from "./page.module.css";
 import { UserContext } from "@/context/UserContext";
@@ -67,6 +67,8 @@ const AccountManagement = () => {
 
   // Cap the number of stars
   const [totalStarsUsed, setTotalStarsUsed] = useState(0);
+
+  const [numOfFollowings, setNumOfFollowings] = useState("0");
 
   let roleRef, sessionTokenRef, userIdRef;
 
@@ -142,6 +144,14 @@ const AccountManagement = () => {
           console.log("Error fetching user job experience: ", error.message);
         }
       };
+
+      getMyFollowings(userIdRef, sessionTokenRef)
+        .then((data) => {
+          setNumOfFollowings(data);
+        })
+        .catch((error) => {
+          console.log("Error fetching followings of user: ", error.message);
+        });
 
 
       populateFormDataWithUserInfo(formData).then((formData) =>
@@ -293,7 +303,10 @@ const AccountManagement = () => {
           saveChanges={saveChanges}
           session={session}
           removePdf={removePdf}
+          refreshData={refreshData}
+          setRefreshData={setRefreshData}
           confirmChanges={confirmChanges}
+          numOfFollowings={numOfFollowings}
           toast={toast}
         />
         <Dialog
