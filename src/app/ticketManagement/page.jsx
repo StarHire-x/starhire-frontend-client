@@ -1,43 +1,57 @@
 "use client"
 import React from "react";
-import styles from "./ticketManagement.module.css"; // Import your CSS file
-import CustomCard from "./Card"; // Import your custom Card component
+import styles from "./ticketManagement.module.css";
+import CustomCard from "./Card"; 
 
 const TicketManagement = () => {
   const cardContainerStyle = {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center", // Center align items vertically
-    marginBottom: "20px", // Adjust the margin-bottom value to control vertical spacing
+    alignItems: "center", 
+    marginBottom: "20px", 
   };
-  //const cardLink = `/jobListingManagement/viewAllMyJobListings/viewJobApplicationDetails?id=${jobApplication.jobApplicationId}`;
-  const generalQuestionsUrl = '/ticketManagement/createATicket?problem=website';
+
+  const eventIssuesUrl = '/ticketManagement/createATicket?problem=event';
+  const jobListingIssuesUrl = '/ticketManagement/createATicket?problem=jobListing';
+  const technicalSupportUrl = '/ticketManagement/createATicket?problem=technicalSupport';
+  const reportingVulnerabiltyUrl = '/ticketManagement/createATicket?problem=reportVulnerability';
+  const generalQuestionsUrl = '/ticketManagement/createATicket?problem=generalEnquiries';
+
   return (
     <div className={styles.container}>
       <h1>Ticket Management</h1>
       <div style={cardContainerStyle}>
         <div>
-          <a href="/website-issues"> {/* Specify the URL you want for the "Website Issues" card */}
+        <a href={eventIssuesUrl}>
             <CustomCard image="./booking-issues.jpg" />
-            <p>Website Issues</p>
+            <p>Event Related Issues</p>
           </a>
         </div>
         <div>
-          <a href="/job-listings-problems"> {/* Specify the URL you want for the "Job Listings Problems" card */}
+        <a href={jobListingIssuesUrl}>
             <CustomCard image="./payment-problems.jpg" />
-            <p>Job Listings Problems</p>
+            <p>Job Listings Issues</p>
           </a>
         </div>
+
         <div>
-          <a href="/chat-issues"> {/* Specify the URL you want for the "Chat" card */}
+        <a href={technicalSupportUrl}>
             <CustomCard image="./account-support.jpg" />
-            <p>Chat</p>
+            <p>Technical Support</p>
           </a>
         </div>
+
+        <div>
+        <a href={reportingVulnerabiltyUrl}>
+            <CustomCard image="./account-support.jpg" />
+            <p>Report a Vulnerability / Bug</p>
+          </a>
+        </div>
+
         <div>
         <a href={generalQuestionsUrl}>
             <CustomCard image="/icon.png" />
-            <p>General Questions</p>
+            <p>General Questions and Enquiries</p>
           </a>
         </div>
       </div>
