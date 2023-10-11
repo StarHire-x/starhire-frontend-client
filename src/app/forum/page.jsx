@@ -43,6 +43,7 @@ const ForumPage = () => {
     session.data.user.userId;
 
   const [forumCategoryTitle, setForumCategoryTitle] = useState("Recent Posts");
+  const [forumGuideLinesByCategory, setForumGuideLinesByCategory] = useState("");
   const [forumCategories, setForumCategories] = useState([]);
   const [forumPosts, setForumPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -63,9 +64,10 @@ const ForumPage = () => {
       const fetchData = async () => {
         try {
           const response = await getAllForumCategories(accessToken);
+          const filteredResponse = response.filter((forumCategory) => !forumCategory.isArchived); // only display active forum categories
           const myPostMenu = { forumCategoryTitle: "My Posts" };
-          response.unshift(myPostMenu); // show 'My Posts' menu as first option
-          setForumCategories(response);
+          filteredResponse.unshift(myPostMenu); // show 'My Posts' menu as first option
+          setForumCategories(filteredResponse);
         } catch (error) {
           console.error("Error fetching forum categories:", error);
         }
@@ -117,6 +119,8 @@ const ForumPage = () => {
             <ForumDesktopView
               forumCategoryTitle={forumCategoryTitle}
               setForumCategoryTitle={setForumCategoryTitle}
+              forumGuideLinesByCategory={forumGuideLinesByCategory}
+              setForumGuideLinesByCategory={setForumGuideLinesByCategory}
               userIdRef={userIdRef}
               accessToken={accessToken}
               forumCategories={forumCategories}
@@ -130,6 +134,8 @@ const ForumPage = () => {
             <ForumMobileView
               forumCategoryTitle={forumCategoryTitle}
               setForumCategoryTitle={setForumCategoryTitle}
+              forumGuideLinesByCategory={forumGuideLinesByCategory}
+              setForumGuideLinesByCategory={setForumGuideLinesByCategory}
               userIdRef={userIdRef}
               accessToken={accessToken}
               forumCategories={forumCategories}
