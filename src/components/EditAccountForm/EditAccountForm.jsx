@@ -17,6 +17,7 @@ const EditAccountForm = ({
   formData,
   setFormData,
   handleInputChange,
+  handleInputNumberChange,
   handleFileChange,
   saveChanges,
   session,
@@ -93,7 +94,7 @@ const EditAccountForm = ({
               <InputNumber
                 name="contactNo"
                 value={formData.contactNo}
-                onChange={handleInputChange}
+                onChange={(e) => handleInputNumberChange("contactNo", e.value)}
                 useGrouping={false}
               />
             </div>
