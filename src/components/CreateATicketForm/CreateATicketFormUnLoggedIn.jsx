@@ -28,7 +28,7 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
       setEmailError('Email address is required');
     } else {
       setEmailError('');
-      const updatedDescription = `${formData.email} ${formData.username} - ${formData.ticketDescription}`;
+      const updatedDescription = `Email Address: ${formData.email}, Username: ${formData.username} - ${formData.ticketDescription}`;
       setFormData((prev) => ({
         ...prev,
         ticketDescription: updatedDescription,

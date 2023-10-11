@@ -47,6 +47,8 @@ const CreateATicketPage = () => {
     session.data &&
     session.data.user.role;
 
+  console.log(userLoggedIn);
+
   const params = useSearchParams();
   const problem = params.get('problem');
 
@@ -141,10 +143,15 @@ const CreateATicketPage = () => {
           corporateId: userIdRef,
           ticketCategory: problem,
         };
-      } else {
+      } else if (userLoggedIn === "Job_Seeker") {
         payload = {
           ...newTicket,
           jobSeekerId: userIdRef,
+          ticketCategory: problem,
+        };
+      } else {
+        payload = {
+          ...newTicket,
           ticketCategory: problem,
         };
       }
