@@ -6,12 +6,12 @@ const ForumCategoryMenuMobile = ({
   setForumCategoryTitle,
   forumCategoryTitle,
   forumCategories,
-  setForumGuideLinesByCategory
+  setForumGuideLinesByCategory,
 }) => {
   const finalForumCategories = forumCategories?.map((forumCategory) => {
     const finalForumCategory = {
       name: forumCategory.forumCategoryTitle,
-      guideLines: forumCategory.forumGuidelines
+      guideLines: forumCategory.forumGuidelines,
     };
     return finalForumCategory;
   });
@@ -19,13 +19,20 @@ const ForumCategoryMenuMobile = ({
   return (
     <>
       <Dropdown
-        value={{name: forumCategoryTitle}}
+        value={forumCategoryTitle}
         onChange={(e) => {
-          setForumCategoryTitle(e.value.name)
-          setForumGuideLinesByCategory(e.value.guideLines)
+          setForumCategoryTitle(e.value);
+          // To access the guideLines property, you should find the corresponding object
+          const selectedCategory = finalForumCategories.find(
+            (category) => category.name === e.value
+          );
+          if (selectedCategory) {
+            setForumGuideLinesByCategory(selectedCategory.guideLines);
+          }
         }}
         options={finalForumCategories}
         optionLabel="name"
+        optionValue="name"
         placeholder="Select a forum category"
       />
     </>
