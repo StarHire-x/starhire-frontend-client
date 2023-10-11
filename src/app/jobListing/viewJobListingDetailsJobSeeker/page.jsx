@@ -10,18 +10,18 @@ import {
   checkIfJobIsSaved,
   removeJobListingAssignment,
 } from '@/app/api/jobListing/route';
-import { Card } from 'primereact/card';
-import { Button } from 'primereact/button';
-import { ProgressSpinner } from 'primereact/progressspinner';
-import Image from 'next/image';
-import HumanIcon from '../../../../public/icon.png';
-import { Dialog } from 'primereact/dialog';
-import CreateJobApplicationForm from '@/components/CreateJobApplicationForm/CreateJobApplicationForm';
-import styles from './page.module.css';
 import {
   createJobApplication,
   findExistingJobApplication,
 } from '@/app/api/jobApplication/route';
+import { Button } from 'primereact/button';
+import { Card } from 'primereact/card';
+import { Dialog } from 'primereact/dialog';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import Image from 'next/image';
+import HumanIcon from '../../../../public/icon.png';
+import CreateJobApplicationForm from '@/components/CreateJobApplicationForm/CreateJobApplicationForm';
+import styles from './page.module.css';
 import { Toast } from 'primereact/toast';
 
 export default function ViewJobListingDetailsJobSeeker() {
@@ -193,10 +193,10 @@ export default function ViewJobListingDetailsJobSeeker() {
           setJobListing(data);
           // Preload the form with mandatory documents that cannot be removed nor edited
           const documentsList = data.requiredDocuments
-            ? data.requiredDocuments.split(",").map((name) => ({
+            ? data.requiredDocuments.split(',').map((name) => ({
                 mandatory: true,
                 documentName: name.trim(),
-                documentLink: "",
+                documentLink: '',
               }))
             : [];
           setFormData((prevData) => ({
@@ -342,13 +342,6 @@ export default function ViewJobListingDetailsJobSeeker() {
         onClick={handleSaveJobListing}
         rounded
       />
-      {/* <Button
-        label="Not Interested"
-        className={styles.rejectButton}
-        icon="pi pi-trash"
-        onClick={() => setShowRejectJobListingDialog(true)}
-        rounded
-      /> */}
     </div>
   );
 
@@ -374,18 +367,6 @@ export default function ViewJobListingDetailsJobSeeker() {
         >
           <div className={styles.pCardContent}>
             <div className={styles.companyInfo}>
-              {/* <Image
-                src={jobListing.corporate.profilePictureUrl || HumanIcon}
-                alt="User"
-                className="avatar"
-                width={40} // This should match the CSS value
-                height={40} // This should match the CSS value
-              />
-              <div className="company-details">
-                <p className={styles.fieldContent}>
-                  {jobListing.corporate.userName}
-                </p>
-              </div> */}
               {jobListing.corporate.profilePictureUrl === '' ? (
                 <Image src={HumanIcon} alt="User" className={styles.avatar} />
               ) : (
@@ -433,27 +414,7 @@ export default function ViewJobListingDetailsJobSeeker() {
               <p>{jobListing.corporate.email}</p>
               <p className="second-p">{jobListing.corporate.contactNo}</p>
             </div>
-
-            {/* <strong>Corporate Details</strong>
-            <p>{'UEN Number: ' + jobListing.corporate.companyRegistrationId}</p>
-            <p className="second-p">
-              {'Address: ' + jobListing.corporate.companyAddress}
-            </p>
-
-            <strong>Job Listing ID</strong>
-            <p>{jobListing.jobListingId}</p> */}
           </div>
-
-          {/* Conditionally rendering the button based on the existence of jobListing.jobApplication
-          {isJobApplicationAbsent && (
-            <Button
-              label="Create Job Application"
-              raised
-              type="button"
-              severity="success"
-              onClick={() => setShowCreateJobApplicationDialog(true)}
-            />
-          )} */}
 
           <Dialog
             header="Create Job Application"

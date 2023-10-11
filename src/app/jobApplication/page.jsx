@@ -1,21 +1,21 @@
-"use client";
-import React, { useEffect, useState, useRef } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { Button } from "primereact/button";
-import { DataView } from "primereact/dataview";
-import { ProgressSpinner } from "primereact/progressspinner";
-import styles from "./page.module.css";
+'use client';
+import React, { useEffect, useState, useRef } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { Button } from 'primereact/button';
+import { DataView } from 'primereact/dataview';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import styles from './page.module.css';
 import {
   getJobApplicationsByJobSeeker,
   updateJobApplicationStatus,
-} from "../api/jobApplication/route";
-import { Dialog } from "primereact/dialog";
-import { Tag } from "primereact/tag";
-import ViewJobApplicationForm from "@/components/ViewJobApplicationForm/ViewJobApplicationForm";
-import { Dropdown } from "primereact/dropdown";
-import EditJobApplicationForm from "@/components/EditJobApplicationForm/EditJobApplicationForm";
-import { Toast } from "primereact/toast";
+} from '../api/jobApplication/route';
+import { Dialog } from 'primereact/dialog';
+import { Tag } from 'primereact/tag';
+import ViewJobApplicationForm from '@/components/ViewJobApplicationForm/ViewJobApplicationForm';
+import { Dropdown } from 'primereact/dropdown';
+import EditJobApplicationForm from '@/components/EditJobApplicationForm/EditJobApplicationForm';
+import { Toast } from 'primereact/toast';
 
 const JobApplicationPage = () => {
   const [jobApplications, setJobApplications] = useState([]);
@@ -24,31 +24,31 @@ const JobApplicationPage = () => {
   const session = useSession();
   const router = useRouter();
   const [formData, setFormData] = useState({
-    jobApplicationId: "",
-    jobApplicationStatus: "",
-    availableStartDate: "",
-    availableEndDate: "",
-    submissionDate: "",
-    remarks: "",
+    jobApplicationId: '',
+    jobApplicationStatus: '',
+    availableStartDate: '',
+    availableEndDate: '',
+    submissionDate: '',
+    remarks: '',
     documents: [
       {
-        documentName: "",
-        documentLink: "",
+        documentName: '',
+        documentLink: '',
       },
     ],
   });
 
   const toast = useRef(null);
 
-  const [filterStatus, setFilterStatus] = useState("");
+  const [filterStatus, setFilterStatus] = useState('');
 
   const statusOptions = [
-    { label: "Submitted", value: "Submitted" },
-    { label: "Processing", value: "Processing" },
-    { label: "To Be Submitted", value: "To_Be_Submitted" },
-    { label: "Waiting For Interview", value: "Waiting_For_Interview" },
-    { label: "Rejected", value: "Rejected" },
-    { label: "Accepted", value: "Accepted" },
+    { label: 'Submitted', value: 'Submitted' },
+    { label: 'Processing', value: 'Processing' },
+    { label: 'To Be Submitted', value: 'To_Be_Submitted' },
+    { label: 'Waiting For Interview', value: 'Waiting_For_Interview' },
+    { label: 'Rejected', value: 'Rejected' },
+    { label: 'Accepted', value: 'Accepted' },
   ];
 
   const filteredApplications = filterStatus
@@ -57,20 +57,20 @@ const JobApplicationPage = () => {
 
   const getStatus = (status) => {
     switch (status) {
-      case "Submitted":
-        return "info"; // or choose other severity based on your preference
-      case "Processing":
-        return "warning";
-      case "To_Be_Submitted":
-        return "danger"; // assuming this is a critical state before submission
-      case "Waiting_For_Interview":
-        return "info";
-      case "Rejected":
-        return "danger";
-      case "Accepted":
-        return "success";
+      case 'Submitted':
+        return 'info'; // or choose other severity based on your preference
+      case 'Processing':
+        return 'warning';
+      case 'To_Be_Submitted':
+        return 'danger'; // assuming this is a critical state before submission
+      case 'Waiting_For_Interview':
+        return 'info';
+      case 'Rejected':
+        return 'danger';
+      case 'Accepted':
+        return 'success';
       default:
-        return "";
+        return '';
     }
   };
 
@@ -94,36 +94,36 @@ const JobApplicationPage = () => {
   };
 
   const statusRemoveUnderscore = (status) => {
-    return status.replaceAll("_", " ");
+    return status.replaceAll('_', ' ');
   };
 
   const accessToken =
-    session.status === "authenticated" &&
+    session.status === 'authenticated' &&
     session.data &&
     session.data.user.accessToken;
 
   const userIdRef =
-    session.status === "authenticated" &&
+    session.status === 'authenticated' &&
     session.data &&
     session.data.user.userId;
 
   const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    return new Date(dateString).toLocaleDateString("en-GB", options);
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString('en-GB', options);
   };
 
   useEffect(() => {
-    if (session.status === "unauthenticated") {
-      router.push("/login");
-    } else if (session.status === "authenticated") {
+    if (session.status === 'unauthenticated') {
+      router.push('/login');
+    } else if (session.status === 'authenticated') {
       getJobApplicationsByJobSeeker(userIdRef, accessToken)
         .then((data) => {
           setJobApplications(data);
-          console.log("Received job applications:", data);
+          console.log('Received job applications:', data);
           setIsLoading(false);
         })
         .catch((error) => {
-          console.error("Error fetching job applications:", error);
+          console.error('Error fetching job applications:', error);
           setIsLoading(false);
         });
     }
@@ -148,31 +148,31 @@ const JobApplicationPage = () => {
       // There are validation errors
       //alert("Please fix the form errors before submitting.");
       toast.current.show({
-        severity: "warn",
-        summary: "Warning",
-        detail: "Please fix the form errors before submitting.",
+        severity: 'warn',
+        summary: 'Warning',
+        detail: 'Please fix the form errors before submitting.',
         life: 5000,
       });
       return;
     }
 
     const areDocumentsFilled = formData.documents.every(
-      (doc) => doc.documentName.trim() !== "" && doc.documentLink.trim() !== ""
+      (doc) => doc.documentName.trim() !== '' && doc.documentLink.trim() !== ''
     );
 
     if (!areDocumentsFilled) {
       //alert("Please ensure all documents are properly filled up.");
       toast.current.show({
-        severity: "warn",
-        summary: "Warning",
-        detail: "Please ensure all documents are properly filled up.",
+        severity: 'warn',
+        summary: 'Warning',
+        detail: 'Please ensure all documents are properly filled up.',
         life: 5000,
       });
       return;
     }
 
     const reqBody = {
-      jobApplicationStatus: "Submitted",
+      jobApplicationStatus: 'Submitted',
       availableStartDate: formData.availableStartDate,
       availableEndDate: formData.availableEndDate,
       remarks: formData.remarks,
@@ -188,19 +188,19 @@ const JobApplicationPage = () => {
         jobApplicationId,
         accessToken
       );
-      console.log("Job Application successfully updated!");
+      console.log('Job Application successfully updated!');
       //alert("Job Application successfully updated!");
       toast.current.show({
-        severity: "success",
-        summary: "Success",
-        detail: "Job Application successfully updated!",
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Job Application successfully updated!',
         life: 5000,
       });
       setRefreshData((prev) => !prev);
     } catch (error) {
       toast.current.show({
-        severity: "error",
-        summary: "Error",
+        severity: 'error',
+        summary: 'Error',
         detail: error.message,
         life: 5000,
       });
@@ -247,7 +247,7 @@ const JobApplicationPage = () => {
               setShowViewJobApplicationDialog(jobApplication);
             }}
           />
-          {jobApplication.jobApplicationStatus === "To_Be_Submitted" && (
+          {jobApplication.jobApplicationStatus === 'To_Be_Submitted' && (
             <Button
               label="Edit Application"
               rounded
@@ -269,14 +269,14 @@ const JobApplicationPage = () => {
       {isLoading ? (
         <ProgressSpinner
           style={{
-            display: "flex",
-            height: "100vh",
-            "justify-content": "center",
-            "align-items": "center",
+            display: 'flex',
+            height: '100vh',
+            'justify-content': 'center',
+            'align-items': 'center',
           }}
         />
       ) : jobApplications.length === 0 ? (
-        <p>You have no assigned job applications yet.</p>
+        <p>You have not applied for any jobs.</p>
       ) : (
         <DataView
           value={filteredApplications}
