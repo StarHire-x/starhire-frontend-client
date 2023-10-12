@@ -17,7 +17,6 @@ const CreateJobApplicationForm = ({
   setFormErrors,
   accessToken,
 }) => {
-
   const handleDocumentChange = (index, field) => (e) => {
     const newDocuments = [...formData.documents];
     newDocuments[index][field] = e.target.value;
@@ -29,7 +28,7 @@ const CreateJobApplicationForm = ({
       ...prevState,
       documents: [
         ...prevState.documents,
-        { mandatory: false, documentName: "", documentLink: "" },
+        { mandatory: false, documentName: '', documentLink: '' },
       ],
     }));
   };
@@ -94,7 +93,7 @@ const CreateJobApplicationForm = ({
                 if (e.value <= formData.availableStartDate) {
                   setFormErrors((prev) => ({
                     ...prev,
-                    availableEndDate: "End date must be after start date.",
+                    availableEndDate: 'End date must be after start date.',
                   }));
                 } else {
                   setFormErrors((prev) => {
@@ -141,7 +140,7 @@ const CreateJobApplicationForm = ({
                   <InputText
                     name={`documentName-${index}`}
                     value={document.documentName}
-                    onChange={handleDocumentChange(index, "documentName")}
+                    onChange={handleDocumentChange(index, 'documentName')}
                     readOnly={document.mandatory}
                   />
                 </div>
@@ -161,7 +160,7 @@ const CreateJobApplicationForm = ({
                       icon="pi pi-file-pdf"
                       onClick={(e) => {
                         e.stopPropagation(); // This stops the event from propagating up
-                        window.open(document.documentLink, "_blank");
+                        window.open(document.documentLink, '_blank');
                       }}
                       className="p-button-rounded p-button-danger"
                       aria-label="Open PDF"
@@ -196,12 +195,7 @@ const CreateJobApplicationForm = ({
           </Panel>
         </div>
         <div className={styles.buttonContainer}>
-          <Button
-            label="Submit Job Application"
-            rounded
-            severity="success"
-            raised
-          />
+          <Button label="Submit" rounded severity="success" raised />
         </div>
       </form>
     </div>

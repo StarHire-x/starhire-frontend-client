@@ -3,6 +3,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
+  background-color: #006d77;
 }
 
 .header .p-input-icon-left input.p-inputtext {
@@ -12,6 +13,9 @@
 .container {
   display: flex;
   height: 100vh;
+  padding: 0 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .companyInfo {
@@ -94,9 +98,14 @@
 
 .savedJobsButton {
   margin-left: 20px;
-  border: #006d77;
-  background-color: #006d77;
-  color: #edf6f9;
+  border: #edf6f9;
+  background-color: #edf6f9;
+  color: #006d77;
+}
+
+.savedJobsButton:hover {
+  background-color: #d4e4e7 !important;
+  color: #004a53 !important; /* Example hover text color */
 }
 
 .saveButton {
@@ -112,7 +121,7 @@
 }
 
 .saveButton {
-  background-color: #edf6f9 !important;
+  background-color: #ffffff !important;
 }
 
 .createButton {

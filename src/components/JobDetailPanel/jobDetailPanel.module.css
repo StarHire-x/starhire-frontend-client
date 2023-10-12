@@ -119,10 +119,11 @@
   background-color: #e29578 !important;
   color: white;
   border: none !important;
+  margin-right: 20px;
 }
 
 .rejectButton {
-  background-color: #ff0000 !important;
+  background-color: #7a3434 !important;
   color: white;
   border: none !important;
 }

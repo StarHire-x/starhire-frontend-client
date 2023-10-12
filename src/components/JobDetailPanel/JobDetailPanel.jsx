@@ -1,18 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Panel } from "primereact/panel";
-import { Button } from "primereact/button";
-import { DataView } from "primereact/dataview";
-import { Dialog } from "primereact/dialog";
-import styles from "./jobDetailPanel.module.css";
-import { Card } from "primereact/card";
-import { Dropdown } from "primereact/dropdown";
+import React, { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Panel } from 'primereact/panel';
+import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
+import styles from './jobDetailPanel.module.css';
+import Image from 'next/image';
+import HumanIcon from './../../../public/icon.png';
+import { removeJobListingAssignment } from '@/app/api/jobListing/route';
 import {
   createJobApplication,
   findExistingJobApplication,
-} from "@/app/api/jobApplication/route";
-import CreateJobApplicationForm from "@/components/CreateJobApplicationForm/CreateJobApplicationForm";
-import { removeJobListingAssignment } from "@/app/api/jobListing/route";
-import { useRouter } from "next/navigation";
+} from '@/app/api/jobApplication/route';
+import CreateJobApplicationForm from '@/components/CreateJobApplicationForm/CreateJobApplicationForm';
 
 const JobDetailPanel = ({
   selectedJob,
@@ -44,16 +43,16 @@ const JobDetailPanel = ({
         if (response.statusCode === 200) {
           setIsJobApplicationAbsent(false);
         } else {
-          console.error("Error fetching job preference:", response.json());
+          console.error('Error fetching job preference:', response.json());
           setIsJobApplicationAbsent(true);
         }
       });
 
       const documentsList = selectedJob.requiredDocuments
-        ? selectedJob.requiredDocuments.split(",").map((name) => ({
+        ? selectedJob.requiredDocuments.split(',').map((name) => ({
             mandatory: true,
             documentName: name.trim(),
-            documentLink: "",
+            documentLink: '',
           }))
         : [];
       setFormData((prevData) => ({
@@ -72,21 +71,21 @@ const JobDetailPanel = ({
   };
 
   const [formData, setFormData] = useState({
-    jobApplicationStatus: "",
-    availableStartDate: "",
-    availableEndDate: "",
-    submissionDate: "",
-    remarks: "",
+    jobApplicationStatus: '',
+    availableStartDate: '',
+    availableEndDate: '',
+    submissionDate: '',
+    remarks: '',
     documents: [
       {
-        documentName: "",
-        documentLink: "",
+        documentName: '',
+        documentLink: '',
       },
     ],
   });
 
   const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "numeric", day: "numeric" };
+    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
@@ -96,24 +95,24 @@ const JobDetailPanel = ({
       // There are validation errors
       //alert('Please fix the form errors before submitting.');
       toast.current.show({
-        severity: "warn",
-        summary: "Warning",
-        detail: "Please fix the form errors before submitting.",
+        severity: 'warn',
+        summary: 'Warning',
+        detail: 'Please fix the form errors before submitting.',
         life: 5000,
       });
       return;
     }
 
     const areDocumentsFilled = formData.documents.every(
-      (doc) => doc.documentName.trim() !== "" && doc.documentLink.trim() !== ""
+      (doc) => doc.documentName.trim() !== '' && doc.documentLink.trim() !== ''
     );
 
     if (!areDocumentsFilled) {
       //alert('Please ensure all documents are properly filled up.');
       toast.current.show({
-        severity: "warn",
-        summary: "Warning",
-        detail: "Please ensure all documents are properly filled up.",
+        severity: 'warn',
+        summary: 'Warning',
+        detail: 'Please ensure all documents are properly filled up.',
         life: 5000,
       });
       return;
@@ -122,7 +121,7 @@ const JobDetailPanel = ({
     const reqBody = {
       jobListingId: selectedJob.jobListingId,
       jobSeekerId: jobSeekerId,
-      jobApplicationStatus: "Submitted",
+      jobApplicationStatus: 'Submitted',
       availableStartDate: formData.availableStartDate,
       availableEndDate: formData.availableEndDate,
       remarks: formData.remarks,
@@ -135,12 +134,11 @@ const JobDetailPanel = ({
     try {
       const response = await createJobApplication(reqBody, accessToken);
       if (!response.error) {
-        console.log("Job application created successfully:", response);
+        console.log('Job application created successfully:', response);
         toast.current.show({
-          severity: "success",
-          summary: "Success",
-          detail:
-            `Successfully created job application for ${selectedJob.title}`,
+          severity: 'success',
+          summary: 'Success',
+          detail: `Successfully created job application for ${selectedJob.title}`,
           life: 5000,
         });
         setRefreshData((prev) => !prev);
@@ -148,8 +146,8 @@ const JobDetailPanel = ({
     } catch (error) {
       //alert(error.message);
       toast.current.show({
-        severity: "error",
-        summary: "Error",
+        severity: 'error',
+        summary: 'Error',
         detail: error.message,
         life: 5000,
       });
@@ -165,21 +163,21 @@ const JobDetailPanel = ({
         accessToken
       );
       console.log(
-        "Job Listing disassociated with Job Seeker",
+        'Job Listing disassociated with Job Seeker',
         response.message
       );
       toast.current.show({
-        severity: "success",
-        summary: "Success",
+        severity: 'success',
+        summary: 'Success',
         detail: `${selectedJob.title} disassociated successfully!`,
         life: 5000,
       });
       setRefreshData((prev) => !prev);
     } catch (error) {
-      console.error("Error dissociating job listing:", error);
+      console.error('Error dissociating job listing:', error);
       toast.current.show({
-        severity: "error",
-        summary: "Error",
+        severity: 'error',
+        summary: 'Error',
         detail: error.message,
         life: 5000,
       });
@@ -206,7 +204,7 @@ const JobDetailPanel = ({
       <h2>{selectedJob.title}</h2>
       <div className={styles.pCardContent}>
         <div className={styles.companyInfo}>
-          {job.corporate.profilePictureUrl === "" ? (
+          {job.corporate.profilePictureUrl === '' ? (
             <Image src={HumanIcon} alt="User" className={styles.avatar} />
           ) : (
             <img
@@ -243,7 +241,7 @@ const JobDetailPanel = ({
       {isJobApplicationAbsent ? (
         <>
           <Button
-            label="Create Job Application"
+            label="Apply Now"
             className={styles.createButton}
             icon="pi pi-plus"
             onClick={() => setShowCreateJobApplicationDialog(true)}
