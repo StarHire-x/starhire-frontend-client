@@ -1,3 +1,8 @@
+.loadingSession {
+  display: flex;
+  justify-content: center;
+}
+
 .container {
   display: flex;
   align-items: center;
@@ -6,104 +11,86 @@
   gap: 20px;
 }
 
-.title {
-  font-size: 72px;
-  background: linear-gradient(to bottom, #194c33, #bbb);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.subTitle {
-  background: linear-gradient(to bottom, #194c33, #bbb);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
 .error {
   color: rgb(201, 15, 15);
   text-align: center;
 }
 
+.title {
+  font-size: 40px;
+  color: #194c33;
+  margin-bottom: 10px;
+}
+
 .form {
+  width: 400px;
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
 }
 
-.userRole {
+.inputContainer {
+  width: 400px;
+  position: relative; /* Set to relative so that the button can be positioned absolutely within this container */
   display: flex;
-  align-items: row;
-  gap: 20px;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.inputFields {
-  width: 300px;
-  margin: 0 auto;
-  display: grid;
-  /* grid-template-columns: repeat(2, 1fr); */
-  gap: 20px;
+.inputContainer p {
+  color: rgb(0, 0, 0);
 }
 
 .input {
   padding: 20px;
   background-color: transparent;
   border: 2px solid #bbb;
-  color: #bbb;
+  color: black;
   border-radius: 5px;
   font-size: 20px;
   font-weight: bold;
+  width: 100%; /* Ensure input takes full width of the container */
+  box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
 }
 
-.inputCompanyRegistrationIdField {
-  padding: 20px;
-  background-color: transparent;
-  border: 2px solid #bbb;
-  color: #bbb;
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.button {
-  width: 100px;
-  padding: 20px;
-  cursor: pointer;
-  background-color: #53c28b;
+.showPasswordButton {
+  position: absolute; /* Position the button absolutely within the inputContainer */
+  top: 65%; /* Center the button vertically */
+  right: 15px; /* Position the button 10px from the right edge of the inputContainer */
+  transform: translateY(-50%); /* Center the button vertically */
+  background: none;
   border: none;
-  border-radius: 5px;
-  color: #eee;
-  font-weight: bold;
-}
-
-.previousButton {
-  width: 100px;
-  padding: 20px;
   cursor: pointer;
-  background-color: #20563b;
-  border: none;
-  border-radius: 5px;
-  color: #eee;
-  font-weight: bold;
+  color: #0041a9;
+  font-size: 15px;
 }
 
-.stepTwoThreeButton {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.spacer {
-  margin-left: 10px;
+.forgotPassword {
+  color: #0041a9;
+  margin-top: 15px;
 }
 
 .radio {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 8px; /* Adjust the spacing between the radio button and label */
+  gap: 10px; /* Adjust the spacing between the radio button and label */
   justify-content: center;
+}
+
+.button {
+  width: 400px;
+  padding: 15px;
+  cursor: pointer;
+  background-color: #53c28b;
+  border: none;
+  border-radius: 30px;
+  color: #eee;
+  font-size: 17px;
+}
+
+.button:hover {
+  background-color: #1dbf6e;
 }
 
 .radio input[type="radio"] {
@@ -111,39 +98,28 @@
   margin-right: 4px; /* Adjust the spacing between the radio button and label text */
 }
 
+.signInContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.signInLink {
+  color: #007bff;
+}
+
 @media screen and (max-width: 768px) {
   .title {
-    font-size: 50px;
-  }
-
-  .userRole {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    font-size: 30px;
     text-align: center;
   }
-
-  .inputFields {
+  .form {
     width: 300px;
-    grid-template-columns: repeat(1, 1fr);
-    flex-direction: column;
   }
-
-  .input {
-    padding: 10px;
-    border: 1px solid #bbb;
-    font-size: 15px;
-    font-weight: bold;
+  .inputContainer {
+    width: 300px;
   }
-
   .button {
-    width: 100px;
-    padding: 20px;
-    cursor: pointer;
-    background-color: #53c28b;
-    border: none;
-    border-radius: 5px;
-    color: #eee;
-    font-weight: bold;
+    width: 300px;
   }
 }

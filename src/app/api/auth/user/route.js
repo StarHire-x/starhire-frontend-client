@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 export const createUser = async (userData) => {
   try {
+    console.log(userData)
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users`, {
       method: "POST",
       headers: {

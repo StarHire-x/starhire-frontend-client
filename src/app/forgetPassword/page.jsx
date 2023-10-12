@@ -65,20 +65,23 @@ const ForgetPassword = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Forget Password</h1>
+      <h1 className={styles.title}>Forgot Password?</h1>
       {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          className={styles.input}
-          value={formData.email}
-          onChange={handleInputChange}
-          required
-        />
+      <form className={styles.form}>
+        <div className={styles.inputContainer}>
+          <p>Email</p>
+          <input
+            type="email"
+            name="email"
+            className={styles.input}
+            value={formData.email}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
         <div className={styles.radio}>
-          <p>I am a...</p>
+          <p>I am a:</p>
           <RadioButton
             inputId={Enums.JOBSEEKER}
             name="role"
@@ -102,11 +105,26 @@ const ForgetPassword = () => {
             Corporate
           </label>
         </div>
-        {loading && <ProgressSpinner style={{width: '50px', height: '50px'}}/>}
-        {!loading && <button className={styles.button}>Reset Password</button>}
+        {loading && (
+          <ProgressSpinner style={{ width: "50px", height: "50px" }} />
+        )}
+        {!loading && (
+          <button className={styles.button} onClick={handleSubmit}>
+            Reset Password
+          </button>
+        )}
       </form>
-      <Link href="/register">I don&apos;t have an account </Link>
-      <Link href="/login">Login with an existing account</Link>
+      <div className={styles.orContainer}>
+        <div className={styles.orSeparator}></div>
+        <span className={styles.orText}>or</span>
+        <div className={styles.orSeparator}></div>
+      </div>
+      <button
+        className={styles.registerButton}
+        onClick={() => router.push("/register")}
+      >
+        New to StarHire? Join Now!
+      </button>
     </div>
   );
 };
