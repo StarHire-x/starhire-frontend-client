@@ -158,7 +158,7 @@
     align-items: flex-start;
   }
 
-  .header h2.p-input-icon-left {
+  .header h1.p-input-icon-left {
     margin-top: 20px;
   }
 
@@ -169,6 +169,18 @@
   .p-input-icon-left input {
     width: 100%;
   }
+
+  .container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .listingsPanel,
+  .detailsPanel {
+    border-right: none;
+    padding: 10px;
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -177,7 +189,18 @@
     height: 25px;
   }
 
-  .company-details p {
-    font-size: 0.9rem; /* You can adjust this if you feel it's too small */
+  .company-details p,
+  .listingItem h3,
+  .jobDetailPanel h2 {
+    font-size: 0.9rem;
+  }
+
+  .container {
+    padding: 0 10px;
+  }
+
+  .listingItem,
+  .jobDetailPanel {
+    padding: 10px;
   }
 }
