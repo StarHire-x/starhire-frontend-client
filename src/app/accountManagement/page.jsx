@@ -2,17 +2,18 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { getMyFollowings, getUserByUserId, updateUser } from "../api/auth/user/route";
+import {
+  getMyFollowings,
+  getUserByUserId,
+  updateUser,
+} from "../api/auth/user/route";
 import { uploadFile } from "../api/upload/route";
 import styles from "./page.module.css";
 import { UserContext } from "@/context/UserContext";
-import { RadioButton } from "primereact/radiobutton";
-import { Card } from "primereact/card";
-import { Panel } from "primereact/panel";
-import { Ripple } from "primereact/ripple";
-import { Rating } from "primereact/rating";
 import { Button } from "primereact/button";
 import EditAccountForm from "@/components/EditAccountForm/EditAccountForm";
+import CollectJobSeekerInfoForm from "@/components/CollectJobSeekerInfoForm/CollectJobSeekerInfoForm";
+import CollectCorporateInfoForm from "@/components/CollectCorporateInfoForm/CollectCorporateInfoForm";
 import JobPreferencePanel from "@/components/JobPreferencePanel/JobPreferencePanel";
 import { getExistingJobPreference } from "../api/preference/route";
 import { getJobExperience } from "../api/jobExperience/route";
@@ -78,14 +79,6 @@ const AccountManagement = () => {
     sessionTokenRef = session.data.user.accessToken;
   }
 
-  // const formatDate = (dateString) => {
-  //   const date = new Date(dateString);
-  //   const day = String(date.getDate()).padStart(2, "0");
-  //   const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0 based
-  //   const year = date.getFullYear();
-  //   return `${year}-${month}-${day}`; // NOTE: Changed format
-  // };
-
   useEffect(() => {
     if (session.status === "unauthenticated") {
       router.push("/login");
@@ -127,7 +120,7 @@ const AccountManagement = () => {
             return formData;
           } else {
             // 404 returned- User has no job preference
-            setIsJobPreferenceAbsent(true)
+            setIsJobPreferenceAbsent(true);
           }
         } catch (error) {
           console.log("Error fetching user preference: ", error.message);
@@ -153,12 +146,10 @@ const AccountManagement = () => {
           console.log("Error fetching followings of user: ", error.message);
         });
 
-
-      populateFormDataWithUserInfo(formData).then((formData) =>
-        populateFormDataWithUserPreference(formData)
+      populateFormDataWithUserInfo(formData).then((formDataWithUserInfo) =>
+        populateFormDataWithUserPreference(formDataWithUserInfo)
       );
       retrieveJobExperience().then((result) => setJobExperience(result));
-
     }
   }, [session.status, userIdRef, roleRef, refreshData]);
 
@@ -294,21 +285,50 @@ const AccountManagement = () => {
   if (session.status === "authenticated") {
     return (
       <div className={styles.container}>
-        <EditAccountForm
-          formData={formData}
-          setFormData={setFormData}
-          handleInputChange={handleInputChange}
-          handleInputNumberChange={handleInputNumberChange}
-          handleFileChange={handleFileChange}
-          saveChanges={saveChanges}
-          session={session}
-          removePdf={removePdf}
-          refreshData={refreshData}
-          setRefreshData={setRefreshData}
-          confirmChanges={confirmChanges}
-          numOfFollowings={numOfFollowings}
-          toast={toast}
-        />
+        {roleRef === Enums.JOBSEEKER && !formData.contactNo && (
+          <CollectJobSeekerInfoForm
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+          />
+        )}
+        {roleRef === Enums.JOBSEEKER && formData.contactNo && (
+          <EditAccountForm
+            formData={formData}
+            setFormData={setFormData}
+            handleInputChange={handleInputChange}
+            handleInputNumberChange={handleInputNumberChange}
+            handleFileChange={handleFileChange}
+            saveChanges={saveChanges}
+            session={session}
+            removePdf={removePdf}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            confirmChanges={confirmChanges}
+            numOfFollowings={numOfFollowings}
+            toast={toast}
+          />
+        )}
+        {roleRef === Enums.CORPORATE && !formData.contactNo && (
+          <CollectCorporateInfoForm />
+        )}
+        {roleRef === Enums.CORPORATE && formData.contactNo && (
+          <EditAccountForm
+            formData={formData}
+            setFormData={setFormData}
+            handleInputChange={handleInputChange}
+            handleInputNumberChange={handleInputNumberChange}
+            handleFileChange={handleFileChange}
+            saveChanges={saveChanges}
+            session={session}
+            removePdf={removePdf}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            confirmChanges={confirmChanges}
+            numOfFollowings={numOfFollowings}
+            toast={toast}
+          />
+        )}
+
         <Dialog
           visible={deactivateAccountDialog}
           style={{ width: "32rem" }}
