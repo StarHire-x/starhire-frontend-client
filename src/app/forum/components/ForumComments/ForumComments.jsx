@@ -63,6 +63,7 @@ const ForumComments = ({ forumComments }) => {
           inline
           scrollHeight="500px"
           header="Scroll Down to Load More"
+          emptyMessage="Be the first comment."
         />
       </div>
     </>
