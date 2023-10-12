@@ -1,8 +1,17 @@
 'use client';
 import React from 'react';
+import { useSession } from 'next-auth/react';
 import styles from './page.module.css';
 
 const TicketManagement = () => {
+  const session = useSession();
+
+  const isAuthenticated =
+    session.status === 'authenticated' &&
+    session.data &&
+    session.data.user &&
+    Boolean(session.data.user.accessToken);
+
   const generalUrl = '/ticketManagement/createATicket?problem=generalEnquiries';
   const accountUrl = '/ticketManagement/createATicket?problem=account';
   const jobsUrl = '/ticketManagement/createATicket?problem=jobListing';
@@ -33,29 +42,33 @@ const TicketManagement = () => {
           <p>Account</p>
         </div>
 
-        <div
-          className={styles.individualCardStyle}
-          onClick={() => (window.location.href = jobsUrl)}
-        >
-          <div className={styles.icon}>&#x1F4C4;</div>
-          <p>Jobs</p>
-        </div>
+        {isAuthenticated && (
+          <>
+            <div
+              className={styles.individualCardStyle}
+              onClick={() => (window.location.href = jobsUrl)}
+            >
+              <div className={styles.icon}>&#x1F4C4;</div>
+              <p>Jobs</p>
+            </div>
 
-        <div
-          className={styles.individualCardStyle}
-          onClick={() => (window.location.href = eventsUrl)}
-        >
-          <div className={styles.icon}>&#x1F4C5;</div>
-          <p>Events</p>
-        </div>
+            <div
+              className={styles.individualCardStyle}
+              onClick={() => (window.location.href = eventsUrl)}
+            >
+              <div className={styles.icon}>&#x1F4C5;</div>
+              <p>Events</p>
+            </div>
 
-        <div
-          className={styles.individualCardStyle}
-          onClick={() => (window.location.href = subscriptionBillingUrl)}
-        >
-          <div className={styles.icon}>&#x1F4B3;</div>
-          <p>Subscription Billing</p>
-        </div>
+            <div
+              className={styles.individualCardStyle}
+              onClick={() => (window.location.href = subscriptionBillingUrl)}
+            >
+              <div className={styles.icon}>&#x1F4B3;</div>
+              <p>Subscription Billing</p>
+            </div>
+          </>
+        )}
 
         <div
           className={styles.individualCardStyle}
