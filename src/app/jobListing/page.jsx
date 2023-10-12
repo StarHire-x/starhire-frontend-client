@@ -16,7 +16,6 @@ import {
   saveJobListing,
   unsaveJobListing,
   viewOneJobListing,
-  checkIfJobIsSaved,
   removeJobListingAssignment,
 } from '../api/jobListing/route';
 import {
@@ -26,50 +25,19 @@ import {
 import styles from './page.module.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import Enums from '@/common/enums/enums';
-
-//   useEffect(() => {
-//     if (session.status === 'unauthenticated') {
-//       router.push('/login');
-//     } else if (session.status === 'authenticated') {
-//       findAssignedJobListingsByJobSeeker(userIdRef, accessToken)
-//         .then((data) => {
-//           setJobListings(data);
-//           console.log('Received job listings:', data);
-//           setIsLoading(false);
-//         })
-//         .catch((error) => {
-//           console.error('Error fetching job listings:', error);
-//           setIsLoading(false);
-//         });
-//     }
-//   }, [refreshData, userIdRef, accessToken]);
-
-//   const createLink = (id) => {
-//     const link = `/jobListing/viewJobListingDetailsJobSeeker?id=${id}`;
-//     return link;
-//   };
-
-//   const saveStatusChange = async (rowData) => {
-//     const jobListingId = rowData.jobListingId;
-//     if (session.data.user.role === Enums.JOBSEEKER) {
-//       try {
-//         // Use router.push to navigate to another page with a query parameter
-//         let link = createLink(jobListingId);
-//         router.push(link);
-//       } catch (error) {
-//         console.error('Error changing status:', error);
-//       }
-//     }
-//   };
 
 const JobListingPage = () => {
+  const session = useSession();
+  const router = useRouter();
+
   const [jobListings, setJobListings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshData, setRefreshData] = useState(false);
   const [filterKeyword, setFilterKeyword] = useState('');
-  const session = useSession();
-  const router = useRouter();
+  const [showCreateJobApplicationDialog, setShowCreateJobApplicationDialog] =
+    useState(false);
+  const [showRejectJobListingDialog, setShowRejectJobListingDialog] =
+    useState(false);
 
   const accessToken =
     session.status === 'authenticated' &&
@@ -84,10 +52,6 @@ const JobListingPage = () => {
   const [selectedJob, setSelectedJob] = useState(null);
 
   const toast = useRef(null);
-  const [showCreateJobApplicationDialog, setShowCreateJobApplicationDialog] =
-    useState(false);
-  const [showRejectJobListingDialog, setShowRejectJobListingDialog] =
-    useState(false);
 
   const hideRejectJobListingDialog = () => {
     setShowRejectJobListingDialog(false);
@@ -97,10 +61,11 @@ const JobListingPage = () => {
     setShowCreateJobApplicationDialog(false);
   };
 
-  const [formErrors, setFormErrors] = useState({});
-  const [isJobApplicationAbsent, setIsJobApplicationAbsent] = useState(false);
   const params = useSearchParams();
   const id = params.get('id');
+
+  const [formErrors, setFormErrors] = useState({});
+  const [isJobApplicationAbsent, setIsJobApplicationAbsent] = useState(false);
 
   const [formData, setFormData] = useState({
     jobApplicationStatus: '',
@@ -183,22 +148,6 @@ const JobListingPage = () => {
     setShowCreateJobApplicationDialog(false);
   };
 
-  // useEffect(() => {
-  //   if (session.status === 'unauthenticated') {
-  //     router.push('/login');
-  //   } else if (session.status === 'authenticated') {
-  //     findAssignedJobListingsByJobSeeker(userIdRef, accessToken)
-  //       .then((data) => {
-  //         setJobListings(data);
-  //         setIsLoading(false);
-  //       })
-  //       .catch((error) => {
-  //         console.error('Error fetching job listings:', error);
-  //         setIsLoading(false);
-  //       });
-  //   }
-  // }, [refreshData, userIdRef, accessToken]);
-
   useEffect(() => {
     // Redirect to login if the user is unauthenticated
     if (session.status === 'unauthenticated') {
@@ -253,7 +202,7 @@ const JobListingPage = () => {
           setIsLoading(false);
         });
     }
-  }, [refreshData, accessToken, session.status, id, jobSeekerId]);
+  }, [refreshData, accessToken, id, jobSeekerId]);
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
@@ -520,44 +469,5 @@ const JobListingPage = () => {
     </>
   );
 };
-
-//   return (
-//     <>
-//       <Toast ref={toast} />
-//       <div className={styles.header}>
-//         <h1 className={styles.headerTitle} style={{ marginBottom: '15px' }}>
-//           Assigned Jobs
-//         </h1>
-//         <span className="p-input-icon-left">
-//           <i className="pi pi-search" />
-//           <InputText
-//             value={filterKeyword}
-//             onChange={(e) => setFilterKeyword(e.target.value)}
-//             placeholder="Keyword Search"
-//             style={{ width: '265px' }}
-//           />
-//         </span>
-//         <Button
-//           className={styles.savedJobsButton}
-//           label="My Saved Job Listings"
-//           onClick={() =>
-//             router.push('/jobListing/viewSavedJobListingsJobSeeker')
-//           }
-//           rounded
-//         />
-//       </div>
-//       <div className={styles.mainContainer}>
-//         <div className={styles.cardsGrid}>
-//           {filteredJobListings.map((jobListing) => (
-//             <div onClick={() => handleJobSelection(jobListing)}>
-//               {itemTemplate(jobListing)}
-//             </div>
-//           ))}
-//         </div>
-//         <JobDetailPanel />
-//       </div>
-//     </>
-//   );
-// };
 
 export default JobListingPage;
