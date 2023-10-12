@@ -1,0 +1,45 @@
+.container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.container h1 {
+  margin-bottom: 80px; /* Adjust this value as per your preference */
+}
+
+.icon {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.cardContainerStyle {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.individualCardStyle {
+  width: 30%;
+  margin: 10px 0;
+  text-align: center;
+  padding: 10px;
+  border: 2px solid #e1e1e1;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.individualCardStyle:hover {
+  background-color: #f5f5f5;
+}
+
+.individualCardStyle p {
+  font-weight: bold;
+  transition: text-decoration 0.3s ease; /* Smooth transition for the underline effect */
+}
+
+.individualCardStyle:hover p {
+  text-decoration: underline;
+}
