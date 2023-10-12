@@ -8,6 +8,7 @@ import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
 import { InputText } from 'primereact/inputtext';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import { TabView, TabPanel } from 'primereact/tabview';
 import styles from './page.module.css';
 import Enums from '@/common/enums/enums';
 
@@ -78,7 +79,7 @@ function ViewSavedJobListingsJobSeeker() {
       .includes(filterKeyword.toLowerCase())
   );
 
-  const itemTemplate = (savedJobListing) => {
+  const savedItemTemplate = (savedJobListing) => {
     const jobDetails = savedJobListing.jobListing;
     return (
       <div className={styles.card}>
@@ -143,22 +144,41 @@ function ViewSavedJobListingsJobSeeker() {
     <>
       <div className={styles.header}>
         <h1 className={styles.headerTitle} style={{ marginBottom: '15px' }}>
-          My Saved Job Listings
+          Job Listings
         </h1>
-        <span className="p-input-icon-left">
-          <i className="pi pi-search" />
-          <InputText
-            value={filterKeyword}
-            onChange={(e) => setFilterKeyword(e.target.value)}
-            placeholder="Keyword Search"
-            style={{ width: '265px' }}
-          />
-        </span>
       </div>
 
-      <div className={styles.cardsGrid}>
-        {filteredJobListings.map((jobListing) => itemTemplate(jobListing))}
-      </div>
+      <TabView className={styles.tabview}>
+        <TabPanel header="Saved">
+          {/* <span className="p-input-icon-left">
+            <i className="pi pi-search" />
+            <InputText
+              value={filterKeyword}
+              onChange={(e) => setFilterKeyword(e.target.value)}
+              placeholder="Keyword Search"
+              style={{ width: '265px' }}
+            />
+          </span> */}
+
+          <DataView
+            value={filteredJobListings}
+            itemTemplate={savedItemTemplate}
+            layout="list"
+            emptyMessage="You have no saved jobs."
+          />
+        </TabPanel>
+
+        <TabPanel header="Archived">
+          <DataView layout="list" emptyMessage="You have no archived jobs." />
+        </TabPanel>
+
+        <TabPanel header="Applied">
+          <DataView
+            layout="list"
+            emptyMessage="You have not applied for any jobs."
+          />
+        </TabPanel>
+      </TabView>
     </>
   );
 }
