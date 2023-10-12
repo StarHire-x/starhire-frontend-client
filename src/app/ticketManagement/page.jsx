@@ -12,14 +12,13 @@ const TicketManagement = () => {
     session.data.user &&
     Boolean(session.data.user.accessToken);
 
-  const generalUrl = '/ticketManagement/createATicket?problem=generalEnquiries';
+  const generalUrl = '/ticketManagement/createATicket?problem=general';
   const accountUrl = '/ticketManagement/createATicket?problem=account';
-  const jobsUrl = '/ticketManagement/createATicket?problem=jobListing';
-  const eventsUrl = '/ticketManagement/createATicket?problem=event';
+  const jobsUrl = '/ticketManagement/createATicket?problem=jobs';
+  const eventsUrl = '/ticketManagement/createATicket?problem=events';
+  const forumUrl = '/ticketManagement/createATicket?problem=forum';
   const subscriptionBillingUrl =
     '/ticketManagement/createATicket?problem=subscriptionBilling';
-  const reportingVulnerabiltyUrl =
-    '/ticketManagement/createATicket?problem=reportVulnerability';
 
   return (
     <div className={styles.container}>
@@ -62,20 +61,20 @@ const TicketManagement = () => {
 
             <div
               className={styles.individualCardStyle}
-              onClick={() => (window.location.href = subscriptionBillingUrl)}
+              onClick={() => (window.location.href = forumUrl)}
             >
-              <div className={styles.icon}>&#x1F4B3;</div>
-              <p>Subscription Billing</p>
+              <div className={styles.icon}>&#x1F50E;</div>
+              <p>Forum</p>
             </div>
           </>
         )}
 
         <div
           className={styles.individualCardStyle}
-          onClick={() => (window.location.href = reportingVulnerabiltyUrl)}
+          onClick={() => (window.location.href = subscriptionBillingUrl)}
         >
-          <div className={styles.icon}>&#x1F50E;</div>
-          <p>Report a Vulnerability / Bug</p>
+          <div className={styles.icon}>&#x1F4B3;</div>
+          <p>Subscription Billing</p>
         </div>
       </div>
     </div>
