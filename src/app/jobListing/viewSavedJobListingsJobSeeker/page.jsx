@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { fetchSavedJobListings } from '@/app/api/jobListing/route';
-import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
 import { InputText } from 'primereact/inputtext';
@@ -170,13 +169,6 @@ function ViewSavedJobListingsJobSeeker() {
 
         <TabPanel header="Archived">
           <DataView layout="list" emptyMessage="You have no archived jobs." />
-        </TabPanel>
-
-        <TabPanel header="Applied">
-          <DataView
-            layout="list"
-            emptyMessage="You have not applied for any jobs."
-          />
         </TabPanel>
       </TabView>
     </>
