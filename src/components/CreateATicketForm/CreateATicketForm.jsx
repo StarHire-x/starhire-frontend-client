@@ -41,9 +41,11 @@ const CreateATicketForm = ({ onCreate }) => {
       <div className={styles.cardRow}>
         <label>Problem Title:</label>
         <InputText
+          type="text"
           name="ticketName"
           value={formData.ticketName}
           onChange={handleInputChange}
+          style={{ width: '75%' }}
         />
       </div>
 
@@ -54,6 +56,7 @@ const CreateATicketForm = ({ onCreate }) => {
           name="ticketDescription"
           value={formData.ticketDescription}
           onChange={handleInputChange}
+          style={{ height: '220px' }}
         />
       </div>
 

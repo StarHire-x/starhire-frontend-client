@@ -17,8 +17,7 @@
 }
 
 .cardRow label {
-  flex: 0.1;
-  font-size: 1.2em;
+  font-size: 16px;
   margin-right: 20px;
 }
 
@@ -32,10 +31,14 @@
 .cardRow .p-editor-container {
   flex: 0.2;
   width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .cardRow .p-editor-content {
   height: 270px;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .cardFooter {
