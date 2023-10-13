@@ -308,7 +308,7 @@ const AccountManagement = () => {
           />
         )}
         {roleRef === Enums.CORPORATE && !formData.contactNo && (
-          <CollectCorporateInfoForm />
+          <CollectCorporateInfoForm sessionTokenRef={sessionTokenRef}/>
         )}
         {roleRef === Enums.CORPORATE && formData.contactNo && (
           <EditAccountForm
