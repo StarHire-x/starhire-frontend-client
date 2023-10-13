@@ -13,7 +13,6 @@ import styles from './page.module.css';
 
 const ViewJobApplicationsPage = () => {
   const [jobApplications, setJobApplications] = useState(null);
-  const [refreshData, setRefreshData] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const session = useSession();
   const router = useRouter();
@@ -36,6 +35,23 @@ const ViewJobApplicationsPage = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  const displayStatus = (status) => {
+    switch (status) {
+      case "offer_Accepted":
+        return "Offer Accepted";
+      case "offer_Rejected":
+        return "Offer Rejected";
+      case "Processing":
+        return "Processing";
+      case "to_be_submitted":
+        return "To Be Submitted";
+      case "waiting_for_interview":
+        return "Waiting For Interview";
+      default:
+        return "Unknown";
+    }
+  };
+
   useEffect(() => {
     if (accessToken) {
       getJobApplicationsByJobListingId(id, accessToken)
@@ -52,16 +68,16 @@ const ViewJobApplicationsPage = () => {
 
   const getStatus = (status) => {
     switch (status) {
-      case 'Submitted':
+      case 'to_be_submitted':
         return 'info';
       case 'Processing':
         return 'warning';
-      case 'Waiting':
+      case 'waiting_for_interview':
         return 'info';
-      case 'Rejected':
+      case 'offer_Rejected':
         return 'warning';
-      case 'Accepted':
-        return 'info';
+      case 'offer_Accepted':
+        return 'success';
       case 'Unverified':
         return 'warning';
       default:
@@ -91,7 +107,7 @@ const ViewJobApplicationsPage = () => {
               <span>Status</span>
               <span>
                 <Tag
-                  value={jobApplication.jobApplicationStatus}
+                  value={displayStatus(jobApplication.jobApplicationStatus)}
                   severity={getStatus(jobApplication.jobApplicationStatus)}
                 />
               </span>
