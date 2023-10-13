@@ -9,11 +9,13 @@ import {
   updateJobPreference,
 } from "@/app/api/preference/route";
 import { Toast } from "primereact/toast";
+import Enums from "@/common/enums/enums";
 
 const JobPreferencePanel = ({
   formData,
   setFormData,
   sessionTokenRef,
+  roleRef,
   setRefreshData,
   isJobPreferenceAbsent,
   setIsJobPreferenceAbsent,
@@ -31,11 +33,11 @@ const JobPreferencePanel = ({
     const currentCategoryStars = formData[category] || 0;
     const newCategoryStarsUsed = totalStarsUsed - currentCategoryStars + value;
 
-    // Check if the new total stars used across all categories exceeds 20
-    if (totalStarsUsed - currentCategoryStars + value > 20) {
-      setErrorMessage("You have selected more than 20 stars");
-      return;
-    }
+    // Check if the new total stars used across all categories exceeds 10
+    // if (totalStarsUsed - currentCategoryStars + value > 10) {
+    //   setErrorMessage("You have selected more than 10 stars");
+    //   return;
+    // }
 
     // Update the form data and total stars used
     const updatedFormData = { ...formData };
@@ -48,15 +50,41 @@ const JobPreferencePanel = ({
   const createNewJobPreference = async (e) => {
     e.preventDefault();
 
-    const reqBody = {
-      jobSeekerId: formData.userId,
-      locationPreference: formData.locationPreference,
-      culturePreference: formData.culturePreference,
-      salaryPreference: formData.salaryPreference,
-      diversityPreference: formData.diversityPreference,
-      workLifeBalancePreference: formData.workLifeBalancePreference,
-    };
+    if(totalStarsUsed < 10) {
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: "You have selected less than 10 stars",
+        life: 5000,
+      });
+      return;
+    } else if(totalStarsUsed > 10) {
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: "You have selected more than 10 stars",
+        life: 5000,
+      });
+      return;
+    } 
 
+    let reqBody;
+    if(roleRef === Enums.JOBSEEKER) {
+      reqBody = {
+        jobSeekerId: formData.userId,
+        benefitPreference: formData.benefitPreference,
+        salaryPreference: formData.salaryPreference,
+        workLifeBalancePreference: formData.workLifeBalancePreference,
+      };
+    } else if (roleRef === Enums.CORPORATE) {
+      reqBody = {
+        corporateId: formData.userId,
+        benefitPreference: formData.benefitPreference,
+        salaryPreference: formData.salaryPreference,
+        workLifeBalancePreference: formData.workLifeBalancePreference,
+      };
+    }
+    
     try {
       const response = await createJobPreference(reqBody, sessionTokenRef);
       if (!response.error) {
@@ -86,11 +114,27 @@ const JobPreferencePanel = ({
     e.preventDefault();
     const jobPreferenceId = formData.jobPreferenceId;
 
+    if (totalStarsUsed < 10) {
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: "You have selected less than 10 stars",
+        life: 5000,
+      });
+      return;
+    } else if (totalStarsUsed > 10) {
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: "You have selected more than 10 stars",
+        life: 5000,
+      });
+      return;
+    } 
+
     const reqBody = {
-      locationPreference: formData.locationPreference,
-      culturePreference: formData.culturePreference,
+      benefitPreference: formData.benefitPreference,
       salaryPreference: formData.salaryPreference,
-      diversityPreference: formData.diversityPreference,
       workLifeBalancePreference: formData.workLifeBalancePreference,
     };
 
@@ -129,10 +173,10 @@ const JobPreferencePanel = ({
       {isJobPreferenceAbsent ? (
         <>
           <div className={styles.titleContainer}>
-            <p className={styles.title}>Indicate your Job Preference</p>
-            <p className={styles.subTitle}>You have a maximum of 20 stars</p>
+            <p className={styles.title}>Indicate your Preference</p>
+            <p className={styles.subTitle}>You have a maximum of 10 stars</p>
             <p className={styles.starCounter}>
-              Number of stars used: {totalStarsUsed} / 20
+              Number of stars used: {totalStarsUsed} / 10
             </p>
           </div>
 
@@ -141,15 +185,15 @@ const JobPreferencePanel = ({
             <div className={styles.inputFields}>
               <div className={styles.fieldRating}>
                 <label
-                  htmlFor="locationPreference"
+                  htmlFor="benefitPreference"
                   className={styles.labelRating}
                 >
-                  Location:
+                  Benefit:
                 </label>
                 <Rating
-                  value={Number(formData?.locationPreference)}
+                  value={Number(formData?.benefitPreference)}
                   onChange={(e) =>
-                    handleRatingChange("locationPreference", e.value)
+                    handleRatingChange("benefitPreference", e.value)
                   }
                   stars={5}
                   cancel={false}
@@ -182,38 +226,6 @@ const JobPreferencePanel = ({
                   value={Number(formData?.workLifeBalancePreference)}
                   onChange={(e) =>
                     handleRatingChange("workLifeBalancePreference", e.value)
-                  }
-                  stars={5}
-                  cancel={false}
-                />
-              </div>
-              <div className={styles.fieldRating}>
-                <label
-                  htmlFor="culturePreference"
-                  className={styles.labelRating}
-                >
-                  Culture:
-                </label>
-                <Rating
-                  value={Number(formData?.culturePreference)}
-                  onChange={(e) =>
-                    handleRatingChange("culturePreference", e.value)
-                  }
-                  stars={5}
-                  cancel={false}
-                />
-              </div>
-              <div className={styles.fieldRating}>
-                <label
-                  htmlFor="diversityPreference"
-                  className={styles.labelRating}
-                >
-                  Diversity:
-                </label>
-                <Rating
-                  value={Number(formData?.diversityPreference)}
-                  onChange={(e) =>
-                    handleRatingChange("diversityPreference", e.value)
                   }
                   stars={5}
                   cancel={false}
@@ -228,10 +240,10 @@ const JobPreferencePanel = ({
       ) : (
         <>
           <div className={styles.titleContainer}>
-            <p className={styles.title}>Update your Job Preference</p>
-            <p className={styles.subTitle}>You have a maximum of 20 stars</p>
+            <p className={styles.title}>Update your Preference</p>
+            <p className={styles.subTitle}>You have a maximum of 10 stars</p>
             <p className={styles.starCounter}>
-              Number of stars used: {totalStarsUsed} / 20
+              Number of stars used: {totalStarsUsed} / 10
             </p>
           </div>
 
@@ -240,15 +252,15 @@ const JobPreferencePanel = ({
             <div className={styles.inputFields}>
               <div className={styles.fieldRating}>
                 <label
-                  htmlFor="locationPreference"
+                  htmlFor="benefitPreference"
                   className={styles.labelRating}
                 >
-                  Location:
+                  Benefit:
                 </label>
                 <Rating
-                  value={Number(formData?.locationPreference)}
+                  value={Number(formData?.benefitPreference)}
                   onChange={(e) =>
-                    handleRatingChange("locationPreference", e.value)
+                    handleRatingChange("benefitPreference", e.value)
                   }
                   stars={5}
                   cancel={false}
@@ -281,38 +293,6 @@ const JobPreferencePanel = ({
                   value={Number(formData?.workLifeBalancePreference)}
                   onChange={(e) =>
                     handleRatingChange("workLifeBalancePreference", e.value)
-                  }
-                  stars={5}
-                  cancel={false}
-                />
-              </div>
-              <div className={styles.fieldRating}>
-                <label
-                  htmlFor="culturePreference"
-                  className={styles.labelRating}
-                >
-                  Culture:
-                </label>
-                <Rating
-                  value={Number(formData?.culturePreference)}
-                  onChange={(e) =>
-                    handleRatingChange("culturePreference", e.value)
-                  }
-                  stars={5}
-                  cancel={false}
-                />
-              </div>
-              <div className={styles.fieldRating}>
-                <label
-                  htmlFor="diversityPreference"
-                  className={styles.labelRating}
-                >
-                  Diversity:
-                </label>
-                <Rating
-                  value={Number(formData?.diversityPreference)}
-                  onChange={(e) =>
-                    handleRatingChange("diversityPreference", e.value)
                   }
                   stars={5}
                   cancel={false}
