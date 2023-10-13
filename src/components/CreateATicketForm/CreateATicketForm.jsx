@@ -8,7 +8,6 @@ import styles from './page.module.css';
 const CreateATicketForm = ({ onCreate, forumPostId }) => {
   const [formData, setFormData] = useState({
     ticketName: forumPostId ? 'Re: Forum Post ' + forumPostId + ' - ' : '',
-    // ticketName: '',
     ticketDescription: '',
     isResolved: false,
   });
