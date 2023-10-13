@@ -29,14 +29,14 @@
 }
 
 .card {
-  background-color: #ffddd2;
+  background-color: #edf6f9;
   padding: 20px;
   width: 100%;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
   overflow: hidden;
-  border: 1px solid #ffddd2;
+  border: 1px solid #edf6f9;
   margin-bottom: 10px;
   border-radius: 8px;
 }
@@ -66,16 +66,11 @@
   flex-wrap: wrap;
 }
 
-.cardFooter {
-  margin-top: 25px;
-  text-align: right;
-}
-
-.cardFooter button {
-  background-color: #edf6f9;
+.acceptButton {
+  background-color: #006d77;
   border: none;
   border-radius: 4px;
-  color: #006d77;
+  color: white;
   padding: 5px 10px;
   text-align: center;
   text-decoration: none;
@@ -84,7 +79,38 @@
   transition: background-color 0.3s;
 }
 
-.cardFooter button:hover {
+.rejectButton {
+  background-color: #7a3434;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 0.8em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cardFooter {
+  margin-top: 25px;
+  text-align: right;
+}
+
+.cardFooterButton {
+  background-color: #e29578;
+  border: none;
+  border-radius: 4px;
+  color: #edf6f9;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 0.8em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cardFooterButton:hover {
   background-color: #e2947888;
 }
 

@@ -67,11 +67,6 @@
   line-height: 1.5; /* adjust as required for line-height within paragraphs */
 }
 
-.applyButton {
-  background-color: blue;
-  color: white;
-}
-
 .my-card .pCardContent {
   padding-top: 0.5rem;
 }
