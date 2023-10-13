@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from 'primereact/button';
+import { Editor } from 'primereact/editor';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Dialog } from 'primereact/dialog';
@@ -10,8 +11,8 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
     ticketName: '',
     ticketDescription: '',
     isResolved: false,
-    email: '', 
-    username: '', 
+    email: '',
+    username: '',
   });
 
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
@@ -54,18 +55,18 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
           name="ticketName"
           value={formData.ticketName}
           onChange={handleInputChange}
+          style={{ width: '75%' }}
         />
       </div>
 
       <div className={styles.cardRow}>
         <label htmlFor="ticketDescription">Problem Description:</label>
-        <InputTextarea
+        <Editor
           id="ticketDescription"
           name="ticketDescription"
           value={formData.ticketDescription}
           onChange={handleInputChange}
-          rows={7}
-          autoResize={true}
+          style={{ height: '220px' }}
         />
       </div>
 
@@ -75,6 +76,7 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
           name="email"
           value={formData.email}
           onChange={handleInputChange}
+          style={{ width: '75%' }}
           required // Add the required attribute
         />
         {emailError && <small className={styles.errorText}>{emailError}</small>}
@@ -86,6 +88,7 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
           name="username"
           value={formData.username}
           onChange={handleInputChange}
+          style={{ width: '75%' }}
         />
       </div>
 
@@ -100,8 +103,16 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
         onHide={hideConfirmationDialog}
         footer={
           <div>
-            <Button label="No" icon="pi pi-times" onClick={hideConfirmationDialog} />
-            <Button label="Yes" icon="pi pi-check" onClick={handleConfirmation} />
+            <Button
+              label="No"
+              icon="pi pi-times"
+              onClick={hideConfirmationDialog}
+            />
+            <Button
+              label="Yes"
+              icon="pi pi-check"
+              onClick={handleConfirmation}
+            />
           </div>
         }
       >
@@ -112,4 +123,3 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
 };
 
 export default CreateATicketFormUnLoggedIn;
-

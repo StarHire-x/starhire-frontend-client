@@ -44,10 +44,8 @@ const AccountManagement = () => {
     dateOfGraduation: "",
     jobPreferenceId: "",
     resumePdf: "",
-    locationPreference: 0,
+    benefitPreference: 0,
     salaryPreference: 0,
-    culturePreference: 0,
-    diversityPreference: 0,
     workLifeBalancePreference: 0,
     jobExperienceId: "",
     employerName: "",
@@ -104,6 +102,7 @@ const AccountManagement = () => {
         try {
           const response = await getExistingJobPreference(
             userIdRef,
+            roleRef,
             sessionTokenRef
           );
           if (response.statusCode === 200) {
@@ -346,19 +345,20 @@ const AccountManagement = () => {
           </p>
         </Dialog>
         <br />
+        <JobPreferencePanel
+          formData={formData}
+          setFormData={setFormData}
+          sessionTokenRef={sessionTokenRef}
+          roleRef={roleRef}
+          setRefreshData={setRefreshData}
+          isJobPreferenceAbsent={isJobPreferenceAbsent}
+          setIsJobPreferenceAbsent={setIsJobPreferenceAbsent}
+          totalStarsUsed={totalStarsUsed}
+          setTotalStarsUsed={setTotalStarsUsed}
+        />
+        <br />
         {roleRef === Enums.JOBSEEKER && (
           <>
-            <JobPreferencePanel
-              formData={formData}
-              setFormData={setFormData}
-              sessionTokenRef={sessionTokenRef}
-              setRefreshData={setRefreshData}
-              isJobPreferenceAbsent={isJobPreferenceAbsent}
-              setIsJobPreferenceAbsent={setIsJobPreferenceAbsent}
-              totalStarsUsed={totalStarsUsed}
-              setTotalStarsUsed={setTotalStarsUsed}
-            />
-            <br />
             <JobExperiencePanel
               formData={formData}
               setFormData={setFormData}

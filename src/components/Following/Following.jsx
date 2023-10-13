@@ -12,6 +12,7 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import { Toast } from "primereact/toast";
 import Image from "next/image";
 import { Dialog } from "primereact/dialog";
+import HumanIcon from "../../../public/icon.png";
 
 const Following = ({
   refreshData,

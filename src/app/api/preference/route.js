@@ -24,10 +24,10 @@ export const createJobPreference = async (newJobPreference, accessToken) => {
   }
 };
 
-export const getExistingJobPreference = async (userId, accessToken) => {
+export const getExistingJobPreference = async (userId, role, accessToken) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/job-preference/job-seeker/${userId}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/job-preference/${role}/${userId}`,
       {
         method: "GET",
         headers: {

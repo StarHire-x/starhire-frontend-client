@@ -20,7 +20,11 @@ import { getJobSeekersByJobApplicationId } from "@/app/api/jobListing/route";
 import { Dialog } from "primereact/dialog";
 import { Calendar } from "primereact/calendar";
 import { InputTextarea } from "primereact/inputtextarea";
-
+import {
+  createChat,
+  createChatMessage,
+  getAllUserChats,
+} from "@/app/api/chat/route";
 
 const ViewJobApplicationDetails = () => {
   const session = useSession();
@@ -34,6 +38,9 @@ const ViewJobApplicationDetails = () => {
     session.status === "authenticated" &&
     session.data &&
     session.data.user.accessToken;
+
+  const currentUserId =
+    session.status === "authenticated" && session.data.user.userId;
 
   const params = useSearchParams();
   const jobApplicationId = params.get("id");
@@ -49,7 +56,8 @@ const ViewJobApplicationDetails = () => {
   const [status, setStatus] = useState(null);
 
   const [interviewDateTimes, setInterviewDateTimes] = useState([]);
-  const [showArrangeInterviewDialog, setShowArrangeInterviewDialog] = useState(false);
+  const [showArrangeInterviewDialog, setShowArrangeInterviewDialog] =
+    useState(false);
   const [interviewDate, setInterviewDate] = useState(""); // State to store the interview date
   const [interviewTime, setInterviewTime] = useState(""); // State to store the interview time
   const [interviewNotes, setInterviewNotes] = useState("");
@@ -62,20 +70,17 @@ const ViewJobApplicationDetails = () => {
   const hideConfirmSendDialog = () => {
     setConfirmSendDialog(false);
   };
-  
-
 
   const addInterviewDateTime = () => {
     if (interviewDate) {
       const newEntry = {
         date: interviewDate.toLocaleString(), // Convert to string
       };
-  
+
       setInterviewDateTimes([...interviewDateTimes, newEntry]);
       setInterviewDate("");
     }
   };
-  
 
   const handleArrangeInterview = () => {
     setShowArrangeInterviewDialog(true);
@@ -97,9 +102,10 @@ const ViewJobApplicationDetails = () => {
         label="Confirm"
         icon="pi pi-check"
         outlined
-        onClick={() => {
+        onClick={async () => {
           console.log("Sending to Recruiter...");
           // Add the chat logic here
+          const chatId = await createNewChat();
 
           console.log("Interview Date-Times:", interviewDateTimes);
           console.log("Interview Notes:", interviewNotes);
@@ -109,17 +115,21 @@ const ViewJobApplicationDetails = () => {
 
           hideConfirmSendDialog();
           hideArrangeInterviewDialog();
+
+          // Send message
+          const message = "place your message here";
+          await sendMessage(message, chatId);
+          router.push(`/chat?id=${chatId}`);
         }}
       />
     </React.Fragment>
   );
-  
+
   const confirmSendDialogContent = (
     <div>
       <p>Are you sure you want to send this to the recruiter?</p>
     </div>
   );
-  
 
   const arrangeInterviewDialogFooter = (
     <React.Fragment>
@@ -164,7 +174,10 @@ const ViewJobApplicationDetails = () => {
   const renderInterviewDateTimes = () => {
     return interviewDateTimes.map((entry, index) => (
       <div key={index} className={styles.interviewDateTimeEntry}>
-        <span>Date: {moment(entry.date, "YYYY-MM-DD HH:mm:ss").format("DD/MM/YYYY HH:mm")}</span>
+        <span>
+          Date:{" "}
+          {moment(entry.date, "YYYY-MM-DD HH:mm:ss").format("DD/MM/YYYY HH:mm")}
+        </span>
         <Button
           label="Remove"
           icon="pi pi-trash"
@@ -216,7 +229,11 @@ const ViewJobApplicationDetails = () => {
       const request = {
         jobApplicationStatus: newStatus,
       };
-      const response = await updateJobApplicationStatus(request, jobApplicationId, accessToken);
+      const response = await updateJobApplicationStatus(
+        request,
+        jobApplicationId,
+        accessToken
+      );
       console.log("Status is " + response.status);
 
       if (response.status === 200) {
@@ -232,6 +249,48 @@ const ViewJobApplicationDetails = () => {
       console.log("Status changed successfully:", response);
     } catch (error) {
       console.error("Error changing status:", error);
+    }
+  };
+
+  const createNewChat = async () => {
+    // Check if chat exists already
+    try {
+      const corporateChats = await getAllUserChats(currentUserId, accessToken);
+      const matchingChats = corporateChats.filter(
+        (chat) => chat?.recruiter?.userId === recruiter?.userId
+      );
+      let chatId = null;
+      if (matchingChats.length === 0) {
+        const request = {
+          recruiterId: recruiter?.userId,
+          corporateId: currentUserId,
+          lastUpdated: new Date(),
+        };
+        const response = await createChat(request, accessToken);
+        chatId = response?.chatId;
+      } else {
+        chatId = matchingChats[0]?.chatId;
+      }
+      return chatId;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const sendMessage = async (message, chatId) => {
+    try {
+      const request = {
+        message: message,
+        timestamp: new Date(),
+        chatId: chatId,
+        isImportant: false,
+        userId: currentUserId,
+        fileURL: "",
+      };
+
+      await createChatMessage(request, accessToken);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -548,7 +607,9 @@ const ViewJobApplicationDetails = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="interviewNotes">Add Interview details (Including Video meeting links)</label>
+                    <label htmlFor="interviewNotes">
+                      Add Interview details (Including Video meeting links)
+                    </label>
                     <InputTextarea
                       id="interviewNotes"
                       value={interviewNotes}
@@ -568,7 +629,6 @@ const ViewJobApplicationDetails = () => {
                     </div>
                   )}
                 </Dialog>
-
               </div>
             )}
           </div>

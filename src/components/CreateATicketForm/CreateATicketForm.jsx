@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Button } from 'primereact/button';
-import { MultiSelect } from 'primereact/multiselect';
+import { Editor } from 'primereact/editor';
 import { InputText } from 'primereact/inputtext';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Dialog } from 'primereact/dialog'; // Import Dialog
+import { Dialog } from 'primereact/dialog';
 import styles from './page.module.css';
 
 const CreateATicketForm = ({ onCreate }) => {
@@ -42,21 +41,22 @@ const CreateATicketForm = ({ onCreate }) => {
       <div className={styles.cardRow}>
         <label>Problem Title:</label>
         <InputText
+          type="text"
           name="ticketName"
           value={formData.ticketName}
           onChange={handleInputChange}
+          style={{ width: '75%' }}
         />
       </div>
 
       <div className={styles.cardRow}>
         <label htmlFor="jobDescription">Problem Description:</label>
-        <InputTextarea
+        <Editor
           id="ticketDescription"
           name="ticketDescription"
           value={formData.ticketDescription}
           onChange={handleInputChange}
-          rows={7}
-          autoResize={true}
+          style={{ height: '220px' }}
         />
       </div>
 
@@ -72,8 +72,16 @@ const CreateATicketForm = ({ onCreate }) => {
         onHide={hideConfirmationDialog}
         footer={
           <div>
-            <Button label="No" icon="pi pi-times" onClick={hideConfirmationDialog} />
-            <Button label="Yes" icon="pi pi-check" onClick={handleConfirmation} />
+            <Button
+              label="No"
+              icon="pi pi-times"
+              onClick={hideConfirmationDialog}
+            />
+            <Button
+              label="Yes"
+              icon="pi pi-check"
+              onClick={handleConfirmation}
+            />
           </div>
         }
       >
@@ -84,5 +92,3 @@ const CreateATicketForm = ({ onCreate }) => {
 };
 
 export default CreateATicketForm;
-
-

@@ -3,7 +3,6 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: #006d77;
 }
 
 .header .p-input-icon-left input.p-inputtext {
@@ -13,9 +12,6 @@
 .container {
   display: flex;
   height: 100vh;
-  padding: 0 20px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .companyInfo {
@@ -71,11 +67,6 @@
   line-height: 1.5; /* adjust as required for line-height within paragraphs */
 }
 
-.applyButton {
-  background-color: blue;
-  color: white;
-}
-
 .my-card .pCardContent {
   padding-top: 0.5rem;
 }
@@ -98,14 +89,9 @@
 
 .savedJobsButton {
   margin-left: 20px;
-  border: #edf6f9;
-  background-color: #edf6f9;
-  color: #006d77;
-}
-
-.savedJobsButton:hover {
-  background-color: #d4e4e7 !important;
-  color: #004a53 !important; /* Example hover text color */
+  border: #006d77;
+  background-color: #006d77;
+  color: #edf6f9;
 }
 
 .saveButton {
@@ -121,17 +107,18 @@
 }
 
 .saveButton {
-  background-color: #ffffff !important;
+  background-color: #edf6f9 !important;
 }
 
 .createButton {
   background-color: #e29578 !important;
   color: white;
   border: none !important;
+  margin-right: 20px;
 }
 
 .rejectButton {
-  background-color: #ff0000 !important;
+  background-color: #7a3434 !important;
   color: white;
   border: none !important;
 }
@@ -158,7 +145,7 @@
     align-items: flex-start;
   }
 
-  .header h1.p-input-icon-left {
+  .header h2.p-input-icon-left {
     margin-top: 20px;
   }
 
@@ -169,18 +156,6 @@
   .p-input-icon-left input {
     width: 100%;
   }
-
-  .container {
-    flex-direction: column;
-    height: auto;
-  }
-
-  .listingsPanel,
-  .detailsPanel {
-    border-right: none;
-    padding: 10px;
-    width: 100%;
-  }
 }
 
 @media (max-width: 480px) {
@@ -189,18 +164,7 @@
     height: 25px;
   }
 
-  .company-details p,
-  .listingItem h3,
-  .jobDetailPanel h2 {
-    font-size: 0.9rem;
-  }
-
-  .container {
-    padding: 0 10px;
-  }
-
-  .listingItem,
-  .jobDetailPanel {
-    padding: 10px;
+  .company-details p {
+    font-size: 0.9rem; /* You can adjust this if you feel it's too small */
   }
 }

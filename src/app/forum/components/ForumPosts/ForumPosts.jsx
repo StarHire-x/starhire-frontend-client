@@ -125,6 +125,7 @@ const ForumPosts = ({
           inline
           scrollHeight="500px"
           header="Scroll Down to Load More"
+          emptyMessage="Be the first to leave a post."
         />
       </div>
 

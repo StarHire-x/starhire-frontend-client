@@ -1,59 +1,80 @@
-"use client"
-import React from "react";
-import styles from "./ticketManagement.module.css";
-import CustomCard from "./Card"; 
+'use client';
+import React from 'react';
+import { useSession } from 'next-auth/react';
+import styles from './page.module.css';
 
 const TicketManagement = () => {
+  const session = useSession();
 
-  const cardContainerStyle = {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center", 
-    marginBottom: "20px", 
-  };
+  const isAuthenticated =
+    session.status === 'authenticated' &&
+    session.data &&
+    session.data.user &&
+    Boolean(session.data.user.accessToken);
 
-  const eventIssuesUrl = '/ticketManagement/createATicket?problem=event';
-  const jobListingIssuesUrl = '/ticketManagement/createATicket?problem=jobListing';
-  const technicalSupportUrl = '/ticketManagement/createATicket?problem=technicalSupport';
-  const reportingVulnerabiltyUrl = '/ticketManagement/createATicket?problem=reportVulnerability';
-  const generalQuestionsUrl = '/ticketManagement/createATicket?problem=generalEnquiries';
+  const generalUrl = '/ticketManagement/createATicket?problem=general';
+  const accountUrl = '/ticketManagement/createATicket?problem=account';
+  const jobsUrl = '/ticketManagement/createATicket?problem=jobs';
+  const eventsUrl = '/ticketManagement/createATicket?problem=events';
+  const forumUrl = '/ticketManagement/createATicket?problem=forum';
+  const subscriptionBillingUrl =
+    '/ticketManagement/createATicket?problem=subscriptionBilling';
 
   return (
     <div className={styles.container}>
-      <h1>How can we help you today?</h1>
-      <div style={cardContainerStyle}>
-        <div>
-        <a href={eventIssuesUrl}>
-            <CustomCard image="./booking-issues.jpg" />
-            <p>Event Related Issues</p>
-          </a>
-        </div>
-        <div>
-        <a href={jobListingIssuesUrl}>
-            <CustomCard image="./payment-problems.jpg" />
-            <p>Job Listings Issues</p>
-          </a>
+      <h1>Hi, we're here to help.</h1>
+      <h3>Recommended topics</h3>
+      <div className={styles.cardContainerStyle}>
+        <div
+          className={styles.individualCardStyle}
+          onClick={() => (window.location.href = generalUrl)}
+        >
+          <div className={styles.icon}>&#x1F4AC;</div>
+          <p>General</p>
         </div>
 
-        <div>
-        <a href={technicalSupportUrl}>
-            <CustomCard image="./account-support.jpg" />
-            <p>Technical Support</p>
-          </a>
+        <div
+          className={styles.individualCardStyle}
+          onClick={() => (window.location.href = accountUrl)}
+        >
+          <div className={styles.icon}>&#x1F464;</div>
+          <p>Account</p>
         </div>
 
-        <div>
-        <a href={reportingVulnerabiltyUrl}>
-            <CustomCard image="./account-support.jpg" />
-            <p>Report a Vulnerability / Bug</p>
-          </a>
-        </div>
+        {isAuthenticated && (
+          <>
+            <div
+              className={styles.individualCardStyle}
+              onClick={() => (window.location.href = jobsUrl)}
+            >
+              <div className={styles.icon}>&#x1F4C4;</div>
+              <p>Jobs</p>
+            </div>
 
-        <div>
-        <a href={generalQuestionsUrl}>
-            <CustomCard image="/icon.png" />
-            <p>General Questions and Enquiries</p>
-          </a>
+            <div
+              className={styles.individualCardStyle}
+              onClick={() => (window.location.href = eventsUrl)}
+            >
+              <div className={styles.icon}>&#x1F4C5;</div>
+              <p>Events</p>
+            </div>
+
+            <div
+              className={styles.individualCardStyle}
+              onClick={() => (window.location.href = forumUrl)}
+            >
+              <div className={styles.icon}>&#x1F50E;</div>
+              <p>Forum</p>
+            </div>
+          </>
+        )}
+
+        <div
+          className={styles.individualCardStyle}
+          onClick={() => (window.location.href = subscriptionBillingUrl)}
+        >
+          <div className={styles.icon}>&#x1F4B3;</div>
+          <p>Subscription Billing</p>
         </div>
       </div>
     </div>
@@ -61,13 +82,3 @@ const TicketManagement = () => {
 };
 
 export default TicketManagement;
-
-
-
-
-
-
-
-
-
-

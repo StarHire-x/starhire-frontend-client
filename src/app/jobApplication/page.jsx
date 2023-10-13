@@ -113,7 +113,7 @@ const JobApplicationPage = () => {
   };
 
   useEffect(() => {
-    if (session.status === 'unauthenticated') {
+    if (session.status === 'unauthenticated' || session.status === 'loading') {
       router.push('/login');
     } else if (session.status === 'authenticated') {
       getJobApplicationsByJobSeeker(userIdRef, accessToken)
@@ -239,18 +239,31 @@ const JobApplicationPage = () => {
           </div>
         </div>
         <div className={styles.cardFooter}>
-          <Button
-            label="Details"
-            rounded
-            onClick={() => {
-              setSelectedJobApplicationData(jobApplication);
-              setShowViewJobApplicationDialog(jobApplication);
-            }}
-          />
+          {jobApplication.jobApplicationStatus === 'Accepted' && (
+            <>
+              <Button
+                label="Accept"
+                rounded
+                className={styles.acceptButton}
+                onClick={() => {
+                  // Logic to handle Accept action
+                }}
+              />
+              <Button
+                label="Reject"
+                rounded
+                className={styles.rejectButton}
+                onClick={() => {
+                  // Logic to handle Reject action
+                }}
+              />
+            </>
+          )}
           {jobApplication.jobApplicationStatus === 'To_Be_Submitted' && (
             <Button
               label="Edit Application"
               rounded
+              className={styles.cardFooterButton}
               severity="info"
               onClick={() => {
                 setSelectedJobApplicationData(jobApplication);
@@ -258,6 +271,15 @@ const JobApplicationPage = () => {
               }}
             />
           )}
+          <Button
+            label="Details"
+            rounded
+            className={styles.cardFooterButton}
+            onClick={() => {
+              setSelectedJobApplicationData(jobApplication);
+              setShowViewJobApplicationDialog(jobApplication);
+            }}
+          />
         </div>
       </div>
     );
