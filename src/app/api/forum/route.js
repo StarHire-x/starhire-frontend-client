@@ -211,3 +211,31 @@ export const deleteOwnPostByPostIdAndUserId = async (forumPostId, userId, access
   }
 };
 
+// no need user Id because that will be handled by Ticket
+export const reportForumPostByPostId = async (forumPostId, accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/forum-posts/report/${forumPostId}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: 'no-store',
+      }
+    );
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+    return await res.json();
+    
+  } catch (error) {
+    console.log('There was a problem deleting this forum post', error);
+    throw error;
+  }
+};
+
+
