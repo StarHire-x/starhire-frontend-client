@@ -9,6 +9,7 @@ import CreateComment from "../CreateCommentModal/CreateComment";
 import { useState } from "react";
 import Utility from "@/common/helper/utility";
 import DeletePostCard from "../DeletePostCard/DeletePostCard";
+import ReportPostCard from "../ReportPostCard/ReportPostCard";
 
 const ForumPosts = ({
   forumPosts,
@@ -19,6 +20,8 @@ const ForumPosts = ({
 }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [reportDialogOpen, setReportDialogOpen] = useState(false);
+
   const [postData, setPostData] = useState("");
 
   const filteredPosts = forumPosts.filter((post) =>
@@ -42,9 +45,18 @@ const ForumPosts = ({
     setDeleteDialogOpen(true);
     setPostData(data);
   };
-
+  
   const hideDeleteDialog = () => {
     setDeleteDialogOpen(false);
+  };
+
+  const openReportDialog = (data) => {
+    setReportDialogOpen(true);
+    setPostData(data);
+  };
+  
+  const hideReportDialog = () => {
+    setReportDialogOpen(false);
   };
 
   const truncatedMessage = (data) => {
@@ -58,15 +70,26 @@ const ForumPosts = ({
       <div className={styles.postContainer}>
         <div className={styles.postTitle}>
           <div className={styles.postTitleText}>{data.forumPostTitle}</div>
-          {data.jobSeeker.userId === userIdRef && (
-            <Button
-              size="small"
-              icon="pi pi-delete-left"
-              rounded
-              onClick={() => openDeleteDialog(data)}
-              className={styles.commentButton}
-            ></Button>
-          )}
+          <div className={styles.postTitleButtonContainer}>
+            {data.jobSeeker.userId === userIdRef && (
+              <>
+                <Button
+                  size="small"
+                  icon="pi pi-exclamation-circle"
+                  rounded
+                  onClick={() => openReportDialog(data)}
+                  className={styles.reportButton}
+                />
+                <Button
+                  size="small"
+                  icon="pi pi-trash"
+                  rounded
+                  onClick={() => openDeleteDialog(data)}
+                  className={styles.deleteButton}
+                />
+              </>
+            )}
+          </div>
         </div>
         <div className={styles.userId}>
           {data.isAnonymous === false
@@ -138,7 +161,17 @@ const ForumPosts = ({
         setRefreshData={setRefreshData}
         hideCommentDialog={hideDialog}
       />
-
+      
+      <ReportPostCard
+        forumPost={postData}
+        hideReportDialog={hideReportDialog}
+        reportDialogOpen={reportDialogOpen}
+        userIdRef={userIdRef}
+        accessToken={accessToken}
+        setRefreshData={setRefreshData}
+        hideCommentDialog={hideDialog}
+      />
+      
       <Dialog
         visible={dialogOpen}
         onHide={hideDialog}
@@ -151,6 +184,7 @@ const ForumPosts = ({
           postData={postData}
           setRefreshData={setRefreshData}
           openDeleteDialog={openDeleteDialog}
+          openReportDialog={openReportDialog}
         />
       </Dialog>
     </>

@@ -133,22 +133,35 @@
   margin-left: 5px;
 }
 
-.commentButton {
-  width: 30px !important;
-  height: 30px !important;
-  border-radius: 20px;
-}
 
-.allCommentsContainer {
-
-}
-
-.deleteButton {
+.deleteButton,
+.reportButton {
   background: transparent !important;
   color: black !important;
   border: transparent !important;
   width: 30px !important;
   height: 30px !important;
+}
+
+.deleteButton:hover {
+  border: #2196f3 !important;
+  background-color: #2196f3 !important;
+  border: #2196f3 !important ;
+  color: #edf6f9 !important;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.reportButton:hover {
+  border: rgba(255, 0, 0, 0.743)  !important;
+  background-color: rgba(255, 0, 0, 0.743) !important;
+  border: rgba(255, 0, 0, 0.743)  !important ;
+  color: #edf6f9 !important;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+}
+.allCommentsContainer {
+
 }
 
 @media (max-width: 561px) {
