@@ -42,6 +42,10 @@ const ViewJobApplicationDetails = () => {
   const currentUserId =
     session.status === "authenticated" && session.data.user.userId;
 
+  const currentUserName =
+    session.status === "authenticated" && session.data.user.name;
+  console.log(session);
+
   const params = useSearchParams();
   const jobApplicationId = params.get("id");
 
@@ -116,9 +120,21 @@ const ViewJobApplicationDetails = () => {
           hideConfirmSendDialog();
           hideArrangeInterviewDialog();
 
-          // Send message
-          const message = "place your message here";
-          await sendMessage(message, chatId);
+          const recruiterEmail = recruiter?.email;
+          const formattedDates = interviewDateTimes
+            .map((item) => item.date)
+            .join("\n");
+
+            const finalMessage = `Hi ${recruiterEmail},
+Here are the interview details:
+${interviewNotes}\n
+These are the dates that we would like to interview the candidate:
+Interview Date-Times:
+${formattedDates}
+Hope to hear from you soon\n${currentUserName}` ;
+
+          await sendMessage(finalMessage, chatId);
+
           router.push(`/chat?id=${chatId}`);
         }}
       />
