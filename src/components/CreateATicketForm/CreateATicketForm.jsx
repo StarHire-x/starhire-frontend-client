@@ -5,9 +5,10 @@ import { InputText } from 'primereact/inputtext';
 import { Dialog } from 'primereact/dialog';
 import styles from './page.module.css';
 
-const CreateATicketForm = ({ onCreate }) => {
+const CreateATicketForm = ({ onCreate, forumPostId }) => {
   const [formData, setFormData] = useState({
-    ticketName: '',
+    ticketName: forumPostId ? 'Re: Forum Post ' + forumPostId + ' - ' : '',
+    // ticketName: '',
     ticketDescription: '',
     isResolved: false,
   });

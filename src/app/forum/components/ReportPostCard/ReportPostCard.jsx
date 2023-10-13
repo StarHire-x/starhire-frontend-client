@@ -2,9 +2,10 @@
 
 import { Button } from "primereact/button";
 import styles from "./ReportPostCard.css";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Dialog } from "primereact/dialog";
 import { Toast } from "primereact/toast";
+import { useRouter } from "next/navigation";
 const ReportPostCard = ({
   forumPost,
   hideReportDialog,
@@ -15,32 +16,12 @@ const ReportPostCard = ({
   hideCommentDialog
 }) => {
   const toast = useRef(null);
-  const reportPost = async () => {
-    // try {
-    //   await deleteOwnPostByPostIdAndUserId(
-    //     forumPost.forumPostId,
-    //     userIdRef,
-    //     accessToken
-    //   );
-    //   setRefreshData((prev) => !prev);
-    //   toast.current.show({
-    //     severity: "success",
-    //     summary: "Success",
-    //     detail: "Your post has been deleted",
-    //     life: 5000,
-    //   });
-    //   hideDeleteDialog();
-    //   hideCommentDialog();
-    // } catch (error) {
-    //   console.error("There was an error deleting this post", error.message);
-    //   toast.current.show({
-    //     severity: "error",
-    //     summary: "Error",
-    //     detail: "There was an error deleting this post",
-    //     life: 5000,
-    //   });
-    // }
+  const router = useRouter();
+
+  const reportPost = () => {
+    router.push(`/ticketManagement/createATicket?problem=forum&forumPostId=${forumPost.forumPostId}`);
   };
+
   const reportForumPostDialogFooter = () => (
     <>
       <Button

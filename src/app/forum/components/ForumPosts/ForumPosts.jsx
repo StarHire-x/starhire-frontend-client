@@ -45,7 +45,7 @@ const ForumPosts = ({
     setDeleteDialogOpen(true);
     setPostData(data);
   };
-  
+
   const hideDeleteDialog = () => {
     setDeleteDialogOpen(false);
   };
@@ -54,7 +54,7 @@ const ForumPosts = ({
     setReportDialogOpen(true);
     setPostData(data);
   };
-  
+
   const hideReportDialog = () => {
     setReportDialogOpen(false);
   };
@@ -71,15 +71,15 @@ const ForumPosts = ({
         <div className={styles.postTitle}>
           <div className={styles.postTitleText}>{data.forumPostTitle}</div>
           <div className={styles.postTitleButtonContainer}>
+            <Button
+              size="small"
+              icon="pi pi-exclamation-circle"
+              rounded
+              onClick={() => openReportDialog(data)}
+              className={styles.reportButton}
+            />
             {data.jobSeeker.userId === userIdRef && (
               <>
-                <Button
-                  size="small"
-                  icon="pi pi-exclamation-circle"
-                  rounded
-                  onClick={() => openReportDialog(data)}
-                  className={styles.reportButton}
-                />
                 <Button
                   size="small"
                   icon="pi pi-trash"
@@ -161,7 +161,7 @@ const ForumPosts = ({
         setRefreshData={setRefreshData}
         hideCommentDialog={hideDialog}
       />
-      
+
       <ReportPostCard
         forumPost={postData}
         hideReportDialog={hideReportDialog}
@@ -171,7 +171,7 @@ const ForumPosts = ({
         setRefreshData={setRefreshData}
         hideCommentDialog={hideDialog}
       />
-      
+
       <Dialog
         visible={dialogOpen}
         onHide={hideDialog}

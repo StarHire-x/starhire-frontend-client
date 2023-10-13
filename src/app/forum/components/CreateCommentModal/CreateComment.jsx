@@ -139,15 +139,15 @@ const CreateComment = ({
         <div className={styles.postTitle}>
           <div>{postData.forumPostTitle}</div>
           <div className={styles.postTitleButtonContainer}>
+            <Button
+              size="small"
+              icon="pi pi-exclamation-circle"
+              rounded
+              onClick={() => openReportDialog(postData)}
+              className={styles.reportButton}
+            />
             {postData.jobSeeker.userId === userIdRef && (
               <>
-                <Button
-                  size="small"
-                  icon="pi pi-exclamation-circle"
-                  rounded
-                  onClick={() => openReportDialog(postData)}
-                  className={styles.reportButton}
-                />
                 <Button
                   size="small"
                   icon="pi pi-trash"
