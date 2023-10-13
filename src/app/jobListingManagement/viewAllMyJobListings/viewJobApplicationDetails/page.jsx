@@ -67,6 +67,42 @@ const ViewJobApplicationDetails = () => {
   const [interviewNotes, setInterviewNotes] = useState("");
   const [confirmSendDialog, setConfirmSendDialog] = useState(false);
 
+  const displayStatus = (status) => {
+    switch (status) {
+      case "offer_Accepted":
+        return "Offer Accepted";
+      case "offer_Rejected":
+        return "Offer Rejected";
+      case "Processing":
+        return "Processing";
+      case "to_be_submitted":
+        return "To Be Submitted";
+      case "waiting_for_interview":
+        return "Waiting For Interview";
+      default:
+        return "Unknown";
+    }
+  };
+
+  const getStatus = (status) => {
+    switch (status) {
+      case 'to_be_submitted':
+        return 'info';
+      case 'Processing':
+        return 'warning';
+      case 'waiting_for_interview':
+        return 'info';
+      case 'offer_Rejected':
+        return 'warning';
+      case 'offer_Accepted':
+        return 'success';
+      case 'Unverified':
+        return 'warning';
+      default:
+        return '';
+    }
+  };
+
   const showConfirmSendDialog = () => {
     setConfirmSendDialog(true);
   };
@@ -121,6 +157,7 @@ const ViewJobApplicationDetails = () => {
           hideArrangeInterviewDialog();
 
           const recruiterEmail = recruiter?.email;
+          const jobSeekerName = jobSeeker?.fullName;
           const formattedDates = interviewDateTimes
             .map((item) => item.date)
             .join("\n");
@@ -128,7 +165,7 @@ const ViewJobApplicationDetails = () => {
             const finalMessage = `Hi ${recruiterEmail},
 Here are the interview details:
 ${interviewNotes}\n
-These are the dates that we would like to interview the candidate:
+These are the dates that we would like to interview candidate: ${jobSeekerName}\n
 Interview Date-Times:
 ${formattedDates}
 Hope to hear from you soon\n${currentUserName}` ;
@@ -229,10 +266,20 @@ Hope to hear from you soon\n${currentUserName}` ;
     }
   };
 
+  /*
   const getApplicationStatus = () => {
     const severity = getSeverity(jobApplication?.jobApplicationStatus);
     return (
       <Tag severity={severity} value={jobApplication?.jobApplicationStatus} />
+    );
+  };
+  */
+  const getApplicationStatus = () => {
+    return (
+      <Tag
+        value={displayStatus(jobApplication?.jobApplicationStatus)}
+        severity={getStatus(jobApplication?.jobApplicationStatus)}
+      />
     );
   };
 
