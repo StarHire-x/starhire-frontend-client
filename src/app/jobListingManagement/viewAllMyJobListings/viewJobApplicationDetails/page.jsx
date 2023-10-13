@@ -111,6 +111,36 @@ const ViewJobApplicationDetails = () => {
     setConfirmSendDialog(false);
   };
 
+  const renderInterviewDateTimes = () => {
+    return interviewDateTimes.map((entry, index) => (
+      <div key={index} className={styles.interviewDateTimeEntry}>
+        <span>
+          Date:{" "}
+          {moment(entry.date).format("DD/MM/YYYY HH:mm")}
+        </span>
+        <Button
+          label="Remove"
+          icon="pi pi-trash"
+          onClick={() => removeInterviewDateTime(index)}
+          className="p-button-danger"
+        />
+      </div>
+    ));
+  };
+  
+  const addInterviewDateTime = () => {
+    if (interviewDate) {
+      const newEntry = {
+        date: moment(interviewDate).format(),
+      };
+  
+      setInterviewDateTimes([...interviewDateTimes, newEntry]);
+      setInterviewDate(""); // Clear the input
+    }
+  };
+  
+
+  /*
   const addInterviewDateTime = () => {
     if (interviewDate) {
       const newEntry = {
@@ -121,6 +151,7 @@ const ViewJobApplicationDetails = () => {
       setInterviewDate("");
     }
   };
+  */
 
   const handleArrangeInterview = () => {
     setShowArrangeInterviewDialog(true);
@@ -159,8 +190,9 @@ const ViewJobApplicationDetails = () => {
           const recruiterEmail = recruiter?.email;
           const jobSeekerName = jobSeeker?.fullName;
           const formattedDates = interviewDateTimes
-            .map((item) => item.date)
+            .map((item) => moment(item.date).format("DD/MM/YYYY HH:mm"))
             .join("\n");
+
 
             const finalMessage = `Hi ${recruiterEmail},
 Here are the interview details:
@@ -224,6 +256,7 @@ Hope to hear from you soon\n${currentUserName}` ;
     setInterviewDateTimes(updatedDateTimes);
   };
 
+  /*
   const renderInterviewDateTimes = () => {
     return interviewDateTimes.map((entry, index) => (
       <div key={index} className={styles.interviewDateTimeEntry}>
@@ -240,7 +273,7 @@ Hope to hear from you soon\n${currentUserName}` ;
       </div>
     ));
   };
-
+  /*
   const getSeverity = (status) => {
     switch (status) {
       case "Rejected":
@@ -265,6 +298,7 @@ Hope to hear from you soon\n${currentUserName}` ;
         return null;
     }
   };
+  */
 
   /*
   const getApplicationStatus = () => {
