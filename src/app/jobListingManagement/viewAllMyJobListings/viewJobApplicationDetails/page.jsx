@@ -545,14 +545,14 @@ const ViewJobApplicationDetails = () => {
                   icon="pi pi-thumbs-down"
                   rounded
                   severity="danger"
-                  onClick={() => showUserDialog("Rejected")}
+                  onClick={() => showUserDialog("offer_Rejected")}
                 />
                 <Button
                   label="Accept"
                   icon="pi pi-thumbs-up"
                   rounded
                   severity="success"
-                  onClick={() => showUserDialog("Accepted")}
+                  onClick={() => showUserDialog("offer_Accepted")}
                 />
                 <Button
                   label="Arrange Interview"
