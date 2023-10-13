@@ -13,7 +13,6 @@ import styles from './page.module.css';
 
 const ViewJobApplicationsPage = () => {
   const [jobApplications, setJobApplications] = useState(null);
-  const [refreshData, setRefreshData] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const session = useSession();
   const router = useRouter();
