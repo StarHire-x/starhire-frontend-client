@@ -99,6 +99,10 @@ const JobApplicationPage = () => {
     setShowEditJobApplicationDialog(false);
   };
 
+  const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+  const [currentAction, setCurrentAction] = useState(null);
+  const [currentJobApplicationId, setCurrentJobApplicationId] = useState(null);
+
   const statusRemoveUnderscore = (status) => {
     return status.replaceAll('_', ' ');
   };
@@ -272,6 +276,18 @@ const JobApplicationPage = () => {
     }
   };
 
+  const openConfirmationDialog = (action, jobApplicationId) => {
+    setCurrentAction(action);
+    setCurrentJobApplicationId(jobApplicationId);
+    setShowConfirmationDialog(true);
+  };
+
+  const closeConfirmationDialog = () => {
+    setCurrentAction(null);
+    setCurrentJobApplicationId(null);
+    setShowConfirmationDialog(false);
+  };
+
   const itemTemplate = (jobApplication) => {
     return (
       <div className={styles.card}>
@@ -307,13 +323,23 @@ const JobApplicationPage = () => {
                 label="Accept"
                 rounded
                 className={styles.acceptButton}
-                onClick={() => handleAccept(jobApplication.jobApplicationId)}
+                onClick={() =>
+                  openConfirmationDialog(
+                    'accept',
+                    jobApplication.jobApplicationId
+                  )
+                }
               />
               <Button
                 label="Reject"
                 rounded
                 className={styles.rejectButton}
-                onClick={() => handleReject(jobApplication.jobApplicationId)}
+                onClick={() =>
+                  openConfirmationDialog(
+                    'reject',
+                    jobApplication.jobApplicationId
+                  )
+                }
               />
             </>
           )}
@@ -400,6 +426,30 @@ const JobApplicationPage = () => {
           setFormErrors={setFormErrors}
           editJobApplication={editJobApplication}
         />
+      </Dialog>
+
+      <Dialog
+        header="Confirmation"
+        visible={showConfirmationDialog}
+        onHide={closeConfirmationDialog}
+        footer={
+          <div>
+            <Button label="No" onClick={closeConfirmationDialog} />
+            <Button
+              label="Yes"
+              onClick={() => {
+                closeConfirmationDialog();
+                if (currentAction === 'accept') {
+                  handleAccept(currentJobApplicationId);
+                } else if (currentAction === 'reject') {
+                  handleReject(currentJobApplicationId);
+                }
+              }}
+            />
+          </div>
+        }
+      >
+        Are you sure you want to {currentAction} this offer?
       </Dialog>
     </div>
   );
