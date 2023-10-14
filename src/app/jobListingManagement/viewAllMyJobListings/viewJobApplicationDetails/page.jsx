@@ -583,7 +583,7 @@ Hope to hear from you soon\n${currentUserName}` ;
                   icon="pi pi-thumbs-down"
                   rounded
                   severity="danger"
-                  onClick={() => showUserDialog("Waiting_For_Interview")}
+                  onClick={() => showUserDialog("offer_Rejected")}
                 />
                 <Button
                   label="Accept"
