@@ -102,9 +102,9 @@ const ForumPosts = ({
             className={`${styles.categoryTag} ${
               data.forumCategory.forumCategoryTitle === "Events"
                 ? styles.categoryTagEvents
-                : data.forumCategory.forumCategoryTitle === "Miscellaneous"
+                : data.forumCategory.forumCategoryTitle === "Miscelleaneous"
                 ? styles.categoryTagMiscellaneous
-                : data.forumCategory.forumCategoryTitle === "Confessions"
+                : data.forumCategory.forumCategoryTitle === "Confession"
                 ? styles.categoryTagConfessions
                 : styles.categoryTagCareer
             }`}
@@ -146,7 +146,7 @@ const ForumPosts = ({
           itemTemplate={itemTemplate}
           rows={5}
           inline
-          scrollHeight="500px"
+          scrollHeight="900px"
           header="Scroll Down to Load More"
           emptyMessage="Be the first to leave a post."
         />
