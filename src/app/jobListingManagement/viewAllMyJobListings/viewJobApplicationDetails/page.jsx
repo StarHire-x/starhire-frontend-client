@@ -75,9 +75,9 @@ const ViewJobApplicationDetails = () => {
         return "Offer Rejected";
       case "Processing":
         return "Processing";
-      case "to_be_submitted":
+      case "To_Be_Submitted":
         return "To Be Submitted";
-      case "waiting_for_interview":
+      case "Waiting_For_Interview":
         return "Waiting For Interview";
       default:
         return "Unknown";
@@ -86,14 +86,14 @@ const ViewJobApplicationDetails = () => {
 
   const getStatus = (status) => {
     switch (status) {
-      case 'to_be_submitted':
+      case 'To_Be_Submitted':
         return 'info';
       case 'Processing':
         return 'warning';
-      case 'waiting_for_interview':
+      case 'Waiting_For_Interview':
         return 'info';
       case 'offer_Rejected':
-        return 'warning';
+        return 'danger';
       case 'offer_Accepted':
         return 'success';
       case 'Unverified':
@@ -105,6 +105,7 @@ const ViewJobApplicationDetails = () => {
 
   const showConfirmSendDialog = () => {
     setConfirmSendDialog(true);
+    showUserDialog("Waiting_For_Interview");
   };
 
   const hideConfirmSendDialog = () => {
@@ -174,7 +175,7 @@ const ViewJobApplicationDetails = () => {
         icon="pi pi-check"
         outlined
         onClick={async () => {
-          console.log("Sending to Recruiter...");
+          //console.log("Sending to Recruiter...");
           // Add the chat logic here
           const chatId = await createNewChat();
 
@@ -229,13 +230,6 @@ Hope to hear from you soon\n${currentUserName}` ;
         icon="pi pi-check"
         outlined
         onClick={() => {
-          //console.log("Interview Date-Times:", interviewDateTimes);
-          //console.log("Interview Notes:", interviewNotes);
-
-          // Clear the interviewDateTimes array after saving
-          //setInterviewDateTimes([]);
-          //setInterviewNotes("");
-          //hideArrangeInterviewDialog();
           showConfirmSendDialog();
         }}
       />
@@ -246,68 +240,12 @@ Hope to hear from you soon\n${currentUserName}` ;
     return moment(timestamp).format("DD/MM/YYYY");
   };
 
-  const formattedDate = (timestamp) => {
-    return moment(timestamp).format("DD/MM/YYYY HH:mm");
-  };
-
   const removeInterviewDateTime = (index) => {
     const updatedDateTimes = [...interviewDateTimes];
     updatedDateTimes.splice(index, 1);
     setInterviewDateTimes(updatedDateTimes);
   };
 
-  /*
-  const renderInterviewDateTimes = () => {
-    return interviewDateTimes.map((entry, index) => (
-      <div key={index} className={styles.interviewDateTimeEntry}>
-        <span>
-          Date:{" "}
-          {moment(entry.date, "YYYY-MM-DD HH:mm:ss").format("DD/MM/YYYY HH:mm")}
-        </span>
-        <Button
-          label="Remove"
-          icon="pi pi-trash"
-          onClick={() => removeInterviewDateTime(index)}
-          className="p-button-danger"
-        />
-      </div>
-    ));
-  };
-  /*
-  const getSeverity = (status) => {
-    switch (status) {
-      case "Rejected":
-        return "danger";
-
-      case "Accepted":
-        return "success";
-
-      case "Submitted":
-        return "success";
-
-      case "Processing":
-        return "warning";
-
-      case "To_Be_Submitted":
-        return "null";
-
-      case "Accept":
-        return "success";
-
-      case "Waiting_For_Interview":
-        return null;
-    }
-  };
-  */
-
-  /*
-  const getApplicationStatus = () => {
-    const severity = getSeverity(jobApplication?.jobApplicationStatus);
-    return (
-      <Tag severity={severity} value={jobApplication?.jobApplicationStatus} />
-    );
-  };
-  */
   const getApplicationStatus = () => {
     return (
       <Tag
@@ -334,7 +272,10 @@ Hope to hear from you soon\n${currentUserName}` ;
       console.log("Status is " + response.status);
 
       if (response.status === 200) {
-        router.back();
+        if (newStatus != "Waiting_For_Interview") {
+          router.back();
+        }
+        //router.back();
       } else {
         toast.current.show({
           severity: "error",
@@ -642,7 +583,7 @@ Hope to hear from you soon\n${currentUserName}` ;
                   icon="pi pi-thumbs-down"
                   rounded
                   severity="danger"
-                  onClick={() => showUserDialog("offer_Rejected")}
+                  onClick={() => showUserDialog("Waiting_For_Interview")}
                 />
                 <Button
                   label="Accept"
