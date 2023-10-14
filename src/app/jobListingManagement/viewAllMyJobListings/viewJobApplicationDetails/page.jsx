@@ -97,11 +97,11 @@ const ViewJobApplicationDetails = () => {
       case 'waiting_for_interview':
         return 'info';
       case 'Offer_Rejected':
-        return 'warning';
+        return 'danger';
       case 'Offer_Accepted':
         return 'success';
       case 'Rejected':
-        return 'warning';
+        return 'danger';
       case 'Offered':
         return 'success';
       case 'Unverified':

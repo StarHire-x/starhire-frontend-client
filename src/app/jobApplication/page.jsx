@@ -60,11 +60,11 @@ const JobApplicationPage = () => {
   const getStatus = (status) => {
     switch (status) {
       case 'Submitted':
-        return 'info'; // or choose other severity based on your preference
+        return 'info';
       case 'Processing':
         return 'warning';
       case 'To_Be_Submitted':
-        return 'danger'; // assuming this is a critical state before submission
+        return 'danger';
       case 'Waiting_For_Interview':
         return 'info';
       case 'Rejected':
@@ -72,7 +72,7 @@ const JobApplicationPage = () => {
       case 'Offered':
         return 'success';
       case 'Offer_Rejected':
-        return 'warning';
+        return 'danger';
       case 'Offer_Accepted':
         return 'success';
       default:
@@ -216,6 +216,62 @@ const JobApplicationPage = () => {
     setShowEditJobApplicationDialog(false);
   };
 
+  const handleAccept = async (jobApplicationId) => {
+    try {
+      await updateJobApplicationStatus(
+        {
+          jobApplicationStatus: 'Offer_Accepted',
+        },
+        jobApplicationId,
+        accessToken
+      );
+
+      toast.current.show({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Offer accepted successfully!',
+        life: 5000,
+      });
+
+      setRefreshData((prev) => !prev);
+    } catch (error) {
+      toast.current.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: error.message,
+        life: 5000,
+      });
+    }
+  };
+
+  const handleReject = async (jobApplicationId) => {
+    try {
+      await updateJobApplicationStatus(
+        {
+          jobApplicationStatus: 'Offer_Rejected',
+        },
+        jobApplicationId,
+        accessToken
+      );
+
+      toast.current.show({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Offer rejected successfully!',
+        life: 5000,
+      });
+
+      setRefreshData((prev) => !prev);
+    } catch (error) {
+      toast.current.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: error.message,
+        life: 5000,
+      });
+    }
+  };
+
   const itemTemplate = (jobApplication) => {
     return (
       <div className={styles.card}>
@@ -251,17 +307,13 @@ const JobApplicationPage = () => {
                 label="Accept"
                 rounded
                 className={styles.acceptButton}
-                onClick={() => {
-                  // Logic to handle Accept action
-                }}
+                onClick={() => handleAccept(jobApplication.jobApplicationId)}
               />
               <Button
                 label="Reject"
                 rounded
                 className={styles.rejectButton}
-                onClick={() => {
-                  // Logic to handle Reject action
-                }}
+                onClick={() => handleReject(jobApplication.jobApplicationId)}
               />
             </>
           )}
