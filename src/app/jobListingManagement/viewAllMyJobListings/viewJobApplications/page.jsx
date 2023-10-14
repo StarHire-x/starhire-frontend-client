@@ -37,18 +37,22 @@ const ViewJobApplicationsPage = () => {
 
   const displayStatus = (status) => {
     switch (status) {
-      case "offer_Accepted":
-        return "Offer Accepted";
-      case "offer_Rejected":
-        return "Offer Rejected";
-      case "Processing":
-        return "Processing";
-      case "to_be_submitted":
-        return "To Be Submitted";
-      case "waiting_for_interview":
-        return "Waiting For Interview";
+      case 'Offered':
+        return 'Offered';
+      case 'Rejected':
+        return 'Rejected';
+      case 'Offer_Accepted':
+        return 'Offer Accepted';
+      case 'Offer_Rejected':
+        return 'Offer Rejected';
+      case 'Processing':
+        return 'Processing';
+      case 'to_be_submitted':
+        return 'To Be Submitted';
+      case 'waiting_for_interview':
+        return 'Waiting For Interview';
       default:
-        return "Unknown";
+        return 'Unknown';
     }
   };
 
@@ -74,9 +78,13 @@ const ViewJobApplicationsPage = () => {
         return 'warning';
       case 'waiting_for_interview':
         return 'info';
-      case 'offer_Rejected':
+      case 'Offer_Rejected':
         return 'warning';
-      case 'offer_Accepted':
+      case 'Offer_Accepted':
+        return 'success';
+      case 'Rejected':
+        return 'warning';
+      case 'Offered':
         return 'success';
       case 'Unverified':
         return 'warning';

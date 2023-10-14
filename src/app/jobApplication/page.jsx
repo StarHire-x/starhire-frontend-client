@@ -48,7 +48,9 @@ const JobApplicationPage = () => {
     { label: 'To Be Submitted', value: 'To_Be_Submitted' },
     { label: 'Waiting For Interview', value: 'Waiting_For_Interview' },
     { label: 'Rejected', value: 'Rejected' },
-    { label: 'Accepted', value: 'Accepted' },
+    { label: 'Offered', value: 'Offered' },
+    { label: 'Offer Rejected', value: 'Offer_Rejected' },
+    { label: 'Offer Accepted', value: 'Offer_Accepted' },
   ];
 
   const filteredApplications = filterStatus
@@ -67,7 +69,11 @@ const JobApplicationPage = () => {
         return 'info';
       case 'Rejected':
         return 'danger';
-      case 'Accepted':
+      case 'Offered':
+        return 'success';
+      case 'Offer_Rejected':
+        return 'warning';
+      case 'Offer_Accepted':
         return 'success';
       default:
         return '';
@@ -239,7 +245,7 @@ const JobApplicationPage = () => {
           </div>
         </div>
         <div className={styles.cardFooter}>
-          {jobApplication.jobApplicationStatus === 'Accepted' && (
+          {jobApplication.jobApplicationStatus === 'Offered' && (
             <>
               <Button
                 label="Accept"

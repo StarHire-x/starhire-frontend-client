@@ -1,53 +1,53 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState, useRef } from "react";
-import { useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { viewJobApplicationDetails } from "@/app/api/jobApplication/route";
-import { Card } from "primereact/card";
-import styles from "./page.module.css";
-import Image from "next/image";
-import { ProgressSpinner } from "primereact/progressspinner";
-import { Button } from "primereact/button";
-import { Tag } from "primereact/tag";
-import { useRouter } from "next/navigation";
-import { Dropdown } from "@/components/Dropdown/Dropdown";
-import { Checkbox } from "primereact/checkbox";
-import { updateJobApplicationStatus } from "@/app/api/jobApplication/route";
-import moment from "moment";
-import HumanIcon from "../../../../../public/icon.png";
-import { getJobSeekersByJobApplicationId } from "@/app/api/jobListing/route";
-import { Dialog } from "primereact/dialog";
-import { Calendar } from "primereact/calendar";
-import { InputTextarea } from "primereact/inputtextarea";
+import React, { useEffect, useState, useRef } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { viewJobApplicationDetails } from '@/app/api/jobApplication/route';
+import { Card } from 'primereact/card';
+import styles from './page.module.css';
+import Image from 'next/image';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import { Button } from 'primereact/button';
+import { Tag } from 'primereact/tag';
+import { useRouter } from 'next/navigation';
+import { Dropdown } from '@/components/Dropdown/Dropdown';
+import { Checkbox } from 'primereact/checkbox';
+import { updateJobApplicationStatus } from '@/app/api/jobApplication/route';
+import moment from 'moment';
+import HumanIcon from '../../../../../public/icon.png';
+import { getJobSeekersByJobApplicationId } from '@/app/api/jobListing/route';
+import { Dialog } from 'primereact/dialog';
+import { Calendar } from 'primereact/calendar';
+import { InputTextarea } from 'primereact/inputtextarea';
 import {
   createChat,
   createChatMessage,
   getAllUserChats,
-} from "@/app/api/chat/route";
+} from '@/app/api/chat/route';
 
 const ViewJobApplicationDetails = () => {
   const session = useSession();
   const router = useRouter();
 
-  if (session.status === "unauthenticated") {
-    router?.push("/login");
+  if (session.status === 'unauthenticated') {
+    router?.push('/login');
   }
 
   const accessToken =
-    session.status === "authenticated" &&
+    session.status === 'authenticated' &&
     session.data &&
     session.data.user.accessToken;
 
   const currentUserId =
-    session.status === "authenticated" && session.data.user.userId;
+    session.status === 'authenticated' && session.data.user.userId;
 
   const currentUserName =
-    session.status === "authenticated" && session.data.user.name;
+    session.status === 'authenticated' && session.data.user.name;
   console.log(session);
 
   const params = useSearchParams();
-  const jobApplicationId = params.get("id");
+  const jobApplicationId = params.get('id');
 
   const [isLoading, setIsLoading] = useState(false);
   const [jobSeeker, setJobSeeker] = useState(null);
@@ -62,25 +62,29 @@ const ViewJobApplicationDetails = () => {
   const [interviewDateTimes, setInterviewDateTimes] = useState([]);
   const [showArrangeInterviewDialog, setShowArrangeInterviewDialog] =
     useState(false);
-  const [interviewDate, setInterviewDate] = useState(""); // State to store the interview date
-  const [interviewTime, setInterviewTime] = useState(""); // State to store the interview time
-  const [interviewNotes, setInterviewNotes] = useState("");
+  const [interviewDate, setInterviewDate] = useState(''); // State to store the interview date
+  const [interviewTime, setInterviewTime] = useState(''); // State to store the interview time
+  const [interviewNotes, setInterviewNotes] = useState('');
   const [confirmSendDialog, setConfirmSendDialog] = useState(false);
 
   const displayStatus = (status) => {
     switch (status) {
-      case "offer_Accepted":
-        return "Offer Accepted";
-      case "offer_Rejected":
-        return "Offer Rejected";
-      case "Processing":
-        return "Processing";
-      case "to_be_submitted":
-        return "To Be Submitted";
-      case "waiting_for_interview":
-        return "Waiting For Interview";
+      case 'Offered':
+        return 'Offered';
+      case 'Rejected':
+        return 'Rejected';
+      case 'Offer_Accepted':
+        return 'Offer Accepted';
+      case 'Offer_Rejected':
+        return 'Offer Rejected';
+      case 'Processing':
+        return 'Processing';
+      case 'to_be_submitted':
+        return 'To Be Submitted';
+      case 'waiting_for_interview':
+        return 'Waiting For Interview';
       default:
-        return "Unknown";
+        return 'Unknown';
     }
   };
 
@@ -92,9 +96,13 @@ const ViewJobApplicationDetails = () => {
         return 'warning';
       case 'waiting_for_interview':
         return 'info';
-      case 'offer_Rejected':
+      case 'Offer_Rejected':
         return 'warning';
-      case 'offer_Accepted':
+      case 'Offer_Accepted':
+        return 'success';
+      case 'Rejected':
+        return 'warning';
+      case 'Offered':
         return 'success';
       case 'Unverified':
         return 'warning';
@@ -114,10 +122,7 @@ const ViewJobApplicationDetails = () => {
   const renderInterviewDateTimes = () => {
     return interviewDateTimes.map((entry, index) => (
       <div key={index} className={styles.interviewDateTimeEntry}>
-        <span>
-          Date:{" "}
-          {moment(entry.date).format("DD/MM/YYYY HH:mm")}
-        </span>
+        <span>Date: {moment(entry.date).format('DD/MM/YYYY HH:mm')}</span>
         <Button
           label="Remove"
           icon="pi pi-trash"
@@ -127,18 +132,17 @@ const ViewJobApplicationDetails = () => {
       </div>
     ));
   };
-  
+
   const addInterviewDateTime = () => {
     if (interviewDate) {
       const newEntry = {
         date: moment(interviewDate).format(),
       };
-  
+
       setInterviewDateTimes([...interviewDateTimes, newEntry]);
-      setInterviewDate(""); // Clear the input
+      setInterviewDate(''); // Clear the input
     }
   };
-  
 
   /*
   const addInterviewDateTime = () => {
@@ -174,15 +178,15 @@ const ViewJobApplicationDetails = () => {
         icon="pi pi-check"
         outlined
         onClick={async () => {
-          console.log("Sending to Recruiter...");
+          console.log('Sending to Recruiter...');
           // Add the chat logic here
           const chatId = await createNewChat();
 
-          console.log("Interview Date-Times:", interviewDateTimes);
-          console.log("Interview Notes:", interviewNotes);
+          console.log('Interview Date-Times:', interviewDateTimes);
+          console.log('Interview Notes:', interviewNotes);
 
           setInterviewDateTimes([]);
-          setInterviewNotes("");
+          setInterviewNotes('');
 
           hideConfirmSendDialog();
           hideArrangeInterviewDialog();
@@ -190,17 +194,16 @@ const ViewJobApplicationDetails = () => {
           const recruiterEmail = recruiter?.email;
           const jobSeekerName = jobSeeker?.fullName;
           const formattedDates = interviewDateTimes
-            .map((item) => moment(item.date).format("DD/MM/YYYY HH:mm"))
-            .join("\n");
+            .map((item) => moment(item.date).format('DD/MM/YYYY HH:mm'))
+            .join('\n');
 
-
-            const finalMessage = `Hi ${recruiterEmail},
+          const finalMessage = `Hi ${recruiterEmail},
 Here are the interview details:
 ${interviewNotes}\n
 These are the dates that we would like to interview candidate: ${jobSeekerName}\n
 Interview Date-Times:
 ${formattedDates}
-Hope to hear from you soon\n${currentUserName}` ;
+Hope to hear from you soon\n${currentUserName}`;
 
           await sendMessage(finalMessage, chatId);
 
@@ -243,11 +246,11 @@ Hope to hear from you soon\n${currentUserName}` ;
   );
 
   const convertTimestampToDate = (timestamp) => {
-    return moment(timestamp).format("DD/MM/YYYY");
+    return moment(timestamp).format('DD/MM/YYYY');
   };
 
   const formattedDate = (timestamp) => {
-    return moment(timestamp).format("DD/MM/YYYY HH:mm");
+    return moment(timestamp).format('DD/MM/YYYY HH:mm');
   };
 
   const removeInterviewDateTime = (index) => {
@@ -331,21 +334,21 @@ Hope to hear from you soon\n${currentUserName}` ;
         jobApplicationId,
         accessToken
       );
-      console.log("Status is " + response.status);
+      console.log('Status is ' + response.status);
 
       if (response.status === 200) {
         router.back();
       } else {
         toast.current.show({
-          severity: "error",
-          summary: "Error",
-          detail: "Something went wrong! ERROR CODE:" + response.statusCode,
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Something went wrong! ERROR CODE:' + response.statusCode,
           life: 5000,
         });
       }
-      console.log("Status changed successfully:", response);
+      console.log('Status changed successfully:', response);
     } catch (error) {
-      console.error("Error changing status:", error);
+      console.error('Error changing status:', error);
     }
   };
 
@@ -382,7 +385,7 @@ Hope to hear from you soon\n${currentUserName}` ;
         chatId: chatId,
         isImportant: false,
         userId: currentUserId,
-        fileURL: "",
+        fileURL: '',
       };
 
       await createChatMessage(request, accessToken);
@@ -416,14 +419,14 @@ Hope to hear from you soon\n${currentUserName}` ;
 
   const nodes = [
     {
-      key: "0",
-      label: "Basic Details",
+      key: '0',
+      label: 'Basic Details',
       children: [
-        { key: "0-0", label: `Title: ${jobListing?.title}` },
-        { key: "0-1", label: `Overview: ${jobListing?.overview}` },
-        { key: "0-2", label: `Location: ${jobListing?.jobLocation}` },
+        { key: '0-0', label: `Title: ${jobListing?.title}` },
+        { key: '0-1', label: `Overview: ${jobListing?.overview}` },
+        { key: '0-2', label: `Location: ${jobListing?.jobLocation}` },
         {
-          key: "0-3",
+          key: '0-3',
           label: `Job Start Date: ${convertTimestampToDate(
             jobListing?.jobStartDate
           )}`,
@@ -431,16 +434,16 @@ Hope to hear from you soon\n${currentUserName}` ;
       ],
     },
     {
-      key: "1",
-      label: "Qualifications & Requirements",
+      key: '1',
+      label: 'Qualifications & Requirements',
       children: [
         {
-          key: "1-0",
+          key: '1-0',
           label: `Responsibilities: ${jobListing?.responsibilities}`,
         },
-        { key: "1-1", label: `Requirements: ${jobListing?.requirements}` },
+        { key: '1-1', label: `Requirements: ${jobListing?.requirements}` },
         {
-          key: "1-2",
+          key: '1-2',
           label: `Required Documents: ${jobListing?.requiredDocuments}`,
         },
       ],
@@ -472,7 +475,7 @@ Hope to hear from you soon\n${currentUserName}` ;
           //console.log(jobApplication);
         })
         .catch((error) => {
-          console.error("Error fetching job listings:", error);
+          console.error('Error fetching job listings:', error);
           setIsLoading(false);
         });
     }
@@ -484,10 +487,10 @@ Hope to hear from you soon\n${currentUserName}` ;
         <div className="card flex justify-content-center">
           <ProgressSpinner
             style={{
-              display: "flex",
-              height: "100vh",
-              "justify-content": "center",
-              "align-items": "center",
+              display: 'flex',
+              height: '100vh',
+              'justify-content': 'center',
+              'align-items': 'center',
             }}
           />
         </div>
@@ -495,7 +498,7 @@ Hope to hear from you soon\n${currentUserName}` ;
       {!isLoading && (
         <div className={styles.container}>
           <div className={styles.jobSeekerDetails}>
-            {jobSeeker && jobSeeker.profilePictureUrl != "" ? (
+            {jobSeeker && jobSeeker.profilePictureUrl != '' ? (
               <img
                 src={jobSeeker.profilePictureUrl}
                 alt="user"
@@ -550,13 +553,13 @@ Hope to hear from you soon\n${currentUserName}` ;
                   <br />
                   {convertTimestampToDate(
                     jobApplication?.availableStartDate
-                  )}{" "}
+                  )}{' '}
                   to {convertTimestampToDate(jobApplication?.availableEndDate)}
                 </p>
               </div>
               <div className={styles.checkboxes}>
                 <p>
-                  {" "}
+                  {' '}
                   <b>Documents Submitted:</b>
                 </p>
                 {documents.map((document) => (
@@ -593,7 +596,7 @@ Hope to hear from you soon\n${currentUserName}` ;
               className={styles.jobSeekerCard}
               title="Recruiter's Particulars"
             >
-              {recruiter && recruiter.profilePictureUrl !== "" ? (
+              {recruiter && recruiter.profilePictureUrl !== '' ? (
                 <img
                   src={recruiter.profilePictureUrl}
                   alt="user"
@@ -635,21 +638,21 @@ Hope to hear from you soon\n${currentUserName}` ;
               severity="primary"
               onClick={() => handleOnBackClick()}
             />
-            {jobApplication?.jobApplicationStatus === "Processing" && (
+            {jobApplication?.jobApplicationStatus === 'Processing' && (
               <div className={styles.subButtons}>
                 <Button
                   label="Reject"
                   icon="pi pi-thumbs-down"
                   rounded
                   severity="danger"
-                  onClick={() => showUserDialog("offer_Rejected")}
+                  onClick={() => showUserDialog('Rejected')}
                 />
                 <Button
                   label="Accept"
                   icon="pi pi-thumbs-up"
                   rounded
                   severity="success"
-                  onClick={() => showUserDialog("offer_Accepted")}
+                  onClick={() => showUserDialog('Offered')}
                 />
                 <Button
                   label="Arrange Interview"
@@ -661,8 +664,8 @@ Hope to hear from you soon\n${currentUserName}` ;
 
                 <Dialog
                   visible={userDialog}
-                  style={{ width: "32rem" }}
-                  breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+                  style={{ width: '32rem' }}
+                  breakpoints={{ '960px': '75vw', '641px': '90vw' }}
                   header="Are you sure?"
                   className="p-fluid"
                   footer={userDialogFooter}
@@ -671,7 +674,7 @@ Hope to hear from you soon\n${currentUserName}` ;
 
                 <Dialog
                   visible={confirmSendDialog}
-                  style={{ width: "32rem" }}
+                  style={{ width: '32rem' }}
                   header="Are you sure?"
                   className="p-fluid"
                   footer={confirmSendDialogFooter}
@@ -682,8 +685,8 @@ Hope to hear from you soon\n${currentUserName}` ;
 
                 <Dialog
                   visible={showArrangeInterviewDialog}
-                  style={{ width: "52rem" }}
-                  breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+                  style={{ width: '52rem' }}
+                  breakpoints={{ '960px': '75vw', '641px': '90vw' }}
                   header="Arrange Interview"
                   className="p-fluid"
                   footer={arrangeInterviewDialogFooter}
