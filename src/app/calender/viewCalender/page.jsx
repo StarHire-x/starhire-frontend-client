@@ -14,7 +14,7 @@ import { InputText } from 'primereact/inputtext';
 
 export default function CalendarPage() {
   const [isFormVisible, setIsFormVisible] = useState(false);
-  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false); // Add confirmation dialog state
+  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false); 
   const [eventClicked, setEventClicked] = useState(false); 
   const [warningDialogVisible, setWarningDialogVisible] = useState(false);
   const [selectedMeetingLink, setSelectedMeetingLink] = useState('');
@@ -48,7 +48,7 @@ export default function CalendarPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsConfirmationVisible(true); // Show confirmation dialog
+    setIsConfirmationVisible(true); 
   };
 
   const addNewEvent = (eventData) => {
@@ -57,10 +57,10 @@ export default function CalendarPage() {
   };
 
   const handleConfirmation = (confirmed) => {
-    setIsConfirmationVisible(false); // Close the confirmation dialog
+    setIsConfirmationVisible(false); 
     if (confirmed) {
-      addNewEvent(eventData); // Add the event when confirmed
-      setIsFormVisible(false); // Close the event creation dialog
+      addNewEvent(eventData); 
+      setIsFormVisible(false);
     }
   };
 
@@ -79,7 +79,7 @@ export default function CalendarPage() {
   };
 
   const closeWarningDialog = () => {
-    setWarningDialogVisible(false); // Close the warning dialog
+    setWarningDialogVisible(false); 
   };
 
   const redirectToMeetingLink = () => {
