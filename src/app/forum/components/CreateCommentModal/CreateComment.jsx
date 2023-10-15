@@ -170,9 +170,9 @@ const CreateComment = ({
             className={`${styles.categoryTag} ${
               postData.forumCategory.forumCategoryTitle === "Events"
                 ? styles.categoryTagEvents
-                : postData.forumCategory.forumCategoryTitle === "Miscelleaneous"
+                : postData.forumCategory.forumCategoryTitle === "Miscellaneous"
                 ? styles.categoryTagMiscellaneous
-                : postData.forumCategory.forumCategoryTitle === "Confession"
+                : postData.forumCategory.forumCategoryTitle === "Confessions"
                 ? styles.categoryTagConfessions
                 : styles.categoryTagCareer
             }`}
