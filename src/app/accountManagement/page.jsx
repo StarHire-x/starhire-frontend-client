@@ -2,7 +2,11 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { getMyFollowings, getUserByUserId, updateUser } from "../api/auth/user/route";
+import {
+  getMyFollowings,
+  getUserByUserId,
+  updateUser,
+} from "../api/auth/user/route";
 import { uploadFile } from "../api/upload/route";
 import styles from "./page.module.css";
 import { UserContext } from "@/context/UserContext";
@@ -126,7 +130,7 @@ const AccountManagement = () => {
             return formData;
           } else {
             // 404 returned- User has no job preference
-            setIsJobPreferenceAbsent(true)
+            setIsJobPreferenceAbsent(true);
           }
         } catch (error) {
           console.log("Error fetching user preference: ", error.message);
@@ -152,12 +156,10 @@ const AccountManagement = () => {
           console.log("Error fetching followings of user: ", error.message);
         });
 
-
       populateFormDataWithUserInfo(formData).then((formData) =>
         populateFormDataWithUserPreference(formData)
       );
       retrieveJobExperience().then((result) => setJobExperience(result));
-
     }
   }, [session.status, userIdRef, roleRef, refreshData]);
 
@@ -255,39 +257,50 @@ const AccountManagement = () => {
       highestEducationStatus: formData.highestEducationStatus,
       visibility: formData.visibility,
     };
-    try {
-      console.log(userId);
-      console.log(updateUserDetails);
-      const response = await updateUser(
-        updateUserDetails,
-        userId,
-        sessionTokenRef
-      );
 
-      if (response) {
-        //alert("Status changed successfully!");
-        if (deactivateAccountDialog) {
-          hideDeactivateAccountDialog();
-        }
-        toast.current.show({
-          severity: "success",
-          summary: "Success",
-          detail: "Account details updated successfully!",
-          life: 5000,
-        });
-        setRefreshData((prev) => !prev);
-        // this is to do a reload of userContext if it is updated so that navbar can change
-        fetchUserData();
-      }
-    } catch {
-      console.log("Failed to update user");
-      // alert("Failed to update user particulars");
+    if (formData.contactNo && formData.contactNo.toString().length !== 8) {
       toast.current.show({
         severity: "error",
         summary: "Error",
-        detail: error.message,
+        detail: "Contact number must contain 8 digits.",
         life: 5000,
       });
+    } else {
+      try {
+        console.log(userId);
+        console.log(updateUserDetails);
+
+        const response = await updateUser(
+          updateUserDetails,
+          userId,
+          sessionTokenRef
+        );
+
+        if (response) {
+          //alert("Status changed successfully!");
+          if (deactivateAccountDialog) {
+            hideDeactivateAccountDialog();
+          }
+          toast.current.show({
+            severity: "success",
+            summary: "Success",
+            detail: "Account details updated successfully!",
+            life: 5000,
+          });
+          setRefreshData((prev) => !prev);
+          // this is to do a reload of userContext if it is updated so that navbar can change
+          fetchUserData();
+        }
+      } catch (error) {
+        console.log("Failed to update user");
+        // alert("Failed to update user particulars");
+        toast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail: error.message,
+          life: 5000,
+        });
+      }
     }
   };
   if (session.status === "authenticated") {
