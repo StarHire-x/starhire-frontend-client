@@ -19,22 +19,36 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const stripHtmlTags = (str) => {
+    if (str === null || str === '') return false;
+    else str = str.toString();
+    return str.replace(/<[^>]*>/g, '');
+  };
+
+  const handleEditorTextChange = (e) => {
+    console.log('Editor Text Change:', e.htmlValue);
+    const plainText = stripHtmlTags(e.htmlValue);
+    setFormData((prev) => ({ ...prev, ticketDescription: plainText }));
+  };
+
   const handleSubmit = () => {
-    // Show the confirmation dialog
+    console.log('Sending:', formData);
     setShowConfirmationDialog(true);
   };
 
   const handleConfirmation = () => {
-    // Close the confirmation dialog
     setShowConfirmationDialog(false);
 
-    // Perform the actual submission
     if (onCreate) onCreate(formData);
   };
 
   const hideConfirmationDialog = () => {
     setShowConfirmationDialog(false);
   };
+
+  // useEffect(() => {
+  //   console.log('Current formData:', formData);
+  // }, [formData]);
 
   return (
     <div className={styles.cardBody}>
@@ -55,7 +69,7 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
           id="ticketDescription"
           name="ticketDescription"
           value={formData.ticketDescription}
-          onChange={handleInputChange}
+          onTextChange={handleEditorTextChange}
           style={{ height: '220px' }}
         />
       </div>
