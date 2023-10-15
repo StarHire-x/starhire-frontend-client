@@ -102,9 +102,9 @@ const ForumPosts = ({
             className={`${styles.categoryTag} ${
               data.forumCategory.forumCategoryTitle === "Events"
                 ? styles.categoryTagEvents
-                : data.forumCategory.forumCategoryTitle === "Miscelleaneous"
+                : data.forumCategory.forumCategoryTitle === "Miscellaneous"
                 ? styles.categoryTagMiscellaneous
-                : data.forumCategory.forumCategoryTitle === "Confession"
+                : data.forumCategory.forumCategoryTitle === "Confessions"
                 ? styles.categoryTagConfessions
                 : styles.categoryTagCareer
             }`}
