@@ -12,6 +12,7 @@ import { Calendar } from 'primereact/calendar';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 
+
 export default function CalendarPage() {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false); 
@@ -37,6 +38,29 @@ export default function CalendarPage() {
   ]);
 
   const calendarRef = useRef(null);
+
+  function renderEventContent(eventInfo) {
+    const startTime = eventInfo.event.start;
+    const endTime = eventInfo.event.end;
+  
+    const formattedStartTime = new Intl.DateTimeFormat('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    }).format(startTime);
+    const formattedEndTime = new Intl.DateTimeFormat('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    }).format(endTime);
+  
+    return (
+      <>
+        <b>{formattedStartTime} {eventInfo.event.title}</b>
+      </>
+    );
+  }
+  
 
   const [eventData, setEventData] = useState({
     title: '',
@@ -104,9 +128,9 @@ export default function CalendarPage() {
             timeGridPlugin,
           ]}
           headerToolbar={{
-            left: 'prev,next today',
-            center: 'title',
-            right: 'resourceTimelineWeek,dayGridMonth,timeGridWeek',
+            left: "prev,next today",
+            center: "title",
+            right: "resourceTimelineWeek,dayGridMonth,timeGridWeek",
           }}
           initialView="resourceTimelineWeek"
           nowIndicator={true}
@@ -115,23 +139,28 @@ export default function CalendarPage() {
           selectMirror={true}
           schedulerLicenseKey="CC-Attribution-NonCommercial-NoDerivatives"
           resources={[
-            { id: 'a', title: 'Auditorium A' },
-            { id: 'b', title: 'Auditorium B', eventColor: 'green' },
-            { id: 'c', title: 'Auditorium C', eventColor: 'orange' },
+            { id: "a", title: "Auditorium A" },
+            { id: "b", title: "Auditorium B", eventColor: "green" },
+            { id: "c", title: "Auditorium C", eventColor: "orange" },
           ]}
           events={events}
+          eventContent={renderEventContent}
         />
       </div>
 
       <Dialog
         header="Schedule a time"
         visible={isFormVisible}
-        style={{ width: '50vw' }}
+        style={{ width: "50vw" }}
         onHide={() => setIsFormVisible(false)}
         footer={
           <div>
             <Button label="Add Event" type="submit" onClick={handleSubmit} />
-            <Button label="Cancel" className="p-button-secondary" onClick={() => setIsFormVisible(false)} />
+            <Button
+              label="Cancel"
+              className="p-button-secondary"
+              onClick={() => setIsFormVisible(false)}
+            />
           </div>
         }
       >
@@ -144,7 +173,9 @@ export default function CalendarPage() {
               id="title"
               type="text"
               value={eventData.title}
-              onChange={(e) => setEventData({ ...eventData, title: e.target.value })}
+              onChange={(e) =>
+                setEventData({ ...eventData, title: e.target.value })
+              }
               placeholder="Title"
             />
           </div>
@@ -180,7 +211,12 @@ export default function CalendarPage() {
               id="onlineMeetingLink"
               type="url"
               value={eventData.onlineMeetingLink}
-              onChange={(e) => setEventData({ ...eventData, onlineMeetingLink: e.target.value })}
+              onChange={(e) =>
+                setEventData({
+                  ...eventData,
+                  onlineMeetingLink: e.target.value,
+                })
+              }
               placeholder="Online Meeting Link"
             />
           </div>
@@ -190,12 +226,20 @@ export default function CalendarPage() {
       <Dialog
         header="Confirmation"
         visible={isConfirmationVisible}
-        style={{ width: '30vw' }}
+        style={{ width: "30vw" }}
         onHide={() => setIsConfirmationVisible(false)}
         footer={
           <div>
-            <Button label="Cancel" className="p-button-secondary" onClick={() => handleConfirmation(false)} />
-            <Button label="Confirm" type="button" onClick={() => handleConfirmation(true)} />
+            <Button
+              label="Cancel"
+              className="p-button-secondary"
+              onClick={() => handleConfirmation(false)}
+            />
+            <Button
+              label="Confirm"
+              type="button"
+              onClick={() => handleConfirmation(true)}
+            />
           </div>
         }
       >
@@ -205,7 +249,7 @@ export default function CalendarPage() {
       <Dialog
         header="Warning"
         visible={warningDialogVisible}
-        style={{ width: '30vw' }}
+        style={{ width: "30vw" }}
         onHide={closeWarningDialog}
         footer={
           <div>
