@@ -73,9 +73,9 @@ const ViewJobApplicationDetails = () => {
         return 'Offered';
       case 'Rejected':
         return 'Rejected';
-      case 'Offer_Accepted':
+      case 'offer_Accepted':
         return 'Offer Accepted';
-      case 'Offer_Rejected':
+      case 'offer_Rejected':
         return 'Offer Rejected';
       case 'Processing':
         return 'Processing';
@@ -96,9 +96,9 @@ const ViewJobApplicationDetails = () => {
         return 'warning';
       case 'waiting_for_interview':
         return 'info';
-      case 'Offer_Rejected':
+      case 'offer_Rejected':
         return 'danger';
-      case 'Offer_Accepted':
+      case 'offer_Accepted':
         return 'success';
       case 'Rejected':
         return 'danger';
@@ -140,7 +140,7 @@ const ViewJobApplicationDetails = () => {
       };
 
       setInterviewDateTimes([...interviewDateTimes, newEntry]);
-      setInterviewDate(''); // Clear the input
+      setInterviewDate(''); 
     }
   };
 
@@ -324,7 +324,7 @@ Hope to hear from you soon\n${currentUserName}`;
       console.log('Status is ' + response.status);
 
       if (response.status === 200) {
-        if (newStatus === "Offered" || "Rejected") {
+        if (newStatus === "offer_Accepted" || "offer_Rejected") {
           router.back();
         } 
       } else {
@@ -634,14 +634,14 @@ Hope to hear from you soon\n${currentUserName}`;
                   icon="pi pi-thumbs-down"
                   rounded
                   severity="danger"
-                  onClick={() => showUserDialog('Rejected')}
+                  onClick={() => showUserDialog('offer_Rejected')}
                 />
                 <Button
                   label="Accept"
                   icon="pi pi-thumbs-up"
                   rounded
                   severity="success"
-                  onClick={() => showUserDialog('Offered')}
+                  onClick={() => showUserDialog('offer_Accepted')}
                 />
                 <Button
                   label="Arrange Interview"
