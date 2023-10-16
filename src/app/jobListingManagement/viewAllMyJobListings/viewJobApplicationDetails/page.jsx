@@ -648,6 +648,13 @@ Hope to hear from you soon\n${currentUserName}`;
                     onClick={addInterviewDateTime}
                     className="p-button-success"
                   />
+
+                  {interviewDateTimes.length > 0 && (
+                    <div>
+                      <label>Selected Interview Date-Times:</label>
+                      {renderInterviewDateTimes()}
+                    </div>
+                  )}
                   <div>
                     <label htmlFor="interviewNotes">
                       Add Interview details (Do not add your video meeting
@@ -659,12 +666,6 @@ Hope to hear from you soon\n${currentUserName}`;
                       onChange={(e) => setInterviewNotes(e.target.value)}
                     />
                   </div>
-                  {interviewDateTimes.length > 0 && (
-                    <div>
-                      <label>Selected Interview Date-Times:</label>
-                      {renderInterviewDateTimes()}
-                    </div>
-                  )}
                 </Dialog>
               </div>
             )}
