@@ -20,6 +20,8 @@ import { getJobSeekersByJobApplicationId } from '@/app/api/jobListing/route';
 import { Dialog } from 'primereact/dialog';
 import { Calendar } from 'primereact/calendar';
 import { InputTextarea } from 'primereact/inputtextarea';
+import { Message } from 'primereact/message'; 
+
 import {
   createChat,
   createChatMessage,
@@ -58,7 +60,7 @@ const ViewJobApplicationDetails = () => {
   const [selectedDocuments, setSelectedDocuments] = useState([]);
   const [userDialog, setUserDialog] = useState(false);
   const [status, setStatus] = useState(null);
-  const [isInterviewDateTimeValid, setIsInterviewDateTimeValid] = useState(true);
+  const [error, setError] = useState(null); 
 
 
   const [interviewDateTimes, setInterviewDateTimes] = useState([]);
@@ -143,10 +145,13 @@ const ViewJobApplicationDetails = () => {
 
       setInterviewDateTimes([...interviewDateTimes, newEntry]);
       setInterviewDate(''); 
+    } else {
+      setError('Please select an interview date and time.'); 
     }
   };
 
   const handleArrangeInterview = () => {
+    setError(null);
     setShowArrangeInterviewDialog(true);
   };
 
@@ -218,12 +223,16 @@ Hope to hear from you soon\n${currentUserName}`;
         outlined
         onClick={hideArrangeInterviewDialog}
       />
-      <Button
+       <Button
         label="Send to Recruiter"
         icon="pi pi-check"
         outlined
         onClick={() => {
-          showConfirmSendDialog("Waiting_For_Interview");
+          if (interviewDateTimes.length === 0) {
+            setError('Please add at least one interview date and time.');
+          } else {
+            showConfirmSendDialog('Waiting_For_Interview');
+          }
         }}
       />
     </React.Fragment>
@@ -628,6 +637,7 @@ Hope to hear from you soon\n${currentUserName}`;
                   footer={arrangeInterviewDialogFooter}
                   onHide={hideArrangeInterviewDialog}
                 >
+                {error && <Message severity="error" text={error} />}
                   <div>
                     <label htmlFor="interviewDate">
                       Choose Interview Date and Time:
