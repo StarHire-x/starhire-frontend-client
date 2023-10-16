@@ -13,6 +13,8 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
   });
 
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+  const [nameError, setNameError] = useState('');
+  const [descriptionError, setDescriptionError] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -32,8 +34,24 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
   };
 
   const handleSubmit = () => {
-    console.log('Sending:', formData);
-    setShowConfirmationDialog(true);
+    if (!formData.ticketName.trim()) {
+      setNameError('Please input a title');
+    } else {
+      setNameError('');
+      setFormData((prev) => ({
+        ...prev,
+      }));
+      setShowConfirmationDialog(true);
+    }
+    if (!formData.ticketDescription.trim()) {
+      setDescriptionError('Please input a description');
+    } else {
+      setDescriptionError('');
+      setFormData((prev) => ({
+        ...prev,
+      }));
+      setShowConfirmationDialog(true);
+    }
   };
 
   const handleConfirmation = () => {
@@ -60,7 +78,9 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
           value={formData.ticketName}
           onChange={handleInputChange}
           style={{ width: '75%' }}
+          required
         />
+        {nameError && <small className={styles.errorText}>{nameError}</small>}
       </div>
 
       <div className={styles.cardRow}>
@@ -71,7 +91,11 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
           value={formData.ticketDescription}
           onTextChange={handleEditorTextChange}
           style={{ height: '220px' }}
+          required
         />
+        {descriptionError && (
+          <small className={styles.errorText}>{descriptionError}</small>
+        )}
       </div>
 
       <div className={styles.cardFooter}>

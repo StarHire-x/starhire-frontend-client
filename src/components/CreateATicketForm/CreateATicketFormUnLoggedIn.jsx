@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Button } from 'primereact/button';
 import { Editor } from 'primereact/editor';
 import { InputText } from 'primereact/inputtext';
-import { InputTextarea } from 'primereact/inputtextarea';
 import { Dialog } from 'primereact/dialog';
 import styles from './page.module.css';
 
@@ -16,6 +15,8 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
 
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
   const [emailError, setEmailError] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [descriptionError, setDescriptionError] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -45,6 +46,24 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
       }));
       setShowConfirmationDialog(true);
     }
+    if (!formData.ticketName.trim()) {
+      setNameError('Please input a title');
+    } else {
+      setNameError('');
+      setFormData((prev) => ({
+        ...prev,
+      }));
+      setShowConfirmationDialog(true);
+    }
+    if (!formData.ticketDescription.trim()) {
+      setDescriptionError('Please input a description');
+    } else {
+      setDescriptionError('');
+      setFormData((prev) => ({
+        ...prev,
+      }));
+      setShowConfirmationDialog(true);
+    }
   };
 
   const handleConfirmation = () => {
@@ -65,7 +84,9 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
           value={formData.ticketName}
           onChange={handleInputChange}
           style={{ width: '75%' }}
+          required
         />
+        {nameError && <small className={styles.errorText}>{nameError}</small>}
       </div>
 
       <div className={styles.cardRow}>
@@ -76,7 +97,11 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
           value={formData.ticketDescription}
           onTextChange={handleEditorTextChange}
           style={{ height: '220px' }}
+          required
         />
+        {descriptionError && (
+          <small className={styles.errorText}>{descriptionError}</small>
+        )}
       </div>
 
       <div className={styles.cardRow}>
