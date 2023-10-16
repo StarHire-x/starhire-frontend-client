@@ -324,7 +324,7 @@ Hope to hear from you soon\n${currentUserName}`;
       console.log('Status is ' + response.status);
 
       if (response.status === 200) {
-        if (newStatus === "Accepted" || "Rejected") {
+        if (newStatus === "Offered" || "Rejected") {
           router.back();
         } 
       } else {
