@@ -139,6 +139,9 @@ const CreateComment = ({
         <div className={styles.postTitle}>
           <div>{postData.forumPostTitle}</div>
           <div className={styles.postTitleButtonContainer}>
+            {postData.forumPostStatus === "Pending" && (
+              <div className={styles.pendingTag}>Pending for Approval</div>
+            )}
             <Button
               size="small"
               icon="pi pi-exclamation-circle"
@@ -170,9 +173,9 @@ const CreateComment = ({
             className={`${styles.categoryTag} ${
               postData.forumCategory.forumCategoryTitle === "Events"
                 ? styles.categoryTagEvents
-                : postData.forumCategory.forumCategoryTitle === "Miscelleaneous"
+                : postData.forumCategory.forumCategoryTitle === "Miscellaneous"
                 ? styles.categoryTagMiscellaneous
-                : postData.forumCategory.forumCategoryTitle === "Confession"
+                : postData.forumCategory.forumCategoryTitle === "Confessions"
                 ? styles.categoryTagConfessions
                 : styles.categoryTagCareer
             }`}

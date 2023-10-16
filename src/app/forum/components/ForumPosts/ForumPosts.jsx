@@ -71,6 +71,9 @@ const ForumPosts = ({
         <div className={styles.postTitle}>
           <div className={styles.postTitleText}>{data.forumPostTitle}</div>
           <div className={styles.postTitleButtonContainer}>
+            {data.forumPostStatus === "Pending" && 
+              <div className={styles.pendingTag}>Pending for Approval</div>
+            }
             <Button
               size="small"
               icon="pi pi-exclamation-circle"
@@ -102,9 +105,9 @@ const ForumPosts = ({
             className={`${styles.categoryTag} ${
               data.forumCategory.forumCategoryTitle === "Events"
                 ? styles.categoryTagEvents
-                : data.forumCategory.forumCategoryTitle === "Miscelleaneous"
+                : data.forumCategory.forumCategoryTitle === "Miscellaneous"
                 ? styles.categoryTagMiscellaneous
-                : data.forumCategory.forumCategoryTitle === "Confession"
+                : data.forumCategory.forumCategoryTitle === "Confessions"
                 ? styles.categoryTagConfessions
                 : styles.categoryTagCareer
             }`}

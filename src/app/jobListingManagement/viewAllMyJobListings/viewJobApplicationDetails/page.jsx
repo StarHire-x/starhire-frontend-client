@@ -509,6 +509,7 @@ Hope to hear from you soon\n${currentUserName}`;
                 <b>User ID: </b>
                 {jobSeeker?.userId}
               </p>
+              {/* do not show contact number and email in case corporate contact job seeker themselves.
               <p className={styles.text}>
                 <b>Contact Number: </b>
                 {jobSeeker?.contactNo}
@@ -517,6 +518,7 @@ Hope to hear from you soon\n${currentUserName}`;
                 <b>Email Address: </b>
                 {jobSeeker?.email}
               </p>
+              */}
               <p className={styles.text}>
                 <b>Date of Birth: </b>
                 {convertTimestampToDate(jobSeeker?.dateOfBirth)}

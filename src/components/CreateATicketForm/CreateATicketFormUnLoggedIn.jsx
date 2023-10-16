@@ -12,7 +12,6 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
     ticketDescription: '',
     isResolved: false,
     email: '',
-    username: '',
   });
 
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
@@ -23,16 +22,26 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const stripHtmlTags = (str) => {
+    if (str === null || str === '') return false;
+    else str = str.toString();
+    return str.replace(/<[^>]*>/g, '');
+  };
+
+  const handleEditorTextChange = (e) => {
+    console.log('Editor Text Change:', e.htmlValue);
+    const plainText = stripHtmlTags(e.htmlValue);
+    setFormData((prev) => ({ ...prev, ticketDescription: plainText }));
+  };
+
   //This still needs to be tested
   const handleSubmit = () => {
     if (!formData.email.trim()) {
       setEmailError('Email address is required');
     } else {
       setEmailError('');
-      const updatedDescription = `Email Address: ${formData.email}, Username: ${formData.username} - ${formData.ticketDescription}`;
       setFormData((prev) => ({
         ...prev,
-        ticketDescription: updatedDescription,
       }));
       setShowConfirmationDialog(true);
     }
@@ -65,7 +74,7 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
           id="ticketDescription"
           name="ticketDescription"
           value={formData.ticketDescription}
-          onChange={handleInputChange}
+          onTextChange={handleEditorTextChange}
           style={{ height: '220px' }}
         />
       </div>
@@ -77,19 +86,9 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
           value={formData.email}
           onChange={handleInputChange}
           style={{ width: '75%' }}
-          required // Add the required attribute
+          required
         />
         {emailError && <small className={styles.errorText}>{emailError}</small>}
-      </div>
-
-      <div className={styles.cardRow}>
-        <label>Username:</label>
-        <InputText
-          name="username"
-          value={formData.username}
-          onChange={handleInputChange}
-          style={{ width: '75%' }}
-        />
       </div>
 
       <div className={styles.cardFooter}>
