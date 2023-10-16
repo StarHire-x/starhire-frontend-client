@@ -144,19 +144,6 @@ const ViewJobApplicationDetails = () => {
     }
   };
 
-  /*
-  const addInterviewDateTime = () => {
-    if (interviewDate) {
-      const newEntry = {
-        date: interviewDate.toLocaleString(), // Convert to string
-      };
-
-      setInterviewDateTimes([...interviewDateTimes, newEntry]);
-      setInterviewDate("");
-    }
-  };
-  */
-
   const handleArrangeInterview = () => {
     setShowArrangeInterviewDialog(true);
   };
@@ -337,7 +324,9 @@ Hope to hear from you soon\n${currentUserName}`;
       console.log('Status is ' + response.status);
 
       if (response.status === 200) {
-        router.back();
+        if (newStatus === "Accepted" || "Rejected") {
+          router.back();
+        } 
       } else {
         toast.current.show({
           severity: 'error',
