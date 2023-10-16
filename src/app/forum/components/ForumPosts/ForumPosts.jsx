@@ -71,6 +71,9 @@ const ForumPosts = ({
         <div className={styles.postTitle}>
           <div className={styles.postTitleText}>{data.forumPostTitle}</div>
           <div className={styles.postTitleButtonContainer}>
+            {data.forumPostStatus === "Pending" && 
+              <div className={styles.pendingTag}>Pending for Approval</div>
+            }
             <Button
               size="small"
               icon="pi pi-exclamation-circle"
