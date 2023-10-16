@@ -139,6 +139,9 @@ const CreateComment = ({
         <div className={styles.postTitle}>
           <div>{postData.forumPostTitle}</div>
           <div className={styles.postTitleButtonContainer}>
+            {postData.forumPostStatus === "Pending" && (
+              <div className={styles.pendingTag}>Pending for Approval</div>
+            )}
             <Button
               size="small"
               icon="pi pi-exclamation-circle"
