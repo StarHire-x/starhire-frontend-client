@@ -4,7 +4,7 @@
 }
 
 .container h1 {
-  margin-bottom: 80px; /* Adjust this value as per your preference */
+  margin-bottom: 80px;
 }
 
 .icon {
@@ -14,14 +14,14 @@
 
 .cardContainerStyle {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
 }
 
 .individualCardStyle {
-  width: 30%;
+  width: 1000%;
   margin: 10px 0;
   text-align: center;
   padding: 10px;
@@ -42,4 +42,19 @@
 
 .individualCardStyle:hover p {
   text-decoration: underline;
+}
+
+@media (min-width: 480px) {
+  .container h1 {
+    margin-bottom: 40px;
+  }
+
+  .cardContainerStyle {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .individualCardStyle {
+    width: 30%;
+  }
 }
