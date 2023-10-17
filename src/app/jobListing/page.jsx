@@ -55,7 +55,6 @@ const JobListingPage = () => {
 
     // Only run the logic if the user is authenticated
     if (accessToken) {
-      // Logic from JobListingPage
       findAssignedJobListingsByJobSeeker(jobSeekerId, accessToken)
         .then((data) => {
           setJobListings(data);
@@ -175,7 +174,6 @@ const JobListingPage = () => {
   return (
     <>
       <Toast ref={toast} />
-      {/* Header */}
       <div className={styles.header}>
         <h1 style={{ marginBottom: '15px', color: 'white' }}>Assigned Jobs</h1>
         <span className="p-input-icon-left">

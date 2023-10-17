@@ -46,10 +46,6 @@ const CreateATicketPage = () => {
 
   const toast = useRef(null);
 
-  const hideCreateDialog = () => {
-    setShowCreateDialog(false);
-  };
-
   const handleTicketCreation = async (newTicket) => {
     let payload;
     try {
@@ -118,7 +114,6 @@ const CreateATicketPage = () => {
         </div>
 
         <div className={styles.cardsGrid}>
-          {/* {jobListing.map((job) => itemTemplate(job))} */}
           {session.status === 'unauthenticated' ? (
             <CreateATicketFormUnLoggedIn onCreate={handleTicketCreation} />
           ) : (
