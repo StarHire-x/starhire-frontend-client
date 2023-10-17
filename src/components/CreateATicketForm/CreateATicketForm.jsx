@@ -22,7 +22,7 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
   };
 
   const stripHtmlTags = (str) => {
-    if (str === null || str === '') return false;
+    if (str === null || str === '') return '';
     else str = str.toString();
     return str.replace(/<[^>]*>/g, '');
   };
@@ -34,22 +34,29 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
   };
 
   const handleSubmit = () => {
+    let valid = true;
+
     if (!formData.ticketName.trim()) {
       setNameError('Please input a title');
+      valid = false;
     } else {
       setNameError('');
-      setFormData((prev) => ({
-        ...prev,
-      }));
-      setShowConfirmationDialog(true);
+      // setFormData((prev) => ({
+      //   ...prev,
+      // }));
+      // setShowConfirmationDialog(true);
     }
     if (!formData.ticketDescription.trim()) {
       setDescriptionError('Please input a description');
+      valid = false;
     } else {
       setDescriptionError('');
-      setFormData((prev) => ({
-        ...prev,
-      }));
+      // setFormData((prev) => ({
+      //   ...prev,
+      // }));
+      // setShowConfirmationDialog(true);
+    }
+    if (valid) {
       setShowConfirmationDialog(true);
     }
   };
