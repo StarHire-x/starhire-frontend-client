@@ -3,13 +3,20 @@ import { Button } from 'primereact/button';
 import { Editor } from 'primereact/editor';
 import { InputText } from 'primereact/inputtext';
 import { Dialog } from 'primereact/dialog';
+import { useSession } from 'next-auth/react';
 import styles from './page.module.css';
 
 const CreateATicketForm = ({ onCreate, forumPostId }) => {
+  const { data: session } = useSession();
+
+  // Extract email from the session if a user is logged in
+  const userEmail = session?.user?.email || '';
+
   const [formData, setFormData] = useState({
     ticketName: forumPostId ? 'Re: Forum Post ' + forumPostId + ' - ' : '',
     ticketDescription: '',
     isResolved: false,
+    email: userEmail,
   });
 
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
@@ -41,20 +48,12 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
       valid = false;
     } else {
       setNameError('');
-      // setFormData((prev) => ({
-      //   ...prev,
-      // }));
-      // setShowConfirmationDialog(true);
     }
     if (!formData.ticketDescription.trim()) {
       setDescriptionError('Please input a description');
       valid = false;
     } else {
       setDescriptionError('');
-      // setFormData((prev) => ({
-      //   ...prev,
-      // }));
-      // setShowConfirmationDialog(true);
     }
     if (valid) {
       setShowConfirmationDialog(true);
@@ -109,7 +108,6 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
         <Button label="Send" rounded onClick={handleSubmit} />
       </div>
 
-      {/* Confirmation Dialog */}
       <Dialog
         header="Confirmation"
         visible={showConfirmationDialog}

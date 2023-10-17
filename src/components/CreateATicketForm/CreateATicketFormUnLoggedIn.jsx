@@ -43,30 +43,18 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
       valid = false;
     } else {
       setEmailError('');
-      // setFormData((prev) => ({
-      //   ...prev,
-      // }));
-      // setShowConfirmationDialog(true);
     }
     if (!formData.ticketName.trim()) {
       setNameError('Please input a title');
       valid = false;
     } else {
       setNameError('');
-      // setFormData((prev) => ({
-      //   ...prev,
-      // }));
-      // setShowConfirmationDialog(true);
     }
     if (!formData.ticketDescription.trim()) {
       setDescriptionError('Please input a description');
       valid = false;
     } else {
       setDescriptionError('');
-      // setFormData((prev) => ({
-      //   ...prev,
-      // }));
-      // setShowConfirmationDialog(true);
     }
     if (valid) {
       setShowConfirmationDialog(true);
