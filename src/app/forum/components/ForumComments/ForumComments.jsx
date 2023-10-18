@@ -18,7 +18,7 @@ const ForumComments = ({ forumComments }) => {
         <div className={styles.commentContainer}>
           <div className={styles.userSection}>
             <div className={styles.userProfilePhoto}>
-              {data?.jobSeeker.profilePictureUrl ? (
+              {data?.jobSeeker.profilePictureUrl && !data.isAnonymous ? (
                 <Image
                   className={styles.userProfilePhoto}
                   alt="Profile Photo"

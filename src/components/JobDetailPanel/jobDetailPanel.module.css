@@ -156,6 +156,14 @@
   .p-input-icon-left input {
     width: 100%;
   }
+
+  .cardDialog {
+    height: 80%;
+  }
+
+  .createButton {
+    margin-bottom: 5%;
+  }
 }
 
 @media (max-width: 480px) {

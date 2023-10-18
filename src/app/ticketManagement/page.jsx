@@ -22,7 +22,7 @@ const TicketManagement = () => {
 
   return (
     <div className={styles.container}>
-      <h1>Hi, we're here to help.</h1>
+      <h1>Hi, we&apos;re here to help.</h1>
       <h3>Recommended topics</h3>
       <div className={styles.cardContainerStyle}>
         <div
