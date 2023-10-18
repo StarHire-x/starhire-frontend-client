@@ -23,17 +23,6 @@ const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
   { text: 'Chat', href: '/chat' },
 ];
 
-/*
-const MENU_LIST_AUTHENTICATED_CORPORATE = [
-  { text: "Home", href: "/" },
-  { text: "Job Listing Management", href: "/jobListingManagement" },
-  { text: "Forum", href: "/forum" },
-  { text: "Events", href: "/events" },
-  { text: "Contact", href: "/contact" },
-  { text: "Chat", href: "/chat" },
-];
-*/
-
 const MENU_LIST_AUTHENTICATED_CORPORATE = [
   { text: 'Home', href: '/' },
   {
@@ -64,8 +53,6 @@ const Navbar = () => {
 
   const [navActive, setNavActive] = useState(null);
   const [activeIdx, setActiveIdx] = useState(-1);
-  // const [imageUrl, setImageUrl] = useState(null);
-  // const [userName, setUserName] = useState(null);
   let roleRef, sessionTokenRef, userIdRef;
 
   // utilising use context to get the latest information
@@ -87,7 +74,7 @@ const Navbar = () => {
         <Link href="/" className={styles.logo}>
           StarHire
         </Link>
-        <DarkModeToggle />
+        {/* <DarkModeToggle /> */}
         <div
           onClick={() => setNavActive(!navActive)}
           className={styles.nav__menu_bar}

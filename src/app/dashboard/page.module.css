@@ -17,3 +17,9 @@
 .text {
     margin-bottom: 1%;
 }
+
+@media screen and (max-width: 768px) {
+    .text {
+        margin-bottom: 5%;
+    }
+  }
