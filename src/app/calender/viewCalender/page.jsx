@@ -96,7 +96,7 @@ export default function CalendarPage() {
         start: new Date(interview.scheduledDate),
         end: new Date(interview.scheduledDate),
         onlineMeetingLink: interview.interviewLink,
-        isConfirmedInterview: true, // Set this property to true
+        interviewStatus: interview.interviewStatus, 
       }));
     };
     
@@ -148,20 +148,21 @@ export default function CalendarPage() {
       hour12: true,
     }).format(startTime);
   
-    const isConfirmedInterview = eventInfo.event.extendedProps.isConfirmedInterview;
+    const interviewStatus = eventInfo.event.extendedProps.interviewStatus;
   
     return (
       <div
         style={{
           padding: '2px',
           borderRadius: '4px',
-          color: isConfirmedInterview ? 'green' : 'red',
+          color: interviewStatus === 'Confirmed_Interview' ? 'green' : 'red',
         }}
       >
         <b>{formattedStartTime} {eventInfo.event.title}</b>
       </div>
     );
   }
+  
   
   
 
