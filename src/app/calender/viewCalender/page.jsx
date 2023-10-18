@@ -49,13 +49,49 @@ export default function CalendarPage() {
 
     const userIdRef = "5a51c50a-da24-4e35-bd3e-3b1c0b0588eb";
     const role = "corporate";
+    
 
+    const formatEvents = (interviewDates) => {
+      return interviewDates.map((interview) => {
+        const events = [];
+    
+        if (interview.firstChosenDates) {
+          events.push({
+            title: `Interview #${interview.id}`,
+            start: new Date(interview.firstChosenDates),
+            end: new Date(interview.scheduledDate),
+            onlineMeetingLink: interview.interviewLink,
+          });
+        }
+    
+        if (interview.secondChosenDates) {
+          events.push({
+            title: `Interview #${interview.id}`,
+            start: new Date(interview.secondChosenDates),
+            end: new Date(interview.scheduledDate),
+            onlineMeetingLink: interview.interviewLink,
+          });
+        }
+    
+        if (interview.thirdChosenDates) {
+          events.push({
+            title: `Interview #${interview.id}`,
+            start: new Date(interview.thirdChosenDates),
+            end: new Date(interview.scheduledDate),
+            onlineMeetingLink: interview.interviewLink,
+          });
+        }
+    
+        return events;
+      }).flat();
+    };
+    
 
     /*
     const formatEvents = (interviewDates) => {
-      return interviewDates.data.map((interview) => ({
+      return interviewDates.map((interview) => ({
         title: `Interview #${interview.id}`,
-        start: new Date(interview.firstChosenDates),
+        start: new Date(interview.secondChosenDates), // Change this line
         end: new Date(interview.scheduledDate),
         resourceId: 'a', // You can adjust this as needed
         onlineMeetingLink: interview.interviewLink,
@@ -64,31 +100,8 @@ export default function CalendarPage() {
     */
     
 
-    /*
-    const formatEvents = (interviewDates) => {
-      return interviewDates.data.map((interview) => ({
-        title: `Interview #${interview.id}`,
-        start: new Date(interview.firstChosenDates),
-        end: new Date(interview.scheduledDate),
-        resourceId: 'a', // You can adjust this as needed
-        onlineMeetingLink: interview.interviewLink,
-        secondChosenDates: interview.secondChosenDates
-          ? new Date(interview.secondChosenDates)
-          : null, // Check if the date is available, adjust as needed
-        thirdChosenDates: interview.thirdChosenDates
-          ? new Date(interview.thirdChosenDates)
-          : null, // Check if the date is available, adjust as needed
-      }));
-    };
-    */
-    
-
-    
-    
-
-
-
-  /*const [events, setEvents] = useState([
+/*
+  const [events, setEvents] = useState([
     {
       title: 'Event 1',
       start: '2023-10-25T10:00:00',
@@ -129,7 +142,7 @@ export default function CalendarPage() {
   useEffect(() => {
     getInterviewDates(userIdRef, role, accessToken)
       .then((data) => {
-        setInterviewDates(data);
+        setInterviewDates(data.data);
       })
       .catch((error) => {
         console.error('Error fetching Interview Dates:', error);
@@ -250,7 +263,7 @@ export default function CalendarPage() {
             { id: "b", title: "Auditorium B", eventColor: "green" },
             { id: "c", title: "Auditorium C", eventColor: "orange" },
           ]}
-          events={interviewDates}
+          events={formatEvents(interviewDates)}
           eventContent={renderEventContent}
         />
       </div>
