@@ -85,19 +85,15 @@ export default function CalendarPage() {
         return events;
       }).flat();
     };
-    
 
-    /*
-    const formatEvents = (interviewDates) => {
+    const confirmedInterview = (interviewDates) => {
       return interviewDates.map((interview) => ({
-        title: `Interview #${interview.id}`,
-        start: new Date(interview.secondChosenDates), // Change this line
+        title: `Interview with #${interview.id}`,
+        start: new Date(interview.scheduledDate), 
         end: new Date(interview.scheduledDate),
-        resourceId: 'a', // You can adjust this as needed
         onlineMeetingLink: interview.interviewLink,
       }));
     };
-    */
     
 
 /*
@@ -123,22 +119,6 @@ export default function CalendarPage() {
   ]);
   */
 
-  /*
-  useEffect(() => {
-    if (session.status === 'unauthenticated') {
-      router.push('/login');
-    } else if (session.status === 'authenticated') {
-      getInterviewDates(userIdRef, role, accessToken)
-        .then((data) => {
-          setInterviewDates(data);
-        })
-        .catch((error) => {
-          console.error('Error fetching Interview Dates:', error);
-        });
-    }
-  }, [userIdRef, accessToken]);
-  */
-
   useEffect(() => {
     getInterviewDates(userIdRef, role, accessToken)
       .then((data) => {
@@ -150,30 +130,25 @@ export default function CalendarPage() {
   }, [userIdRef, accessToken]);
 
   console.log(interviewDates);
-  
-
-
-
-  
-
 
   const calendarRef = useRef(null);
 
   function renderEventContent(eventInfo) {
     const startTime = eventInfo.event.start;
-    const endTime = eventInfo.event.end;
+    //const endTime = eventInfo.event.end;
   
     const formattedStartTime = new Intl.DateTimeFormat('en-US', {
       hour: 'numeric',
       minute: '2-digit',
       hour12: true,
     }).format(startTime);
+    /*
     const formattedEndTime = new Intl.DateTimeFormat('en-US', {
       hour: 'numeric',
       minute: '2-digit',
       hour12: true,
     }).format(endTime);
-  
+  */
     return (
       <>
         <b>{formattedStartTime} {eventInfo.event.title}</b>
@@ -263,7 +238,7 @@ export default function CalendarPage() {
             { id: "b", title: "Auditorium B", eventColor: "green" },
             { id: "c", title: "Auditorium C", eventColor: "orange" },
           ]}
-          events={formatEvents(interviewDates)}
+          events={[...formatEvents(interviewDates), ...confirmedInterview(interviewDates)]}
           eventContent={renderEventContent}
         />
       </div>
