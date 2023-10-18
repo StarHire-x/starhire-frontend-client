@@ -29,6 +29,8 @@ export default function CalendarPage() {
   const [selectedMeetingLink, setSelectedMeetingLink] = useState('');
   const [interviewDates, setInterviewDates] = useState([]);
 
+  const allEvents = [];
+
   const accessToken =
     session.status === 'authenticated' &&
     session.data &&
@@ -44,7 +46,6 @@ export default function CalendarPage() {
     session.status === 'authenticated' &&
     session.data &&
     session.data.user.role;
-
     */
 
     const userIdRef = "5a51c50a-da24-4e35-bd3e-3b1c0b0588eb";
@@ -59,8 +60,9 @@ export default function CalendarPage() {
           events.push({
             title: `Interview #${interview.id}`,
             start: new Date(interview.firstChosenDates),
-            end: new Date(interview.scheduledDate),
+            end: new Date(interview.firstdDate),
             onlineMeetingLink: interview.interviewLink,
+            color: 'red', 
           });
         }
     
@@ -68,8 +70,9 @@ export default function CalendarPage() {
           events.push({
             title: `Interview #${interview.id}`,
             start: new Date(interview.secondChosenDates),
-            end: new Date(interview.scheduledDate),
+            end: new Date(interview.secondChosenDate),
             onlineMeetingLink: interview.interviewLink,
+            color: 'red', 
           });
         }
     
@@ -77,27 +80,29 @@ export default function CalendarPage() {
           events.push({
             title: `Interview #${interview.id}`,
             start: new Date(interview.thirdChosenDates),
-            end: new Date(interview.scheduledDate),
+            end: new Date(interview.thirdDate),
             onlineMeetingLink: interview.interviewLink,
+            color: 'red', 
           });
         }
     
         return events;
-      }).flat();
+      }).flat(); 
     };
 
     const confirmedInterview = (interviewDates) => {
       return interviewDates.map((interview) => ({
-        title: `Interview with #${interview.id}`,
-        start: new Date(interview.scheduledDate), 
+        title: `Interview #${interview.id}`,
+        start: new Date(interview.scheduledDate),
         end: new Date(interview.scheduledDate),
         onlineMeetingLink: interview.interviewLink,
+        isConfirmedInterview: true, // Set this property to true
       }));
     };
     
 
-/*
-  const [events, setEvents] = useState([
+  /*
+    const [events, setEvents] = useState([
     {
       title: 'Event 1',
       start: '2023-10-25T10:00:00',
@@ -135,26 +140,29 @@ export default function CalendarPage() {
 
   function renderEventContent(eventInfo) {
     const startTime = eventInfo.event.start;
-    //const endTime = eventInfo.event.end;
+    const endTime = eventInfo.event.end;
   
     const formattedStartTime = new Intl.DateTimeFormat('en-US', {
       hour: 'numeric',
       minute: '2-digit',
       hour12: true,
     }).format(startTime);
-    /*
-    const formattedEndTime = new Intl.DateTimeFormat('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    }).format(endTime);
-  */
+  
+    const isConfirmedInterview = eventInfo.event.extendedProps.isConfirmedInterview;
+  
     return (
-      <>
+      <div
+        style={{
+          padding: '2px',
+          borderRadius: '4px',
+          color: isConfirmedInterview ? 'green' : 'red',
+        }}
+      >
         <b>{formattedStartTime} {eventInfo.event.title}</b>
-      </>
+      </div>
     );
   }
+  
   
 
   const [eventData, setEventData] = useState({
@@ -238,7 +246,7 @@ export default function CalendarPage() {
             { id: "b", title: "Auditorium B", eventColor: "green" },
             { id: "c", title: "Auditorium C", eventColor: "orange" },
           ]}
-          events={[...formatEvents(interviewDates), ...confirmedInterview(interviewDates)]}
+          events={formatEvents(interviewDates).concat(confirmedInterview(interviewDates))}
           eventContent={renderEventContent}
         />
       </div>
