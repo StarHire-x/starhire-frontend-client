@@ -30,40 +30,26 @@
   border-radius: 2px;
 }
 
-.nav__menu_list {
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  top: 60px;
-  width: 220px;
-  row-gap: 24px;
-  right: -288px;
-  padding: 24px 16px;
-  transition: all 0.2s;
-  /* min-height: calc(100vh - 60px); */
-}
-
-.nav__menu_list.active {
-  right: 0;
-  background-color: #00191c;
-}
-
 .nav__menu_list_light {
   display: flex;
   flex-direction: column;
   position: fixed;
   top: 60px;
-  width: 220px;
+  width: 50%;
+  height: 100%;
   row-gap: 24px;
-  right: -288px;
+  right: -500px;
   padding: 24px 16px;
-  transition: all 0.2s;
-  /* min-height: calc(100vh - 60px); */
+  transition: ease 0.2s;
 }
 
 .nav__menu_list_light.active {
   right: 0;
   background-color: #edf6f9;
+}
+
+.menuItem {
+  text-align: center;
 }
 
 /* Style for the submenu */
@@ -93,16 +79,10 @@
 }
 
 /* Show the submenu when the main menu item is hovered */
-.nav__menu_list > div:hover .submenu {
-  display: block;
-  top: 10%;
-  left: -170%;
-}
-/* Show the submenu when the main menu item is hovered */
 .nav__menu_list_light > div:hover .submenu {
   display: block;
-  top: 10%;
-  left: -170%;
+  top: 1%;
+  left: -260%;
 }
 
 .center {
@@ -119,6 +99,7 @@
   color: white;
   cursor: pointer;
   border-radius: 3px;
+  font-size: 20px;
 }
 
 .imageContainer {
@@ -144,6 +125,26 @@
   color: white;
   cursor: pointer;
   border-radius: 3px;
+  font-size: 20px;
+}
+
+/* Initial styles for the overlay (hidden) */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Transparent background */
+  pointer-events: none; /* Make it non-clickable */
+  z-index: 1; /* Ensure it appears above other content */
+  backdrop-filter: blur(5px); /* Apply the blur effect */
+  transition: linear 0.3s;
+}
+
+/* Apply the blur effect when the overlay is active */
+.overlay.active {
+  pointer-events: auto; /* Make it clickable */
 }
 
 @media screen and (min-width: 900px) {
@@ -169,12 +170,6 @@
     column-gap: 24px;
     align-items: center;
     height: auto;
-  }
-
-  .nav__menu_list > div {
-    position: relative;
-    /* display: inline-block; */
-    margin-right: 20px; /* Adjust the spacing between menu items */
   }
 
   .nav__menu_list_light > div {
@@ -221,12 +216,6 @@
     background-color: #53c28b;
   }
 
-  /* Show the submenu when the main menu item is hovered */
-  .nav__menu_list > div:hover .submenu {
-    display: block;
-    top: 100%;
-    left: 0;
-  }
   /* Show the submenu when the main menu item is hovered */
   .nav__menu_list_light > div:hover .submenu {
     display: block;

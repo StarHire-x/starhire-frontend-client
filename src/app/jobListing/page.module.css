@@ -6,6 +6,10 @@
   background-color: #006d77;
 }
 
+.test {
+  width: 100%;
+}
+
 .header .p-input-icon-left input.p-inputtext {
   width: 250px;
 }
@@ -127,7 +131,7 @@
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
   }
 
   .header h1.p-input-icon-left {

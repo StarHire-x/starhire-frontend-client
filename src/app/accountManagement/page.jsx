@@ -297,7 +297,7 @@ const AccountManagement = () => {
   };
   if (session.status === "authenticated") {
     return (
-      <div className={styles.container}>
+      <div className={styles.mainContainer}>
         <EditAccountForm
           formData={formData}
           setFormData={setFormData}
