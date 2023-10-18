@@ -5,18 +5,13 @@
   padding: 20px;
   background-color: #006d77;
 }
-
-.test {
-  width: 100%;
-}
-
 .header .p-input-icon-left input.p-inputtext {
   width: 250px;
 }
 
 .container {
   display: flex;
-  height: 100vh;
+  height: 900px;
   padding: 0 20px;
   background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -147,16 +142,18 @@
   }
 
   .container {
-    flex-direction: column;
+    flex-direction: row;
     height: auto;
   }
 
-  .listingsPanel,
   .detailsPanel {
-    border-right: none;
-    padding: 10px;
-    width: 100%;
+    display: none;
   }
+
+.jobDescriptionDialog {
+  height: 80%;
+}
+
 }
 
 @media (max-width: 480px) {
