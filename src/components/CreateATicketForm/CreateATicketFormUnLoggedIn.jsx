@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Button } from 'primereact/button';
 import { Editor } from 'primereact/editor';
 import { InputText } from 'primereact/inputtext';
-import { InputTextarea } from 'primereact/inputtextarea';
 import { Dialog } from 'primereact/dialog';
 import styles from './page.module.css';
 
@@ -12,28 +11,52 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
     ticketDescription: '',
     isResolved: false,
     email: '',
-    username: '',
   });
 
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
   const [emailError, setEmailError] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [descriptionError, setDescriptionError] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  //This still needs to be tested
+  const stripHtmlTags = (str) => {
+    if (str === null || str === '') return '';
+    else str = str.toString();
+    return str.replace(/<[^>]*>/g, '');
+  };
+
+  const handleEditorTextChange = (e) => {
+    console.log('Editor Text Change:', e.htmlValue);
+    const plainText = stripHtmlTags(e.htmlValue);
+    setFormData((prev) => ({ ...prev, ticketDescription: plainText }));
+  };
+
   const handleSubmit = () => {
+    let valid = true;
+
     if (!formData.email.trim()) {
       setEmailError('Email address is required');
+      valid = false;
     } else {
       setEmailError('');
-      const updatedDescription = `Email Address: ${formData.email}, Username: ${formData.username} - ${formData.ticketDescription}`;
-      setFormData((prev) => ({
-        ...prev,
-        ticketDescription: updatedDescription,
-      }));
+    }
+    if (!formData.ticketName.trim()) {
+      setNameError('Please input a title');
+      valid = false;
+    } else {
+      setNameError('');
+    }
+    if (!formData.ticketDescription.trim()) {
+      setDescriptionError('Please input a description');
+      valid = false;
+    } else {
+      setDescriptionError('');
+    }
+    if (valid) {
       setShowConfirmationDialog(true);
     }
   };
@@ -56,7 +79,9 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
           value={formData.ticketName}
           onChange={handleInputChange}
           style={{ width: '75%' }}
+          required
         />
+        {nameError && <small className={styles.errorText}>{nameError}</small>}
       </div>
 
       <div className={styles.cardRow}>
@@ -65,9 +90,13 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
           id="ticketDescription"
           name="ticketDescription"
           value={formData.ticketDescription}
-          onChange={handleInputChange}
+          onTextChange={handleEditorTextChange}
           style={{ height: '220px' }}
+          required
         />
+        {descriptionError && (
+          <small className={styles.errorText}>{descriptionError}</small>
+        )}
       </div>
 
       <div className={styles.cardRow}>
@@ -77,19 +106,9 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
           value={formData.email}
           onChange={handleInputChange}
           style={{ width: '75%' }}
-          required // Add the required attribute
+          required
         />
         {emailError && <small className={styles.errorText}>{emailError}</small>}
-      </div>
-
-      <div className={styles.cardRow}>
-        <label>Username:</label>
-        <InputText
-          name="username"
-          value={formData.username}
-          onChange={handleInputChange}
-          style={{ width: '75%' }}
-        />
       </div>
 
       <div className={styles.cardFooter}>

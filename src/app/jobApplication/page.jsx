@@ -4,18 +4,18 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
+import { Dialog } from 'primereact/dialog';
+import { Dropdown } from 'primereact/dropdown';
+import { Tag } from 'primereact/tag';
+import { Toast } from 'primereact/toast';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import styles from './page.module.css';
 import {
   getJobApplicationsByJobSeeker,
   updateJobApplicationStatus,
 } from '../api/jobApplication/route';
-import { Dialog } from 'primereact/dialog';
-import { Tag } from 'primereact/tag';
 import ViewJobApplicationForm from '@/components/ViewJobApplicationForm/ViewJobApplicationForm';
-import { Dropdown } from 'primereact/dropdown';
 import EditJobApplicationForm from '@/components/EditJobApplicationForm/EditJobApplicationForm';
-import { Toast } from 'primereact/toast';
+import styles from './page.module.css';
 
 const JobApplicationPage = () => {
   const [jobApplications, setJobApplications] = useState([]);

@@ -3,16 +3,25 @@ import { Button } from 'primereact/button';
 import { Editor } from 'primereact/editor';
 import { InputText } from 'primereact/inputtext';
 import { Dialog } from 'primereact/dialog';
+import { useSession } from 'next-auth/react';
 import styles from './page.module.css';
 
 const CreateATicketForm = ({ onCreate, forumPostId }) => {
+  const { data: session } = useSession();
+
+  // Extract email from the session if a user is logged in
+  const userEmail = session?.user?.email || '';
+
   const [formData, setFormData] = useState({
     ticketName: forumPostId ? 'Re: Forum Post ' + forumPostId + ' - ' : '',
     ticketDescription: '',
     isResolved: false,
+    email: userEmail,
   });
 
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+  const [nameError, setNameError] = useState('');
+  const [descriptionError, setDescriptionError] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,7 +29,7 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
   };
 
   const stripHtmlTags = (str) => {
-    if (str === null || str === '') return false;
+    if (str === null || str === '') return '';
     else str = str.toString();
     return str.replace(/<[^>]*>/g, '');
   };
@@ -32,8 +41,23 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
   };
 
   const handleSubmit = () => {
-    console.log('Sending:', formData);
-    setShowConfirmationDialog(true);
+    let valid = true;
+
+    if (!formData.ticketName.trim()) {
+      setNameError('Please input a title');
+      valid = false;
+    } else {
+      setNameError('');
+    }
+    if (!formData.ticketDescription.trim()) {
+      setDescriptionError('Please input a description');
+      valid = false;
+    } else {
+      setDescriptionError('');
+    }
+    if (valid) {
+      setShowConfirmationDialog(true);
+    }
   };
 
   const handleConfirmation = () => {
@@ -60,7 +84,9 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
           value={formData.ticketName}
           onChange={handleInputChange}
           style={{ width: '75%' }}
+          required
         />
+        {nameError && <small className={styles.errorText}>{nameError}</small>}
       </div>
 
       <div className={styles.cardRow}>
@@ -71,14 +97,17 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
           value={formData.ticketDescription}
           onTextChange={handleEditorTextChange}
           style={{ height: '220px' }}
+          required
         />
+        {descriptionError && (
+          <small className={styles.errorText}>{descriptionError}</small>
+        )}
       </div>
 
       <div className={styles.cardFooter}>
         <Button label="Send" rounded onClick={handleSubmit} />
       </div>
 
-      {/* Confirmation Dialog */}
       <Dialog
         header="Confirmation"
         visible={showConfirmationDialog}

@@ -35,6 +35,10 @@ export default function CalendarPage() {
       resourceId: 'b',
       onlineMeetingLink: 'https://example.com/meeting2',
     },
+    {
+        title: 'Event 3',
+        start: '2023-10-26T16:00',
+      },
   ]);
 
   const calendarRef = useRef(null);

@@ -3,6 +3,11 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { Button } from 'primereact/button';
+import { Card } from 'primereact/card';
+import { Dialog } from 'primereact/dialog';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import { Toast } from 'primereact/toast';
 import {
   viewOneJobListing,
   saveJobListing,
@@ -14,15 +19,10 @@ import {
   createJobApplication,
   findExistingJobApplication,
 } from '@/app/api/jobApplication/route';
-import { Button } from 'primereact/button';
-import { Card } from 'primereact/card';
-import { Dialog } from 'primereact/dialog';
-import { ProgressSpinner } from 'primereact/progressspinner';
 import Image from 'next/image';
 import HumanIcon from '../../../../public/icon.png';
 import CreateJobApplicationForm from '@/components/CreateJobApplicationForm/CreateJobApplicationForm';
 import styles from './page.module.css';
-import { Toast } from 'primereact/toast';
 
 export default function ViewJobListingDetailsJobSeeker() {
   const session = useSession();

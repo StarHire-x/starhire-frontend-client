@@ -10,6 +10,7 @@ import { useState } from "react";
 import Utility from "@/common/helper/utility";
 import DeletePostCard from "../DeletePostCard/DeletePostCard";
 import ReportPostCard from "../ReportPostCard/ReportPostCard";
+import { Badge } from 'primereact/badge';
 
 const ForumPosts = ({
   forumPosts,
@@ -129,13 +130,17 @@ const ForumPosts = ({
           <div className={styles.dateTimeText}>
             {Utility.timeAgo(data.createdAt)}
           </div>
-          <Button
-            size="small"
-            icon="pi pi-comments"
-            rounded
-            onClick={() => openDialog(data)}
-            className={styles.commentButton}
-          ></Button>
+          <div className={styles.commentInfo}>
+            <Badge value={data?.forumComments.length} severity="info"></Badge>
+            <Button
+              size="small"
+              icon="pi pi-comments"
+              rounded
+              onClick={() => openDialog(data)}
+              className={styles.commentButton}
+            >
+            </Button>
+          </div>
         </div>
       </div>
     );
