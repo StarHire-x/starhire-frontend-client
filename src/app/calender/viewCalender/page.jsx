@@ -11,16 +11,84 @@ import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
+import { getInterviewDates } from '@/app/api/calender/route';
+import { useSearchParams } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 
 export default function CalendarPage() {
+
+  const session = useSession();
+  const router = useRouter();
+
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false); 
   const [eventClicked, setEventClicked] = useState(false); 
   const [warningDialogVisible, setWarningDialogVisible] = useState(false);
   const [selectedMeetingLink, setSelectedMeetingLink] = useState('');
+  const [interviewDates, setInterviewDates] = useState([]);
 
-  const [events, setEvents] = useState([
+  const accessToken =
+    session.status === 'authenticated' &&
+    session.data &&
+    session.data.user.accessToken;
+
+  /*
+    const userIdRef =
+    session.status === 'authenticated' &&
+    session.data &&
+    session.data.user.userId;
+
+    const role =
+    session.status === 'authenticated' &&
+    session.data &&
+    session.data.user.role;
+
+    */
+
+    const userIdRef = "5a51c50a-da24-4e35-bd3e-3b1c0b0588eb";
+    const role = "corporate";
+
+
+    /*
+    const formatEvents = (interviewDates) => {
+      return interviewDates.data.map((interview) => ({
+        title: `Interview #${interview.id}`,
+        start: new Date(interview.firstChosenDates),
+        end: new Date(interview.scheduledDate),
+        resourceId: 'a', // You can adjust this as needed
+        onlineMeetingLink: interview.interviewLink,
+      }));
+    };
+    */
+    
+
+    /*
+    const formatEvents = (interviewDates) => {
+      return interviewDates.data.map((interview) => ({
+        title: `Interview #${interview.id}`,
+        start: new Date(interview.firstChosenDates),
+        end: new Date(interview.scheduledDate),
+        resourceId: 'a', // You can adjust this as needed
+        onlineMeetingLink: interview.interviewLink,
+        secondChosenDates: interview.secondChosenDates
+          ? new Date(interview.secondChosenDates)
+          : null, // Check if the date is available, adjust as needed
+        thirdChosenDates: interview.thirdChosenDates
+          ? new Date(interview.thirdChosenDates)
+          : null, // Check if the date is available, adjust as needed
+      }));
+    };
+    */
+    
+
+    
+    
+
+
+
+  /*const [events, setEvents] = useState([
     {
       title: 'Event 1',
       start: '2023-10-25T10:00:00',
@@ -40,6 +108,41 @@ export default function CalendarPage() {
         start: '2023-10-26T16:00',
       },
   ]);
+  */
+
+  /*
+  useEffect(() => {
+    if (session.status === 'unauthenticated') {
+      router.push('/login');
+    } else if (session.status === 'authenticated') {
+      getInterviewDates(userIdRef, role, accessToken)
+        .then((data) => {
+          setInterviewDates(data);
+        })
+        .catch((error) => {
+          console.error('Error fetching Interview Dates:', error);
+        });
+    }
+  }, [userIdRef, accessToken]);
+  */
+
+  useEffect(() => {
+    getInterviewDates(userIdRef, role, accessToken)
+      .then((data) => {
+        setInterviewDates(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching Interview Dates:', error);
+      });
+  }, [userIdRef, accessToken]);
+
+  console.log(interviewDates);
+  
+
+
+
+  
+
 
   const calendarRef = useRef(null);
 
@@ -147,7 +250,7 @@ export default function CalendarPage() {
             { id: "b", title: "Auditorium B", eventColor: "green" },
             { id: "c", title: "Auditorium C", eventColor: "orange" },
           ]}
-          events={events}
+          events={interviewDates}
           eventContent={renderEventContent}
         />
       </div>
