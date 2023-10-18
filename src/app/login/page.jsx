@@ -1,12 +1,10 @@
 "use client";
-import React from "react";
+import React, { useRef } from "react";
 import styles from "./page.module.css";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
-import { headers } from "../../../next.config";
-import bcrypt from "bcryptjs";
 import { RadioButton } from "primereact/radiobutton";
 import { ProgressSpinner } from "primereact/progressspinner";
 import Enums from "@/common/enums/enums";
