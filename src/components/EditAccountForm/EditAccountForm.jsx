@@ -166,7 +166,7 @@ const EditAccountForm = ({
                     name="dateOfGraduation"
                     dateFormat="dd/mm/yy"
                     value={new Date(formData.dateOfGraduation)}
-                    maxDate={new Date()}
+                    minDate={new Date()}
                     onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
