@@ -22,6 +22,7 @@ const Login = () => {
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingRegister, setLoadingRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleInputChange = (e) => {
@@ -88,6 +89,11 @@ const Login = () => {
         setErrorMessage(error);
       }
     }
+  };
+
+  const handleRegister = async (e) => {
+    setLoadingRegister(true);
+    router.push("/register");
   };
 
   return (
@@ -168,12 +174,12 @@ const Login = () => {
         <span className={styles.orText}>or</span>
         <div className={styles.orSeparator}></div>
       </div>
-      <button
-        className={styles.registerButton}
-        onClick={() => router.push("/register")}
-      >
-        New to StarHire? Join Now!
-      </button>
+      {loadingRegister && <ProgressSpinner style={{ width: "50px", height: "50px" }} />}
+      {!loadingRegister && (
+        <button className={styles.registerButton} onClick={handleRegister}>
+          New to StarHire? Join Now!
+        </button>
+      )}
     </div>
   );
 };
