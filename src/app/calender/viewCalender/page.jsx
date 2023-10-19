@@ -1,105 +1,113 @@
-"use client"
+"use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import Layout from './components/layout';
-import { Button } from 'primereact/button';
-import { Calendar } from 'primereact/calendar';
-import { Dialog } from 'primereact/dialog';
-import { InputText } from 'primereact/inputtext';
-import { getInterviewDates } from '@/app/api/calender/route';
-import { useSearchParams } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-
+import React, { useState, useRef, useEffect } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import Layout from "./components/layout";
+import { Button } from "primereact/button";
+import { Calendar } from "primereact/calendar";
+import { Dialog } from "primereact/dialog";
+import { InputText } from "primereact/inputtext";
+import { getInterviewDates } from "@/app/api/calender/route";
+import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function CalendarPage() {
-
   const session = useSession();
   const router = useRouter();
 
   const [isFormVisible, setIsFormVisible] = useState(false);
-  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false); 
-  const [eventClicked, setEventClicked] = useState(false); 
+  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
+  const [eventClicked, setEventClicked] = useState(false);
   const [warningDialogVisible, setWarningDialogVisible] = useState(false);
-  const [selectedMeetingLink, setSelectedMeetingLink] = useState('');
+  const [selectedMeetingLink, setSelectedMeetingLink] = useState("");
   const [interviewDates, setInterviewDates] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
-  const allEvents = [];
+  // Find a way to populate this form data after u click on an event
+  const [formData, setFormData] = useState({
+    scheduledDate: "",
+    interviewLink: "",
+    interviewStatus: "",
+  })
 
-  const accessToken =
-    session.status === 'authenticated' &&
-    session.data &&
-    session.data.user.accessToken;
+  let roleRef, accessToken, userIdRef;
 
-  /*
-    const userIdRef =
-    session.status === 'authenticated' &&
-    session.data &&
-    session.data.user.userId;
+  if (session && session.data && session.data.user) {
+    userIdRef = session.data.user.userId;
+    roleRef = session.data.user.role;
+    accessToken = session.data.user.accessToken;
+  }
 
-    const role =
-    session.status === 'authenticated' &&
-    session.data &&
-    session.data.user.role;
-    */
+  // const userIdRef = "5a51c50a-da24-4e35-bd3e-3b1c0b0588eb";
+  const role = "corporate";
 
-    const userIdRef = "5a51c50a-da24-4e35-bd3e-3b1c0b0588eb";
-    const role = "corporate";
-    
+  const formattedEvent = (interviewDates) => {
+    const events = [];
+    interviewDates.forEach((interview) => {
+      if (interview.scheduledDate) {
+        const startDate = new Date(interview.scheduledDate);
+        const endDate = new Date(startDate);
+        endDate.setHours(startDate.getHours() + 1); // Add 1 hour to start date
 
-    const formatEvents = (interviewDates) => {
-      return interviewDates.map((interview) => {
-        const events = [];
-    
-        if (interview.firstChosenDates) {
-          events.push({
-            title: `Interview #${interview.id}`,
-            start: new Date(interview.firstChosenDates),
-            end: new Date(interview.firstdDate),
-            onlineMeetingLink: interview.interviewLink,
-            color: 'red', 
-          });
-        }
-    
-        if (interview.secondChosenDates) {
-          events.push({
-            title: `Interview #${interview.id}`,
-            start: new Date(interview.secondChosenDates),
-            end: new Date(interview.secondChosenDate),
-            onlineMeetingLink: interview.interviewLink,
-            color: 'red', 
-          });
-        }
-    
-        if (interview.thirdChosenDates) {
-          events.push({
-            title: `Interview #${interview.id}`,
-            start: new Date(interview.thirdChosenDates),
-            end: new Date(interview.thirdDate),
-            onlineMeetingLink: interview.interviewLink,
-            color: 'red', 
-          });
-        }
-    
-        return events;
-      }).flat(); 
-    };
+        events.push({
+          title: `Confirmed Interview #${interview.id}`,
+          start: startDate,
+          end: endDate,
+          onlineMeetingLink: interview.interviewLink,
+          interviewStatus: interview.interviewStatus,
+        });
+        return;
+      }
 
-    const confirmedInterview = (interviewDates) => {
-      return interviewDates.map((interview) => ({
-        title: `Interview #${interview.id}`,
-        start: new Date(interview.scheduledDate),
-        end: new Date(interview.scheduledDate),
-        onlineMeetingLink: interview.interviewLink,
-        interviewStatus: interview.interviewStatus, 
-      }));
-    };
-    
+      if (interview.firstChosenDates) {
+        const startDate = new Date(interview.firstChosenDates);
+        const endDate = new Date(startDate);
+        endDate.setHours(startDate.getHours() + 1); // Add 1 hour to start date
+
+        events.push({
+          title: `Scheduled Interview #${interview.id}`,
+          start: startDate,
+          end: endDate,
+          onlineMeetingLink: interview.interviewLink,
+          color: "red",
+        });
+      }
+
+      if (interview.secondChosenDates) {
+        const startDate = new Date(interview.secondChosenDates);
+        const endDate = new Date(startDate);
+        endDate.setHours(startDate.getHours() + 1); // Add 1 hour to start date
+
+        events.push({
+          title: `Scheduled Interview #${interview.id}`,
+          start: startDate,
+          end: endDate,
+          onlineMeetingLink: interview.interviewLink,
+          color: "red",
+        });
+      }
+
+      if (interview.thirdChosenDates) {
+        const startDate = new Date(interview.thirdChosenDates);
+        const endDate = new Date(startDate);
+        endDate.setHours(startDate.getHours() + 1); // Add 1 hour to start date
+
+        events.push({
+          title: `Scheduled Interview #${interview.id}`,
+          start: startDate,
+          end: endDate,
+          onlineMeetingLink: interview.interviewLink,
+          color: "red",
+        });
+      }
+    });
+    return events;
+  };
 
   /*
     const [events, setEvents] = useState([
@@ -127,10 +135,11 @@ export default function CalendarPage() {
   useEffect(() => {
     getInterviewDates(userIdRef, role, accessToken)
       .then((data) => {
-        setInterviewDates(data.data);
+        console.log(data);
+        setInterviewDates(formattedEvent(data.data));
       })
       .catch((error) => {
-        console.error('Error fetching Interview Dates:', error);
+        console.error("Error fetching Interview Dates:", error);
       });
   }, [userIdRef, accessToken]);
 
@@ -141,42 +150,51 @@ export default function CalendarPage() {
   function renderEventContent(eventInfo) {
     const startTime = eventInfo.event.start;
     const endTime = eventInfo.event.end;
-  
-    const formattedStartTime = new Intl.DateTimeFormat('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
+
+    const formattedStartTime = new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
       hour12: true,
     }).format(startTime);
-  
+
+    const formattedEndTime = new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    }).format(endTime);
+
     const interviewStatus = eventInfo.event.extendedProps.interviewStatus;
-  
+
     return (
       <div
         style={{
-          padding: '2px',
-          borderRadius: '4px',
-          color: interviewStatus === 'Confirmed_Interview' ? 'green' : 'red',
+          padding: "2px",
+          borderRadius: "4px",
+          color: interviewStatus === "Confirmed_Interview" ? "green" : "red",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          fontSize: "10px",
         }}
       >
-        <b>{formattedStartTime} {eventInfo.event.title}</b>
+        <b className="fc-event-title-container">
+          {formattedStartTime}-{formattedEndTime} {eventInfo.event.title}
+        </b>
       </div>
     );
   }
-  
-  
-  
 
   const [eventData, setEventData] = useState({
-    title: '',
+    title: "",
     start: null,
     end: null,
-    resourceId: 'a',
-    onlineMeetingLink: '',
+    resourceId: "a",
+    onlineMeetingLink: "",
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsConfirmationVisible(true); 
+    setIsConfirmationVisible(true);
   };
 
   const addNewEvent = (eventData) => {
@@ -185,9 +203,9 @@ export default function CalendarPage() {
   };
 
   const handleConfirmation = (confirmed) => {
-    setIsConfirmationVisible(false); 
+    setIsConfirmationVisible(false);
     if (confirmed) {
-      addNewEvent(eventData); 
+      addNewEvent(eventData);
       setIsFormVisible(false);
     }
   };
@@ -195,7 +213,7 @@ export default function CalendarPage() {
   useEffect(() => {
     if (calendarRef.current) {
       const calendarApi = calendarRef.current.getApi();
-      calendarApi.on('eventClick', handleEventClick);
+      calendarApi.on("eventClick", handleEventClick);
     }
   }, []);
 
@@ -207,7 +225,7 @@ export default function CalendarPage() {
   };
 
   const closeWarningDialog = () => {
-    setWarningDialogVisible(false); 
+    setWarningDialogVisible(false);
   };
 
   const redirectToMeetingLink = () => {
@@ -247,7 +265,10 @@ export default function CalendarPage() {
             { id: "b", title: "Auditorium B", eventColor: "green" },
             { id: "c", title: "Auditorium C", eventColor: "orange" },
           ]}
-          events={formatEvents(interviewDates).concat(confirmedInterview(interviewDates))}
+          // events={formatEvents(interviewDates).concat(
+          //   confirmedInterview(interviewDates)
+          // )}
+          events={interviewDates}
           eventContent={renderEventContent}
         />
       </div>
@@ -366,14 +387,3 @@ export default function CalendarPage() {
     </Layout>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
