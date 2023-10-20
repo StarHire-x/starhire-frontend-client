@@ -73,7 +73,7 @@ const ForumPosts = ({
           <div className={styles.postTitleText}>{data.forumPostTitle}</div>
           <div className={styles.postTitleButtonContainer}>
             {data.forumPostStatus === "Pending" && 
-              <div className={styles.pendingTag}>Pending for Approval</div>
+              <div className={styles.pendingTag}>Pending </div>
             }
             <Button
               size="small"
