@@ -3,7 +3,9 @@ import { Button } from 'primereact/button';
 import { Editor } from 'primereact/editor';
 import { InputText } from 'primereact/inputtext';
 import { Dialog } from 'primereact/dialog';
+import { Panel } from 'primereact/panel';
 import styles from './page.module.css';
+import { uploadFileNonAccessToken } from '@/app/api/upload/route';
 
 const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
   const [formData, setFormData] = useState({
@@ -11,12 +13,44 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
     ticketDescription: '',
     isResolved: false,
     email: '',
+    documents: [],
   });
 
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [nameError, setNameError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
+
+  const handleDocumentChange = (index, field) => (e) => {
+    const newDocuments = [...formData.documents];
+    newDocuments[index][field] = e.target.value;
+    setFormData((prevState) => ({ ...prevState, documents: newDocuments }));
+  };
+
+  const addDocument = () => {
+    setFormData((prevState) => ({
+      ...prevState,
+      documents: [
+        ...prevState.documents,
+        { mandatory: false, documentName: '', documentLink: '' },
+      ],
+    }));
+  };
+
+  const handleFileChange = async (e, index) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const response = await uploadFileNonAccessToken(file);
+
+      // Update the specific document's link in the formData
+      const newDocuments = [...formData.documents];
+      newDocuments[index].documentLink = response.url;
+      setFormData((prevState) => ({ ...prevState, documents: newDocuments }));
+    } catch (error) {
+      console.error('There was an error uploading the file', error);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -110,6 +144,55 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
         />
         {emailError && <small className={styles.errorText}>{emailError}</small>}
       </div>
+
+      <Panel header="Documents" toggleable>
+        <div className={styles.buttonContainer}>
+          <Button
+            label="Add More Documents"
+            rounded
+            type="button"
+            onClick={addDocument}
+            size="small"
+          />
+        </div>
+        {formData.documents.map((document, index) => (
+          <div key={index}>
+            <div className={styles.cardRow}>
+              <label>Document Title</label>
+              <InputText
+                name={`documentName-${index}`}
+                value={document.documentName}
+                onChange={handleDocumentChange(index, 'documentName')}
+                readOnly={document.mandatory}
+              />
+            </div>
+            <div className={styles.cardRow}>
+              <label>Document Link</label>
+              <input
+                type="file"
+                id={`documentFile-${index}`}
+                onChange={(e) => handleFileChange(e, index)}
+              />
+            </div>
+
+            {document.documentLink && (
+              <div className={styles.cardRow}>
+                <label>File</label>
+                <Button
+                  type="button"
+                  icon="pi pi-file-pdf"
+                  onClick={(e) => {
+                    e.stopPropagation(); // This stops the event from propagating up
+                    window.open(document.documentLink, '_blank');
+                  }}
+                  className="p-button-rounded p-button-danger"
+                  aria-label="Open PDF"
+                />
+              </div>
+            )}
+          </div>
+        ))}
+      </Panel>
 
       <div className={styles.cardFooter}>
         <Button label="Send" rounded onClick={handleSubmit} />
