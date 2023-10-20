@@ -145,13 +145,8 @@ const AccountManagement = () => {
           console.log("Error fetching followings of user: ", error.message);
         });
 
-<<<<<<< HEAD
       populateFormDataWithUserInfo(formData).then((formDataWithUserInfo) =>
         populateFormDataWithUserPreference(formDataWithUserInfo)
-=======
-      populateFormDataWithUserInfo(formData).then((formData) =>
-        populateFormDataWithUserPreference(formData)
->>>>>>> main
       );
       retrieveJobExperience().then((result) => setJobExperience(result));
     }
