@@ -4,6 +4,8 @@ import styles from "./page.module.css";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ProgressSpinner } from "primereact/progressspinner";
+import Link from "next/link";
+import Enums from "@/common/enums/enums";
 
 const Dashboard = () => {
   const session = useSession();
@@ -25,6 +27,33 @@ const Dashboard = () => {
           <h2 className={styles.header}>
             Welcome Back {session.data.user.name}!
           </h2>
+          <div className={styles.textContainer}>
+            <p className={styles.text}>
+              Please head to the{" "}
+              <Link className={styles.link} href="/accountManagement">
+                profile page
+              </Link>{" "}
+              to get your account set up!
+            </p>
+            {session.data.user.role === Enums.JOBSEEKER && (
+              <p>
+                You can head to{" "}
+                <Link className={styles.link} href="/jobListing">
+                  job listings
+                </Link>{" "}
+                to view the jobs that have been matched with!
+              </p>
+            )}
+            {session.data.user.role === Enums.CORPORATE && (
+              <p>
+                You can head to{" "}
+                <Link className={styles.link} href="/jobListingManagement">
+                  create job listing
+                </Link>{" "}
+                to start finding your next StarHire!
+              </p>
+            )}
+          </div>
         </div>
       </>
     );

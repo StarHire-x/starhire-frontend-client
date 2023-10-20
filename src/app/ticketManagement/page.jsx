@@ -12,6 +12,9 @@ const TicketManagement = () => {
     session.data.user &&
     Boolean(session.data.user.accessToken);
 
+  const isJobSeeker =
+    isAuthenticated && session.data.user.role === 'Job_Seeker';
+
   const generalUrl = '/ticketManagement/createATicket?problem=general';
   const accountUrl = '/ticketManagement/createATicket?problem=account';
   const jobsUrl = '/ticketManagement/createATicket?problem=jobs';
@@ -22,7 +25,7 @@ const TicketManagement = () => {
 
   return (
     <div className={styles.container}>
-      <h1>Hi, we're here to help.</h1>
+      <h1>Hi, we&apos;re here to help.</h1>
       <h3>Recommended topics</h3>
       <div className={styles.cardContainerStyle}>
         <div
@@ -59,13 +62,15 @@ const TicketManagement = () => {
               <p>Events</p>
             </div>
 
-            <div
-              className={styles.individualCardStyle}
-              onClick={() => (window.location.href = forumUrl)}
-            >
-              <div className={styles.icon}>&#x1F50E;</div>
-              <p>Forum</p>
-            </div>
+            {isJobSeeker && (
+              <div
+                className={styles.individualCardStyle}
+                onClick={() => (window.location.href = forumUrl)}
+              >
+                <div className={styles.icon}>&#x1F50E;</div>
+                <p>Forum</p>
+              </div>
+            )}
           </>
         )}
 

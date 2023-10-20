@@ -32,11 +32,18 @@ a {
 }
 
 .container {
-  max-width: 1366px;
+  max-width: 100%;
   min-height: 100vh;
   margin: 0 auto;
   padding: 0 60px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+@media screen and (max-width: 768px) {
+  /* Adjust styles for smaller screens */
+  .container {
+    padding: 10px;
+  }
 }

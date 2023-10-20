@@ -19,7 +19,8 @@ const CreateComment = ({
   accessToken,
   postData,
   setRefreshData,
-  openDeleteDialog
+  openDeleteDialog,
+  openReportDialog,
 }) => {
   const [comment, setComment] = useState("");
   const [commentValid, setCommentValid] = useState(false);
@@ -137,15 +138,29 @@ const CreateComment = ({
       <Card className={styles.postCard}>
         <div className={styles.postTitle}>
           <div>{postData.forumPostTitle}</div>
-          {postData.jobSeeker.userId === userIdRef && (
+          <div className={styles.postTitleButtonContainer}>
+            {postData.forumPostStatus === "Pending" && (
+              <div className={styles.pendingTag}>Pending for Approval</div>
+            )}
             <Button
               size="small"
-              icon="pi pi-delete-left"
+              icon="pi pi-exclamation-circle"
               rounded
-              onClick={() => openDeleteDialog(postData)}
-              className={styles.deleteButton}
-            ></Button>
-          )}
+              onClick={() => openReportDialog(postData)}
+              className={styles.reportButton}
+            />
+            {postData.jobSeeker.userId === userIdRef && (
+              <>
+                <Button
+                  size="small"
+                  icon="pi pi-trash"
+                  rounded
+                  onClick={() => openDeleteDialog(postData)}
+                  className={styles.deleteButton}
+                />
+              </>
+            )}
+          </div>
         </div>
         <div className={styles.userId}>
           {postData.isAnonymous === false

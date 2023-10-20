@@ -145,8 +145,13 @@ const AccountManagement = () => {
           console.log("Error fetching followings of user: ", error.message);
         });
 
+<<<<<<< HEAD
       populateFormDataWithUserInfo(formData).then((formDataWithUserInfo) =>
         populateFormDataWithUserPreference(formDataWithUserInfo)
+=======
+      populateFormDataWithUserInfo(formData).then((formData) =>
+        populateFormDataWithUserPreference(formData)
+>>>>>>> main
       );
       retrieveJobExperience().then((result) => setJobExperience(result));
     }
@@ -246,39 +251,50 @@ const AccountManagement = () => {
       highestEducationStatus: formData.highestEducationStatus,
       visibility: formData.visibility,
     };
-    try {
-      console.log(userId);
-      console.log(updateUserDetails);
-      const response = await updateUser(
-        updateUserDetails,
-        userId,
-        sessionTokenRef
-      );
 
-      if (response) {
-        //alert("Status changed successfully!");
-        if (deactivateAccountDialog) {
-          hideDeactivateAccountDialog();
-        }
-        toast.current.show({
-          severity: "success",
-          summary: "Success",
-          detail: "Account details updated successfully!",
-          life: 5000,
-        });
-        setRefreshData((prev) => !prev);
-        // this is to do a reload of userContext if it is updated so that navbar can change
-        fetchUserData();
-      }
-    } catch {
-      console.log("Failed to update user");
-      // alert("Failed to update user particulars");
+    if (formData.contactNo && formData.contactNo.toString().length !== 8) {
       toast.current.show({
         severity: "error",
         summary: "Error",
-        detail: error.message,
+        detail: "Contact number must contain 8 digits.",
         life: 5000,
       });
+    } else {
+      try {
+        console.log(userId);
+        console.log(updateUserDetails);
+
+        const response = await updateUser(
+          updateUserDetails,
+          userId,
+          sessionTokenRef
+        );
+
+        if (response) {
+          //alert("Status changed successfully!");
+          if (deactivateAccountDialog) {
+            hideDeactivateAccountDialog();
+          }
+          toast.current.show({
+            severity: "success",
+            summary: "Success",
+            detail: "Account details updated successfully!",
+            life: 5000,
+          });
+          setRefreshData((prev) => !prev);
+          // this is to do a reload of userContext if it is updated so that navbar can change
+          fetchUserData();
+        }
+      } catch (error) {
+        console.log("Failed to update user");
+        // alert("Failed to update user particulars");
+        toast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail: error.message,
+          life: 5000,
+        });
+      }
     }
   };
   if (session.status === "authenticated") {

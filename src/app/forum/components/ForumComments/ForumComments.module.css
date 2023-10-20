@@ -86,6 +86,13 @@
     margin-top: 10px;
   }
 
+  .commentMsgCard {
+    display: flex;
+    align-items: center;
+    width: 50vw;
+    margin-top: 15px;
+  }
+
   .userSection {
     display: flex;
     flex-direction: column;

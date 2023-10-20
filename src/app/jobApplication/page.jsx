@@ -4,18 +4,18 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
+import { Dialog } from 'primereact/dialog';
+import { Dropdown } from 'primereact/dropdown';
+import { Tag } from 'primereact/tag';
+import { Toast } from 'primereact/toast';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import styles from './page.module.css';
 import {
   getJobApplicationsByJobSeeker,
   updateJobApplicationStatus,
 } from '../api/jobApplication/route';
-import { Dialog } from 'primereact/dialog';
-import { Tag } from 'primereact/tag';
 import ViewJobApplicationForm from '@/components/ViewJobApplicationForm/ViewJobApplicationForm';
-import { Dropdown } from 'primereact/dropdown';
 import EditJobApplicationForm from '@/components/EditJobApplicationForm/EditJobApplicationForm';
-import { Toast } from 'primereact/toast';
+import styles from './page.module.css';
 
 const JobApplicationPage = () => {
   const [jobApplications, setJobApplications] = useState([]);
@@ -48,7 +48,9 @@ const JobApplicationPage = () => {
     { label: 'To Be Submitted', value: 'To_Be_Submitted' },
     { label: 'Waiting For Interview', value: 'Waiting_For_Interview' },
     { label: 'Rejected', value: 'Rejected' },
-    { label: 'Accepted', value: 'Accepted' },
+    { label: 'Offered', value: 'Offered' },
+    { label: 'Offer Rejected', value: 'Offer_Rejected' },
+    { label: 'Offer Accepted', value: 'Offer_Accepted' },
   ];
 
   const filteredApplications = filterStatus
@@ -58,16 +60,20 @@ const JobApplicationPage = () => {
   const getStatus = (status) => {
     switch (status) {
       case 'Submitted':
-        return 'info'; // or choose other severity based on your preference
+        return 'info';
       case 'Processing':
         return 'warning';
       case 'To_Be_Submitted':
-        return 'danger'; // assuming this is a critical state before submission
+        return 'danger';
       case 'Waiting_For_Interview':
         return 'info';
       case 'Rejected':
         return 'danger';
-      case 'Accepted':
+      case 'Offered':
+        return 'success';
+      case 'Offer_Rejected':
+        return 'danger';
+      case 'Offer_Accepted':
         return 'success';
       default:
         return '';
@@ -92,6 +98,10 @@ const JobApplicationPage = () => {
   const hideEditJobApplicationDialog = () => {
     setShowEditJobApplicationDialog(false);
   };
+
+  const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+  const [currentAction, setCurrentAction] = useState(null);
+  const [currentJobApplicationId, setCurrentJobApplicationId] = useState(null);
 
   const statusRemoveUnderscore = (status) => {
     return status.replaceAll('_', ' ');
@@ -210,6 +220,74 @@ const JobApplicationPage = () => {
     setShowEditJobApplicationDialog(false);
   };
 
+  const handleAccept = async (jobApplicationId) => {
+    try {
+      await updateJobApplicationStatus(
+        {
+          jobApplicationStatus: 'Offer_Accepted',
+        },
+        jobApplicationId,
+        accessToken
+      );
+
+      toast.current.show({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Offer accepted successfully!',
+        life: 5000,
+      });
+
+      setRefreshData((prev) => !prev);
+    } catch (error) {
+      toast.current.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: error.message,
+        life: 5000,
+      });
+    }
+  };
+
+  const handleReject = async (jobApplicationId) => {
+    try {
+      await updateJobApplicationStatus(
+        {
+          jobApplicationStatus: 'Offer_Rejected',
+        },
+        jobApplicationId,
+        accessToken
+      );
+
+      toast.current.show({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Offer rejected successfully!',
+        life: 5000,
+      });
+
+      setRefreshData((prev) => !prev);
+    } catch (error) {
+      toast.current.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: error.message,
+        life: 5000,
+      });
+    }
+  };
+
+  const openConfirmationDialog = (action, jobApplicationId) => {
+    setCurrentAction(action);
+    setCurrentJobApplicationId(jobApplicationId);
+    setShowConfirmationDialog(true);
+  };
+
+  const closeConfirmationDialog = () => {
+    setCurrentAction(null);
+    setCurrentJobApplicationId(null);
+    setShowConfirmationDialog(false);
+  };
+
   const itemTemplate = (jobApplication) => {
     return (
       <div className={styles.card}>
@@ -239,23 +317,29 @@ const JobApplicationPage = () => {
           </div>
         </div>
         <div className={styles.cardFooter}>
-          {jobApplication.jobApplicationStatus === 'Accepted' && (
+          {jobApplication.jobApplicationStatus === 'Offered' && (
             <>
               <Button
                 label="Accept"
                 rounded
                 className={styles.acceptButton}
-                onClick={() => {
-                  // Logic to handle Accept action
-                }}
+                onClick={() =>
+                  openConfirmationDialog(
+                    'accept',
+                    jobApplication.jobApplicationId
+                  )
+                }
               />
               <Button
                 label="Reject"
                 rounded
                 className={styles.rejectButton}
-                onClick={() => {
-                  // Logic to handle Reject action
-                }}
+                onClick={() =>
+                  openConfirmationDialog(
+                    'reject',
+                    jobApplication.jobApplicationId
+                  )
+                }
               />
             </>
           )}
@@ -342,6 +426,30 @@ const JobApplicationPage = () => {
           setFormErrors={setFormErrors}
           editJobApplication={editJobApplication}
         />
+      </Dialog>
+
+      <Dialog
+        header="Confirmation"
+        visible={showConfirmationDialog}
+        onHide={closeConfirmationDialog}
+        footer={
+          <div>
+            <Button label="No" onClick={closeConfirmationDialog} />
+            <Button
+              label="Yes"
+              onClick={() => {
+                closeConfirmationDialog();
+                if (currentAction === 'accept') {
+                  handleAccept(currentJobApplicationId);
+                } else if (currentAction === 'reject') {
+                  handleReject(currentJobApplicationId);
+                }
+              }}
+            />
+          </div>
+        }
+      >
+        Are you sure you want to {currentAction} this offer?
       </Dialog>
     </div>
   );

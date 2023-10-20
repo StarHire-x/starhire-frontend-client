@@ -1,12 +1,10 @@
 "use client";
-import React from "react";
+import React, { useRef } from "react";
 import styles from "./page.module.css";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
-import { headers } from "../../../next.config";
-import bcrypt from "bcryptjs";
 import { RadioButton } from "primereact/radiobutton";
 import { ProgressSpinner } from "primereact/progressspinner";
 import Enums from "@/common/enums/enums";
@@ -22,6 +20,7 @@ const Login = () => {
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingRegister, setLoadingRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleInputChange = (e) => {
@@ -88,6 +87,11 @@ const Login = () => {
         setErrorMessage(error);
       }
     }
+  };
+
+  const handleRegister = async (e) => {
+    setLoadingRegister(true);
+    router.push("/register");
   };
 
   return (
@@ -168,12 +172,12 @@ const Login = () => {
         <span className={styles.orText}>or</span>
         <div className={styles.orSeparator}></div>
       </div>
-      <button
-        className={styles.registerButton}
-        onClick={() => router.push("/register")}
-      >
-        New to StarHire? Join Now!
-      </button>
+      {loadingRegister && <ProgressSpinner style={{ width: "50px", height: "50px" }} />}
+      {!loadingRegister && (
+        <button className={styles.registerButton} onClick={handleRegister}>
+          New to StarHire? Join Now!
+        </button>
+      )}
     </div>
   );
 };

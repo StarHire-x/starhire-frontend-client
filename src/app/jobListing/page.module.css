@@ -5,14 +5,13 @@
   padding: 20px;
   background-color: #006d77;
 }
-
 .header .p-input-icon-left input.p-inputtext {
   width: 250px;
 }
 
 .container {
   display: flex;
-  height: 100vh;
+  height: 900px;
   padding: 0 20px;
   background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -21,7 +20,6 @@
 .companyInfo {
   display: flex;
   align-items: center; /* Align items vertically in the middle */
-  /* margin-bottom: 16px; */
 }
 
 .listingsPanel {
@@ -63,17 +61,12 @@
 }
 
 .jobDetailPanel h2 {
-  margin-bottom: 30px; /* space under the title */
+  margin-bottom: 30px;
 }
 
 .jobDetailPanel p {
-  margin-bottom: 20px; /* space between paragraphs */
-  line-height: 1.5; /* adjust as required for line-height within paragraphs */
-}
-
-.applyButton {
-  background-color: blue;
-  color: white;
+  margin-bottom: 20px;
+  line-height: 1.5;
 }
 
 .my-card .pCardContent {
@@ -105,7 +98,7 @@
 
 .savedJobsButton:hover {
   background-color: #d4e4e7 !important;
-  color: #004a53 !important; /* Example hover text color */
+  color: #004a53 !important;
 }
 
 .saveButton {
@@ -124,28 +117,6 @@
   background-color: #ffffff !important;
 }
 
-.createButton {
-  background-color: #e29578 !important;
-  color: white;
-  border: none !important;
-}
-
-.rejectButton {
-  background-color: #ff0000 !important;
-  color: white;
-  border: none !important;
-}
-
-.relativePosition {
-  position: relative;
-}
-
-.absoluteTopRight {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
 .titleWithSaveButton {
   display: flex;
   justify-content: space-between;
@@ -155,7 +126,7 @@
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
   }
 
   .header h1.p-input-icon-left {
@@ -171,16 +142,18 @@
   }
 
   .container {
-    flex-direction: column;
+    flex-direction: row;
     height: auto;
   }
 
-  .listingsPanel,
   .detailsPanel {
-    border-right: none;
-    padding: 10px;
-    width: 100%;
+    display: none;
   }
+
+.jobDescriptionDialog {
+  height: 80%;
+}
+
 }
 
 @media (max-width: 480px) {

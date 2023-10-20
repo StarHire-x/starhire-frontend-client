@@ -18,6 +18,10 @@
   border: 1px solid rgba(128, 128, 128, 0.202);
 }
 
+.postTitleButtonContainer {
+  display: flex;
+}
+
 .postTitle {
   display: flex;
   flex-direction: row;
@@ -46,6 +50,16 @@
   margin-left: 10px;
   padding: 5px 10px;
   color: white;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+}
+
+.pendingTag {
+  padding: 5px 10px; 
+  background-color: rgb(224, 105, 7); 
+  color: white; 
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -133,22 +147,35 @@
   margin-left: 5px;
 }
 
-.commentButton {
-  width: 30px !important;
-  height: 30px !important;
-  border-radius: 20px;
-}
 
-.allCommentsContainer {
-
-}
-
-.deleteButton {
+.deleteButton,
+.reportButton {
   background: transparent !important;
   color: black !important;
   border: transparent !important;
   width: 30px !important;
   height: 30px !important;
+}
+
+.deleteButton:hover {
+  border: #2196f3 !important;
+  background-color: #2196f3 !important;
+  border: #2196f3 !important ;
+  color: #edf6f9 !important;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.reportButton:hover {
+  border: rgba(255, 0, 0, 0.743)  !important;
+  background-color: rgba(255, 0, 0, 0.743) !important;
+  border: rgba(255, 0, 0, 0.743)  !important ;
+  color: #edf6f9 !important;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+}
+.allCommentsContainer {
+
 }
 
 @media (max-width: 561px) {
