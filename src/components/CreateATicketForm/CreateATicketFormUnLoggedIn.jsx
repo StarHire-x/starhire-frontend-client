@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Button } from 'primereact/button';
 import { Editor } from 'primereact/editor';
 import { InputText } from 'primereact/inputtext';
+import { InputTextarea } from 'primereact/inputtextarea';
 import { Dialog } from 'primereact/dialog';
-import { Panel } from 'primereact/panel';
 import styles from './page.module.css';
 import { uploadFileNonAccessToken } from '@/app/api/upload/route';
 
@@ -57,16 +57,9 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const stripHtmlTags = (str) => {
-    if (str === null || str === '') return '';
-    else str = str.toString();
-    return str.replace(/<[^>]*>/g, '');
-  };
-
-  const handleEditorTextChange = (e) => {
-    console.log('Editor Text Change:', e.htmlValue);
-    const plainText = stripHtmlTags(e.htmlValue);
-    setFormData((prev) => ({ ...prev, ticketDescription: plainText }));
+  const handleTextareaChange = (e) => {
+    console.log('Textarea Change:', e.target.value);
+    setFormData((prev) => ({ ...prev, ticketDescription: e.target.value }));
   };
 
   const handleSubmit = () => {
@@ -112,7 +105,7 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
           name="ticketName"
           value={formData.ticketName}
           onChange={handleInputChange}
-          style={{ width: '75%' }}
+          style={{ width: '65%' }}
           required
         />
         {nameError && <small className={styles.errorText}>{nameError}</small>}
@@ -120,12 +113,12 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
 
       <div className={styles.cardRow}>
         <label htmlFor="ticketDescription">Problem Description:</label>
-        <Editor
+        <InputTextarea
           id="ticketDescription"
           name="ticketDescription"
           value={formData.ticketDescription}
-          onTextChange={handleEditorTextChange}
-          style={{ height: '220px' }}
+          onChange={handleTextareaChange}
+          style={{ height: '180px', width: '65%' }}
           required
         />
         {descriptionError && (
@@ -139,60 +132,59 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
           name="email"
           value={formData.email}
           onChange={handleInputChange}
-          style={{ width: '75%' }}
+          style={{ width: '65%' }}
           required
         />
         {emailError && <small className={styles.errorText}>{emailError}</small>}
       </div>
 
-      <Panel header="Documents" toggleable>
-        <div className={styles.buttonContainer}>
-          <Button
-            label="Add More Documents"
-            rounded
-            type="button"
-            onClick={addDocument}
-            size="small"
-          />
-        </div>
-        {formData.documents.map((document, index) => (
-          <div key={index}>
-            <div className={styles.cardRow}>
-              <label>Document Title</label>
-              <InputText
-                name={`documentName-${index}`}
-                value={document.documentName}
-                onChange={handleDocumentChange(index, 'documentName')}
-                readOnly={document.mandatory}
-              />
-            </div>
-            <div className={styles.cardRow}>
-              <label>Document Link</label>
-              <input
-                type="file"
-                id={`documentFile-${index}`}
-                onChange={(e) => handleFileChange(e, index)}
-              />
-            </div>
-
-            {document.documentLink && (
-              <div className={styles.cardRow}>
-                <label>File</label>
-                <Button
-                  type="button"
-                  icon="pi pi-file-pdf"
-                  onClick={(e) => {
-                    e.stopPropagation(); // This stops the event from propagating up
-                    window.open(document.documentLink, '_blank');
-                  }}
-                  className="p-button-rounded p-button-danger"
-                  aria-label="Open PDF"
-                />
-              </div>
-            )}
+      <div className={styles.buttonContainer}>
+        <Button
+          label="Add A Screenshot"
+          rounded
+          type="button"
+          onClick={addDocument}
+          size="small"
+        />
+      </div>
+      {formData.documents.map((document, index) => (
+        <div key={index}>
+          <div className={styles.cardRow}>
+            <label>Document Title</label>
+            <InputText
+              name={`documentName-${index}`}
+              value={document.documentName}
+              onChange={handleDocumentChange(index, 'documentName')}
+              style={{ width: '65%' }}
+              readOnly={document.mandatory}
+            />
           </div>
-        ))}
-      </Panel>
+          <div className={styles.cardRow}>
+            <label>Document Link</label>
+            <input
+              type="file"
+              id={`documentFile-${index}`}
+              onChange={(e) => handleFileChange(e, index)}
+            />
+          </div>
+
+          {document.documentLink && (
+            <div className={styles.cardRow}>
+              <label>File</label>
+              <Button
+                type="button"
+                icon="pi pi-file-pdf"
+                onClick={(e) => {
+                  e.stopPropagation(); // This stops the event from propagating up
+                  window.open(document.documentLink, '_blank');
+                }}
+                className="p-button-rounded p-button-danger"
+                aria-label="Open PDF"
+              />
+            </div>
+          )}
+        </div>
+      ))}
 
       <div className={styles.cardFooter}>
         <Button label="Send" rounded onClick={handleSubmit} />
