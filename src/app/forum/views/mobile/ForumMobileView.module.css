@@ -21,6 +21,7 @@
 .postsContainer {
   height: 200vh;
   overflow: auto;
+  width: 70vw;
 }
 
 .createPostBtnContainer {
