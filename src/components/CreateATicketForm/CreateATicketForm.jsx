@@ -15,7 +15,7 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
   const userEmail = session?.user?.email || '';
 
   const [formData, setFormData] = useState({
-    ticketName: forumPostId ? 'Re: Forum Post ' + forumPostId + ' - ' : '',
+    ticketName: forumPostId ? 'Re: Forum Post ' + forumPostId : '',
     ticketDescription: '',
     isResolved: false,
     email: userEmail,
@@ -117,6 +117,7 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
           onChange={handleInputChange}
           style={{ width: '65%' }}
           required
+          readOnly={forumPostId ? true : false} 
         />
         {nameError && <small className={styles.errorText}>{nameError}</small>}
       </div>
