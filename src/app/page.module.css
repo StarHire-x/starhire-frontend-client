@@ -31,6 +31,20 @@
   animation: move 3s infinite ease alternate;
 }
 
+.carouselSlide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+}
+
+.carouselSlide h1 {
+  font-size: 48px;
+  margin-top: 10px;
+}
+
 @keyframes move {
   from {
     transform: translateY(-15px);
@@ -39,7 +53,6 @@
     transform: translateY(0px) scale(1.03);
   }
 }
-
 
 .buttonContainer {
   display: flex;
@@ -90,12 +103,16 @@
   }
 
   .jobSearchButton,
-.findTalentButton {
-  display: inline-block; /* Use 'inline-block' to make the buttons inline with each other */
-  text-align: center; /* Center the text horizontally within each button */
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 15px;
-  margin: 0 5px; /* Add margin to create space between buttons */
-}
+  .findTalentButton {
+    display: inline-block; /* Use 'inline-block' to make the buttons inline with each other */
+    text-align: center; /* Center the text horizontally within each button */
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 15px;
+    margin: 0 5px; /* Add margin to create space between buttons */
+  }
+
+  .carouselSlide h1 {
+    font-size: 24px;
+  }
 }
