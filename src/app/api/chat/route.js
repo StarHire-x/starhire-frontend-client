@@ -53,7 +53,7 @@ export const getOneUserChat = async (chatId, accessToken) => {
 
 export const createChat = async (newChat, accessToken) => {
   try {
-    const res = await fetch(`http://localhost:8080/chat`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/chat`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -76,15 +76,18 @@ export const createChat = async (newChat, accessToken) => {
 
 export const createChatMessage = async (chatMessage, accessToken) => {
   try {
-    const res = await fetch(`http://localhost:8080/chat-message`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify(chatMessage),
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/chat-message`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(chatMessage),
+        cache: "no-store",
+      }
+    );
     if (!res.ok) {
       const errorData = await res.json();
       console.log(errorData);

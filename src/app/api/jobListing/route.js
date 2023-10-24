@@ -373,11 +373,11 @@ export const removeJobListingAssignment = async (
 ) => {
   try {
     const res = await fetch(
-      `http://localhost:8080/job-listing/rejectJobListing/${jobSeekerId}/${jobListingId}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/rejectJobListing/${jobSeekerId}/${jobListingId}`,
       {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
       }
