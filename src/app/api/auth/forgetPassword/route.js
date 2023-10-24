@@ -67,13 +67,16 @@ export const sendEmail = async (request) => {
 
 export const updateUserPassword = async (request, id) => {
   try {
-    const res = await fetch(`http://localhost:8080/users/reset/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(request),
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/users/reset/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(request),
+      }
+    );
 
     if (res.ok) {
       return;
