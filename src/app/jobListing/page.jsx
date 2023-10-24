@@ -36,6 +36,8 @@ const JobListingPage = () => {
     setShowJobDescriptionDialog(false);
   };
 
+  const [isMobile, setIsMobile] = useState(false);
+
   const accessToken =
     session.status === "authenticated" &&
     session.data &&
@@ -57,12 +59,14 @@ const JobListingPage = () => {
 
   useEffect(() => {
     // Redirect to login if the user is unauthenticated
-    if (session.status === "unauthenticated" || session.status === "loading") {
+    if (session.status === "unauthenticated") {
       router.push("/login");
     }
 
     // Only run the logic if the user is authenticated
     if (accessToken) {
+      setIsMobile(window.innerWidth <= 768);
+
       findAssignedJobListingsByJobSeeker(jobSeekerId, accessToken)
         .then((data) => {
           setJobListings(data);
@@ -70,6 +74,7 @@ const JobListingPage = () => {
         })
         .catch((error) => {
           console.error("Error fetching job listings:", error);
+          setJobListings([]);
           setIsLoading(false);
         });
     }
@@ -210,10 +215,9 @@ const JobListingPage = () => {
         <div className={styles.listingsPanel}>
           {filteredJobListings.map((jobListing) => itemTemplate(jobListing))}
         </div>
-
         {/* Right Panel - Job Details */}
         <div className={styles.detailsPanel}>
-          {selectedJob ? (
+          {selectedJob && !isMobile ? (
             <JobDetailPanel
               selectedJob={selectedJob}
               setSelectedJob={setSelectedJob}
@@ -229,8 +233,28 @@ const JobListingPage = () => {
             <p>Select a job listing to view details.</p>
           )}
         </div>
-
-        <Dialog
+        {/* Right Panel - Job Details conditional rendering for mobile */}
+        {selectedJob && isMobile && (
+          <Dialog
+            header="Job Details"
+            visible={showJobDescriptionDialog}
+            onHide={hideJobDescriptionDialog}
+            className={styles.jobDescriptionDialog}
+          >
+            <JobDetailPanel
+              selectedJob={selectedJob}
+              setSelectedJob={setSelectedJob}
+              accessToken={accessToken}
+              formErrors={formErrors}
+              setFormErrors={setFormErrors}
+              refreshData={refreshData}
+              setRefreshData={setRefreshData}
+              jobSeekerId={jobSeekerId}
+              toast={toast}
+            />
+          </Dialog>
+        )}
+        {/* <Dialog
           header='Job Details'
           visible={showJobDescriptionDialog}
           onHide={hideJobDescriptionDialog}
@@ -247,7 +271,7 @@ const JobListingPage = () => {
             jobSeekerId={jobSeekerId}
             toast={toast}
           />
-        </Dialog>
+        </Dialog> */}
       </div>
     </>
   );

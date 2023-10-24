@@ -47,7 +47,7 @@ export const findExistingJobApplication = async (
     const response = await res.json();
     console.log("Find existing job application");
     console.log(response);
-    if (response.statusCode === 200) {
+    if (response.statusCode === 200 || 404) {
       return response;
     } else {
       return NextResponse.json(

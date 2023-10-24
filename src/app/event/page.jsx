@@ -14,6 +14,7 @@ import styles from './page.module.css';
 const EventPage = () => {
   const session = useSession();
   const router = useRouter();
+  const toast = useRef(null);
 
   const [eventListings, setEventListings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -30,7 +31,5 @@ const EventPage = () => {
     session.data &&
     session.data.user.userId;
 };
-
-const toast = useRef(null);
 
 export default EventPage;
