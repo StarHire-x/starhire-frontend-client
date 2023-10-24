@@ -40,10 +40,13 @@ const JobDetailPanel = ({
         selectedJob.jobListingId,
         accessToken
       ).then((response) => {
+        console.log(response);
         if (response.statusCode === 200) {
           setIsJobApplicationAbsent(false);
+        } else if (response.statusCode === 404) {
+          setIsJobApplicationAbsent(true);
         } else {
-          console.error('Error fetching job preference:', response.json());
+          console.error('Error fetching job preference:', response);
           setIsJobApplicationAbsent(true);
         }
       });
@@ -182,8 +185,8 @@ const JobDetailPanel = ({
         life: 5000,
       });
     }
-    setShowRejectJobListingDialog(false);
     setSelectedJob(null);
+    setShowRejectJobListingDialog(false);
   };
 
   const deleteDialogFooter = (
