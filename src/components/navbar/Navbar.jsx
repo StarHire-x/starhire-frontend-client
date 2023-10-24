@@ -18,7 +18,7 @@ const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
   { text: 'Job Listings', href: '/jobListing' },
   { text: 'Job Applications', href: '/jobApplication' },
   { text: 'Forum', href: '/forum' },
-  { text: 'Events', href: '/events' },
+  { text: 'Events', href: '/event' },
   { text: 'Contact', href: '/contact' },
   { text: 'Chat', href: '/chat' },
 ];
