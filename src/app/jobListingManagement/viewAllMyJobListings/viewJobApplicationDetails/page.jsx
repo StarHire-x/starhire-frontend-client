@@ -583,6 +583,7 @@ Hope to hear from you soon\n${currentUserName}`;
               severity="primary"
               onClick={() => handleOnBackClick()}
             />
+
             {jobApplication?.jobApplicationStatus === "Processing" && (
               <div className={styles.subButtons}>
                 <Button
@@ -599,19 +600,21 @@ Hope to hear from you soon\n${currentUserName}`;
                   severity="success"
                   onClick={() => showUserDialog("Offered")}
                 />
-                <Button
-                  label="Arrange Interview"
-                  icon="pi pi-calendar"
-                  rounded
-                  severity="info"
-                  onClick={handleArrangeInterview}
-                />
+                {jobApplication?.jobApplicationStatus === "Processing" && (
+                  <Button
+                    label="Arrange Interview"
+                    icon="pi pi-calendar"
+                    rounded
+                    severity="info"
+                    onClick={handleArrangeInterview}
+                  />
+                )}
 
                 <Dialog
                   visible={userDialog}
                   style={{ width: "32rem" }}
                   breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-                  header="Are you sure?"
+                  header="Are you sure? This action is not reversible!!"
                   className="p-fluid"
                   footer={userDialogFooter}
                   onHide={hideDialog}
@@ -620,7 +623,7 @@ Hope to hear from you soon\n${currentUserName}`;
                 <Dialog
                   visible={confirmSendDialog}
                   style={{ width: "32rem" }}
-                  header="Are you sure?"
+                  header="Are you sure?, This action is not reversible!!"
                   className="p-fluid"
                   footer={confirmSendDialogFooter}
                   onHide={hideConfirmSendDialog}
@@ -637,7 +640,7 @@ Hope to hear from you soon\n${currentUserName}`;
                   footer={arrangeInterviewDialogFooter}
                   onHide={hideArrangeInterviewDialog}
                 >
-                {error && <Message severity="error" text={error} />}
+                  {error && <Message severity="error" text={error} />}
                   <div>
                     <label htmlFor="interviewDate">
                       Choose Interview Date and Time:
@@ -677,6 +680,26 @@ Hope to hear from you soon\n${currentUserName}`;
                     />
                   </div>
                 </Dialog>
+              </div>
+            )}
+
+            {jobApplication?.jobApplicationStatus ===
+              "Waiting_For_Interview" && (
+              <div className={styles.subButtons}>
+                <Button
+                  label="Accept"
+                  icon="pi pi-thumbs-up"
+                  rounded
+                  severity="success"
+                  onClick={() => showUserDialog("Offered")}
+                />
+                <Button
+                  label="Reject"
+                  icon="pi pi-thumbs-down"
+                  rounded
+                  severity="danger"
+                  onClick={() => showUserDialog("Offer_Rejected")}
+                />
               </div>
             )}
           </div>
