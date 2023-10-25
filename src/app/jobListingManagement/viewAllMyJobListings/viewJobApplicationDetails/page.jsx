@@ -76,7 +76,7 @@ const ViewJobApplicationDetails = () => {
         return 'Offered';
       case 'Rejected':
         return 'Rejected';
-      case 'Offer_Accepted':
+      case 'Rejected':
         return 'Offer Accepted';
       case 'Offer_Rejected':
         return 'Offer Rejected';
@@ -93,24 +93,26 @@ const ViewJobApplicationDetails = () => {
 
   const getStatus = (status) => {
     switch (status) {
-      case 'to_be_submitted':
-        return 'info';
-      case 'Processing':
-        return 'warning';
-      case 'Waiting_For_Interview':
-        return 'info';
-      case 'Offer_Rejected':
-        return 'danger';
-      case 'Offer_Accepted':
-        return 'success';
-      case 'Rejected':
-        return 'danger';
-      case 'Offered':
-        return 'warning';
-      case 'Unverified':
-        return 'warning';
+      case "to_be_submitted":
+        return "info";
+      case "Processing":
+        return "warning";
+      case "Waiting_For_Interview":
+        return "info";
+      case "Offer_Rejected":
+        return "danger";
+      case "Rejected":
+        return "danger";
+      case "Offer_Accepted":
+        return "success";
+      case "Rejected":
+        return "danger";
+      case "Offered":
+        return "warning";
+      case "Unverified":
+        return "warning";
       default:
-        return '';
+        return "";
     }
   };
 
@@ -291,7 +293,7 @@ ${currentUserName}`
       console.log('Status is ' + response.status);
 
       if (response.status === 200) {
-        if (newStatus === "Offered" || newStatus === "Offer_Rejected") {
+        if (newStatus === "Offered" || newStatus === "Rejected") {
           router.back();
         } 
       } else {
@@ -604,7 +606,7 @@ ${currentUserName}`
                   icon="pi pi-thumbs-down"
                   rounded
                   severity="danger"
-                  onClick={() => showUserDialog("Offer_Rejected")}
+                  onClick={() => showUserDialog("Rejected")}
                 />
                 <Button
                   label="Accept"
@@ -711,7 +713,7 @@ ${currentUserName}`
                   icon="pi pi-thumbs-down"
                   rounded
                   severity="danger"
-                  onClick={() => showUserDialog("Offer_Rejected")}
+                  onClick={() => showUserDialog("Rejected")}
                 />
               </div>
             )}
