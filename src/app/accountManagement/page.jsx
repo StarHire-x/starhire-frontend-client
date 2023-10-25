@@ -20,6 +20,10 @@ import { getJobExperience } from "../api/jobExperience/route";
 import JobExperiencePanel from "@/components/JobExperiencePanel/JobExperiencePanel";
 import { Dialog } from "primereact/dialog";
 import Enums from "@/common/enums/enums";
+import {
+  fetchTypeFormResponsesCorporate,
+  fetchTypeFormResponsesJobSeeker,
+} from "../api/typeform/routes";
 
 const AccountManagement = () => {
   const session = useSession();
@@ -27,6 +31,7 @@ const AccountManagement = () => {
   const [refreshData, setRefreshData] = useState(false);
   const [jobExperience, setJobExperience] = useState([]);
   const [deactivateAccountDialog, setDeactivateAccountDialog] = useState(false);
+  const [typeformSubmitted, setTypeformSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     userId: "",
     userName: "",
@@ -137,6 +142,33 @@ const AccountManagement = () => {
         }
       };
 
+      const retrieveTypeformSubmissionJobSeeker = async (email) => {
+        try {
+          const response = await fetchTypeFormResponsesJobSeeker(
+            sessionTokenRef,
+            email
+          );
+          if (response.statusCode === 200) {
+            console.log("response");
+            console.log(response);
+            return response.data;
+          }
+        } catch (error) {
+          console.log(
+            "Error fetching typeform submission status: ",
+            error.message
+          );
+        }
+      };
+
+      const retrieveTypeformSubmissionCorporate = async (email) => {
+        const response = await fetchTypeFormResponsesCorporate(
+          sessionTokenRef,
+          email
+        );
+        return response;
+      };
+
       getMyFollowings(userIdRef, sessionTokenRef)
         .then((data) => {
           setNumOfFollowings(data);
@@ -149,6 +181,24 @@ const AccountManagement = () => {
         populateFormDataWithUserPreference(formDataWithUserInfo)
       );
       retrieveJobExperience().then((result) => setJobExperience(result));
+
+      if (session.data.user.role === "Corporate") {
+        retrieveTypeformSubmissionCorporate(session.data.user.email).then(
+          (result) => {
+            if (result) {
+              setTypeformSubmitted(true);
+            }
+          }
+        );
+      } else {
+        retrieveTypeformSubmissionJobSeeker(session.data.user.email).then(
+          (result) => {
+            if (result) {
+              setTypeformSubmitted(true);
+            }
+          }
+        );
+      }
     }
   }, [session.status, userIdRef, roleRef, refreshData]);
 
@@ -295,13 +345,14 @@ const AccountManagement = () => {
   if (session.status === "authenticated") {
     return (
       <div className={styles.container}>
-        {roleRef === Enums.JOBSEEKER && !formData.contactNo && (
+        {roleRef === Enums.JOBSEEKER && !typeformSubmitted && (
           <CollectJobSeekerInfoForm
             refreshData={refreshData}
             setRefreshData={setRefreshData}
+            email={session.data.user.email}
           />
         )}
-        {roleRef === Enums.JOBSEEKER && formData.contactNo && (
+        {roleRef === Enums.JOBSEEKER && typeformSubmitted && (
           <EditAccountForm
             formData={formData}
             setFormData={setFormData}
@@ -318,10 +369,14 @@ const AccountManagement = () => {
             toast={toast}
           />
         )}
-        {roleRef === Enums.CORPORATE && !formData.contactNo && (
-          <CollectCorporateInfoForm sessionTokenRef={sessionTokenRef}/>
+        {roleRef === Enums.CORPORATE && !typeformSubmitted && (
+          <CollectCorporateInfoForm
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            email={session.data.user.email}
+          />
         )}
-        {roleRef === Enums.CORPORATE && formData.contactNo && (
+        {roleRef === Enums.CORPORATE && typeformSubmitted && (
           <EditAccountForm
             formData={formData}
             setFormData={setFormData}

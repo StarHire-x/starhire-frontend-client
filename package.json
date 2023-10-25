@@ -11,7 +11,6 @@
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^1.10.1",
     "@chatscope/chat-ui-kit-styles": "^1.4.0",
-    "@typeform/embed-react": "^3.2.0",
     "@fullcalendar/core": "^6.1.9",
     "@fullcalendar/daygrid": "^6.1.9",
     "@fullcalendar/interaction": "^6.1.9",
@@ -19,6 +18,7 @@
     "@fullcalendar/resource": "^6.1.9",
     "@fullcalendar/resource-timeline": "^6.1.9",
     "@fullcalendar/timegrid": "^6.1.9",
+    "@typeform/embed-react": "^3.4.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "bufferutil": "^4.0.7",
