@@ -47,6 +47,12 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
     }));
   };
 
+  const removeDocument = (index) => {
+    const newDocuments = [...formData.documents];
+    newDocuments.splice(index, 1);
+    setFormData((prevState) => ({ ...prevState, documents: newDocuments }));
+  };
+
   const handleFileChange = async (e, index) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -117,7 +123,7 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
           onChange={handleInputChange}
           style={{ width: '65%' }}
           required
-          readOnly={forumPostId ? true : false} 
+          readOnly={forumPostId ? true : false}
         />
         {nameError && <small className={styles.errorText}>{nameError}</small>}
       </div>
@@ -179,6 +185,19 @@ const CreateATicketForm = ({ onCreate, forumPostId }) => {
                 }}
                 className="p-button-rounded p-button-danger"
                 aria-label="Open PDF"
+              />
+            </div>
+          )}
+
+          {!document.mandatory && (
+            <div className={styles.cardRow}>
+              <Button
+                type="button"
+                label="Remove"
+                rounded
+                severity="danger"
+                size="small"
+                onClick={() => removeDocument(index)}
               />
             </div>
           )}
