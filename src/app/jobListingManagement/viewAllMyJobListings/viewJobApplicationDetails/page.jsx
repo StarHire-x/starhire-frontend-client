@@ -192,13 +192,26 @@ const ViewJobApplicationDetails = () => {
             .map((item) => moment(item.date).format('DD/MM/YYYY HH:mm'))
             .join('\n');
 
-          const finalMessage = `Hi ${recruiterEmail},
-Here are the interview details:
-${interviewNotes}\n
-These are the dates that we would like to interview candidate: ${jobSeekerName}\n
-Interview Date-Times:
+            /*
+            const finalMessage = `Hi ${recruiterEmail},
+Interview details: ${interviewNotes}
+These are the dates that we would like to interview the candidate, ${jobSeekerName}:
+
+Interview Date-Times: 
 ${formattedDates}
-Hope to hear from you soon\n${currentUserName}`;
+
+Hope to hear from you soon.
+${currentUserName}`;
+*/
+const finalMessage = `Hi ${recruiterEmail},
+
+Follow up on Job application ID: ${jobApplication.jobApplicationId} \n
+Please Arrange an interview with ${jobSeeker.userName}, (${jobSeeker.email}). \n
+Details: ${interviewNotes} \n
+Date-Times:
+${formattedDates} \n
+Hope to hear from you soon.
+${currentUserName}`
 
           await sendMessage(finalMessage, chatId);
           updateJobApplication(status);
