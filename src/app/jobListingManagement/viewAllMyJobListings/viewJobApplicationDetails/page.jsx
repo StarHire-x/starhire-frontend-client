@@ -76,7 +76,7 @@ const ViewJobApplicationDetails = () => {
         return 'Offered';
       case 'Rejected':
         return 'Rejected';
-      case 'Offer_Accepted':
+      case 'Rejected':
         return 'Offer Accepted';
       case 'Offer_Rejected':
         return 'Offer Rejected';
@@ -93,24 +93,26 @@ const ViewJobApplicationDetails = () => {
 
   const getStatus = (status) => {
     switch (status) {
-      case 'to_be_submitted':
-        return 'info';
-      case 'Processing':
-        return 'warning';
-      case 'Waiting_For_Interview':
-        return 'info';
-      case 'Offer_Rejected':
-        return 'danger';
-      case 'Offer_Accepted':
-        return 'success';
-      case 'Rejected':
-        return 'danger';
-      case 'Offered':
-        return 'warning';
-      case 'Unverified':
-        return 'warning';
+      case "to_be_submitted":
+        return "info";
+      case "Processing":
+        return "warning";
+      case "Waiting_For_Interview":
+        return "info";
+      case "Offer_Rejected":
+        return "danger";
+      case "Rejected":
+        return "danger";
+      case "Offer_Accepted":
+        return "success";
+      case "Rejected":
+        return "danger";
+      case "Offered":
+        return "warning";
+      case "Unverified":
+        return "warning";
       default:
-        return '';
+        return "";
     }
   };
 
@@ -192,13 +194,26 @@ const ViewJobApplicationDetails = () => {
             .map((item) => moment(item.date).format('DD/MM/YYYY HH:mm'))
             .join('\n');
 
-          const finalMessage = `Hi ${recruiterEmail},
-Here are the interview details:
-${interviewNotes}\n
-These are the dates that we would like to interview candidate: ${jobSeekerName}\n
-Interview Date-Times:
+            /*
+            const finalMessage = `Hi ${recruiterEmail},
+Interview details: ${interviewNotes}
+These are the dates that we would like to interview the candidate, ${jobSeekerName}:
+
+Interview Date-Times: 
 ${formattedDates}
-Hope to hear from you soon\n${currentUserName}`;
+
+Hope to hear from you soon.
+${currentUserName}`;
+*/
+const finalMessage = `Hi ${recruiterEmail},
+
+Follow up on Job application ID: ${jobApplication.jobApplicationId} \n
+Please Arrange an interview with ${jobSeeker.userName}, (${jobSeeker.email}). \n
+Details: ${interviewNotes} \n
+Date-Times:
+${formattedDates} \n
+Hope to hear from you soon.
+${currentUserName}`
 
           await sendMessage(finalMessage, chatId);
           updateJobApplication(status);
@@ -278,7 +293,7 @@ Hope to hear from you soon\n${currentUserName}`;
       console.log('Status is ' + response.status);
 
       if (response.status === 200) {
-        if (newStatus === "Offered" || newStatus === "Offer_Rejected") {
+        if (newStatus === "Offered" || newStatus === "Rejected") {
           router.back();
         } 
       } else {
@@ -591,7 +606,7 @@ Hope to hear from you soon\n${currentUserName}`;
                   icon="pi pi-thumbs-down"
                   rounded
                   severity="danger"
-                  onClick={() => showUserDialog("Offer_Rejected")}
+                  onClick={() => showUserDialog("Rejected")}
                 />
                 <Button
                   label="Accept"
@@ -698,7 +713,7 @@ Hope to hear from you soon\n${currentUserName}`;
                   icon="pi pi-thumbs-down"
                   rounded
                   severity="danger"
-                  onClick={() => showUserDialog("Offer_Rejected")}
+                  onClick={() => showUserDialog("Rejected")}
                 />
               </div>
             )}
