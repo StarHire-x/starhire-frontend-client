@@ -31,8 +31,6 @@ const EventPage = () => {
     session.data &&
     session.data.user.userId;
 
-  const toast = useRef(null);
-
   useEffect(() => {
     if (session.status === 'unauthenticated' || session.status === 'loading') {
       router.push('/login');
