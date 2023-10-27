@@ -87,7 +87,7 @@ const ViewJobApplicationDetails = () => {
       case 'to_be_submitted':
         return 'To Be Submitted';
       case 'Waiting_For_Interview':
-        return 'Waiting For Interview';
+        return 'Interview in Process';
       default:
         return 'Unknown';
     }
@@ -296,7 +296,8 @@ ${currentUserName}`
 
       if (response.status === 200) {
         if (newStatus === "Offered" || newStatus === "Rejected") {
-          router.back();
+          //router.back();
+          router.push(`/jobListingManagement/viewAllMyJobListings/viewJobApplications?id=${jobListing.jobListingId}`)
         } 
       } else {
         toast.current.show({
