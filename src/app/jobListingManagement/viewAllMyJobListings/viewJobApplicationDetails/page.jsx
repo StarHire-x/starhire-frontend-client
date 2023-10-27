@@ -499,6 +499,20 @@ ${currentUserName}`
                 <b>Place of Residence: </b>
                 {jobSeeker?.homeAddress}
               </p>
+              {jobApplication?.jobApplicationStatus === "Offer_Accepted" && (
+                <>
+                  <p className={styles.text}>
+                    <b>Contact Number: </b>
+                    <span style={{ color: "green" }}>
+                      {jobSeeker?.contactNo}
+                    </span>
+                  </p>
+                  <p className={styles.text}>
+                    <b>Email Address: </b>
+                    <span style={{ color: "green" }}>{jobSeeker?.email}</span>
+                  </p>
+                </>
+              )}
             </Card>
           </div>
           <div className={styles.jobSeekerApplication}>
