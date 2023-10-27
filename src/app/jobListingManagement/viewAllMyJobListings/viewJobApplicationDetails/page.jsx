@@ -80,6 +80,8 @@ const ViewJobApplicationDetails = () => {
         return 'Offer Accepted';
       case 'Offer_Rejected':
         return 'Offer Rejected';
+      case 'Offer_Accepted':
+        return 'Offer Accepted';
       case 'Processing':
         return 'Processing';
       case 'to_be_submitted':
@@ -715,6 +717,27 @@ ${currentUserName}`
                   severity="danger"
                   onClick={() => showUserDialog("Rejected")}
                 />
+
+                <Dialog
+                  visible={userDialog}
+                  style={{ width: "32rem" }}
+                  breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+                  header="Are you sure? This action is not reversible!!"
+                  className="p-fluid"
+                  footer={userDialogFooter}
+                  onHide={hideDialog}
+                ></Dialog>
+
+                <Dialog
+                  visible={confirmSendDialog}
+                  style={{ width: "32rem" }}
+                  header="Are you sure?, This action is not reversible!!"
+                  className="p-fluid"
+                  footer={confirmSendDialogFooter}
+                  onHide={hideConfirmSendDialog}
+                >
+                  {confirmSendDialogContent}
+                </Dialog>
               </div>
             )}
           </div>
