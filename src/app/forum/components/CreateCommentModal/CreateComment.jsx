@@ -140,7 +140,7 @@ const CreateComment = ({
           <div>{postData.forumPostTitle}</div>
           <div className={styles.postTitleButtonContainer}>
             {postData.forumPostStatus === "Pending" && (
-              <div className={styles.pendingTag}>Pending for Approval</div>
+              <div className={styles.pendingTag}>Pending</div>
             )}
             {postData.jobSeeker.userId !== userIdRef && (
               <Button
