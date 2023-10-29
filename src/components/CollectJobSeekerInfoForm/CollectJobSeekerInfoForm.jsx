@@ -14,7 +14,7 @@ const CollectJobSeekerInfoForm = ({ refreshData, setRefreshData, email }) => {
   return (
     <div className={styles.typeFormContainer}>
       <Widget
-        id="zBqvHfol"
+        id="okpg5zBV"
         style={{ width: "100%", height: "100%" }}
         className="my-form"
         onSubmit={handleSubmit}
