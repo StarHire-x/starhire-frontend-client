@@ -9,9 +9,11 @@ import { useState, useEffect, useContext } from 'react';
 import NavItem from '../navItem/NavItem';
 import HumanIcon from '../../../public/icon.png';
 import { UserContext } from '@/context/UserContext';
-import { getUserByUserId } from '@/app/api/auth/user/route';
+import { getCorporateByUserID } from '@/app/api/payment/route';
 import Enums from '@/common/enums/enums';
 import { ThemeContext } from '@/context/ThemeContext';
+import { Button } from 'primereact/button';
+
 
 const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
   { text: 'Home', href: '/' },
@@ -51,6 +53,7 @@ const MENU_LIST_UNAUTHENTICATED = [
 const Navbar = () => {
   const session = useSession();
 
+
   const [navActive, setNavActive] = useState(null);
   const [activeIdx, setActiveIdx] = useState(-1);
   let roleRef, sessionTokenRef, userIdRef;
@@ -58,6 +61,8 @@ const Navbar = () => {
   // utilising use context to get the latest information
   const { userData } = useContext(UserContext);
   const [showSubMenu, setShowSubMenu] = useState(false);
+  const [corporate, setCorporate] = useState(null);
+  const [status, setStatus] = useState(null);
 
   const themeContext = useContext(ThemeContext);
   const { toggle, mode } = themeContext;
@@ -68,15 +73,41 @@ const Navbar = () => {
     sessionTokenRef = session.data.user.accessToken;
   }
 
+  useEffect(() => {
+    getCorporateByUserID(userIdRef, sessionTokenRef)
+      .then((data) => {
+        setCorporate(data);
+        setStatus(data.corporatePromotionStatus); // Set the status when data is received
+      })
+      .catch((error) => {
+        console.error('Error fetching user:', error);
+      });
+  }, [userIdRef, sessionTokenRef]);
+
   return (
     <header className={styles.header}>
-      {navActive && <div className={styles.overlay}></div>}{' '}
+      {navActive && <div className={styles.overlay}></div>}{" "}
       {/* Add the overlay element */}
       <nav className={styles.nav}>
         <Link href="/" className={styles.logo}>
           StarHire
         </Link>
         {/* <DarkModeToggle /> */}
+
+        {session.status === 'authenticated' &&
+          session.data.user.role === Enums.CORPORATE && (
+            <Link href="/your-premium-page" passHref>
+                <Button
+                  style={{
+                    backgroundColor: status === 'Premium' ? 'gold' : 'green',
+                    color: 'black',
+                  }}
+                >
+                  {status === 'Premium' ? 'Premium' : 'Try Premium Today!'}
+                </Button>
+            </Link>
+          )}
+
         <div
           onClick={() => setNavActive(!navActive)}
           className={styles.nav__menu_bar}
@@ -86,11 +117,11 @@ const Navbar = () => {
           <div></div>
         </div>
         <div
-          className={`${navActive ? styles.active : ''} ${
+          className={`${navActive ? styles.active : ""} ${
             styles.nav__menu_list_light
           }`}
         >
-          {session.status == 'authenticated' &&
+          {session.status == "authenticated" &&
             session.data.user.role === Enums.JOBSEEKER &&
             MENU_LIST_AUTHENTICATED_JOB_SEEKER.map((menu, idx) => (
               <div
@@ -114,7 +145,7 @@ const Navbar = () => {
               </div>
             ))}
 
-          {session.status == 'authenticated' &&
+          {session.status == "authenticated" &&
             session.data.user.role === Enums.CORPORATE &&
             MENU_LIST_AUTHENTICATED_CORPORATE.map((menu, idx) => (
               <div
@@ -129,7 +160,7 @@ const Navbar = () => {
               >
                 <div className="nav-item">
                   <Link href={menu.href}>
-                    {' '}
+                    {" "}
                     {/* Use Link for the main menu item */}
                     <a>
                       <NavItem
@@ -144,7 +175,7 @@ const Navbar = () => {
                     <div className={styles.submenu}>
                       {menu.subMenu.map((subMenuItem, subIdx) => (
                         <Link href={subMenuItem.href} key={subIdx}>
-                          {' '}
+                          {" "}
                           {/* Use Link for sub-menu items */}
                           <a>{subMenuItem.text}</a>
                         </Link>
@@ -155,7 +186,7 @@ const Navbar = () => {
               </div>
             ))}
 
-          {session.status == 'unauthenticated' &&
+          {session.status == "unauthenticated" &&
             MENU_LIST_UNAUTHENTICATED.map((menu, idx) => (
               <div
                 className={styles.menuItem}
@@ -168,7 +199,7 @@ const Navbar = () => {
                 <NavItem active={activeIdx === idx} {...menu} />
               </div>
             ))}
-          {session.status === 'authenticated' && (
+          {session.status === "authenticated" && (
             <>
               <div className={styles.imageContainer}>
                 {userData?.profilePictureUrl ? (
@@ -197,10 +228,10 @@ const Navbar = () => {
               </button>
             </>
           )}
-          {session.status === 'unauthenticated' && (
+          {session.status === "unauthenticated" && (
             <button
               className={styles.login}
-              onClick={() => (window.location.href = '/login')}
+              onClick={() => (window.location.href = "/login")}
             >
               Login
             </button>

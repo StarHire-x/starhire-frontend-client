@@ -10,19 +10,20 @@ import {
 import { uploadFile } from "../api/upload/route";
 import styles from "./page.module.css";
 import { UserContext } from "@/context/UserContext";
-import { RadioButton } from "primereact/radiobutton";
-import { Card } from "primereact/card";
-import { Panel } from "primereact/panel";
-import { Ripple } from "primereact/ripple";
-import { Rating } from "primereact/rating";
 import { Button } from "primereact/button";
 import EditAccountForm from "@/components/EditAccountForm/EditAccountForm";
+import CollectJobSeekerInfoForm from "@/components/CollectJobSeekerInfoForm/CollectJobSeekerInfoForm";
+import CollectCorporateInfoForm from "@/components/CollectCorporateInfoForm/CollectCorporateInfoForm";
 import JobPreferencePanel from "@/components/JobPreferencePanel/JobPreferencePanel";
 import { getExistingJobPreference } from "../api/preference/route";
 import { getJobExperience } from "../api/jobExperience/route";
 import JobExperiencePanel from "@/components/JobExperiencePanel/JobExperiencePanel";
 import { Dialog } from "primereact/dialog";
 import Enums from "@/common/enums/enums";
+import {
+  fetchTypeFormResponsesCorporate,
+  fetchTypeFormResponsesJobSeeker,
+} from "../api/typeform/routes";
 
 const AccountManagement = () => {
   const session = useSession();
@@ -30,6 +31,7 @@ const AccountManagement = () => {
   const [refreshData, setRefreshData] = useState(false);
   const [jobExperience, setJobExperience] = useState([]);
   const [deactivateAccountDialog, setDeactivateAccountDialog] = useState(false);
+  const [typeformSubmitted, setTypeformSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     userId: "",
     userName: "",
@@ -140,6 +142,22 @@ const AccountManagement = () => {
         }
       };
 
+      const retrieveTypeformSubmissionJobSeeker = async (email) => {
+        const response = await fetchTypeFormResponsesJobSeeker(
+          sessionTokenRef,
+          email
+        );
+        return response;
+      };
+
+      const retrieveTypeformSubmissionCorporate = async (email) => {
+        const response = await fetchTypeFormResponsesCorporate(
+          sessionTokenRef,
+          email
+        );
+        return response;
+      };
+
       getMyFollowings(userIdRef, sessionTokenRef)
         .then((data) => {
           setNumOfFollowings(data);
@@ -148,10 +166,30 @@ const AccountManagement = () => {
           console.log("Error fetching followings of user: ", error.message);
         });
 
-      populateFormDataWithUserInfo(formData).then((formData) =>
-        populateFormDataWithUserPreference(formData)
+      populateFormDataWithUserInfo(formData).then((formDataWithUserInfo) =>
+        populateFormDataWithUserPreference(formDataWithUserInfo)
       );
       retrieveJobExperience().then((result) => setJobExperience(result));
+
+      if (session.data.user.role === "Corporate") {
+        retrieveTypeformSubmissionCorporate(session.data.user.email).then(
+          (result) => {
+            if (result) {
+              setTypeformSubmitted(true);
+            }
+          }
+        );
+      } else {
+        retrieveTypeformSubmissionJobSeeker(session.data.user.email).then(
+          (result) => {
+            console.log("result");
+            console.log(result);
+            if (result) {
+              setTypeformSubmitted(true);
+            }
+          }
+        );
+      }
     }
   }, [session.status, userIdRef, roleRef, refreshData]);
 
@@ -297,22 +335,58 @@ const AccountManagement = () => {
   };
   if (session.status === "authenticated") {
     return (
-      <div className={styles.mainContainer}>
-        <EditAccountForm
-          formData={formData}
-          setFormData={setFormData}
-          handleInputChange={handleInputChange}
-          handleInputNumberChange={handleInputNumberChange}
-          handleFileChange={handleFileChange}
-          saveChanges={saveChanges}
-          session={session}
-          removePdf={removePdf}
-          refreshData={refreshData}
-          setRefreshData={setRefreshData}
-          confirmChanges={confirmChanges}
-          numOfFollowings={numOfFollowings}
-          toast={toast}
-        />
+      <div className={styles.container}>
+        {roleRef === Enums.JOBSEEKER && !typeformSubmitted && (
+          <CollectJobSeekerInfoForm
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            email={session.data.user.email}
+            accessToken={sessionTokenRef}
+          />
+        )}
+        {roleRef === Enums.JOBSEEKER && typeformSubmitted && (
+          <EditAccountForm
+            formData={formData}
+            setFormData={setFormData}
+            handleInputChange={handleInputChange}
+            handleInputNumberChange={handleInputNumberChange}
+            handleFileChange={handleFileChange}
+            saveChanges={saveChanges}
+            session={session}
+            removePdf={removePdf}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            confirmChanges={confirmChanges}
+            numOfFollowings={numOfFollowings}
+            toast={toast}
+          />
+        )}
+        {roleRef === Enums.CORPORATE && !typeformSubmitted && (
+          <CollectCorporateInfoForm
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            email={session.data.user.email}
+            accessToken={sessionTokenRef}
+          />
+        )}
+        {roleRef === Enums.CORPORATE && typeformSubmitted && (
+          <EditAccountForm
+            formData={formData}
+            setFormData={setFormData}
+            handleInputChange={handleInputChange}
+            handleInputNumberChange={handleInputNumberChange}
+            handleFileChange={handleFileChange}
+            saveChanges={saveChanges}
+            session={session}
+            removePdf={removePdf}
+            refreshData={refreshData}
+            setRefreshData={setRefreshData}
+            confirmChanges={confirmChanges}
+            numOfFollowings={numOfFollowings}
+            toast={toast}
+          />
+        )}
+
         <Dialog
           visible={deactivateAccountDialog}
           style={{ width: "32rem" }}

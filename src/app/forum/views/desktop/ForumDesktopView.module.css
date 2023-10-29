@@ -18,13 +18,13 @@
 .topMiddleContainer {
   display: flex;
   flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
+  /* width: 100%;
+  justify-content: space-between; */
   margin-right: 20px;
 }
 
 .searchBarContainer {
-    padding-left: 3vw;
+    /* padding-left: 3vw; */
 }
 
 .createPostBtnContainer {
