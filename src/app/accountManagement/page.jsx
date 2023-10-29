@@ -143,22 +143,11 @@ const AccountManagement = () => {
       };
 
       const retrieveTypeformSubmissionJobSeeker = async (email) => {
-        try {
-          const response = await fetchTypeFormResponsesJobSeeker(
-            sessionTokenRef,
-            email
-          );
-          if (response.statusCode === 200) {
-            console.log("response");
-            console.log(response);
-            return response.data;
-          }
-        } catch (error) {
-          console.log(
-            "Error fetching typeform submission status: ",
-            error.message
-          );
-        }
+        const response = await fetchTypeFormResponsesJobSeeker(
+          sessionTokenRef,
+          email
+        );
+        return response;
       };
 
       const retrieveTypeformSubmissionCorporate = async (email) => {
@@ -193,6 +182,8 @@ const AccountManagement = () => {
       } else {
         retrieveTypeformSubmissionJobSeeker(session.data.user.email).then(
           (result) => {
+            console.log("result");
+            console.log(result);
             if (result) {
               setTypeformSubmitted(true);
             }
@@ -350,6 +341,7 @@ const AccountManagement = () => {
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             email={session.data.user.email}
+            accessToken={sessionTokenRef}
           />
         )}
         {roleRef === Enums.JOBSEEKER && typeformSubmitted && (
@@ -374,6 +366,7 @@ const AccountManagement = () => {
             refreshData={refreshData}
             setRefreshData={setRefreshData}
             email={session.data.user.email}
+            accessToken={sessionTokenRef}
           />
         )}
         {roleRef === Enums.CORPORATE && typeformSubmitted && (

@@ -2,11 +2,11 @@ import { Widget } from "@typeform/embed-react";
 import styles from "./collectJobSeekerInfoForm.module.css";
 import { submitTypeFormResponsesJobSeeker } from "@/app/api/typeform/routes";
 
-const CollectJobSeekerInfoForm = ({ refreshData, setRefreshData, email }) => {
+const CollectJobSeekerInfoForm = ({ refreshData, setRefreshData, email, accessToken }) => {
   const handleSubmit = async () => {
     console.log("typeform completed");
     const body = { email: email };
-    const result = await submitTypeFormResponsesJobSeeker(body);
+    const result = await submitTypeFormResponsesJobSeeker(accessToken, body);
     console.log("Result");
     console.log(result);
     setRefreshData(!refreshData);

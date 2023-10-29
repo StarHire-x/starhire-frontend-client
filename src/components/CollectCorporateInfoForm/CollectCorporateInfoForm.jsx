@@ -6,11 +6,11 @@ import {
 } from "@/app/api/typeform/routes";
 import { useEffect } from "react";
 
-const CollectCorporateInfoForm = ({ refreshData, setRefreshData, email }) => {
+const CollectCorporateInfoForm = ({ refreshData, setRefreshData, email, accessToken }) => {
   const handleSubmit = async () => {
     console.log("typeform completed");
     const body = { email: email };
-    const result = await submitTypeFormResponsesCorporate(body);
+    const result = await submitTypeFormResponsesCorporate(accessToken, body);
     console.log("Result");
     console.log(result);
     setRefreshData(!refreshData);

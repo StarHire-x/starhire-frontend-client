@@ -20,7 +20,7 @@ export const fetchTypeFormResponsesJobSeeker = async (accessToken, email) => {
       return result;
     } else {
       console.log(
-        "Received an error response when fetching Corporate typeform response",
+        "Received an error response when fetching jobseeker typeform response",
         response.status
       );
       throw new Error(response.message || 'An error occurred');
@@ -120,14 +120,15 @@ export const submitTypeFormResponsesJobSeeker = async (accessToken, body) => {
       return result;
     } else {
       console.log(
-        "Received an error response when submitting Corporate typeform response",
+        "Received an error response when submitting jobseeker typeform response",
         response.status
       );
+      console.log(response)
       throw new Error(response.message || 'An error occurred');
     }
   } catch (error) {
     console.log(
-      "Encountered an unexpected problem when submitting Corporate typeform response",
+      "Encountered an unexpected problem when submitting jobseeker typeform response",
       error.message
     );
     throw error;
