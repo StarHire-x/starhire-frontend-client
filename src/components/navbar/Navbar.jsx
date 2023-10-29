@@ -39,6 +39,7 @@ const MENU_LIST_AUTHENTICATED_CORPORATE = [
     ],
   },
   { text: 'Event Management', href: '/eventManagement' },
+  { text: 'Invoices', href: '/invoices' },
   { text: 'Contact', href: '/contact' },
   { text: 'Chat', href: '/chat' },
 ];
