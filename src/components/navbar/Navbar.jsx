@@ -93,11 +93,11 @@ const Navbar = () => {
         {/* <DarkModeToggle /> */}
         <Button
           style={{
-            backgroundColor: status === "Premium" ? "gold" : "initial",
-            color: "black", // Set the text color to black
+            backgroundColor: status === "Premium" ? "gold" : "green",
+            color: "black",
           }}
         >
-          {status}
+          {status === "Premium" ? "Premium" : "Try Premium Today!"}
         </Button>
 
         <div
