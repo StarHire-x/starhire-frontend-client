@@ -20,6 +20,7 @@ import styles from "./page.module.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import JobDetailPanel from "@/components/JobDetailPanel/JobDetailPanel";
+import { MapContainer } from "@/components/MapContainer/MapContainer";
 
 const JobListingPage = () => {
   const session = useSession();
@@ -130,7 +131,7 @@ const JobListingPage = () => {
 
   const itemTemplate = (jobListing) => (
     <div
-      className={styles.listingItem}
+    className={`${styles.listingItem} ${jobListing === selectedJob ? styles.selectedItem : ''}`}
       onClick={() => {
         setSelectedJob(jobListing);
         setShowJobDescriptionDialog(true);
@@ -210,12 +211,18 @@ const JobListingPage = () => {
           rounded
         />
       </div>
-      <div className={styles.container}>
-        {/* Left Panel - Job Listings */}
+      <div className={styles.mapContainer}>
+        <MapContainer
+          jobListings={jobListings}
+          selectedJob={selectedJob}
+          setSelectedJob={setSelectedJob}
+        />
         <div className={styles.listingsPanel}>
           {filteredJobListings.map((jobListing) => itemTemplate(jobListing))}
         </div>
-        {/* Right Panel - Job Details */}
+      </div>
+
+      <div className={styles.container}>
         <div className={styles.detailsPanel}>
           {selectedJob && !isMobile ? (
             <JobDetailPanel

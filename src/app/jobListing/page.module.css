@@ -17,6 +17,11 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.mapContainer {
+  display: flex;
+  flex-direction: row;
+}
+
 .companyInfo {
   display: flex;
   align-items: center; /* Align items vertically in the middle */
@@ -27,6 +32,8 @@
   overflow-y: auto;
   border-right: 1px solid #e0e0e0;
   padding: 15px;
+  height: 600px;
+  background-color: white;
 }
 
 .detailsPanel {
@@ -38,11 +45,12 @@
   padding: 15px;
   border-bottom: 1px solid #e0e0e0;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.1s;
 }
 
-.listingItem:hover {
-  background-color: #f5f5f5;
+/* New class for selected item */
+.selectedItem {
+  background-color: #edf6f9;
 }
 
 .listingItem h3 {

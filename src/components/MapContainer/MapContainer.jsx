@@ -2,7 +2,7 @@ import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import MyMapComponent from "./MyMapComponent";
 import { useEffect } from "react";
 
-export const MapContainer = ({ jobListings }) => {
+export const MapContainer = ({ jobListings, selectedJob, setSelectedJob }) => {
   const render = (status) => {
     if (status === Status.LOADING) return <h3>Loading: {status} ..</h3>;
     if (status === Status.FAILURE) return <h3>Loading2: {status} ...</h3>;
@@ -17,10 +17,9 @@ export const MapContainer = ({ jobListings }) => {
   const LOCATIONS = [];
   let current = { lat: 1.323719, lng: 103.790547 };
 
-  jobListings.forEach((jobListing) => {
-    LOCATIONS.push({ ...current }); // Push a copy of the current location
-    current.lng += 0.01;
-    current.lat += 0.01;
+  jobListings.forEach((jobListing, index) => {
+    jobListing.lat = center.lat + 0.01 * index; // Increment latitude
+    jobListing.lng = center.lng + 0.01 * index; // Increment longitude
   });
 
   return (
@@ -32,6 +31,8 @@ export const MapContainer = ({ jobListings }) => {
         <MyMapComponent
           center={center}
           zoom={zoom}
+          jobListings={jobListings}
+          setSelectedJob={setSelectedJob}
         />
       </Wrapper>
     </>

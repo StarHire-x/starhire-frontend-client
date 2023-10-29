@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { addSingleMarkers } from './addSingleMarker';
 
-const MyMapComponent = ({ center, zoom, locations }) => {
+const MyMapComponent = ({ center, zoom, jobListings, setSelectedJob }) => {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -12,9 +12,9 @@ const MyMapComponent = ({ center, zoom, locations }) => {
         zoom: zoom,
         mapId: "e3175da757425014"
       });
-      addSingleMarkers({locations, map})
+      addSingleMarkers({jobListings, map, setSelectedJob})
     }
-  }, [ref, locations]);
+  }, [ref]);
 
   return (
     <div
