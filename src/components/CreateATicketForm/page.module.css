@@ -62,6 +62,10 @@
   width: 100%;
 }
 
+.buttonContainer {
+  margin-bottom: 10px;
+}
+
 @media (min-width: 768px) {
   .cardBody {
     font-family: 'Arial', sans-serif;
@@ -76,7 +80,7 @@
   .cardRow {
     flex-direction: row;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
   }
 
   .cardRow label {
@@ -105,7 +109,6 @@
   .cardBody {
     font-family: 'Arial', sans-serif;
     padding: 20px;
-    width: 100%;
     margin: 0 auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 5px;

@@ -47,10 +47,10 @@ const ViewJobApplicationsPage = () => {
         return 'Offer Rejected';
       case 'Processing':
         return 'Processing';
-      case 'to_be_submitted':
+      case 'To_Be_Submitted':
         return 'To Be Submitted';
-      case 'waiting_for_interview':
-        return 'Waiting For Interview';
+      case 'Waiting_For_Interview':
+        return 'Interview in Process';
       default:
         return 'Unknown';
     }
@@ -72,11 +72,11 @@ const ViewJobApplicationsPage = () => {
 
   const getStatus = (status) => {
     switch (status) {
-      case 'to_be_submitted':
+      case 'To_Be_Submitted':
         return 'info';
       case 'Processing':
         return 'warning';
-      case 'waiting_for_interview':
+      case 'Waiting_For_Interview':
         return 'info';
       case 'Offer_Rejected':
         return 'danger';

@@ -10,7 +10,7 @@ import { useState } from "react";
 import Utility from "@/common/helper/utility";
 import DeletePostCard from "../DeletePostCard/DeletePostCard";
 import ReportPostCard from "../ReportPostCard/ReportPostCard";
-import { Badge } from 'primereact/badge';
+import { Badge } from "primereact/badge";
 
 const ForumPosts = ({
   forumPosts,
@@ -72,16 +72,18 @@ const ForumPosts = ({
         <div className={styles.postTitle}>
           <div className={styles.postTitleText}>{data.forumPostTitle}</div>
           <div className={styles.postTitleButtonContainer}>
-            {data.forumPostStatus === "Pending" && 
+            {data.forumPostStatus === "Pending" && (
               <div className={styles.pendingTag}>Pending </div>
-            }
-            <Button
-              size="small"
-              icon="pi pi-exclamation-circle"
-              rounded
-              onClick={() => openReportDialog(data)}
-              className={styles.reportButton}
-            />
+            )}
+            {data.jobSeeker.userId !== userIdRef && (
+              <Button
+                size="small"
+                icon="pi pi-exclamation-circle"
+                rounded
+                onClick={() => openReportDialog(data)}
+                className={styles.reportButton}
+              />
+            )}
             {data.jobSeeker.userId === userIdRef && (
               <>
                 <Button
@@ -138,8 +140,7 @@ const ForumPosts = ({
               rounded
               onClick={() => openDialog(data)}
               className={styles.commentButton}
-            >
-            </Button>
+            ></Button>
           </div>
         </div>
       </div>
