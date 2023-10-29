@@ -76,16 +76,18 @@ const ViewJobApplicationDetails = () => {
         return 'Offered';
       case 'Rejected':
         return 'Rejected';
-      case 'Offer_Accepted':
+      case 'Rejected':
         return 'Offer Accepted';
       case 'Offer_Rejected':
         return 'Offer Rejected';
+      case 'Offer_Accepted':
+        return 'Offer Accepted';
       case 'Processing':
         return 'Processing';
       case 'to_be_submitted':
         return 'To Be Submitted';
       case 'Waiting_For_Interview':
-        return 'Waiting For Interview';
+        return 'Interview in Process';
       default:
         return 'Unknown';
     }
@@ -93,24 +95,26 @@ const ViewJobApplicationDetails = () => {
 
   const getStatus = (status) => {
     switch (status) {
-      case 'to_be_submitted':
-        return 'info';
-      case 'Processing':
-        return 'warning';
-      case 'Waiting_For_Interview':
-        return 'info';
-      case 'Offer_Rejected':
-        return 'danger';
-      case 'Offer_Accepted':
-        return 'success';
-      case 'Rejected':
-        return 'danger';
-      case 'Offered':
-        return 'warning';
-      case 'Unverified':
-        return 'warning';
+      case "to_be_submitted":
+        return "info";
+      case "Processing":
+        return "warning";
+      case "Waiting_For_Interview":
+        return "info";
+      case "Offer_Rejected":
+        return "danger";
+      case "Rejected":
+        return "danger";
+      case "Offer_Accepted":
+        return "success";
+      case "Rejected":
+        return "danger";
+      case "Offered":
+        return "warning";
+      case "Unverified":
+        return "warning";
       default:
-        return '';
+        return "";
     }
   };
 
@@ -192,13 +196,26 @@ const ViewJobApplicationDetails = () => {
             .map((item) => moment(item.date).format('DD/MM/YYYY HH:mm'))
             .join('\n');
 
-          const finalMessage = `Hi ${recruiterEmail},
-Here are the interview details:
-${interviewNotes}\n
-These are the dates that we would like to interview candidate: ${jobSeekerName}\n
-Interview Date-Times:
+            /*
+            const finalMessage = `Hi ${recruiterEmail},
+Interview details: ${interviewNotes}
+These are the dates that we would like to interview the candidate, ${jobSeekerName}:
+
+Interview Date-Times: 
 ${formattedDates}
-Hope to hear from you soon\n${currentUserName}`;
+
+Hope to hear from you soon.
+${currentUserName}`;
+*/
+const finalMessage = `Hi ${recruiterEmail},
+
+Follow up on Job application ID: ${jobApplication.jobApplicationId} \n
+Please Arrange an interview with ${jobSeeker.userName}, (${jobSeeker.email}). \n
+Details: ${interviewNotes} \n
+Date-Times:
+${formattedDates} \n
+Hope to hear from you soon.
+${currentUserName}`
 
           await sendMessage(finalMessage, chatId);
           updateJobApplication(status);
@@ -278,8 +295,9 @@ Hope to hear from you soon\n${currentUserName}`;
       console.log('Status is ' + response.status);
 
       if (response.status === 200) {
-        if (newStatus === "Offered" || newStatus === "Offer_Rejected") {
-          router.back();
+        if (newStatus === "Offered" || newStatus === "Rejected") {
+          //router.back();
+          router.push(`/jobListingManagement/viewAllMyJobListings/viewJobApplications?id=${jobListing.jobListingId}`)
         } 
       } else {
         toast.current.show({
@@ -481,6 +499,20 @@ Hope to hear from you soon\n${currentUserName}`;
                 <b>Place of Residence: </b>
                 {jobSeeker?.homeAddress}
               </p>
+              {jobApplication?.jobApplicationStatus === "Offer_Accepted" && (
+                <>
+                  <p className={styles.text}>
+                    <b>Contact Number: </b>
+                    <span style={{ color: "green" }}>
+                      {jobSeeker?.contactNo}
+                    </span>
+                  </p>
+                  <p className={styles.text}>
+                    <b>Email Address: </b>
+                    <span style={{ color: "green" }}>{jobSeeker?.email}</span>
+                  </p>
+                </>
+              )}
             </Card>
           </div>
           <div className={styles.jobSeekerApplication}>
@@ -591,7 +623,7 @@ Hope to hear from you soon\n${currentUserName}`;
                   icon="pi pi-thumbs-down"
                   rounded
                   severity="danger"
-                  onClick={() => showUserDialog("Offer_Rejected")}
+                  onClick={() => showUserDialog("Rejected")}
                 />
                 <Button
                   label="Accept"
@@ -698,8 +730,29 @@ Hope to hear from you soon\n${currentUserName}`;
                   icon="pi pi-thumbs-down"
                   rounded
                   severity="danger"
-                  onClick={() => showUserDialog("Offer_Rejected")}
+                  onClick={() => showUserDialog("Rejected")}
                 />
+
+                <Dialog
+                  visible={userDialog}
+                  style={{ width: "32rem" }}
+                  breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+                  header="Are you sure? This action is not reversible!!"
+                  className="p-fluid"
+                  footer={userDialogFooter}
+                  onHide={hideDialog}
+                ></Dialog>
+
+                <Dialog
+                  visible={confirmSendDialog}
+                  style={{ width: "32rem" }}
+                  header="Are you sure?, This action is not reversible!!"
+                  className="p-fluid"
+                  footer={confirmSendDialogFooter}
+                  onHide={hideConfirmSendDialog}
+                >
+                  {confirmSendDialogContent}
+                </Dialog>
               </div>
             )}
           </div>

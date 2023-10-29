@@ -50,7 +50,7 @@ const ViewJobApplicationsPage = () => {
       case 'To_Be_Submitted':
         return 'To Be Submitted';
       case 'Waiting_For_Interview':
-        return 'Waiting For Interview';
+        return 'Interview in Process';
       default:
         return 'Unknown';
     }

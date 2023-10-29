@@ -140,15 +140,17 @@ const CreateComment = ({
           <div>{postData.forumPostTitle}</div>
           <div className={styles.postTitleButtonContainer}>
             {postData.forumPostStatus === "Pending" && (
-              <div className={styles.pendingTag}>Pending for Approval</div>
+              <div className={styles.pendingTag}>Pending</div>
             )}
-            <Button
-              size="small"
-              icon="pi pi-exclamation-circle"
-              rounded
-              onClick={() => openReportDialog(postData)}
-              className={styles.reportButton}
-            />
+            {postData.jobSeeker.userId !== userIdRef && (
+              <Button
+                size="small"
+                icon="pi pi-exclamation-circle"
+                rounded
+                onClick={() => openReportDialog(postData)}
+                className={styles.reportButton}
+              />
+            )}
             {postData.jobSeeker.userId === userIdRef && (
               <>
                 <Button

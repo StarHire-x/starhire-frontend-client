@@ -30,7 +30,7 @@ const EventPage = () => {
     session.status === 'authenticated' &&
     session.data &&
     session.data.user.userId;
-
+    
   useEffect(() => {
     if (session.status === 'unauthenticated' || session.status === 'loading') {
       router.push('/login');

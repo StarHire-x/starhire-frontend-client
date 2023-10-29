@@ -37,6 +37,12 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
     }));
   };
 
+  const removeDocument = (index) => {
+    const newDocuments = [...formData.documents];
+    newDocuments.splice(index, 1);
+    setFormData((prevState) => ({ ...prevState, documents: newDocuments }));
+  };
+
   const handleFileChange = async (e, index) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -180,6 +186,19 @@ const CreateATicketFormUnLoggedIn = ({ onCreate }) => {
                 }}
                 className="p-button-rounded p-button-danger"
                 aria-label="Open PDF"
+              />
+            </div>
+          )}
+
+          {!document.mandatory && (
+            <div className={styles.cardRow}>
+              <Button
+                type="button"
+                label="Remove"
+                rounded
+                severity="danger"
+                size="small"
+                onClick={() => removeDocument(index)}
               />
             </div>
           )}
