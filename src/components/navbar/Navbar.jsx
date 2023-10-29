@@ -14,6 +14,7 @@ import Enums from '@/common/enums/enums';
 import { ThemeContext } from '@/context/ThemeContext';
 import { Button } from 'primereact/button';
 
+
 const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
   { text: 'Home', href: '/' },
   { text: 'Job Listings', href: '/jobListing' },
@@ -51,6 +52,7 @@ const MENU_LIST_UNAUTHENTICATED = [
 
 const Navbar = () => {
   const session = useSession();
+
 
   const [navActive, setNavActive] = useState(null);
   const [activeIdx, setActiveIdx] = useState(-1);
@@ -91,14 +93,20 @@ const Navbar = () => {
           StarHire
         </Link>
         {/* <DarkModeToggle /> */}
-        <Button
-          style={{
-            backgroundColor: status === "Premium" ? "gold" : "green",
-            color: "black",
-          }}
-        >
-          {status === "Premium" ? "Premium" : "Try Premium Today!"}
-        </Button>
+
+        {session.status === 'authenticated' &&
+          session.data.user.role === Enums.CORPORATE && (
+            <Link href="/your-premium-page" passHref>
+                <Button
+                  style={{
+                    backgroundColor: status === 'Premium' ? 'gold' : 'green',
+                    color: 'black',
+                  }}
+                >
+                  {status === 'Premium' ? 'Premium' : 'Try Premium Today!'}
+                </Button>
+            </Link>
+          )}
 
         <div
           onClick={() => setNavActive(!navActive)}
