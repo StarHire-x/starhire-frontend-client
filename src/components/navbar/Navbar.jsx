@@ -12,6 +12,7 @@ import { UserContext } from '@/context/UserContext';
 import { getCorporateByUserID } from '@/app/api/payment/route';
 import Enums from '@/common/enums/enums';
 import { ThemeContext } from '@/context/ThemeContext';
+import { Button } from 'primereact/button';
 
 const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
   { text: 'Home', href: '/' },
@@ -90,18 +91,14 @@ const Navbar = () => {
           StarHire
         </Link>
         {/* <DarkModeToggle /> */}
-        <button
+        <Button
           style={{
-            backgroundColor:
-              status === "Premium"
-                ? "gold"
-                : "initial",
+            backgroundColor: status === "Premium" ? "gold" : "initial",
+            color: "black", // Set the text color to black
           }}
         >
           {status}
-        </button>
-        
-
+        </Button>
 
         <div
           onClick={() => setNavActive(!navActive)}
