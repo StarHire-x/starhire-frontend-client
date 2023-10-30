@@ -80,22 +80,20 @@ const EditEventForm = ({ initialData, onSave }) => {
           name="details"
           value={formData.details}
           onChange={handleInputChange}
-          rows={7} /* Adjust as needed */
-          autoResize={true} /* If you want it to resize automatically */
+          rows={7}
+          autoResize={true}
         />
       </div>
 
-      <div className={styles.cardRow}>
+      {/* <div className={styles.cardRow}>
         <label htmlFor="image">Event Image (landscape suggested):</label>
         <input
           type="file"
           id="image"
           name="image"
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, image: e.target.files[0] }))
-          }
+          onChange={(e) => handleInputChange(e)}
         />
-      </div>
+      </div> */}
 
       <div className={styles.cardFooter}>
         <Button label="Save Changes" rounded onClick={handleSubmit} />
