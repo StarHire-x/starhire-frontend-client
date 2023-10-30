@@ -63,7 +63,7 @@ const CreateEventForm = ({ onCreate }) => {
         <InputTextarea
           id="details"
           name="details"
-          value={formData.requirements}
+          value={formData.details}
           onChange={handleInputChange}
           rows={7}
           autoResize={true}
