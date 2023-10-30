@@ -13,6 +13,7 @@ import { getCorporateByUserID } from '@/app/api/payment/route';
 import Enums from '@/common/enums/enums';
 import { ThemeContext } from '@/context/ThemeContext';
 import { Button } from 'primereact/button';
+import { SubscriptionButton }  from '../subscriptionButton/SubscriptionButton';
 
 
 const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
@@ -94,19 +95,32 @@ const Navbar = () => {
         </Link>
         {/* <DarkModeToggle /> */}
 
-        {session.status === 'authenticated' &&
-          session.data.user.role === Enums.CORPORATE && (
+        <div>
+          {status === "Premium" ? (
             <Link href="/your-premium-page" passHref>
-                <Button
-                  style={{
-                    backgroundColor: status === 'Premium' ? 'gold' : 'lightgreen',
-                    color: 'black',
-                  }}
-                >
-                  {status === 'Premium' ? 'Premium' : 'Try Premium Today!'}
-                </Button>
+              <Button
+                style={{
+                  backgroundColor: "gold",
+                  color: "black",
+                }}
+              >
+                Premium
+              </Button>
+            </Link>
+          ) : (
+            <Link href="/your-regular-page" passHref>
+              <Button
+                style={{
+                  backgroundColor: "lightgreen",
+                  color: "black",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Try Premium Today!
+              </Button>
             </Link>
           )}
+        </div>
 
         <div
           onClick={() => setNavActive(!navActive)}
