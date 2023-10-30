@@ -62,9 +62,7 @@ const PaymentPage = () => {
         .then((data) => {
           setCorporate(data);
           setStatus(data.corporatePromotionStatus);
-          console.log(data);
     
-          // Only if 'data' is available and contains 'stripeSubId', make the second API call
           if (data && data.stripeSubId) {
             return getCorporateNextBillingCycleBySubID(data.stripeSubId, accessToken);
           }
@@ -108,7 +106,6 @@ const PaymentPage = () => {
       userId: userIdRef,
     };
 
-    //setShowSubscribeDialog(false);
     setRedirectingDialogVisible(true);
 
     setTimeout(async () => {
