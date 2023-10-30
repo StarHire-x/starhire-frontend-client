@@ -66,7 +66,6 @@ export const createEventListing = async (newEventListing, accessToken) => {
       }
     );
     const response = await res.json();
-    console.log('API Response Status Code:', response.statusCode);
     if (response.statusCode === 200) {
       return response.data;
     } else {
@@ -74,6 +73,58 @@ export const createEventListing = async (newEventListing, accessToken) => {
     }
   } catch (error) {
     console.log('There was a problem creating this Event Listing', error);
+    throw error;
+  }
+};
+
+export const updateEventListing = async (request, id, accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/event-listing/${id}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(request),
+      }
+    );
+    if (!res.ok) {
+      const errorData = await res.json();
+      console.log(errorData);
+      throw new Error(errorData.message);
+    }
+    return await res.json();
+  } catch (error) {
+    console.log('There was a problem fetching all event listings', error);
+    throw error;
+  }
+};
+
+export const removeEventListing = async (id, accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/event-listing/${id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: 'no-store',
+      }
+    );
+
+    console.log(res);
+    if (res.ok) {
+      return;
+    } else {
+      throw new Error(errorData.message || 'An error occurred');
+    }
+    return await res.json();
+  } catch (error) {
+    console.log('There was a problem fetching the event listings', error);
     throw error;
   }
 };
