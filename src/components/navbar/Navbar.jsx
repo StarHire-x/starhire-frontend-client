@@ -99,7 +99,7 @@ const Navbar = () => {
             <Link href="/your-premium-page" passHref>
                 <Button
                   style={{
-                    backgroundColor: status === 'Premium' ? 'gold' : 'green',
+                    backgroundColor: status === 'Premium' ? 'gold' : 'lightgreen',
                     color: 'black',
                   }}
                 >
