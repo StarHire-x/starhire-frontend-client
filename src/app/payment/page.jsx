@@ -8,6 +8,7 @@ import { createCheckoutSession } from '@/app/api/payment/route';
 import { getCorporateByUserID } from '@/app/api/payment/route';
 import { useSession } from 'next-auth/react';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import { getCorporateNextBillingCycleBySubID } from '@/app/api/payment/route';
 
 const subscriptionBenefits = [
   'Access to exclusive content',
@@ -21,8 +22,7 @@ const PaymentPage = () => {
   const [redirectingDialogVisible, setRedirectingDialogVisible] = useState(false);
   const [status, setStatus] = useState(null); 
   const [corporate, setCorporate] = useState(null); 
-
-
+  const [billCycle, setBillCycle] = useState(null); 
 
   const accessToken =
     session.status === 'authenticated' &&
@@ -34,17 +34,49 @@ const PaymentPage = () => {
     session.data &&
     session.data.user.userId;
 
+    function convertToSingaporeDate(utcDateString) {
+      // Convert UTC date string to a JavaScript Date object
+      const utcDate = new Date(utcDateString);
+    
+      // Create options for formatting the date and time
+      const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZoneName: 'short',
+        timeZone: 'Asia/Singapore', // Set the time zone to Singapore
+      };
+    
+      // Format the date and time into Singapore date and time
+      return utcDate.toLocaleString('en-SG', options);
+    }
+
+
     useEffect(() => {
       getCorporateByUserID(userIdRef, accessToken)
         .then((data) => {
           setCorporate(data);
-          setStatus(data.corporatePromotionStatus); 
-          console.log(corporate);
+          setStatus(data.corporatePromotionStatus);
+          console.log(data);
+    
+          // Only if 'data' is available and contains 'stripeSubId', make the second API call
+          if (data && data.stripeSubId) {
+            return getCorporateNextBillingCycleBySubID(data.stripeSubId, accessToken);
+          }
+        })
+        .then((billingCycleData) => {
+          if (billingCycleData) {
+            setBillCycle(billingCycleData);
+          }
         })
         .catch((error) => {
-          console.error("Error fetching user:", error);
+          console.error("Error fetching data:", error);
         });
     }, [userIdRef, accessToken]);
+
 
   const cardStyle = {
     width: '400px',
@@ -149,6 +181,10 @@ const PaymentPage = () => {
             <p>
               <strong>Customer ID:</strong> {corporate.stripeCustId}
             </p>
+            <p>
+              <strong> Next Billing Cycle Start Date: </strong> {convertToSingaporeDate(billCycle?.nextBillingCycleStart)}
+            </p>
+              <strong> Next Billing Cycle End Date: </strong> {convertToSingaporeDate(billCycle?.nextBillingCycleEnd)}
           </Card>
         </>
       ) : (
