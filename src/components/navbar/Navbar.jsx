@@ -99,7 +99,7 @@ const Navbar = () => {
           {session.status === "authenticated" &&
             session.data.user.role === Enums.CORPORATE &&
             (status === "Premium" ? (
-              <Link href="/your-premium-page" passHref>
+              <Link href="/payment" passHref>
                 <Button
                   style={{
                     backgroundColor: "gold",
@@ -111,7 +111,7 @@ const Navbar = () => {
                 </Button>
               </Link>
             ) : (
-              <Link href="/your-premium-page" passHref>
+              <Link href="/payment" passHref>
                 <Button
                   style={{
                     backgroundColor: "lightgreen",

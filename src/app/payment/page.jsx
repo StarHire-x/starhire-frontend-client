@@ -112,28 +112,45 @@ const PaymentPage = () => {
         marginTop: "2rem",
       }}
     >
-      {status === "Premium" ? ( // Add this condition
-        <Card title="Thanks for choosing Starhire!" style={cardStyle}>
-          <p>
-            Thank you for choosing Starhire Premium! With Starhire Premium, you
-            get access to a world of exclusive content and priority support.
-          </p>
-          <p>
-            If you ever decide to unsubscribe, you can do so by clicking the
-            "Unsubscribe" button below.
-          </p>
-          <Button
-            label="Unsubscribe"
-            icon="pi pi-check"
-            style={{
-              ...buttonStyle,
-              backgroundColor: "red",
-              color: "white",
-            }}
-            onClick={handleUnsubscribe}
-          />
-        </Card>
-        
+      {status === "Premium" ? (
+        <>
+          <Card title="Thanks for choosing Starhire!" style={cardStyle}>
+            <p>
+              Thank you for choosing Starhire Premium! With Starhire Premium,
+              you get access to a world of exclusive content and priority
+              support.
+            </p>
+            <p>
+              If you ever decide to unsubscribe, you can do so by clicking the
+              "Unsubscribe" button below.
+            </p>
+            <Button
+              label="Unsubscribe"
+              icon="pi pi-check"
+              style={{
+                ...buttonStyle,
+                backgroundColor: "red",
+                color: "white",
+              }}
+              onClick={handleUnsubscribe}
+            />
+          </Card>
+
+          <Card title="Your Subscription Details" style={cardStyle}>
+            <p>
+              <strong>Username:</strong> {corporate.userName}
+            </p>
+            <p>
+              <strong>Status Type:</strong> {corporate.corporatePromotionStatus}
+            </p>
+            <p>
+              <strong>Subscription ID:</strong> {corporate.stripeSubId}
+            </p>
+            <p>
+              <strong>Customer ID:</strong> {corporate.stripeCustId}
+            </p>
+          </Card>
+        </>
       ) : (
         <Card title="Subscribe to Premium" style={cardStyle}>
           <ul style={{ listStyleType: "none", padding: 0 }}>
