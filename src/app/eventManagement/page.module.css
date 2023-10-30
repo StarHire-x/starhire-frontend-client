@@ -92,15 +92,13 @@
   font-size: 0.85em;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
+  margin-bottom: 20px;
+  margin-left: 40px;
 }
 
 .cardFooter button:hover {
   background-color: #e2947888;
   transform: scale(1.05);
-}
-
-.buttonSpacing {
-  margin-right: 10px;
 }
 
 .cardDialog {

@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
-import { MultiSelect } from 'primereact/multiselect';
-import { InputNumber } from 'primereact/inputnumber';
 import { InputTextarea } from 'primereact/inputtextarea';
 import styles from './page.module.css';
 
@@ -93,9 +91,9 @@ const EditEventForm = ({ initialData, onSave }) => {
           type="file"
           id="image"
           name="image"
-          // onChange={(e) =>
-          //   setFormData((prev) => ({ ...prev, image: e.target.files[0] }))
-          // }
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, image: e.target.files[0] }))
+          }
         />
       </div>
 

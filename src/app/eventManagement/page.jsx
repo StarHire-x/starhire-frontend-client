@@ -145,7 +145,6 @@ const EventManagementPage = () => {
             label="Edit"
             icon="pi pi-pencil"
             rounded
-            className={styles.buttonSpacing}
             onClick={() => {
               setSelectedEventListingData(eventListing);
               setShowEditDialog(eventListing);
@@ -155,7 +154,6 @@ const EventManagementPage = () => {
             label="Delete"
             icon="pi pi-trash"
             rounded
-            className={styles.buttonSpacing}
             onClick={() => {
               setSelectedEventListingData(eventListing);
               setShowDeleteDialog(eventListing);
