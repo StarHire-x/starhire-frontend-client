@@ -7,6 +7,7 @@ import { Dialog } from 'primereact/dialog';
 import { createCheckoutSession } from '@/app/api/payment/route';
 import { getCorporateByUserID } from '@/app/api/payment/route';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { getCorporateNextBillingCycleBySubID } from '@/app/api/payment/route';
 
@@ -18,6 +19,7 @@ const subscriptionBenefits = [
 
 const PaymentPage = () => {
   const session = useSession();
+  const router = useRouter();
   const [showSubscribeDialog, setShowSubscribeDialog] = useState(false);
   const [redirectingDialogVisible, setRedirectingDialogVisible] = useState(false);
   const [status, setStatus] = useState(null); 
@@ -34,11 +36,13 @@ const PaymentPage = () => {
     session.data &&
     session.data.user.userId;
 
+    if (session.status === 'unauthenticated') {
+      router?.push('/login');
+    }
+
     function convertToSingaporeDate(utcDateString) {
-      // Convert UTC date string to a JavaScript Date object
       const utcDate = new Date(utcDateString);
     
-      // Create options for formatting the date and time
       const options = {
         year: 'numeric',
         month: '2-digit',
@@ -47,10 +51,8 @@ const PaymentPage = () => {
         minute: '2-digit',
         second: '2-digit',
         timeZoneName: 'short',
-        timeZone: 'Asia/Singapore', // Set the time zone to Singapore
+        timeZone: 'Asia/Singapore', 
       };
-    
-      // Format the date and time into Singapore date and time
       return utcDate.toLocaleString('en-SG', options);
     }
 
