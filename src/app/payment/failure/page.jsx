@@ -7,6 +7,7 @@ const PaymentFailed = () => {
       <div className="payment-failed-content">
         <h1 className="payment-failed-title">Payment Failed!</h1>
         <p className="payment-failed-text">Something went wrong. Please try again later.</p>
+        <p className="payment-failed-text">You may now close this browser.</p>
       </div>
     </div>
   );
