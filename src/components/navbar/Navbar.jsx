@@ -96,30 +96,33 @@ const Navbar = () => {
         {/* <DarkModeToggle /> */}
 
         <div>
-          {status === "Premium" ? (
-            <Link href="/your-premium-page" passHref>
-              <Button
-                style={{
-                  backgroundColor: "gold",
-                  color: "black",
-                }}
-              >
-                Premium
-              </Button>
-            </Link>
-          ) : (
-            <Link href="/your-regular-page" passHref>
-              <Button
-                style={{
-                  backgroundColor: "lightgreen",
-                  color: "black",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                Try Premium Today!
-              </Button>
-            </Link>
-          )}
+          {session.status === "authenticated" &&
+            session.data.user.role === Enums.CORPORATE &&
+            (status === "Premium" ? (
+              <Link href="/your-premium-page" passHref>
+                <Button
+                  style={{
+                    backgroundColor: "gold",
+                    color: "black",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Premium
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/your-premium-page" passHref>
+                <Button
+                  style={{
+                    backgroundColor: "lightgreen",
+                    color: "black",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Try Premium Today!
+                </Button>
+              </Link>
+            ))}
         </div>
 
         <div
