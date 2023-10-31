@@ -1,6 +1,5 @@
 'use client';
 import React, { useEffect, useState, useRef } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Button } from 'primereact/button';
@@ -10,7 +9,10 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { Tag } from 'primereact/tag';
 import { Toast } from 'primereact/toast';
 import { findAllEventListings } from '../api/eventListing/route';
-import { createEventRegistration } from '@/app/api/eventRegistration/route';
+import {
+  createEventRegistration,
+  findExistingEventRegistration,
+} from '@/app/api/eventRegistration/route';
 import styles from './page.module.css';
 
 const EventPage = () => {
@@ -25,6 +27,7 @@ const EventPage = () => {
     useState(false);
   const [selectedEventId, setSelectedEventId] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [registeredEvents, setRegisteredEvents] = useState([]);
 
   const accessToken =
     session.status === 'authenticated' &&
@@ -41,17 +44,40 @@ const EventPage = () => {
       router.push('/login');
     }
 
-    if (accessToken) {
-      findAllEventListings(accessToken)
-        .then((data) => {
+    const fetchData = async () => {
+      try {
+        if (accessToken) {
+          const data = await findAllEventListings(accessToken);
           setEventListings(data);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.error('Error fetching event listings:', error);
-          setIsLoading(false);
-        });
-    }
+
+          const checkRegistrations = data.map((event) =>
+            findExistingEventRegistration(
+              jobSeekerId,
+              event.eventListingId,
+              accessToken
+            )
+          );
+
+          Promise.all(checkRegistrations).then((responses) => {
+            console.log('API Responses:', responses);
+
+            const registered = data
+              .filter((event, index) => responses[index].statusCode === 200)
+              .map((event) => event.eventListingId);
+
+            console.log('Derived registered events:', registered);
+
+            setRegisteredEvents(registered);
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching event listings:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, [refreshData, accessToken]);
 
   const hideEventRegistrationDialog = () => {
@@ -75,6 +101,11 @@ const EventPage = () => {
           severity: 'success',
           summary: 'Registered Successfully',
         });
+        setRegisteredEvents((prevEvents) => {
+          const updatedState = [...prevEvents, selectedEvent.eventListingId];
+          console.log('Updated Registered Events:', updatedState);
+          return updatedState;
+        });
         hideEventRegistrationDialog();
       })
       .catch((error) => {
@@ -97,6 +128,7 @@ const EventPage = () => {
         break;
     }
     eventData.statusSeverity = statusSeverity;
+
     return (
       <div className={styles.event} onClick={() => setSelectedEvent(eventData)}>
         <img
@@ -172,16 +204,19 @@ const EventPage = () => {
         className={`${styles.cardDialog} ${styles.dialogSize}`}
         footer={
           <>
-            <Button
-              label="Register"
-              className={styles.createButton}
-              icon="pi pi-plus"
-              onClick={() => {
-                setSelectedEventId(selectedEvent.id);
-                setShowEventRegistrationDialog(true);
-              }}
-              rounded
-            />
+            {selectedEvent &&
+              !registeredEvents.includes(selectedEvent.eventListingId) && (
+                <Button
+                  label="Register"
+                  className={styles.createButton}
+                  icon="pi pi-plus"
+                  onClick={() => {
+                    setSelectedEventId(selectedEvent.eventListingId);
+                    setShowEventRegistrationDialog(true);
+                  }}
+                  rounded
+                />
+              )}
             <Button
               label="Close"
               className={styles.closeButton}

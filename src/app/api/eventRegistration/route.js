@@ -30,7 +30,7 @@ export const createEventRegistration = async (
   }
 };
 
-export const findExistingJobApplication = async (
+export const findExistingEventRegistration = async (
   jobSeekerId,
   eventListingId,
   accessToken
