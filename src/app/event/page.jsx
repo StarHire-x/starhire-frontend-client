@@ -7,6 +7,7 @@ import { Button } from 'primereact/button';
 import { Carousel } from 'primereact/carousel';
 import { Dialog } from 'primereact/dialog';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import { Tag } from 'primereact/tag';
 import { Toast } from 'primereact/toast';
 import { findAllEventListings } from '../api/eventListing/route';
 import { createEventRegistration } from '@/app/api/eventRegistration/route';
@@ -23,6 +24,7 @@ const EventPage = () => {
   const [showEventRegistrationDialog, setShowEventRegistrationDialog] =
     useState(false);
   const [selectedEventId, setSelectedEventId] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   const accessToken =
     session.status === 'authenticated' &&
@@ -84,8 +86,18 @@ const EventPage = () => {
   };
 
   const eventTemplate = (eventData) => {
+    let statusSeverity;
+    switch (eventData.eventListingStatus) {
+      case 'Upcoming':
+        statusSeverity = 'success';
+        break;
+      case 'Expired':
+        statusSeverity = 'danger';
+        break;
+    }
+    eventData.statusSeverity = statusSeverity;
     return (
-      <div className={styles.event}>
+      <div className={styles.event} onClick={() => setSelectedEvent(eventData)}>
         <img
           src={eventData.image}
           alt={eventData.eventName}
@@ -96,33 +108,18 @@ const EventPage = () => {
           <strong>Location:</strong> {eventData.location}
         </p>
         <p>
-          <strong>Date:</strong> {formatDate(eventData.eventDate)}
-        </p>
-        <p>
-          <strong>Details:</strong> {eventData.details}
-        </p>
-        <p>
-          <strong>Listing Date:</strong> {formatDate(eventData.listingDate)}
-        </p>
-        <p>
-          <strong>Status:</strong> {eventData.eventListingStatus}
-        </p>
-        <p>
           <strong>Organized By:</strong>{' '}
           {eventData.corporate && eventData.corporate.userName}
         </p>
-        <>
-          <Button
-            label="Register"
-            className={styles.createButton}
-            icon="pi pi-plus"
-            onClick={() => {
-              setSelectedEventId(eventData.id);
-              setShowEventRegistrationDialog(true);
-            }}
-            rounded
-          />
-        </>
+        <p>
+          <strong>Date:</strong> {formatDate(eventData.eventDate)}
+        </p>
+        <p>
+          <strong>Posted On:</strong> {formatDate(eventData.listingDate)}
+        </p>
+        <p>
+          <Tag value={eventData.eventListingStatus} severity={statusSeverity} />
+        </p>
       </div>
     );
   };
@@ -166,6 +163,68 @@ const EventPage = () => {
           circular={true}
         />
       )}
+
+      <Dialog
+        header="Event Details"
+        visible={!!selectedEvent}
+        onHide={() => setSelectedEvent(null)}
+        className={`${styles.cardDialog} ${styles.dialogSize}`}
+        footer={
+          <>
+            <Button
+              label="Register"
+              className={styles.createButton}
+              icon="pi pi-plus"
+              onClick={() => {
+                setSelectedEventId(selectedEvent.id);
+                setShowEventRegistrationDialog(true);
+              }}
+              rounded
+            />
+            <Button
+              label="Close"
+              className={styles.closeButton}
+              onClick={() => setSelectedEvent(null)}
+              rounded
+            />
+          </>
+        }
+      >
+        {selectedEvent && (
+          <>
+            <img
+              src={selectedEvent.image}
+              alt={selectedEvent.eventName}
+              className={styles.eventImage}
+            />
+            <h4 className={styles.dialogField}>{selectedEvent.eventName}</h4>
+            <p className={styles.dialogField}>
+              <strong>Location:</strong> {selectedEvent.location}
+            </p>
+            <p className={styles.dialogField}>
+              <strong>Organized By:</strong>{' '}
+              {selectedEvent.corporate && selectedEvent.corporate.userName}
+            </p>
+            <p className={styles.dialogField}>
+              <strong>Date:</strong> {formatDate(selectedEvent.eventDate)}
+            </p>
+            <p className={styles.dialogField}>
+              <strong>Details:</strong> {selectedEvent.details}
+            </p>
+            <p className={styles.dialogField}>
+              <strong>Posted On:</strong>{' '}
+              {formatDate(selectedEvent.listingDate)}
+            </p>
+            <p>
+              <Tag
+                value={selectedEvent.eventListingStatus}
+                severity={selectedEvent.statusSeverity}
+              />
+            </p>
+          </>
+        )}
+      </Dialog>
+
       <Dialog
         header="Event Registration"
         visible={showEventRegistrationDialog}
