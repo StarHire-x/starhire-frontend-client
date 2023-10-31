@@ -84,4 +84,34 @@ export const getCorporateByUserID = async (id, accessToken) => {
       throw error;
     }
   };
+
+  //Unsub from starhire
+
+  export const unsubscribeFromPlatform = async (userId, accessToken) => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/payment/cancel`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(userId),
+          cache: 'no-store',
+        }
+      );
+      const sessionData = await res.json();
+      console.log('API Response Status Code:', res.status);
+  
+      if (res.status === 201) {
+        return sessionData; 
+      } else {
+        throw new Error(sessionData.message || 'An error occurred');
+      }
+    } catch (error) {
+      console.log('There was a problem creating this checkout session', error);
+      throw error;
+    }
+  };
   
