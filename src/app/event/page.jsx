@@ -63,10 +63,11 @@ const EventPage = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  const registerForEvent = (eventId) => {
+  const registerForEvent = () => {
     const newEventRegistration = {
       jobSeekerId: jobSeekerId,
-      eventListingId: selectedEventId,
+      eventListingId: selectedEvent.eventListingId,
+      registrationDate: new Date(),
     };
     createEventRegistration(newEventRegistration, accessToken)
       .then(() => {
