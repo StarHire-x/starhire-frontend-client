@@ -28,6 +28,7 @@ const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
 
 const MENU_LIST_AUTHENTICATED_CORPORATE = [
   { text: 'Home', href: '/' },
+  { text: 'Dashboard', href: '/dashboard'},
   {
     text: 'Job Listing Management',
     href: '#', // Use # as the href for dropdown

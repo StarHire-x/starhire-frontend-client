@@ -1,0 +1,81 @@
+.mainContainer {
+    flex-direction: column;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.customCardGraph {
+    width: 87.5rem;
+    height: 40rem;
+    overflow: auto;
+    background-color: #e4f1f6;
+}
+
+.layout {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.cardColumnLeft {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    flex: 0.75;
+}
+
+.cardColumnRight {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+    flex: 3.25;
+}
+
+.customCard {
+  width: 15rem;
+  height: 10rem;
+  overflow: auto;
+  background-color: #87CEEB;
+}
+
+.cardLayout {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.imageContainer {
+  display: flex;
+  flex-direction: column; /* To ensure children are stacked vertically */
+  align-items: center; /* Horizontally center the children */
+  justify-content: center; /* Vertically center the children (though it's optional here) */
+  gap: 1px; /* Gives a little space between the image and the h6 */
+}
+
+.avatarImageContainer {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* To make it circular */
+  object-fit: cover; /* To ensure the image maintains its aspect ratio */
+  margin-bottom: 0px; /* Add some spacing below the image */
+}
+
+.buttonContainer {
+  display: flex; /* Use flexbox to arrange buttons horizontally */
+  align-items: center; /* Align buttons vertically in the center */
+}
+
+.tabMenu {
+  display: flex;
+  min-height: 10px;
+  width: 100%;
+}
