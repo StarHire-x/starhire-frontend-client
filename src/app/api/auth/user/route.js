@@ -270,3 +270,96 @@ export const getMyFollowings = async (
     throw error;
   }
 };
+
+export const getCorporateJobListingStats = async (corporateId, accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/corporate/jobListingStats/${corporateId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: "no-store",
+      }
+    );
+
+    const response = await res.json();
+
+    if (response.statusCode === 200) {
+      return response.data;
+    } else {
+      throw new Error(response.message || "An error occurred");
+    }
+  } catch (error) {
+    console.log(
+      "There was a problem obtaining the job application from job seeker",
+      error
+    );
+    throw error;
+  }
+};
+
+export const getACorporateJobListingBreakdown = async (corporateId, accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/corporate/getSingleBreakdown/${corporateId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: "no-store",
+      }
+    );
+
+    const response = await res.json();
+
+    if (response.statusCode === 200) {
+      return response.data;
+    } else {
+      throw new Error(response.message || "An error occurred");
+    }
+  } catch (error) {
+    console.log(
+      "There was a problem obtaining the job application from job seeker",
+      error
+    );
+    throw error;
+  }
+};
+
+export const getCorporateJobApplicationStatistics = async (
+  corporateId,
+  accessToken
+) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/corporate/jobApplications/${corporateId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: "no-store",
+      }
+    );
+
+    const response = await res.json();
+
+    if (response.statusCode === 200) {
+      return response.data;
+    } else {
+      throw new Error(response.message || "An error occurred");
+    }
+  } catch (error) {
+    console.log(
+      "There was a problem obtaining the job application from job seeker",
+      error
+    );
+    throw error;
+  }
+};

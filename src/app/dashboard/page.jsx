@@ -6,11 +6,28 @@ import { useRouter } from "next/navigation";
 import { ProgressSpinner } from "primereact/progressspinner";
 import Link from "next/link";
 import Enums from "@/common/enums/enums";
+import JobStatisticsModal from "@/components/JobStatisticsModal/JobStatisticsModal";
+import JobApplicationModal from "@/components/JobApplicationModal/JobApplicationModal";
 
 const Dashboard = () => {
   const session = useSession();
 
   const router = useRouter();
+
+  const accessToken =
+    session.status === "authenticated" &&
+    session.data &&
+    session.data.user.accessToken;
+
+  const userId =
+    session.status === "authenticated" &&
+    session.data &&
+    session.data.user.userId;
+
+  const role =
+    session.status === "authenticated" &&
+    session.data &&
+    session.data.user.role;
 
   if (session.status === "loading") {
     return <ProgressSpinner />;
@@ -27,6 +44,12 @@ const Dashboard = () => {
           <h2 className={styles.header}>
             Welcome Back {session.data.user.name}!
           </h2>
+          {session.data.user.role === "Corporate" && (
+            <>
+              <JobStatisticsModal accessToken={accessToken} userId={userId} />
+              <JobApplicationModal accessToken={accessToken} userId={userId} />
+            </>
+          )}
           <div className={styles.textContainer}>
             <p className={styles.text}>
               Please head to the{" "}
