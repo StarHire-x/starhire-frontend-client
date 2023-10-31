@@ -59,13 +59,9 @@ const EventPage = () => {
           );
 
           Promise.all(checkRegistrations).then((responses) => {
-            console.log('API Responses:', responses);
-
             const registered = data
               .filter((event, index) => responses[index].statusCode === 200)
               .map((event) => event.eventListingId);
-
-            console.log('Derived registered events:', registered);
 
             setRegisteredEvents(registered);
           });
@@ -103,7 +99,6 @@ const EventPage = () => {
         });
         setRegisteredEvents((prevEvents) => {
           const updatedState = [...prevEvents, selectedEvent.eventListingId];
-          console.log('Updated Registered Events:', updatedState);
           return updatedState;
         });
         hideEventRegistrationDialog();
