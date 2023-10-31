@@ -162,13 +162,13 @@ const PaymentPage = () => {
 
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: '2rem',
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "2rem",
         }}
       >
-        {status === 'Premium' ? (
+        {status === "Premium" ? (
           <>
             <Card title="Thanks for choosing Starhire!" style={cardStyle}>
               <p>
@@ -178,12 +178,12 @@ const PaymentPage = () => {
               </p>
               <p>
                 If you ever decide to unsubscribe, you can do so by clicking the
-                "Unsubscribe" button below.
+                &quot;Unsubscribe&quot; button below.
               </p>
 
-              <p style={{ color: 'red' }}>
+              <p style={{ color: "red" }}>
                 Upon unsubscribing, you will immediately lose all access to
-                "Premium" services!! There will be no partial refunds.
+                &quot;Premium&quot; services!! There will be no partial refunds.
               </p>
 
               <Button
@@ -191,8 +191,8 @@ const PaymentPage = () => {
                 icon="pi pi-check"
                 style={{
                   ...buttonStyle,
-                  backgroundColor: 'red',
-                  color: 'white',
+                  backgroundColor: "red",
+                  color: "white",
                 }}
                 onClick={handleUnsubscribe}
               />
@@ -203,7 +203,8 @@ const PaymentPage = () => {
                 <strong>Username:</strong> {corporate.userName}
               </p>
               <p>
-                <strong>Status Type:</strong> {corporate.corporatePromotionStatus}
+                <strong>Status Type:</strong>{" "}
+                {corporate.corporatePromotionStatus}
               </p>
               <p>
                 <strong>Subscription ID:</strong> {corporate.stripeSubId}
@@ -212,36 +213,36 @@ const PaymentPage = () => {
                 <strong>Customer ID:</strong> {corporate.stripeCustId}
               </p>
               <p>
-                <strong> Next Billing Cycle Start Date: </strong>{' '}
+                <strong> Next Billing Cycle Start Date: </strong>{" "}
                 {convertToSingaporeDate(billCycle?.nextBillingCycleStart)}
               </p>
-              <strong> Next Billing Cycle End Date: </strong>{' '}
+              <strong> Next Billing Cycle End Date: </strong>{" "}
               {convertToSingaporeDate(billCycle?.nextBillingCycleEnd)}
             </Card>
 
             <Dialog
               header="Unsubscribe Confirmation"
               visible={showUnSubscribeDialog}
-              style={{ width: '400px' }}
+              style={{ width: "400px" }}
               onHide={() => setShowUnSubscribeDialog(false)}
               footer={
                 <div>
                   <Button
                     label="I Acknowledge"
                     icon="pi pi-check"
-                    style={{ backgroundColor: 'red', color: 'white' }}
+                    style={{ backgroundColor: "red", color: "white" }}
                     onClick={confirmUnsubscribe}
                   />
                 </div>
               }
             >
               Are you sure you want to unsubscribe from Starhire Premium?
-              <p style={{ color: 'red' }}>No refunds will be given!!</p>
+              <p style={{ color: "red" }}>No refunds will be given!!</p>
             </Dialog>
           </>
         ) : (
           <Card title="Subscribe to Premium" style={cardStyle}>
-            <ul style={{ listStyleType: 'none', padding: 0 }}>
+            <ul style={{ listStyleType: "none", padding: 0 }}>
               {subscriptionBenefits.map((benefit, index) => (
                 <li key={index}>{benefit}</li>
               ))}
@@ -251,8 +252,8 @@ const PaymentPage = () => {
               icon="pi pi-check"
               style={{
                 ...buttonStyle,
-                backgroundColor: 'green',
-                color: 'white',
+                backgroundColor: "green",
+                color: "white",
               }}
               onClick={handleSubscribe}
             />
@@ -261,11 +262,15 @@ const PaymentPage = () => {
         <Dialog
           header="Subscribe Confirmation"
           visible={showSubscribeDialog}
-          style={{ width: '400px' }}
+          style={{ width: "400px" }}
           onHide={() => setShowSubscribeDialog(false)}
           footer={
             <div>
-              <Button label="Yes" icon="pi pi-check" onClick={confirmSubscribe} />
+              <Button
+                label="Yes"
+                icon="pi pi-check"
+                onClick={confirmSubscribe}
+              />
               <Button
                 label="No"
                 icon="pi pi-times"
@@ -280,18 +285,18 @@ const PaymentPage = () => {
         <Dialog
           header="Redirecting..."
           visible={redirectingDialogVisible}
-          style={{ width: '400px' }}
+          style={{ width: "400px" }}
           onHide={closeDialog}
         >
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
             <ProgressSpinner
-              style={{ width: '50px', height: '50px' }}
+              style={{ width: "50px", height: "50px" }}
               strokeWidth="4"
             />
             <p>You will be redirected to the Stripe Payment Page.</p>
