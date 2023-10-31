@@ -91,7 +91,7 @@ const ViewAllMyJobListingsManagementPage = () => {
     return (
       <a href={cardLink} className={styles.cardLink}>
         <div className={styles.card}>
-          <div style={{display: 'flex'}} className={styles.cardHeader}>
+          <div style={{display: 'flex', justifyContent:'space-between'}} className={styles.cardHeader}>
             <h3>{jobListing.title}</h3>
             <Badge
               value={jobListing?.numOfPendingJobAppsToProcess}
