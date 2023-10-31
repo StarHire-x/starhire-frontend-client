@@ -41,3 +41,10 @@
   font-weight: 600;
   color: #444;
 }
+
+.createButton {
+  background-color: #e29578 !important;
+  color: white;
+  border: none !important;
+  margin-right: 20px;
+}

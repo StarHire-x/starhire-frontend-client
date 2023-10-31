@@ -6,10 +6,10 @@ import { useRouter } from 'next/navigation';
 import { Button } from 'primereact/button';
 import { Carousel } from 'primereact/carousel';
 import { Dialog } from 'primereact/dialog';
-import { InputText } from 'primereact/inputtext';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Toast } from 'primereact/toast';
 import { findAllEventListings } from '../api/eventListing/route';
+import { createEventRegistration } from '@/app/api/eventRegistration/route';
 import styles from './page.module.css';
 
 const EventPage = () => {
@@ -20,6 +20,9 @@ const EventPage = () => {
   const [eventListings, setEventListings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshData, setRefreshData] = useState(false);
+  const [showEventRegistrationDialog, setShowEventRegistrationDialog] =
+    useState(false);
+  const [selectedEventId, setSelectedEventId] = useState(null);
 
   const accessToken =
     session.status === 'authenticated' &&
@@ -30,7 +33,7 @@ const EventPage = () => {
     session.status === 'authenticated' &&
     session.data &&
     session.data.user.userId;
-    
+
   useEffect(() => {
     if (session.status === 'unauthenticated' || session.status === 'loading') {
       router.push('/login');
@@ -49,9 +52,35 @@ const EventPage = () => {
     }
   }, [refreshData, accessToken]);
 
+  const hideEventRegistrationDialog = () => {
+    setShowEventRegistrationDialog(false);
+  };
+
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  const registerForEvent = (eventId) => {
+    const newEventRegistration = {
+      jobSeekerId: jobSeekerId,
+      eventListingId: selectedEventId,
+    };
+    createEventRegistration(newEventRegistration, accessToken)
+      .then(() => {
+        toast.current.show({
+          severity: 'success',
+          summary: 'Registered Successfully',
+        });
+        hideEventRegistrationDialog();
+      })
+      .catch((error) => {
+        toast.current.show({
+          severity: 'error',
+          summary: 'Registration Failed',
+          detail: error.message,
+        });
+      });
   };
 
   const eventTemplate = (eventData) => {
@@ -82,6 +111,18 @@ const EventPage = () => {
           <strong>Organized By:</strong>{' '}
           {eventData.corporate && eventData.corporate.userName}
         </p>
+        <>
+          <Button
+            label="Register"
+            className={styles.createButton}
+            icon="pi pi-plus"
+            onClick={() => {
+              setSelectedEventId(eventData.id);
+              setShowEventRegistrationDialog(true);
+            }}
+            rounded
+          />
+        </>
       </div>
     );
   };
@@ -125,6 +166,23 @@ const EventPage = () => {
           circular={true}
         />
       )}
+      <Dialog
+        header="Event Registration"
+        visible={showEventRegistrationDialog}
+        onHide={hideEventRegistrationDialog}
+        className={styles.cardDialog}
+        footer={
+          <>
+            <Button
+              label="Yes"
+              onClick={() => registerForEvent(selectedEventId)}
+            />
+            <Button label="No" onClick={hideEventRegistrationDialog} />
+          </>
+        }
+      >
+        Do you want to register for this event?
+      </Dialog>
     </div>
   );
 };
