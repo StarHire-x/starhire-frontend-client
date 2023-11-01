@@ -53,9 +53,9 @@ const EventManagementPage = () => {
 
   const getStatus = (status) => {
     switch (status) {
-      case Enums.UPCOMING:
+      case 'Upcoming':
         return 'success';
-      case Enums.EXPIRED:
+      case 'Expired':
         return 'danger';
     }
   };
