@@ -4,12 +4,31 @@
   margin: 0;
 }
 
+@font-face {
+  font-family: 'Grantha Sangam MN';
+  src: url('/fonts/grantha-sangam-mn-regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Source Sans 3';
+  src: url('/fonts/SourceSans3-SemiBold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
   background-color: #111;
   color: #bbb;
+  font-family: 'Grantha Sangam MN', sans-serif;
+}
+
+.title {
+  font-family: 'Source Sans 3', sans-serif; 
 }
 
 a {
