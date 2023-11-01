@@ -9,8 +9,11 @@ import { uploadFile } from '@/app/api/upload/route';
 import {
   findAllEventListingsByCorporate,
   createEventListing,
+  updateEventListing,
+  removeEventListing,
 } from '../api/eventListing/route';
 import CreateEventForm from '@/components/CreateEventForm/CreateEventForm';
+import EditEventForm from '@/components/EditEventForm/EditEventForm';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Enums from '@/common/enums/enums';
@@ -20,7 +23,11 @@ const EventManagementPage = () => {
   const [eventListing, setEventListing] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [refreshData, setRefreshData] = useState(false);
+  const [selectedEventListingData, setSelectedEventListingData] =
+    useState(null);
   const session = useSession();
   const router = useRouter();
 
@@ -56,6 +63,29 @@ const EventManagementPage = () => {
   const hideCreateDialog = () => {
     setShowCreateDialog(false);
   };
+
+  const hideEditDialog = () => {
+    setSelectedEventListingData(null);
+    setShowEditDialog(false);
+  };
+
+  const hideDeleteDialog = () => {
+    setSelectedEventListingData(null);
+    setShowDeleteDialog(false);
+  };
+
+  const deleteDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        rounded
+        onClick={() =>
+          handleDeleteEventListing(selectedEventListingData.eventListingId)
+        }
+      />
+    </React.Fragment>
+  );
 
   useEffect(() => {
     if (session.status === 'unauthenticated' || session.status === 'loading') {
@@ -110,6 +140,26 @@ const EventManagementPage = () => {
             />
           </div>
         </div>
+        <div className={styles.cardFooter}>
+          <Button
+            label="Edit"
+            icon="pi pi-pencil"
+            rounded
+            onClick={() => {
+              setSelectedEventListingData(eventListing);
+              setShowEditDialog(eventListing);
+            }}
+          />
+          <Button
+            label="Delete"
+            icon="pi pi-trash"
+            rounded
+            onClick={() => {
+              setSelectedEventListingData(eventListing);
+              setShowDeleteDialog(eventListing);
+            }}
+          />
+        </div>
       </div>
     );
   };
@@ -155,6 +205,71 @@ const EventManagementPage = () => {
     setShowCreateDialog(false);
   };
 
+  const handleEditEventListing = async (eventListingId, updatedData) => {
+    try {
+      const payload = {
+        ...updatedData,
+        eventListingStatus: 'Upcoming',
+        corporateId: userIdRef,
+      };
+      console.log('Payload:', payload);
+      const response = await updateEventListing(
+        payload,
+        eventListingId,
+        accessToken
+      );
+      console.log('Updated event listing Successfully', response);
+      // alert('Updated job listing successfully');
+      toast.current.show({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Updated event listing successfully',
+        life: 5000,
+      });
+      setRefreshData((prev) => !prev);
+    } catch (error) {
+      console.error(
+        'There was an error updating the event listing:',
+        error.message
+      );
+      // alert('There was an error updating the job listing:');
+      toast.current.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: error.message,
+        life: 5000,
+      });
+    }
+    setSelectedEventListingData(null);
+    setShowEditDialog(false);
+  };
+
+  const handleDeleteEventListing = async (eventListingId) => {
+    try {
+      const response = await removeEventListing(eventListingId, accessToken);
+      console.log('User is deleted', response);
+      // alert('Deleted job listing successfully');
+      toast.current.show({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Deleted event listing successfully',
+        life: 5000,
+      });
+      setRefreshData((prev) => !prev);
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      // alert('There was an error deleting the job listing:');
+      toast.current.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: error.message,
+        life: 5000,
+      });
+    }
+    setSelectedEventListingData(null);
+    setShowDeleteDialog(false);
+  };
+
   if (isLoading) {
     return (
       <div className={styles.spinnerContainer}>
@@ -191,6 +306,36 @@ const EventManagementPage = () => {
           className={styles.cardDialog}
         >
           <CreateEventForm onCreate={handleEventListingCreation} />
+        </Dialog>
+
+        <Dialog
+          header="Edit Event Listing"
+          visible={showEditDialog}
+          onHide={hideEditDialog}
+          className={styles.cardDialog}
+        >
+          <EditEventForm
+            initialData={showEditDialog}
+            onSave={(updatedData) => {
+              handleEditEventListing(
+                showEditDialog.eventListingId,
+                updatedData
+              );
+            }}
+          />
+        </Dialog>
+
+        <Dialog
+          header="Delete Event Listing"
+          visible={showDeleteDialog}
+          onHide={hideDeleteDialog}
+          className={styles.cardDialog}
+          footer={deleteDialogFooter}
+        >
+          <h3>
+            Confirm Delete Event ID:{' '}
+            {showDeleteDialog && showDeleteDialog.eventListingId}?
+          </h3>
         </Dialog>
       </>
     );

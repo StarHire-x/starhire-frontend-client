@@ -1,0 +1,39 @@
+.mainContainer {
+    flex-direction: column;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.graphContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.customCardGraph {
+    width: 74rem;
+    height: 45rem;
+    overflow: auto;
+    background-color: #C9E2F2;
+}
+
+.customCardGraph1 {
+    width: 24rem;
+    height: 45rem;
+    overflow: auto;
+    background-color: #C9E2F2;
+}
+
+.headerGraph {
+  display: flex;
+  justify-content: space-between;
+}
+
+.headerGraph1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}

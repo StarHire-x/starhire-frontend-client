@@ -1,15 +1,18 @@
 'use client';
 import React, { useEffect, useState, useRef } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Button } from 'primereact/button';
 import { Carousel } from 'primereact/carousel';
 import { Dialog } from 'primereact/dialog';
-import { InputText } from 'primereact/inputtext';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import { Tag } from 'primereact/tag';
 import { Toast } from 'primereact/toast';
 import { findAllEventListings } from '../api/eventListing/route';
+import {
+  createEventRegistration,
+  findExistingEventRegistration,
+} from '@/app/api/eventRegistration/route';
 import styles from './page.module.css';
 
 const EventPage = () => {
@@ -20,6 +23,11 @@ const EventPage = () => {
   const [eventListings, setEventListings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshData, setRefreshData] = useState(false);
+  const [showEventRegistrationDialog, setShowEventRegistrationDialog] =
+    useState(false);
+  const [selectedEventId, setSelectedEventId] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [registeredEvents, setRegisteredEvents] = useState([]);
 
   const accessToken =
     session.status === 'authenticated' &&
@@ -30,33 +38,94 @@ const EventPage = () => {
     session.status === 'authenticated' &&
     session.data &&
     session.data.user.userId;
-    
+
   useEffect(() => {
     if (session.status === 'unauthenticated' || session.status === 'loading') {
       router.push('/login');
     }
 
-    if (accessToken) {
-      findAllEventListings(accessToken)
-        .then((data) => {
+    const fetchData = async () => {
+      try {
+        if (accessToken) {
+          const data = await findAllEventListings(accessToken);
           setEventListings(data);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.error('Error fetching event listings:', error);
-          setIsLoading(false);
-        });
-    }
+
+          const checkRegistrations = data.map((event) =>
+            findExistingEventRegistration(
+              jobSeekerId,
+              event.eventListingId,
+              accessToken
+            )
+          );
+
+          Promise.all(checkRegistrations).then((responses) => {
+            const registered = data
+              .filter((event, index) => responses[index].statusCode === 200)
+              .map((event) => event.eventListingId);
+
+            setRegisteredEvents(registered);
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching event listings:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, [refreshData, accessToken]);
+
+  const hideEventRegistrationDialog = () => {
+    setShowEventRegistrationDialog(false);
+  };
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  const registerForEvent = () => {
+    const newEventRegistration = {
+      jobSeekerId: jobSeekerId,
+      eventListingId: selectedEvent.eventListingId,
+      registrationDate: new Date(),
+    };
+    createEventRegistration(newEventRegistration, accessToken)
+      .then(() => {
+        toast.current.show({
+          severity: 'success',
+          summary: 'Registered Successfully',
+        });
+        setRegisteredEvents((prevEvents) => {
+          const updatedState = [...prevEvents, selectedEvent.eventListingId];
+          return updatedState;
+        });
+        hideEventRegistrationDialog();
+      })
+      .catch((error) => {
+        toast.current.show({
+          severity: 'error',
+          summary: 'Registration Failed',
+          detail: error.message,
+        });
+      });
+  };
+
   const eventTemplate = (eventData) => {
+    let statusSeverity;
+    switch (eventData.eventListingStatus) {
+      case 'Upcoming':
+        statusSeverity = 'success';
+        break;
+      case 'Expired':
+        statusSeverity = 'danger';
+        break;
+    }
+    eventData.statusSeverity = statusSeverity;
+
     return (
-      <div className={styles.event}>
+      <div className={styles.event} onClick={() => setSelectedEvent(eventData)}>
         <img
           src={eventData.image}
           alt={eventData.eventName}
@@ -67,20 +136,17 @@ const EventPage = () => {
           <strong>Location:</strong> {eventData.location}
         </p>
         <p>
+          <strong>Organized By:</strong>{' '}
+          {eventData.corporate && eventData.corporate.userName}
+        </p>
+        <p>
           <strong>Date:</strong> {formatDate(eventData.eventDate)}
         </p>
         <p>
-          <strong>Details:</strong> {eventData.details}
+          <strong>Posted On:</strong> {formatDate(eventData.listingDate)}
         </p>
         <p>
-          <strong>Listing Date:</strong> {formatDate(eventData.listingDate)}
-        </p>
-        <p>
-          <strong>Status:</strong> {eventData.eventListingStatus}
-        </p>
-        <p>
-          <strong>Organized By:</strong>{' '}
-          {eventData.corporate && eventData.corporate.userName}
+          <Tag value={eventData.eventListingStatus} severity={statusSeverity} />
         </p>
       </div>
     );
@@ -125,6 +191,88 @@ const EventPage = () => {
           circular={true}
         />
       )}
+
+      <Dialog
+        header="Event Details"
+        visible={!!selectedEvent}
+        onHide={() => setSelectedEvent(null)}
+        className={`${styles.cardDialog} ${styles.dialogSize}`}
+        footer={
+          <>
+            {selectedEvent &&
+              !registeredEvents.includes(selectedEvent.eventListingId) && (
+                <Button
+                  label="Register"
+                  className={styles.createButton}
+                  icon="pi pi-plus"
+                  onClick={() => {
+                    setSelectedEventId(selectedEvent.eventListingId);
+                    setShowEventRegistrationDialog(true);
+                  }}
+                  rounded
+                />
+              )}
+            <Button
+              label="Close"
+              className={styles.closeButton}
+              onClick={() => setSelectedEvent(null)}
+              rounded
+            />
+          </>
+        }
+      >
+        {selectedEvent && (
+          <>
+            <img
+              src={selectedEvent.image}
+              alt={selectedEvent.eventName}
+              className={styles.eventImage}
+            />
+            <h4 className={styles.dialogField}>{selectedEvent.eventName}</h4>
+            <p className={styles.dialogField}>
+              <strong>Location:</strong> {selectedEvent.location}
+            </p>
+            <p className={styles.dialogField}>
+              <strong>Organized By:</strong>{' '}
+              {selectedEvent.corporate && selectedEvent.corporate.userName}
+            </p>
+            <p className={styles.dialogField}>
+              <strong>Date:</strong> {formatDate(selectedEvent.eventDate)}
+            </p>
+            <p className={styles.dialogField}>
+              <strong>Details:</strong> {selectedEvent.details}
+            </p>
+            <p className={styles.dialogField}>
+              <strong>Posted On:</strong>{' '}
+              {formatDate(selectedEvent.listingDate)}
+            </p>
+            <p>
+              <Tag
+                value={selectedEvent.eventListingStatus}
+                severity={selectedEvent.statusSeverity}
+              />
+            </p>
+          </>
+        )}
+      </Dialog>
+
+      <Dialog
+        header="Event Registration"
+        visible={showEventRegistrationDialog}
+        onHide={hideEventRegistrationDialog}
+        className={styles.cardDialog}
+        footer={
+          <>
+            <Button
+              label="Yes"
+              onClick={() => registerForEvent(selectedEventId)}
+            />
+            <Button label="No" onClick={hideEventRegistrationDialog} />
+          </>
+        }
+      >
+        Do you want to register for this event?
+      </Dialog>
     </div>
   );
 };

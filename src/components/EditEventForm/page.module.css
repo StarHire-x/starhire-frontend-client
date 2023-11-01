@@ -30,12 +30,6 @@
   width: 100%; /* Ensure it takes the full width available in the flex container */
 }
 
-.cardFooter {
-  display: flex; /* Make the footer flexible */
-  justify-content: flex-end; /* Align the button to the right */
-  margin-top: 20px; /* Add some space above the button */
-}
-
 .cardFooter button {
   background-color: #e29578;
   border: none;

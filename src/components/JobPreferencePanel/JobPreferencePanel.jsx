@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import { Panel } from "primereact/panel";
 import { Rating } from "primereact/rating";
 import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
 import styles from "./jobPreferencePanel.module.css";
 import {
   createJobPreference,

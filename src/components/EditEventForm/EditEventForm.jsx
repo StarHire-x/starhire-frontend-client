@@ -1,28 +1,45 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
-import { Calendar } from 'primereact/calendar';
 import { InputText } from 'primereact/inputtext';
+import { Calendar } from 'primereact/calendar';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { uploadFile } from '@/app/api/upload/route';
 import styles from './page.module.css';
 
-const CreateEventForm = ({ onCreate }) => {
+const EditEventForm = ({ initialData, onSave }) => {
   const [formData, setFormData] = useState({
-    eventName: '',
-    location: '',
-    eventDate: null,
-    details: '',
-    image: '',
-    eventListingStatus: 'Upcoming', // default status
+    eventName: initialData?.eventName || '',
+    location: initialData?.location || '',
+    eventDate: initialData?.eventDate || null,
+    details: initialData?.details || '',
+    image: initialData?.image || '',
   });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleInputChange = (e, nameOverride) => {
+    let name, value;
+
+    if (nameOverride) {
+      // Handling special cases where only the value is passed along with a name
+      name = nameOverride;
+      value = e;
+    } else if (e && e.target) {
+      // Handling standard HTML input elements
+      name = e.target.name;
+      value = e.target.value;
+    } else if (e && e.value !== undefined && e.originalEvent) {
+      // Handling calendar events
+      name = e.originalEvent.target.name;
+      value = e.value;
+    }
+
+    if (name && value !== undefined) {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    } else {
+      console.warn('Name or value is missing', e);
+    }
   };
 
   const handleSubmit = () => {
-    if (onCreate) onCreate(formData);
+    if (onSave) onSave(formData);
   };
 
   return (
@@ -51,10 +68,8 @@ const CreateEventForm = ({ onCreate }) => {
           id="eventDate"
           name="eventDate"
           value={formData.eventDate}
-          minDate={new Date(new Date().setDate(new Date().getDate() + 1))} // set minimum date to tomorrow
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, eventDate: e.value }))
-          }
+          minDate={new Date(new Date().setDate(new Date().getDate() + 1))}
+          onChange={(e) => handleInputChange(e)}
         />
       </div>
 
@@ -70,23 +85,20 @@ const CreateEventForm = ({ onCreate }) => {
         />
       </div>
 
-      <div className={styles.cardRow}>
+      {/* <div className={styles.cardRow}>
         <label htmlFor="image">Event Image (landscape suggested):</label>
         <input
           type="file"
           id="image"
           name="image"
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, image: e.target.files[0] }))
-          }
+          onChange={(e) => handleInputChange(e)}
         />
-      </div>
+      </div> */}
 
       <div className={styles.cardFooter}>
-        <Button label="Create" rounded onClick={handleSubmit} />
+        <Button label="Save Changes" rounded onClick={handleSubmit} />
       </div>
     </div>
   );
 };
-
-export default CreateEventForm;
+export default EditEventForm;

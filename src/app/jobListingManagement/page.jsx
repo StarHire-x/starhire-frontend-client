@@ -18,7 +18,7 @@ import CreateJobListingForm from '@/components/CreateJobListingForm/CreateJobLis
 import EditJobListingForm from '@/components/EditJobListingForm/EditJobListingForm';
 import { useRouter } from 'next/navigation';
 import Enums from '@/common/enums/enums';
-import { Toast } from "primereact/toast";
+import { Toast } from 'primereact/toast';
 
 //this page is viewed by corporate
 const JobListingManagementPage = () => {
@@ -63,13 +63,13 @@ const JobListingManagementPage = () => {
     }
   };
 
+  const hideCreateDialog = () => {
+    setShowCreateDialog(false);
+  };
+
   const hideEditDialog = () => {
     setSelectedJobListingData(null);
     setShowEditDialog(false);
-  };
-
-  const hideCreateDialog = () => {
-    setShowCreateDialog(false);
   };
 
   const hideDeleteDialog = () => {
@@ -177,9 +177,9 @@ const JobListingManagementPage = () => {
       console.log('Created Job listing Successfully', response);
       // alert('Created job listing successfully');
       toast.current.show({
-        severity: "success",
-        summary: "Success",
-        detail: "Created job listing successfully",
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Created job listing successfully',
         life: 5000,
       });
       setRefreshData((prev) => !prev);
@@ -190,8 +190,8 @@ const JobListingManagementPage = () => {
       );
       // alert('There was an error creating the job listing:');
       toast.current.show({
-        severity: "error",
-        summary: "Error",
+        severity: 'error',
+        summary: 'Error',
         detail: error.message,
         life: 5000,
       });
@@ -211,12 +211,12 @@ const JobListingManagementPage = () => {
         jobListingId,
         accessToken
       );
-      console.log('Updated Job listing Successfully', response);
+      console.log('Updated job listing Successfully', response);
       // alert('Updated job listing successfully');
       toast.current.show({
-        severity: "success",
-        summary: "Success",
-        detail: "Updated job listing successfully",
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Updated job listing successfully',
         life: 5000,
       });
       setRefreshData((prev) => !prev);
@@ -227,8 +227,8 @@ const JobListingManagementPage = () => {
       );
       // alert('There was an error updating the job listing:');
       toast.current.show({
-        severity: "error",
-        summary: "Error",
+        severity: 'error',
+        summary: 'Error',
         detail: error.message,
         life: 5000,
       });
@@ -243,9 +243,9 @@ const JobListingManagementPage = () => {
       console.log('User is deleted', response);
       // alert('Deleted job listing successfully');
       toast.current.show({
-        severity: "success",
-        summary: "Success",
-        detail: "Deleted job listing successfully",
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Deleted job listing successfully',
         life: 5000,
       });
       setRefreshData((prev) => !prev);
@@ -253,8 +253,8 @@ const JobListingManagementPage = () => {
       console.error('Error deleting user:', error);
       // alert('There was an error deleting the job listing:');
       toast.current.show({
-        severity: "error",
-        summary: "Error",
+        severity: 'error',
+        summary: 'Error',
         detail: error.message,
         life: 5000,
       });
@@ -290,14 +290,14 @@ const JobListingManagementPage = () => {
       <>
         <Toast ref={toast} />
         <div className={styles.header}>
-          <h1 className={styles.headerTitle} style={{ marginBottom: "15px" }}>
+          <h1 className={styles.headerTitle} style={{ marginBottom: '15px' }}>
             Job Listing Management
           </h1>
           <Button
             className={styles.createJobListingButton}
             label="Add A Job Listing"
             rounded
-            style={{ marginTop: "10px", marginBottom: "15px" }}
+            style={{ marginTop: '10px', marginBottom: '15px' }}
             onClick={() => setShowCreateDialog(true)}
           />
         </div>
@@ -337,7 +337,7 @@ const JobListingManagementPage = () => {
           footer={deleteDialogFooter}
         >
           <h3>
-            Confirm Delete Job ID:{" "}
+            Confirm Delete Job ID:{' '}
             {showDeleteDialog && showDeleteDialog.jobListingId}?
           </h3>
         </Dialog>
