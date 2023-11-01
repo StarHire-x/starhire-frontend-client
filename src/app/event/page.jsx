@@ -200,18 +200,20 @@ const EventPage = () => {
         footer={
           <>
             {selectedEvent &&
-              !registeredEvents.includes(selectedEvent.eventListingId) && (
-                <Button
-                  label="Register"
-                  className={styles.createButton}
-                  icon="pi pi-plus"
-                  onClick={() => {
-                    setSelectedEventId(selectedEvent.eventListingId);
-                    setShowEventRegistrationDialog(true);
-                  }}
-                  rounded
-                />
-              )}
+            !registeredEvents.includes(selectedEvent.eventListingId) ? (
+              <Button
+                label="Register"
+                className={styles.createButton}
+                icon="pi pi-plus"
+                onClick={() => {
+                  setSelectedEventId(selectedEvent.eventListingId);
+                  setShowEventRegistrationDialog(true);
+                }}
+                rounded
+              />
+            ) : (
+              <span>You have registered for this event</span>
+            )}
             <Button
               label="Close"
               className={styles.closeButton}
