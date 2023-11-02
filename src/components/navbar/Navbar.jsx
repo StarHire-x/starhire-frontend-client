@@ -104,6 +104,7 @@ const Navbar = () => {
                     backgroundColor: '#ffc937',
                     color: 'black',
                     whiteSpace: 'nowrap',
+                    marginTop: "30px",
                     border: "1px solid #ffc937",
                   }}
                   size='small'
