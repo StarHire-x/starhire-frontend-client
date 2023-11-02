@@ -101,9 +101,10 @@ const Navbar = () => {
               <Link href="/payment" passHref>
                 <Button
                   style={{
-                    backgroundColor: 'gold',
+                    backgroundColor: '#ffc937',
                     color: 'black',
                     whiteSpace: 'nowrap',
+                    border: "1px solid #ffc937",
                   }}
                 >
                   Premium
@@ -113,11 +114,13 @@ const Navbar = () => {
               <Link href="/payment" passHref>
                 <Button
                   style={{
-                    backgroundColor: "#ffc937",
-                    color: "black",
+                    backgroundColor: "#35acfe",
+                    color: "white",
                     whiteSpace: "nowrap",
-                    marginTop: "30px"
+                    marginTop: "30px",
+                    border: "1px solid #35acfe"
                   }}
+                  size='small'
                 >
                   Try Premium Today!
                 </Button>

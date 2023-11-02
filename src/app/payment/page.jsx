@@ -252,8 +252,9 @@ const PaymentPage = () => {
               icon="pi pi-check"
               style={{
                 ...buttonStyle,
-                backgroundColor: "green",
+                backgroundColor: "#35acfe",
                 color: "white",
+                border: "1px solid #35acfe ", 
               }}
               onClick={handleSubscribe}
             />
