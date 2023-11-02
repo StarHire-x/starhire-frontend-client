@@ -54,9 +54,9 @@ const EventManagementPage = () => {
   const getStatus = (status) => {
     console.log("Checking status: ", status)
     switch (status) {
-      case Enums.UPCOMING:
+      case 'Upcoming':
         return 'success';
-      case Enums.EXPIRED:
+      case 'Expired':
         return 'danger';
       case "Upcoming": 
       return "success"
