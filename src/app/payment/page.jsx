@@ -11,7 +11,10 @@ import { useRouter } from 'next/navigation';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { getCorporateNextBillingCycleBySubID } from '@/app/api/payment/route';
 import { unsubscribeFromPlatform } from '@/app/api/payment/route';
+import { getInvoiceFromCustomer } from '@/app/api/payment/route';
 import { Toast } from 'primereact/toast';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 
 const subscriptionBenefits = [
   'Priority listings for all Events!',
@@ -28,6 +31,10 @@ const PaymentPage = () => {
   const [status, setStatus] = useState(null);
   const [corporate, setCorporate] = useState(null);
   const [billCycle, setBillCycle] = useState(null);
+  const [data, setData] = useState([]);
+  const [invoices, setInvoices] = useState(true);
+  const [loading, setLoading] = useState(true);
+
 
   const toast = useRef(null);
 
@@ -102,6 +109,10 @@ const PaymentPage = () => {
     setShowUnSubscribeDialog(true);
   };
 
+  const viewMyInvoicesPageRedirect = () => {
+    router.push(`/payment/viewCustomerInvoices?id=${corporate.stripeCustId}`)
+  }
+
   const confirmUnsubscribe = async () => {
     let payload = {
       userId: userIdRef,
@@ -155,6 +166,7 @@ const PaymentPage = () => {
   const closeDialog = () => {
     setRedirectingDialogVisible(false);
   };
+
 
   return (
     <>
@@ -218,6 +230,16 @@ const PaymentPage = () => {
               </p>
               <strong> Next Billing Cycle End Date: </strong>{" "}
               {convertToSingaporeDate(billCycle?.nextBillingCycleEnd)}
+              <Button
+                label="View My Invoices"
+                icon="pi pi-check"
+                style={{
+                  ...buttonStyle,
+                  backgroundColor: "green",
+                  color: "white",
+                }}
+                onClick={viewMyInvoicesPageRedirect}
+              />
             </Card>
 
             <Dialog
