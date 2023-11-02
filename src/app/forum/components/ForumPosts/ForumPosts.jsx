@@ -115,7 +115,7 @@ const ForumPosts = ({
                 : styles.categoryTagCareer
             }`}
           >
-            {data.forumCategory.forumCategoryTitle}
+            <p>{data.forumCategory.forumCategoryTitle}</p>
           </div>
         </div>
 

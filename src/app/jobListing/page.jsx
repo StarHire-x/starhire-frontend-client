@@ -191,7 +191,7 @@ const JobListingPage = () => {
     <>
       <Toast ref={toast} />
       <div className={styles.header}>
-        <h1 style={{ marginBottom: "15px", color: "white" }}>Assigned Jobs</h1>
+        <h1 className={styles.title}>Assigned Jobs</h1>
         <span className="p-input-icon-left">
           <i className="pi pi-search" />
           <InputText
