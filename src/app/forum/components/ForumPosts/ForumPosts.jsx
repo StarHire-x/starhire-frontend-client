@@ -132,16 +132,18 @@ const ForumPosts = ({
           <div className={styles.dateTimeText}>
             {Utility.timeAgo(data.createdAt)}
           </div>
-          <div className={styles.commentInfo}>
-            <Badge value={data?.forumComments.length} severity="info"></Badge>
-            <Button
-              size="small"
-              icon="pi pi-comments"
-              rounded
-              onClick={() => openDialog(data)}
-              className={styles.commentButton}
-            ></Button>
-          </div>
+          {data.forumPostStatus !== "Pending" && (
+            <div className={styles.commentInfo}>
+              <Badge value={data?.forumComments.length} severity="info"></Badge>
+              <Button
+                size="small"
+                icon="pi pi-comments"
+                rounded
+                onClick={() => openDialog(data)}
+                className={styles.commentButton}
+              ></Button>
+            </div>
+          )}
         </div>
       </div>
     );
