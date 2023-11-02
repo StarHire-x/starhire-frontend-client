@@ -1,8 +1,12 @@
-.eheader {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
+}
+
+.headerTitle {
+  font-family: "Source Sans 3";
 }
 
 /* Grid layout for cards, making them appear in rows of up to 5 */
@@ -30,7 +34,7 @@
 .createEventListingButton {
   margin-left: 20px;
   border: #006d77;
-  background-color: #006d77;
+  background-color: #35acfe !important;
   color: #edf6f9;
 }
 

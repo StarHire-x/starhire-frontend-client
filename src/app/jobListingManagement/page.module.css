@@ -1,8 +1,12 @@
-.eheader {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
+}
+
+.headerTitle{
+  font-family: "Source Sans 3", sans-serif;
 }
 
 /* Grid layout for cards, making them appear in rows of up to 5 */
@@ -30,17 +34,21 @@
 .createJobListingButton {
   margin-left: 20px;
   border: #006d77;
-  background-color: #006d77;
+  background-color: #35acfe;
   color: #edf6f9;
 }
 
+.createJobListingButton:hover{
+  background-color: #082948 !important;
+}
+
 .card {
-  background-color: #ffddd2;
-  border: 1px solid #ffddd2;
+  background-color: white;
   padding: 20px;
   transition: transform 0.2s, box-shadow 0.2s;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .card:hover {

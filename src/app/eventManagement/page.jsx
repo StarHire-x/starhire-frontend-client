@@ -52,11 +52,14 @@ const EventManagementPage = () => {
   };
 
   const getStatus = (status) => {
+    console.log("Checking status: ", status)
     switch (status) {
       case Enums.UPCOMING:
         return 'success';
       case Enums.EXPIRED:
         return 'danger';
+      case "Upcoming": 
+      return "success"
     }
   };
 
@@ -283,14 +286,13 @@ const EventManagementPage = () => {
       <>
         <Toast ref={toast} />
         <div className={styles.header}>
-          <h1 className={styles.headerTitle} style={{ marginBottom: '15px' }}>
+          <h1 className={styles.headerTitle}>
             Event Management
           </h1>
           <Button
             className={styles.createEventListingButton}
             label="Create An Event"
             rounded
-            style={{ marginTop: '10px', marginBottom: '15px' }}
             onClick={() => setShowCreateDialog(true)}
           />
         </div>

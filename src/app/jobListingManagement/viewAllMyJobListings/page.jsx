@@ -36,19 +36,6 @@ const ViewAllMyJobListingsManagementPage = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  /*
-  const getStatus = (status) => {
-    switch (status) {
-      case Enums.ACTIVE:
-        return 'success';
-      case 'Unverified':
-        return 'danger';
-      case Enums.INACTIVE:
-        return 'danger';
-    }
-  };
-  */
-
   const getStatus = (status) => {
     switch (status) {
       case 'Approved':
@@ -95,7 +82,7 @@ const ViewAllMyJobListingsManagementPage = () => {
             <h3>{jobListing.title}</h3>
             <Badge
               value={jobListing?.numOfPendingJobAppsToProcess}
-              severity="danger"
+              style={{backgroundColor: "#35acfe"}}
             ></Badge>
           </div>
           <div className={styles.cardBody}>
@@ -135,28 +122,6 @@ const ViewAllMyJobListingsManagementPage = () => {
   if (session.status === 'unauthenticated') {
     router?.push('/login');
   }
-
-  // if (session.status === 'authenticated') {
-  //   return (
-  //     <div className={styles.container}>
-  //       <DataView
-  //         value={jobListing}
-  //         className={styles.dataViewContainer}
-  //         layout="grid"
-  //         rows={10}
-  //         paginator
-  //         header={<h2 className={styles.headerTitle}>My Job Listings</h2>}
-  //         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-  //         rowsPerPageOptions={[10, 25, 50]}
-  //         emptyMessage="No job listing found"
-  //         itemTemplate={itemTemplate}
-  //         pt={{
-  //           grid: { className: 'surface-ground' },
-  //         }}
-  //       />
-  //     </div>
-  //   );
-  // }
 
   if (session.status === 'authenticated') {
     return (

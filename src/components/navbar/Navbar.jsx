@@ -116,9 +116,10 @@ const Navbar = () => {
               <Link href="/payment" passHref>
                 <Button
                   style={{
-                    backgroundColor: "lightgreen",
+                    backgroundColor: "#ffc937",
                     color: "black",
                     whiteSpace: "nowrap",
+                    marginTop: "30px"
                   }}
                 >
                   Try Premium Today!
