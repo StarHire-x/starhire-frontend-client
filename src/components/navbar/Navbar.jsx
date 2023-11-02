@@ -106,6 +106,7 @@ const Navbar = () => {
                     whiteSpace: 'nowrap',
                     border: "1px solid #ffc937",
                   }}
+                  size='small'
                 >
                   Premium
                 </Button>
