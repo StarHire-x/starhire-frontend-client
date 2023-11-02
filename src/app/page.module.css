@@ -10,7 +10,6 @@
   display: flex;
   flex-direction: column;
   align-items: left;
-  gap: 0px;
 }
 
 .imageContainer {
@@ -22,35 +21,55 @@
   height: auto;
 }
 
-.titleContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  justify-content: center;
-  gap: 10px;
+.imageContainer2 {
+  position: absolute;
+  top: 30%; /* Vertically center the imageContainer within the .container */
+  left: calc(40% + 300px); /* Position the imageContainer to the right of the textContainer with some margin */
+  transform: translate(-10%, -160%); /* Move the imageContainer back to center */
+  width: auto;
+  height: auto;
 }
 
-.title {
-  font-size: 68px;
+.titleContainer {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: -20px;
+}
+
+.mainTitle {
+  font-size: 80px;
   color: black;
   font-family: 'Source Sans 3', sans-serif; 
 }
 
-.subTitle {
+.logoA {
+  font-size: 80px;
+  color: black;
+  font-family: 'Kollektif', sans-serif;
+  margin-top: 8px;
+}
+
+.description {
   font-size: 24px;
   color: black;
+  font-family: 'Merriweather', sans-serif; 
 }
 
 .secondaryTitle {
   font-size: 48px;
   color: #35acfe;
-  font-family: 'Merriweather', sans-serif; 
-  margin-top: -10px;
+  font-family: 'Source Sans 3', sans-serif; 
+  margin-top: -5px;
 }
 
 .img {
-  width: 400px; /* Set a fixed width */
-  height: 400px; /* Set a fixed height */
+  width: 400px;
+  height: 400px; 
+}
+
+.img2 {
+  width: 100px; 
+  height: 100px; 
 }
 
 .buttonContainer {
@@ -73,9 +92,6 @@
 }
 
 @media screen and (max-width: 768px) {
-  .container {
-
-  }
 
   .textContainer {
     top: 45%; /* Vertically center the textContainer within the .container */
@@ -88,21 +104,51 @@
     left: calc(30% + 300px); /* Position the imageContainer to the right of the textContainer with some margin */
     transform: translate(-100%, -100%); /* Move the imageContainer back to center */
   }
+  .imageContainer2 {
+    top: 50%; /* Vertically center the textContainer within the .container */
+    left: calc(30% + 300px); /* Position the imageContainer to the right of the textContainer with some margin */
+    transform: translate(-200%, -250%); /* Move the imageContainer back to center */
+  }
 
-  .title {
+
+  .mainTitle {
     font-size: 48px;
+    color: black;
+    font-family: 'Source Sans 3', sans-serif; 
   }
-
-  .subTitle {
-    font-size: 15px;
+  
+  .logoA {
+    font-size: 48px;
+    margin-top: 5px;
   }
-
+  
+  .description {
+    font-size: 13px;
+    margin-top: 5px;
+  }
+  
   .secondaryTitle {
     font-size: 28px;
+    margin-top: -5px;
   }
+
   .img {
     width: 200px;
     height: 200px;
+  }
+  .img2 {
+    width: 50px;
+    height: 50px;
+  }
+
+  .buttonContainer {
+    margin-top: 5px;
+  }
+
+  .button {
+    padding: 8px 32px;
+    font-size: 15px;
+    margin: 0 5px;
   }
 }
 

@@ -1,7 +1,8 @@
 "use client";
 import Image from "next/image";
 import styles from "./page.module.css";
-import Star from "public/yellow_star.png";
+import yellowStar from "public/yellow_star.png";
+import blueStar from "public/blue_star.png";
 import Contact from "public/contact.png";
 import Apps from "public/apps.jpg";
 import Websites from "public/websites.jpg";
@@ -21,10 +22,12 @@ export default function Home() {
     <div className={styles.container}>
       <div className={styles.textContainer}>
         <div className={styles.titleContainer}>
-          <p className={styles.title}>StarHire</p>
+          <p className={styles.mainTitle}>St</p>
+          <p className={styles.logoA}>a</p>
+          <p className={styles.mainTitle}>rHire</p>
         </div>
         <div>
-          <p className={styles.subTitle}>because educators deserve the best</p>
+          <p className={styles.description}>because educators deserve the best</p>
         </div>
         <div>
           <h1 className={styles.secondaryTitle}>Opportunities</h1>
@@ -43,7 +46,10 @@ export default function Home() {
         </div>
       </div>
       <div className={styles.imageContainer}>
-        <Image src={Star} alt="Picture" className={styles.img} />
+        <Image src={yellowStar} alt="Picture" className={styles.img} />
+      </div>
+      <div className={styles.imageContainer2}>
+        <Image src={blueStar} alt="Picture" className={styles.img2} />
       </div>
     </div>
   );
