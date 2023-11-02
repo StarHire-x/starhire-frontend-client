@@ -114,4 +114,34 @@ export const getCorporateByUserID = async (id, accessToken) => {
       throw error;
     }
   };
+
+
+  export const getInvoiceFromCustomer = async (id, accessToken) => {
+    try {
+      console.log("I AM HERE Invoice");
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/payment/all-invoices/${id}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          cache: 'no-store',
+        }
+      );
+  
+      const response = await res.json();
+      console.log(response);
+      if (response.statusCode === 200) {
+        console.log(response.data);
+        return await response.data;
+      } else {
+        throw new Error(response.message || 'An error occurred');
+      }
+    } catch (error) {
+      console.log('There was a problem fetching the Invoices', error);
+      throw error;
+    }
+  };
   
