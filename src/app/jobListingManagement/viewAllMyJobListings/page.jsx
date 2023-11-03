@@ -1,15 +1,13 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { DataView } from 'primereact/dataview';
-import { Dialog } from 'primereact/dialog';
+import { Badge } from 'primereact/badge';
 import { Tag } from 'primereact/tag';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { findAllJobListingsByCorporate } from '@/app/api/jobListing/route';
 import styles from '../page.module.css';
 import 'primeflex/primeflex.css';
-import { Badge } from 'primereact/badge';
 
 const ViewAllMyJobListingsManagementPage = () => {
   const [jobListing, setJobListing] = useState(null);
