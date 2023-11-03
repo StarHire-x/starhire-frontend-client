@@ -1,8 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { DataView } from 'primereact/dataview';
 import { Dialog } from 'primereact/dialog';
-import { Tag } from 'primereact/tag';
 import { useSession } from 'next-auth/react';
 import { Button } from 'primereact/button';
 import { getJobSeekersByJobApplicationId } from '@/app/api/jobListing/route';
@@ -13,7 +11,6 @@ import { Card } from 'primereact/card';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import Image from 'next/image';
 import styles from './page.module.css';
-import { Joan } from 'next/font/google';
 import Enums from '@/common/enums/enums';
 
 const ViewJobSeekerPage = () => {
@@ -127,11 +124,6 @@ const ViewJobSeekerPage = () => {
                     className="avatar"
                   />
                 )}
-
-                {/*<div className="company-details">
-                    <p>{jobApplication.jobApplicationId}</p>
-                  </div>
-                  */}
               </div>
 
               <strong>Application Details</strong>

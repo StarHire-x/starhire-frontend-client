@@ -12,12 +12,6 @@
   overflow-y: auto;
 }
 
-.headerContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .headerTitle {
   margin-bottom: 20px;
   text-align: left;
@@ -64,49 +58,6 @@
   justify-content: space-between;
   margin-bottom: 15px;
   flex-wrap: wrap;
-}
-
-.cardFooter {
-  margin-top: 25px;
-  text-align: right;
-}
-
-.cardFooter button {
-  background-color: #edf6f9;
-  border: none;
-  border-radius: 4px;
-  color: #006d77;
-  padding: 5px 10px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 0.8em;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.cardFooter button:hover {
-  background-color: #e2947888;
-}
-
-.buttonSpacing {
-  margin-right: 10px;
-}
-
-.cardDialog {
-  background-color: #e0ecee;
-  padding: 10px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-  overflow: hidden;
-  border: 1px solid #e0ecee;
-  width: 70vw;
-  max-width: 1250px;
-}
-
-.editCardDialog {
-  width: 90vw;
-  max-width: 600px;
 }
 
 @media (max-width: 768px) {
