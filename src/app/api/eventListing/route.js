@@ -147,7 +147,30 @@ export const viewAllPremiumUsers = async (accessToken) => {
     }
     return await res.json();
   } catch (error) {
-    console.log("There was a problem fetching all Promotion Request", error);
+    console.log("There was a problem fetching all Premium users", error);
+    throw error;
+  }
+};
+
+export const viewAllNonPremiumUsers = async (accessToken) => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/corporate/non-premium-users`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      console.log(errorData);
+      throw new Error(errorData.message);
+    }
+    return await res.json();
+  } catch (error) {
+    console.log("There was a problem fetching all non Premium users", error);
     throw error;
   }
 };
