@@ -90,7 +90,7 @@ const EventManagementPage = () => {
   );
 
   useEffect(() => {
-    if (session.status === 'unauthenticated' || session.status === 'loading') {
+    if (session.status === 'unauthenticated') {
       router.push('/login');
     } else if (session.status === 'authenticated') {
       findAllEventListingsByCorporate(userIdRef, accessToken)

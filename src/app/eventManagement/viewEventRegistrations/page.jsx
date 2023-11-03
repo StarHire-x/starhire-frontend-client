@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { findAllEventRegistrationsByEventListing } from '@/app/api/eventListing/route';
@@ -54,6 +55,14 @@ const ViewEventRegistrationsPage = () => {
           <h5>{eventRegistration.eventRegistrationId}</h5>
         </div>
         <div className={styles.cardBody}>
+          <div className={styles.cardRow}>
+            <span>Registered by:</span>
+            <span>{eventRegistration.jobSeeker.fullName}</span>
+          </div>
+          {/* <div className={styles.cardRow}>
+            <span>Contact email:</span>
+            <span>{eventRegistration.jobSeeker.email}</span>
+          </div> */}
           <div className={styles.cardRow}>
             <span>Registration Date:</span>
             <span>{formatDate(eventRegistration.registrationDate)}</span>
