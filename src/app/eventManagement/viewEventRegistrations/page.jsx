@@ -3,13 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { DataView } from 'primereact/dataview';
-import { Tag } from 'primereact/tag';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { getJobApplicationsByJobListingId } from '@/app/api/jobListing/route';
 import { useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
 
-const ViewJobApplicationsPage = () => {
+const ViewEventRegistrationsPage = () => {
   const [jobApplications, setJobApplications] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const session = useSession();
@@ -33,27 +32,6 @@ const ViewJobApplicationsPage = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  const displayStatus = (status) => {
-    switch (status) {
-      case 'Offered':
-        return 'Offered';
-      case 'Rejected':
-        return 'Rejected';
-      case 'Offer_Accepted':
-        return 'Offer Accepted';
-      case 'Offer_Rejected':
-        return 'Offer Rejected';
-      case 'Processing':
-        return 'Processing';
-      case 'To_Be_Submitted':
-        return 'To Be Submitted';
-      case 'Waiting_For_Interview':
-        return 'Interview in Process';
-      default:
-        return 'Unknown';
-    }
-  };
-
   useEffect(() => {
     if (accessToken) {
       getJobApplicationsByJobListingId(id, accessToken)
@@ -67,29 +45,6 @@ const ViewJobApplicationsPage = () => {
         });
     }
   }, [userIdRef, accessToken]);
-
-  const getStatus = (status) => {
-    switch (status) {
-      case 'To_Be_Submitted':
-        return 'info';
-      case 'Processing':
-        return 'warning';
-      case 'Waiting_For_Interview':
-        return 'info';
-      case 'Offer_Rejected':
-        return 'danger';
-      case 'Offer_Accepted':
-        return 'success';
-      case 'Rejected':
-        return 'danger';
-      case 'Offered':
-        return 'success';
-      case 'Unverified':
-        return 'warning';
-      default:
-        return '';
-    }
-  };
 
   const itemTemplate = (jobApplication) => {
     const cardLink = `/jobListingManagement/viewAllMyJobListings/viewJobApplicationDetails?id=${jobApplication.jobApplicationId}`;
@@ -108,15 +63,6 @@ const ViewJobApplicationsPage = () => {
             <div className={styles.cardRow}>
               <span>Submission Date:</span>
               <span>{formatDate(jobApplication.submissionDate)}</span>
-            </div>
-            <div className={styles.cardRow}>
-              <span>Status</span>
-              <span>
-                <Tag
-                  value={displayStatus(jobApplication.jobApplicationStatus)}
-                  severity={getStatus(jobApplication.jobApplicationStatus)}
-                />
-              </span>
             </div>
           </div>
         </div>
@@ -163,4 +109,4 @@ const ViewJobApplicationsPage = () => {
   }
 };
 
-export default ViewJobApplicationsPage;
+export default ViewEventRegistrationsPage;
