@@ -43,7 +43,6 @@ export const findAllEventRegistrationsByEventListing = async (
     );
 
     const response = await res.json();
-    console.log(response);
     if (response.statusCode === 200) {
       return await response.data;
     } else {

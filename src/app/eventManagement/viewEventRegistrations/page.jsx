@@ -47,22 +47,19 @@ const ViewEventRegistrationsPage = () => {
   }, [userIdRef, accessToken]);
 
   const itemTemplate = (eventRegistration) => {
-    // const cardLink = `/eventManagement/viewAllMyJobListings/viewJobApplicationDetails?id=${jobApplication.jobApplicationId}`;
     return (
-      <a href={cardLink} className={styles.cardLink}>
-        <div className={styles.card}>
-          <div className={styles.cardHeader}>
-            <span>Event Registration Id:</span>
-            <h5>{eventRegistration.eventRegistrationId}</h5>
-          </div>
-          <div className={styles.cardBody}>
-            <div className={styles.cardRow}>
-              <span>Registration Date:</span>
-              <span>{formatDate(eventRegistration.registrationDate)}</span>
-            </div>
+      <div className={styles.card}>
+        <div className={styles.cardHeader}>
+          <span>Event Registration Id:</span>
+          <h5>{eventRegistration.eventRegistrationId}</h5>
+        </div>
+        <div className={styles.cardBody}>
+          <div className={styles.cardRow}>
+            <span>Registration Date:</span>
+            <span>{formatDate(eventRegistration.registrationDate)}</span>
           </div>
         </div>
-      </a>
+      </div>
     );
   };
 
