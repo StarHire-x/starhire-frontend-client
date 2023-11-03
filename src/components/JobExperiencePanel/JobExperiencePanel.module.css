@@ -1,11 +1,28 @@
+.mainCard {
+    background-color: inherit;
+}
+
+.dataViewContainer {
+    background-color: #fefbf6;;
+}
+
 .jobExperienceHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
+.headerTitle {
+    font-family: 'Source Sans 3', sans-serif; 
+}
+
+.jobExperienceDiv {
+    background-color: #fefbf6;
+}
+
 .card {
     border: 1px dotted #000000;
+    background-color: #fefbf6;
 }
 
 .cardHeader {

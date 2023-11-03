@@ -23,7 +23,7 @@
 
 .idTag {
   padding: 5px 10px; 
-  background-color: #007bff; 
+  background-color: #082948; 
   color: white; 
   border-radius: 20px;
   display: flex;
@@ -63,7 +63,8 @@
 }
 
 .categoryTagConfessions {
-  background-color: rgba(178, 129, 15, 0.699); 
+  background-color: #ffc937;
+  color: black;
 }
 
 .categoryTagCareer {

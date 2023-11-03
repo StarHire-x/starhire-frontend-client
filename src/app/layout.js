@@ -1,6 +1,6 @@
 import Navbar from '@/components/navbar/Navbar'
 import './globals.css'
-import { Inter, Roboto, Poppins  } from 'next/font/google';
+// import { Inter, Roboto, Poppins  } from 'next/font/google';
 import Footer from '@/components/footer/Footer';
 import { ThemeProvider } from '@/context/ThemeContext';
 import AuthProvider from '@/components/AuthProvider/AuthProvider';
@@ -9,7 +9,7 @@ import "primereact/resources/themes/lara-light-indigo/theme.css"; // Choose the 
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
-const inter = Inter({ subsets: ['latin'] })
+// const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'StarHire Client Portal',
@@ -19,7 +19,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <ThemeProvider>
           <AuthProvider>
             <UserProvider>

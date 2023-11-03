@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
 import { Card } from 'primereact/card';
@@ -11,7 +11,9 @@ import { useRouter } from 'next/navigation';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { getCorporateNextBillingCycleBySubID } from '@/app/api/payment/route';
 import { unsubscribeFromPlatform } from '@/app/api/payment/route';
+import { getInvoiceFromCustomer } from '@/app/api/payment/route';
 import { Toast } from 'primereact/toast';
+import styles from './page.module.css';
 
 const subscriptionBenefits = [
   'Priority listings for all Events!',
@@ -24,10 +26,12 @@ const PaymentPage = () => {
   const router = useRouter();
   const [showSubscribeDialog, setShowSubscribeDialog] = useState(false);
   const [showUnSubscribeDialog, setShowUnSubscribeDialog] = useState(false);
-  const [redirectingDialogVisible, setRedirectingDialogVisible] = useState(false);
+  const [redirectingDialogVisible, setRedirectingDialogVisible] =
+    useState(false);
   const [status, setStatus] = useState(null);
   const [corporate, setCorporate] = useState(null);
   const [billCycle, setBillCycle] = useState(null);
+  const [invoices, setInvoices] = useState(true);
 
   const toast = useRef(null);
 
@@ -68,7 +72,10 @@ const PaymentPage = () => {
         setStatus(data.corporatePromotionStatus);
 
         if (data && data.stripeSubId) {
-          return getCorporateNextBillingCycleBySubID(data.stripeSubId, accessToken);
+          return getCorporateNextBillingCycleBySubID(
+            data.stripeSubId,
+            accessToken
+          );
         }
       })
       .then((billingCycleData) => {
@@ -81,25 +88,16 @@ const PaymentPage = () => {
       });
   }, [userIdRef, accessToken]);
 
-  const cardStyle = {
-    width: '400px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    borderRadius: '5px',
-    padding: '1rem',
-    textAlign: 'center',
-  };
-
-  const buttonStyle = {
-    width: '100%',
-    marginTop: '1rem',
-  };
-
   const handleSubscribe = () => {
     setShowSubscribeDialog(true);
   };
 
   const handleUnsubscribe = () => {
     setShowUnSubscribeDialog(true);
+  };
+
+  const viewMyInvoicesPageRedirect = () => {
+    router.push(`/payment/viewCustomerInvoices?id=${corporate.stripeCustId}`);
   };
 
   const confirmUnsubscribe = async () => {
@@ -159,162 +157,165 @@ const PaymentPage = () => {
   return (
     <>
       <Toast ref={toast} />
+      <div className="paymentPage">
+        <div className="paymentHeader">
+          <h1>Manage Your Subscription</h1>
+        </div>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "2rem",
-        }}
-      >
-        {status === "Premium" ? (
-          <>
-            <Card title="Thanks for choosing Starhire!" style={cardStyle}>
-              <p>
-                Thank you for choosing Starhire Premium! With Starhire Premium,
-                your event listings and company name will be made known to job
-                seekers better.
-              </p>
-              <p>
-                If you ever decide to unsubscribe, you can do so by clicking the
-                &quot;Unsubscribe&quot; button below.
-              </p>
-
-              <p style={{ color: "red" }}>
-                Upon unsubscribing, you will immediately lose all access to
-                &quot;Premium&quot; services!! There will be no partial refunds.
-              </p>
-
-              <Button
-                label="Unsubscribe"
-                icon="pi pi-check"
-                style={{
-                  ...buttonStyle,
-                  backgroundColor: "red",
-                  color: "white",
-                }}
-                onClick={handleUnsubscribe}
-              />
-            </Card>
-
-            <Card title="Your Subscription Details" style={cardStyle}>
-              <p>
-                <strong>Username:</strong> {corporate.userName}
-              </p>
-              <p>
-                <strong>Status Type:</strong>{" "}
-                {corporate.corporatePromotionStatus}
-              </p>
-              <p>
-                <strong>Subscription ID:</strong> {corporate.stripeSubId}
-              </p>
-              <p>
-                <strong>Customer ID:</strong> {corporate.stripeCustId}
-              </p>
-              <p>
-                <strong> Next Billing Cycle Start Date: </strong>{" "}
-                {convertToSingaporeDate(billCycle?.nextBillingCycleStart)}
-              </p>
-              <strong> Next Billing Cycle End Date: </strong>{" "}
-              {convertToSingaporeDate(billCycle?.nextBillingCycleEnd)}
-            </Card>
-
-            <Dialog
-              header="Unsubscribe Confirmation"
-              visible={showUnSubscribeDialog}
-              style={{ width: "400px" }}
-              onHide={() => setShowUnSubscribeDialog(false)}
-              footer={
-                <div>
+        <div className="paymentContent">
+          {status === 'Premium' ? (
+            <>
+              <Card
+                title="Thanks for choosing Starhire!"
+                className={styles.card}
+              >
+                <div className={styles.cardContent}>
+                  <div className={styles.cardText}>
+                    <p>
+                      Thank you for choosing Starhire Premium! With Starhire
+                      Premium, your event listings and company name will be made
+                      known to job seekers better.
+                    </p>
+                    <p>
+                      If you ever decide to unsubscribe, you can do so by
+                      clicking the "Unsubscribe" button below.
+                    </p>
+                    <p className={styles.warningText}>
+                      Upon unsubscribing, you will immediately lose all access
+                      to "Premium" services!! There will be no partial refunds.
+                    </p>
+                  </div>
                   <Button
-                    label="I Acknowledge"
-                    icon="pi pi-check"
-                    style={{ backgroundColor: "red", color: "white" }}
-                    onClick={confirmUnsubscribe}
+                    label="Unsubscribe"
+                    className={styles.btnUnsubscribe}
+                    onClick={handleUnsubscribe}
+                    rounded
                   />
                 </div>
-              }
-            >
-              Are you sure you want to unsubscribe from Starhire Premium?
-              <p style={{ color: "red" }}>No refunds will be given!!</p>
-            </Dialog>
-          </>
-        ) : (
-          <Card title="Subscribe to Premium" style={cardStyle}>
-            <ul style={{ listStyleType: "none", padding: 0 }}>
-              {subscriptionBenefits.map((benefit, index) => (
-                <li key={index}>{benefit}</li>
-              ))}
-            </ul>
-            <Button
-              label="Subscribe Now"
-              icon="pi pi-check"
-              style={{
-                ...buttonStyle,
-                backgroundColor: "green",
-                color: "white",
-              }}
-              onClick={handleSubscribe}
-            />
-          </Card>
-        )}
-        <Dialog
-          header="Subscribe Confirmation"
-          visible={showSubscribeDialog}
-          style={{ width: "400px" }}
-          onHide={() => setShowSubscribeDialog(false)}
-          footer={
-            <div>
-              <Button
-                label="Yes"
-                icon="pi pi-check"
-                onClick={confirmSubscribe}
-              />
-              <Button
-                label="No"
-                icon="pi pi-times"
-                onClick={() => setShowSubscribeDialog(false)}
-              />
-            </div>
-          }
-        >
-          The price of Starhire Premium is $10 SGD, Are you sure you want to
-          continue?
-        </Dialog>
-        <Dialog
-          header="Redirecting..."
-          visible={redirectingDialogVisible}
-          style={{ width: "400px" }}
-          onHide={closeDialog}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
+              </Card>
+
+              <Card title="Your Subscription Details" className={styles.card}>
+                <div className={styles.cardContent}>
+                  <div className={styles.cardText}>
+                    <p>
+                      <strong>Username:</strong> {corporate.userName}
+                    </p>
+                    <p>
+                      <strong>Status Type:</strong>{' '}
+                      {corporate.corporatePromotionStatus}
+                    </p>
+                    <p>
+                      <strong>Subscription ID:</strong> {corporate.stripeSubId}
+                    </p>
+                    <p>
+                      <strong>Customer ID:</strong> {corporate.stripeCustId}
+                    </p>
+                    <p>
+                      <strong>Next Billing Cycle Start Date:</strong>{' '}
+                      {convertToSingaporeDate(billCycle?.nextBillingCycleStart)}
+                    </p>
+                    <p>
+                      <strong>Next Billing Cycle End Date:</strong>{' '}
+                      {convertToSingaporeDate(billCycle?.nextBillingCycleEnd)}
+                    </p>
+                  </div>
+                  <Button
+                    label="View My Invoices"
+                    className={styles.viewInvoicesButton}
+                    onClick={viewMyInvoicesPageRedirect}
+                    rounded
+                  />
+                </div>
+              </Card>
+
+              <Dialog
+                header="Unsubscribe Confirmation"
+                visible={showUnSubscribeDialog}
+                style={{ width: '400px' }}
+                onHide={() => setShowUnSubscribeDialog(false)}
+                footer={
+                  <div>
+                    <Button
+                      label="I Acknowledge"
+                      icon="pi pi-check"
+                      style={{ backgroundColor: 'red', color: 'white' }}
+                      onClick={confirmUnsubscribe}
+                    />
+                  </div>
+                }
+              >
+                Are you sure you want to unsubscribe from Starhire Premium?
+                <p style={{ color: 'red' }}>No refunds will be given!!</p>
+              </Dialog>
+            </>
+          ) : (
+            <Card title="Subscribe to Premium" className={styles.card}>
+              <div className={styles.cardContent}>
+                <ul className={styles.benefitList}>
+                  {subscriptionBenefits.map((benefit, index) => (
+                    <li key={index} className={styles.benefitItem}>
+                      {benefit}
+                    </li>
+                  ))}
+                </ul>
+                <div className={styles.subscribeButtonContainer}>
+                  <Button
+                    label="Subscribe Now"
+                    icon="pi pi-check"
+                    className={styles.btnSubscribe}
+                    onClick={handleSubscribe}
+                  />
+                </div>
+              </div>
+            </Card>
+          )}
+          <Dialog
+            header="Subscribe Confirmation"
+            visible={showSubscribeDialog}
+            style={{ width: '400px' }}
+            onHide={() => setShowSubscribeDialog(false)}
+            footer={
+              <div>
+                <Button
+                  label="Yes"
+                  icon="pi pi-check"
+                  onClick={confirmSubscribe}
+                />
+                <Button
+                  label="No"
+                  icon="pi pi-times"
+                  onClick={() => setShowSubscribeDialog(false)}
+                />
+              </div>
+            }
           >
-            <ProgressSpinner
-              style={{ width: "50px", height: "50px" }}
-              strokeWidth="4"
-            />
-            <p>You will be redirected to the Stripe Payment Page.</p>
-          </div>
-        </Dialog>
+            The price of Starhire Premium is $10 SGD, Are you sure you want to
+            continue?
+          </Dialog>
+          <Dialog
+            header="Redirecting..."
+            visible={redirectingDialogVisible}
+            style={{ width: '400px' }}
+            onHide={closeDialog}
+          >
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <ProgressSpinner
+                style={{ width: '50px', height: '50px' }}
+                strokeWidth="4"
+              />
+              <p>You will be redirected to the Stripe Payment Page.</p>
+            </div>
+          </Dialog>
+        </div>
       </div>
     </>
   );
 };
 
 export default PaymentPage;
-
-
-
-
-
-
-
-
-
-

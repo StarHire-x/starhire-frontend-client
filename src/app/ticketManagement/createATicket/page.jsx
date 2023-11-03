@@ -11,7 +11,6 @@ import styles from './page.module.css';
 import 'primeflex/primeflex.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import Enums from '@/common/enums/enums';
 import { createTicket } from '@/app/api/Ticket/route';
 import { reportForumPostByPostId } from '@/app/api/forum/route';
 

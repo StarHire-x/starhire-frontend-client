@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState, useRef } from 'react';
+import { Badge } from 'primereact/badge';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { ProgressSpinner } from 'primereact/progressspinner';
@@ -16,7 +17,6 @@ import CreateEventForm from '@/components/CreateEventForm/CreateEventForm';
 import EditEventForm from '@/components/EditEventForm/EditEventForm';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Enums from '@/common/enums/enums';
 import styles from './page.module.css';
 
 const EventManagementPage = () => {
@@ -52,11 +52,14 @@ const EventManagementPage = () => {
   };
 
   const getStatus = (status) => {
+    console.log('Checking status: ', status);
     switch (status) {
-      case Enums.UPCOMING:
+      case 'Upcoming':
         return 'success';
-      case Enums.EXPIRED:
+      case 'Expired':
         return 'danger';
+      case 'Upcoming':
+        return 'success';
     }
   };
 
@@ -88,7 +91,7 @@ const EventManagementPage = () => {
   );
 
   useEffect(() => {
-    if (session.status === 'unauthenticated' || session.status === 'loading') {
+    if (session.status === 'unauthenticated') {
       router.push('/login');
     } else if (session.status === 'authenticated') {
       findAllEventListingsByCorporate(userIdRef, accessToken)
@@ -104,63 +107,71 @@ const EventManagementPage = () => {
   }, [refreshData, userIdRef, accessToken]);
 
   const itemTemplate = (eventListing) => {
-    return (
+    const cardLink = `/eventManagement/viewEventRegistrations?id=${eventListing.eventListingId}`;
+    <a href={cardLink} className={styles.cardLink}>
       <div className={styles.card}>
-        {/* Display the image if available */}
-        {eventListing.image && (
-          <div className={styles.cardImage}>
-            <img src={eventListing.image} alt={eventListing.eventName} />
+        <div className={styles.cardHeader}></div>
+      </div>
+    </a>;
+    return (
+      <a href={cardLink} className={styles.cardLink}>
+        <div className={styles.card}>
+          {/* Display the image if available */}
+          {eventListing.image && (
+            <div className={styles.cardImage}>
+              <img src={eventListing.image} alt={eventListing.eventName} />
+            </div>
+          )}
+          <div className={styles.cardHeader}>
+            <h3>{eventListing.eventName}</h3>
           </div>
-        )}
-        <div className={styles.cardHeader}>
-          <h3>{eventListing.eventName}</h3>
-        </div>
-        <div className={styles.cardDetails}>
-          <div className={styles.cardRow}>
-            <span>Event ID:</span>
-            <span>{eventListing.eventListingId}</span>
+          <div className={styles.cardDetails}>
+            <div className={styles.cardRow}>
+              <span>Event ID:</span>
+              <span>{eventListing.eventListingId}</span>
+            </div>
+            <div className={styles.cardRow}>
+              <span>Location:</span>
+              <span>{eventListing.location}</span>
+            </div>
+            <div className={styles.cardRow}>
+              <span>Event Date:</span>
+              <span>{formatDate(eventListing.eventDate)}</span>
+            </div>
+            <div className={styles.cardRow}>
+              <span>Listed On:</span>
+              <span>{formatDate(eventListing.listingDate)}</span>
+            </div>
+            <div className={styles.cardRow}>
+              <span>Status:</span>
+              <Tag
+                value={eventListing.eventListingStatus}
+                severity={getStatus(eventListing.eventListingStatus)}
+              />
+            </div>
           </div>
-          <div className={styles.cardRow}>
-            <span>Location:</span>
-            <span>{eventListing.location}</span>
-          </div>
-          <div className={styles.cardRow}>
-            <span>Event Date:</span>
-            <span>{formatDate(eventListing.eventDate)}</span>
-          </div>
-          <div className={styles.cardRow}>
-            <span>Listed On:</span>
-            <span>{formatDate(eventListing.listingDate)}</span>
-          </div>
-          <div className={styles.cardRow}>
-            <span>Status:</span>
-            <Tag
-              value={eventListing.eventListingStatus}
-              severity={getStatus(eventListing.eventListingStatus)}
+          <div className={styles.cardFooter}>
+            <Button
+              label="Edit"
+              icon="pi pi-pencil"
+              rounded
+              onClick={() => {
+                setSelectedEventListingData(eventListing);
+                setShowEditDialog(eventListing);
+              }}
+            />
+            <Button
+              label="Delete"
+              icon="pi pi-trash"
+              rounded
+              onClick={() => {
+                setSelectedEventListingData(eventListing);
+                setShowDeleteDialog(eventListing);
+              }}
             />
           </div>
         </div>
-        <div className={styles.cardFooter}>
-          <Button
-            label="Edit"
-            icon="pi pi-pencil"
-            rounded
-            onClick={() => {
-              setSelectedEventListingData(eventListing);
-              setShowEditDialog(eventListing);
-            }}
-          />
-          <Button
-            label="Delete"
-            icon="pi pi-trash"
-            rounded
-            onClick={() => {
-              setSelectedEventListingData(eventListing);
-              setShowDeleteDialog(eventListing);
-            }}
-          />
-        </div>
-      </div>
+      </a>
     );
   };
 
@@ -283,14 +294,11 @@ const EventManagementPage = () => {
       <>
         <Toast ref={toast} />
         <div className={styles.header}>
-          <h1 className={styles.headerTitle} style={{ marginBottom: '15px' }}>
-            Event Management
-          </h1>
+          <h1 className={styles.headerTitle}>Event Management</h1>
           <Button
             className={styles.createEventListingButton}
             label="Create An Event"
             rounded
-            style={{ marginTop: '10px', marginBottom: '15px' }}
             onClick={() => setShowCreateDialog(true)}
           />
         </div>

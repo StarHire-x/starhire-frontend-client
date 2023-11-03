@@ -25,6 +25,35 @@ export const findAllEventListingsByCorporate = async (userId, accessToken) => {
   }
 };
 
+export const findAllEventRegistrationsByEventListing = async (
+  id,
+  accessToken
+) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/event-listing/corporate/eventRegistrations/${id}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: 'no-store',
+      }
+    );
+
+    const response = await res.json();
+    if (response.statusCode === 200) {
+      return await response.data;
+    } else {
+      throw new Error(response.message || 'An error occurred');
+    }
+  } catch (error) {
+    console.log('There was a problem fetching the event registrations', error);
+    throw error;
+  }
+};
+
 export const findAllEventListings = async (accessToken) => {
   try {
     const res = await fetch(
@@ -125,6 +154,58 @@ export const removeEventListing = async (id, accessToken) => {
     return await res.json();
   } catch (error) {
     console.log('There was a problem fetching the event listings', error);
+    throw error;
+  }
+};
+
+export const viewAllPremiumUsers = async (accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/corporate/premium-users`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: 'no-store',
+      }
+    );
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      console.log(errorData);
+      throw new Error(errorData.message);
+    }
+    return await res.json();
+  } catch (error) {
+    console.log('There was a problem fetching all Premium users', error);
+    throw error;
+  }
+};
+
+export const viewAllNonPremiumUsers = async (accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/corporate/non-premium-users`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: 'no-store',
+      }
+    );
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      console.log(errorData);
+      throw new Error(errorData.message);
+    }
+    return await res.json();
+  } catch (error) {
+    console.log('There was a problem fetching all non Premium users', error);
     throw error;
   }
 };

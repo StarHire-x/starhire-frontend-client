@@ -143,7 +143,7 @@ const Login = () => {
             checked={formData.role === Enums.JOBSEEKER}
             required
           />
-          <label htmlFor={Enums.JOBSEEKER} className="ml-2">
+          <label htmlFor={Enums.JOBSEEKER} >
             Job Seeker
           </label>
           <RadioButton
@@ -154,7 +154,7 @@ const Login = () => {
             checked={formData.role === Enums.CORPORATE}
             required
           />
-          <label htmlFor={Enums.CORPORATE} className="ml-2">
+          <label htmlFor={Enums.CORPORATE}>
             Corporate
           </label>
         </div>

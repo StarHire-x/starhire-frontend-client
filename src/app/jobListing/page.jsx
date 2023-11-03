@@ -1,25 +1,24 @@
-"use client";
-import React, { useEffect, useState, useRef } from "react";
-import { useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { Button } from "primereact/button";
-import { InputText } from "primereact/inputtext";
-import { ProgressSpinner } from "primereact/progressspinner";
-import { Toast } from "primereact/toast";
-import Image from "next/image";
-import HumanIcon from "./../../../public/icon.png";
+'use client';
+import React, { useEffect, useState, useRef } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
+import { InputText } from 'primereact/inputtext';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import { Toast } from 'primereact/toast';
+import Image from 'next/image';
+import HumanIcon from './../../../public/icon.png';
 import {
   findAssignedJobListingsByJobSeeker,
   saveJobListing,
   unsaveJobListing,
-} from "../api/jobListing/route";
-import { Dialog } from "primereact/dialog";
-
-import styles from "./page.module.css";
-import "primereact/resources/primereact.min.css";
-import "primeicons/primeicons.css";
-import JobDetailPanel from "@/components/JobDetailPanel/JobDetailPanel";
+} from '../api/jobListing/route';
+import JobDetailPanel from '@/components/JobDetailPanel/JobDetailPanel';
+import styles from './page.module.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 
 const JobListingPage = () => {
   const session = useSession();
@@ -28,7 +27,7 @@ const JobListingPage = () => {
   const [jobListings, setJobListings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshData, setRefreshData] = useState(false);
-  const [filterKeyword, setFilterKeyword] = useState("");
+  const [filterKeyword, setFilterKeyword] = useState('');
   const [showJobDescriptionDialog, setShowJobDescriptionDialog] =
     useState(false);
 
@@ -39,12 +38,12 @@ const JobListingPage = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   const accessToken =
-    session.status === "authenticated" &&
+    session.status === 'authenticated' &&
     session.data &&
     session.data.user.accessToken;
 
   const jobSeekerId =
-    session.status === "authenticated" &&
+    session.status === 'authenticated' &&
     session.data &&
     session.data.user.userId;
 
@@ -53,14 +52,14 @@ const JobListingPage = () => {
   const toast = useRef(null);
 
   const params = useSearchParams();
-  const id = params.get("id");
+  const id = params.get('id');
 
   const [formErrors, setFormErrors] = useState({});
 
   useEffect(() => {
     // Redirect to login if the user is unauthenticated
-    if (session.status === "unauthenticated") {
-      router.push("/login");
+    if (session.status === 'unauthenticated') {
+      router.push('/login');
     }
 
     // Only run the logic if the user is authenticated
@@ -73,7 +72,7 @@ const JobListingPage = () => {
           setIsLoading(false);
         })
         .catch((error) => {
-          console.error("Error fetching job listings:", error);
+          console.error('Error fetching job listings:', error);
           setJobListings([]);
           setIsLoading(false);
         });
@@ -81,7 +80,7 @@ const JobListingPage = () => {
   }, [refreshData, accessToken, id, jobSeekerId]);
 
   const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "numeric", day: "numeric" };
+    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
@@ -95,18 +94,18 @@ const JobListingPage = () => {
         await unsaveJobListing(jobListing.jobListingId, accessToken);
         //alert('Job Listing Unsaved Successfully!');
         toast.current.show({
-          severity: "success",
-          summary: "Success",
-          detail: "Job Listing Unsaved Successfully!",
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Job Listing Unsaved Successfully!',
           life: 5000,
         });
       } else {
         await saveJobListing(jobListing.jobListingId, accessToken);
         //alert('Job Listing Saved Successfully!');
         toast.current.show({
-          severity: "success",
-          summary: "Success",
-          detail: "Job Listing Saved Successfully!",
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Job Listing Saved Successfully!',
           life: 5000,
         });
       }
@@ -115,13 +114,13 @@ const JobListingPage = () => {
       // Refresh the data after saving/un-saving
       setRefreshData(!refreshData);
     } catch (error) {
-      console.error("Error when saving/un-saving:", error);
+      console.error('Error when saving/un-saving:', error);
       // alert(
       //   `Error: ${error.message || 'Failed to save/un-save the job listing.'}`
       // );
       toast.current.show({
-        severity: "error",
-        summary: "Error",
+        severity: 'error',
+        summary: 'Error',
         detail: error.message,
         life: 5000,
       });
@@ -140,7 +139,7 @@ const JobListingPage = () => {
         <h3>{jobListing.title}</h3>
         <Button
           className={styles.saveButton}
-          icon={jobListing.isSaved ? "pi pi-bookmark-fill" : "pi pi-bookmark"}
+          icon={jobListing.isSaved ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'}
           onClick={(e) => {
             e.stopPropagation(); // To prevent setSelectedJob from being triggered
             handleSaveJobListing(jobListing);
@@ -150,7 +149,7 @@ const JobListingPage = () => {
       </div>
       <div className={styles.pCardContent}>
         <div className={styles.companyInfo}>
-          {jobListing.corporate.profilePictureUrl === "" ? (
+          {jobListing.corporate.profilePictureUrl === '' ? (
             <Image src={HumanIcon} alt="User" className={styles.avatar} />
           ) : (
             <img
@@ -191,21 +190,21 @@ const JobListingPage = () => {
     <>
       <Toast ref={toast} />
       <div className={styles.header}>
-        <h1 style={{ marginBottom: "15px", color: "white" }}>Assigned Jobs</h1>
+        <h1 className={styles.title}>Assigned Jobs</h1>
         <span className="p-input-icon-left">
           <i className="pi pi-search" />
           <InputText
             value={filterKeyword}
             onChange={(e) => setFilterKeyword(e.target.value)}
             placeholder="Keyword Search"
-            style={{ width: "265px" }}
+            style={{ width: '265px' }}
           />
         </span>
         <Button
           className={styles.savedJobsButton}
           label="My Saved Job Listings"
           onClick={() =>
-            router.push("/jobListing/viewSavedJobListingsJobSeeker")
+            router.push('/jobListing/viewSavedJobListingsJobSeeker')
           }
           rounded
         />

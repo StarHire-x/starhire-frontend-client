@@ -18,8 +18,9 @@
 
 .title {
   font-size: 40px;
-  color: #194c33;
+  color: black;
   margin-bottom: 10px;
+  font-family: 'Source Sans 3', sans-serif; 
 }
 
 .form {
@@ -34,7 +35,6 @@
   position: relative; /* Set to relative so that the button can be positioned absolutely within this container */
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 
 .inputContainer p {
@@ -78,20 +78,26 @@
   justify-content: center;
 }
 
+
+.radio p{
+  margin-top: 10px;
+}
+
+.radio label {
+  margin-top: 10px;
+}
+
 .button {
   width: 400px;
   padding: 15px;
   cursor: pointer;
-  background-color: #53c28b;
+  background-color: #35acfe;
   border: none;
   border-radius: 30px;
   color: #eee;
   font-size: 17px;
 }
 
-.button:hover {
-  background-color: #1dbf6e;
-}
 
 .radio input[type="radio"] {
   /* Optional: Adjust the radio button styles */
@@ -126,13 +132,10 @@
   border-radius: 30px;
   color: #eee;
   font-size: 17px;
-  color: black;
-  background-color: #edf6f9;
+  color: #696969;
+  background-color: #ffc937;
 }
 
-.registerButton:hover {
-  background-color: #dedede;
-}
 
 @media screen and (max-width: 768px) {
   .title {

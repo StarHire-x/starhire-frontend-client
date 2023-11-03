@@ -9,6 +9,12 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
+  font-family: 'Source Sans 3', sans-serif; 
+}
+
+.card {
+  background-color: inherit;
+  border: black 2px;
 }
 
 /* Input field styles */
@@ -68,11 +74,10 @@
     justify-content: center;
 }
 
-.buttonContainer {
-  grid-column: span 2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.customButton {
+  background-color: #35acfe; 
+  font-family: "Grantha Sangnam MN";
+  border: none;
 }
 
 .followingContainer {

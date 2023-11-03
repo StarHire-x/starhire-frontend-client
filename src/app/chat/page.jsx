@@ -282,7 +282,14 @@ const Chat = () => {
           style={{ display: "none" }}
           onChange={handleFileInputChange}
         />
-        <MainContainer responsive>
+        <MainContainer
+          responsive
+          style={{
+            borderRadius: "10px",
+            boxShadow: "0 -2px 4px rgba(0, 0, 0, 0.1)",
+            paddingTop: "10px"
+          }}
+        >
           <ChatSidebar
             userChats={allChats}
             selectCurrentChat={selectCurrentChat}

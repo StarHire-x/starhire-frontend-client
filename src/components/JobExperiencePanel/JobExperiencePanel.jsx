@@ -3,14 +3,14 @@ import { Panel } from "primereact/panel";
 import { Button } from "primereact/button";
 import { DataView } from "primereact/dataview";
 import { Dialog } from "primereact/dialog";
-import styles from "./JobExperiencePanel.module.css"
+import styles from "./JobExperiencePanel.module.css";
 import CreateJobExperienceForm from "../CreateJobExperienceForm/CreateJobExperienceForm";
 import { Card } from "primereact/card";
 import { Dropdown } from "primereact/dropdown";
 import {
   createJobExperience,
   updateJobExperience,
-  deleteJobExperience
+  deleteJobExperience,
 } from "@/app/api/jobExperience/route";
 import EditJobExperienceForm from "../EditJobExperienceForm/EditJobExperienceForm";
 import { Toast } from "primereact/toast";
@@ -23,7 +23,6 @@ const JobExperiencePanel = ({
   setRefreshData,
   handleInputChange,
 }) => {
-
   const [showCreateJobExperienceDialog, setShowCreateJobExperienceDialog] =
     useState(false);
   const [showEditJobExperienceDialog, setShowEditJobExperienceDialog] =
@@ -35,7 +34,8 @@ const JobExperiencePanel = ({
   const [sortKey, setSortKey] = useState(null);
   const [sortOrder, setSortOrder] = useState(null);
 
-  const [selectedJobExperienceData, setSelectedJobExperienceData] = useState(null);
+  const [selectedJobExperienceData, setSelectedJobExperienceData] =
+    useState(null);
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -55,6 +55,7 @@ const JobExperiencePanel = ({
 
   const jobExperienceHeader = (
     <div
+    className={styles.jobExperienceDiv}
       style={{
         display: "flex",
         justifyContent: "space-between",
@@ -64,6 +65,7 @@ const JobExperiencePanel = ({
       <h2 className={styles.headerTitle}>My Job Experience</h2>
       <div>
         <Dropdown
+          color="#fefbf6"
           value={sortKey}
           options={[
             { label: "Start Date", value: "startDate" },
@@ -110,11 +112,11 @@ const JobExperiencePanel = ({
 
   const hideEditJobExperienceDialog = () => {
     setShowEditJobExperienceDialog(false);
-  }
+  };
 
   const hideDeleteJobExperienceDialog = () => {
     setShowDeleteJobExperienceDialog(false);
-  }
+  };
 
   const deleteDialogFooter = (
     <React.Fragment>
@@ -132,7 +134,7 @@ const JobExperiencePanel = ({
     e.preventDefault();
     const userId = formData.userId;
 
-    console.log("Hello")
+    console.log("Hello");
 
     if (Object.keys(formErrors).length > 0) {
       // There are validation errors
@@ -148,7 +150,7 @@ const JobExperiencePanel = ({
 
     let reqBody;
 
-    if(formData.endDate === "null") {
+    if (formData.endDate === "null") {
       reqBody = {
         jobSeekerId: userId,
         employerName: formData.employerName,
@@ -229,10 +231,10 @@ const JobExperiencePanel = ({
         jobDescription: formData.jobDescription,
       };
     }
-    
+
     try {
       const response = await updateJobExperience(
-        jobExperienceId, 
+        jobExperienceId,
         reqBody,
         sessionTokenRef
       );
@@ -257,12 +259,15 @@ const JobExperiencePanel = ({
     setFormData(initialFormData);
     setSelectedJobExperienceData(null);
     setShowEditJobExperienceDialog(false);
-  }
+  };
 
   const removeJobExperience = async (jobExperienceId) => {
     try {
-      const response = await deleteJobExperience(jobExperienceId, sessionTokenRef)
-      console.log('User is deleted', response);
+      const response = await deleteJobExperience(
+        jobExperienceId,
+        sessionTokenRef
+      );
+      console.log("User is deleted", response);
       // alert('Deleted job experience successfully');
       toast.current.show({
         severity: "success",
@@ -335,69 +340,68 @@ const JobExperiencePanel = ({
   };
 
   return (
-    <Panel header="Job Experience" toggleable>
-      <div className={styles.container}>
-        <Toast ref={toast} />
-        <DataView
-          value={sortFunction(jobExperience)}
-          className={styles.dataViewContainer}
-          layout="grid"
-          rows={3}
-          header={jobExperienceHeader}
-          itemTemplate={itemTemplate}
-        ></DataView>
+    <div className={styles.container}>
+      <Toast ref={toast} />
+      <DataView
+        value={sortFunction(jobExperience)}
+        className={styles.dataViewContainer}
+        layout="grid"
+        rows={3}
+        header={jobExperienceHeader}
+        itemTemplate={itemTemplate}
+        color="black"
+      ></DataView>
 
-        <Dialog
-          header="Create Job Experience"
-          visible={showCreateJobExperienceDialog}
-          onHide={hideCreateJobExperienceDialog}
-          className={styles.cardDialog}
-        >
-          <CreateJobExperienceForm
-            formData={formData}
-            setFormData={setFormData}
-            handleInputChange={handleInputChange}
-            addJobExperience={addJobExperience}
-            formErrors={formErrors}
-            setFormErrors={setFormErrors}
-          />
-        </Dialog>
+      <Dialog
+        header="Create Job Experience"
+        visible={showCreateJobExperienceDialog}
+        onHide={hideCreateJobExperienceDialog}
+        className={styles.cardDialog}
+      >
+        <CreateJobExperienceForm
+          formData={formData}
+          setFormData={setFormData}
+          handleInputChange={handleInputChange}
+          addJobExperience={addJobExperience}
+          formErrors={formErrors}
+          setFormErrors={setFormErrors}
+        />
+      </Dialog>
 
-        <Dialog
-          header="Edit Job Experience"
-          visible={showEditJobExperienceDialog}
-          onHide={hideEditJobExperienceDialog}
-          className={styles.cardDialog}
-        >
-          <EditJobExperienceForm
-            formData={formData}
-            setFormData={setFormData}
-            handleInputChange={handleInputChange}
-            editJobExperience={editJobExperience}
-            selectedJobExperience={selectedJobExperienceData}
-            formErrors={formErrors}
-            setFormErrors={setFormErrors}
-          />
-        </Dialog>
+      <Dialog
+        header="Edit Job Experience"
+        visible={showEditJobExperienceDialog}
+        onHide={hideEditJobExperienceDialog}
+        className={styles.cardDialog}
+      >
+        <EditJobExperienceForm
+          formData={formData}
+          setFormData={setFormData}
+          handleInputChange={handleInputChange}
+          editJobExperience={editJobExperience}
+          selectedJobExperience={selectedJobExperienceData}
+          formErrors={formErrors}
+          setFormErrors={setFormErrors}
+        />
+      </Dialog>
 
-        <Dialog
-          header="Delete Job Experience"
-          visible={showDeleteJobExperienceDialog}
-          onHide={hideDeleteJobExperienceDialog}
-          className={styles.cardDialog}
-          footer={deleteDialogFooter}
-        >
-          <h3>
-            Confirm Delete Job Experience:{" "}
-            {showDeleteJobExperienceDialog &&
-              showDeleteJobExperienceDialog.jobTitle}
-            ,
-            {showDeleteJobExperienceDialog &&
-              showDeleteJobExperienceDialog.employerName}
-          </h3>
-        </Dialog>
-      </div>
-    </Panel>
+      <Dialog
+        header="Delete Job Experience"
+        visible={showDeleteJobExperienceDialog}
+        onHide={hideDeleteJobExperienceDialog}
+        className={styles.cardDialog}
+        footer={deleteDialogFooter}
+      >
+        <h3>
+          Confirm Delete Job Experience:{" "}
+          {showDeleteJobExperienceDialog &&
+            showDeleteJobExperienceDialog.jobTitle}
+          ,
+          {showDeleteJobExperienceDialog &&
+            showDeleteJobExperienceDialog.employerName}
+        </h3>
+      </Dialog>
+    </div>
   );
 };
 

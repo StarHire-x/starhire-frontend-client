@@ -1,118 +1,154 @@
 .container {
+  position: relative;
+}
+
+.textContainer {
+  position: absolute;
+  top: 50%; /* Vertically center the textContainer within the .container */
+  left: 40%; /* Horizontally center the textContainer within the .container */
+  transform: translate(-50%, -50%); /* Move the textContainer back to center */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 20px;
+  align-items: left;
+}
+
+.imageContainer {
+  position: absolute;
+  top: 65%; /* Vertically center the imageContainer within the .container */
+  left: calc(40% + 300px); /* Position the imageContainer to the right of the textContainer with some margin */
+  transform: translate(-50%, -65%); /* Move the imageContainer back to center */
+  width: auto;
+  height: auto;
+}
+
+.imageContainer2 {
+  position: absolute;
+  top: 30%; /* Vertically center the imageContainer within the .container */
+  left: calc(40% + 300px); /* Position the imageContainer to the right of the textContainer with some margin */
+  transform: translate(-10%, -160%); /* Move the imageContainer back to center */
+  width: auto;
+  height: auto;
 }
 
 .titleContainer {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+  flex-direction: row;
+  margin-bottom: -20px;
 }
 
-.title {
-  font-size: 72px;
-  color: #194c33;
+.mainTitle {
+  font-size: 80px;
+  color: black;
+  font-family: 'Source Sans 3', sans-serif; 
 }
 
-.subTitle {
+.logoA {
+  font-size: 80px;
+  color: black;
+  font-family: 'Kollektif', sans-serif;
+  margin-top: 8px;
+}
+
+.description {
   font-size: 24px;
-  font-weight: 500;
-  font-style: bold;
+  color: black;
+  font-family: 'Merriweather', sans-serif; 
+}
+
+.secondaryTitle {
+  font-size: 48px;
+  color: #35acfe;
+  font-family: 'Source Sans 3', sans-serif; 
+  margin-top: -5px;
 }
 
 .img {
-  width: 100%;
-  height: 300px;
-  object-fit: contain;
-  animation: move 3s infinite ease alternate;
+  width: 400px;
+  height: 400px; 
 }
 
-.carouselSlide {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-}
-
-.carouselSlide h1 {
-  font-size: 48px;
-  margin-top: 10px;
-}
-
-@keyframes move {
-  from {
-    transform: translateY(-15px);
-  }
-  to {
-    transform: translateY(0px) scale(1.03);
-  }
+.img2 {
+  width: 100px; 
+  height: 100px; 
 }
 
 .buttonContainer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: left;
+  margin-top: 10px;
 }
 
-.jobSearchButton,
-.findTalentButton {
-  display: inline-block; /* Use 'inline-block' to make the buttons inline with each other */
+.button {
   text-align: center; /* Center the text horizontally within each button */
-  padding: 15px;
-  cursor: pointer;
+  padding: 10px 40px;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
   width: max-content;
   color: white;
   font-size: 20px;
   margin: 0 10px; /* Add margin to create space between buttons */
 }
 
-.jobSearchButton {
-  background-color: #0d5cd9;
-}
-
-.findTalentButton {
-  background-color: rgb(255, 255, 255);
-  color: #0d5cd9;
-  border-color: #ddd;
+.button {
+  background-color: #35acfe;
 }
 
 @media screen and (max-width: 768px) {
-  .container {
-    gap: 30px;
+
+  .textContainer {
+    top: 45%; /* Vertically center the textContainer within the .container */
+    left: 40%; /* Horizontally center the textContainer within the .container */
+    transform: translate(-50%, -90%); /* Move the textContainer back to center */
   }
-  .title {
-    font-size: 50px;
-    text-align: center;
+
+  .imageContainer {
+    top: 50%; /* Vertically center the textContainer within the .container */
+    left: calc(30% + 300px); /* Position the imageContainer to the right of the textContainer with some margin */
+    transform: translate(-100%, -100%); /* Move the imageContainer back to center */
   }
-  .subTitle {
-    text-align: center;
-    font-size: 18px;
-    font-weight: 500;
+  .imageContainer2 {
+    top: 50%; /* Vertically center the textContainer within the .container */
+    left: calc(30% + 300px); /* Position the imageContainer to the right of the textContainer with some margin */
+    transform: translate(-200%, -250%); /* Move the imageContainer back to center */
   }
+
+
+  .mainTitle {
+    font-size: 48px;
+    color: black;
+    font-family: 'Source Sans 3', sans-serif; 
+  }
+  
+  .logoA {
+    font-size: 48px;
+    margin-top: 5px;
+  }
+  
+  .description {
+    font-size: 13px;
+    margin-top: 5px;
+  }
+  
+  .secondaryTitle {
+    font-size: 28px;
+    margin-top: -5px;
+  }
+
   .img {
+    width: 200px;
     height: 200px;
   }
-
-  .jobSearchButton,
-  .findTalentButton {
-    display: inline-block; /* Use 'inline-block' to make the buttons inline with each other */
-    text-align: center; /* Center the text horizontally within each button */
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 15px;
-    margin: 0 5px; /* Add margin to create space between buttons */
+  .img2 {
+    width: 50px;
+    height: 50px;
   }
 
-  .carouselSlide h1 {
-    font-size: 24px;
+  .buttonContainer {
+    margin-top: 5px;
+  }
+
+  .button {
+    padding: 8px 32px;
+    font-size: 15px;
+    margin: 0 5px;
   }
 }
+

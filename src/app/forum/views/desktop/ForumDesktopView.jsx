@@ -18,13 +18,13 @@ const ForumDesktopView = ({
   onSearchQueryChange,
   searchQuery,
   forumGuideLinesByCategory,
-  setForumGuideLinesByCategory
+  setForumGuideLinesByCategory,
 }) => {
   return (
     <>
-      <h2 style={{ paddingLeft: "20px" }}>Forum</h2>
       <div className={styles.pageContainer}>
         <div className={styles.categoriesMenuContainer}>
+          <h1 className={styles.categories}>Categories</h1>
           <ForumCategoryMenu
             forumCategories={forumCategories}
             setForumCategoryTitle={setForumCategoryTitle}
@@ -48,7 +48,7 @@ const ForumDesktopView = ({
               />
             </div>
           </div>
-          <h2 style={{ marginTop: "10px" }}>{forumCategoryTitle}</h2>
+          <h2 className={styles.title}>{forumCategoryTitle}</h2>
           <div className={styles.postsContainer}>
             <ForumPosts
               forumPosts={forumPosts}
@@ -60,7 +60,10 @@ const ForumDesktopView = ({
           </div>
         </div>
         <div className={styles.guideLinesContainer}>
-          <ForumGuidelinesCard forumCategoryTitle={forumCategoryTitle} forumGuideLinesByCategory={forumGuideLinesByCategory} />
+          <ForumGuidelinesCard
+            forumCategoryTitle={forumCategoryTitle}
+            forumGuideLinesByCategory={forumGuideLinesByCategory}
+          />
         </div>
       </div>
     </>

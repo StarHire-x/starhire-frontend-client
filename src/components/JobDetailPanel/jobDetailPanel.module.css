@@ -111,15 +111,15 @@
 }
 
 .createButton {
-  background-color: #e29578 !important;
+  background-color: #35acfe !important;
   color: white;
   border: none !important;
   margin-right: 20px;
 }
 
 .rejectButton {
-  background-color: #7a3434 !important;
-  color: white;
+  background-color: #eaeaea !important;
+  color: black;
   border: none !important;
 }
 

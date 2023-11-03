@@ -17,7 +17,6 @@ import 'primeflex/primeflex.css';
 import CreateJobListingForm from '@/components/CreateJobListingForm/CreateJobListingForm';
 import EditJobListingForm from '@/components/EditJobListingForm/EditJobListingForm';
 import { useRouter } from 'next/navigation';
-import Enums from '@/common/enums/enums';
 import { Toast } from 'primereact/toast';
 
 //this page is viewed by corporate
@@ -54,11 +53,11 @@ const JobListingManagementPage = () => {
 
   const getStatus = (status) => {
     switch (status) {
-      case Enums.ACTIVE:
+      case 'Approved':
         return 'success';
       case 'Unverified':
         return 'danger';
-      case Enums.INACTIVE:
+      case 'Rejected':
         return 'danger';
     }
   };
@@ -263,20 +262,6 @@ const JobListingManagementPage = () => {
     setShowDeleteDialog(false);
   };
 
-  // const header = (
-  //   <div className={styles.header}>
-  //     <h2 className={styles.headerTitle} style={{ marginBottom: '15px' }}>
-  //       Job Listing Management
-  //     </h2>
-  //     <Button
-  //       label="Add A Job Listing"
-  //       rounded
-  //       style={{ marginTop: '10px', marginBottom: '15px' }}
-  //       onClick={() => setShowCreateDialog(true)}
-  //     />
-  //   </div>
-  // );
-
   if (isLoading) {
     return (
       <div className={styles.spinnerContainer}>
@@ -290,9 +275,7 @@ const JobListingManagementPage = () => {
       <>
         <Toast ref={toast} />
         <div className={styles.header}>
-          <h1 className={styles.headerTitle} style={{ marginBottom: '15px' }}>
-            Job Listing Management
-          </h1>
+          <h1 className={styles.headerTitle}>Job Listing Management</h1>
           <Button
             className={styles.createJobListingButton}
             label="Add A Job Listing"

@@ -347,7 +347,7 @@ const JobApplicationPage = () => {
             <Button
               label="Edit Application"
               rounded
-              className={styles.cardFooterButton}
+              className={styles.editApplicationButton}
               severity="info"
               onClick={() => {
                 setSelectedJobApplicationData(jobApplication);
