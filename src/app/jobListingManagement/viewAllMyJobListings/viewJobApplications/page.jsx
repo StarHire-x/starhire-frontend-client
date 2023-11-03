@@ -62,7 +62,7 @@ const ViewJobApplicationsPage = () => {
           setIsLoading(false);
         })
         .catch((error) => {
-          console.error('Error fetching job listings:', error);
+          console.error('Error fetching job applications:', error);
           setIsLoading(false);
         });
     }

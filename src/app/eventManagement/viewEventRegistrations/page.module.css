@@ -1,0 +1,93 @@
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  max-width: 1150px;
+  gap: 15px;
+  max-height: 790px;
+  overflow-y: auto;
+}
+
+.headerTitle {
+  margin-bottom: 20px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.dataViewContainer {
+  width: 100%;
+}
+
+.card {
+  background-color: #ffddd2;
+  padding: 20px;
+  width: 100%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  overflow: hidden;
+  border: 1px solid #ffddd2;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cardHeader {
+  border-bottom: 1px solid #e0ecee;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  font-family: 'Arial', sans-serif;
+  justify-content: center;
+}
+
+.cardBody {
+  font-size: 1em;
+  color: #555;
+}
+
+.cardRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  /* Tablet breakpoint */
+  .card {
+    flex-direction: column;
+  }
+
+  .cardRow {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .cardRow span:first-child {
+    margin-bottom: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Mobile breakpoint */
+  .cardRow {
+    flex-direction: column;
+  }
+
+  .cardRow span {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .buttonSpacing {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+}

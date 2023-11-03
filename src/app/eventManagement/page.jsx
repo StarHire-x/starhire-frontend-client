@@ -106,63 +106,71 @@ const EventManagementPage = () => {
   }, [refreshData, userIdRef, accessToken]);
 
   const itemTemplate = (eventListing) => {
-    return (
+    const cardLink = `/eventManagement/viewEventRegistrations?id=${eventListing.eventListingId}`;
+    <a href={cardLink} className={styles.cardLink}>
       <div className={styles.card}>
-        {/* Display the image if available */}
-        {eventListing.image && (
-          <div className={styles.cardImage}>
-            <img src={eventListing.image} alt={eventListing.eventName} />
+        <div className={styles.cardHeader}></div>
+      </div>
+    </a>;
+    return (
+      <a href={cardLink} className={styles.cardLink}>
+        <div className={styles.card}>
+          {/* Display the image if available */}
+          {eventListing.image && (
+            <div className={styles.cardImage}>
+              <img src={eventListing.image} alt={eventListing.eventName} />
+            </div>
+          )}
+          <div className={styles.cardHeader}>
+            <h3>{eventListing.eventName}</h3>
           </div>
-        )}
-        <div className={styles.cardHeader}>
-          <h3>{eventListing.eventName}</h3>
-        </div>
-        <div className={styles.cardDetails}>
-          <div className={styles.cardRow}>
-            <span>Event ID:</span>
-            <span>{eventListing.eventListingId}</span>
+          <div className={styles.cardDetails}>
+            <div className={styles.cardRow}>
+              <span>Event ID:</span>
+              <span>{eventListing.eventListingId}</span>
+            </div>
+            <div className={styles.cardRow}>
+              <span>Location:</span>
+              <span>{eventListing.location}</span>
+            </div>
+            <div className={styles.cardRow}>
+              <span>Event Date:</span>
+              <span>{formatDate(eventListing.eventDate)}</span>
+            </div>
+            <div className={styles.cardRow}>
+              <span>Listed On:</span>
+              <span>{formatDate(eventListing.listingDate)}</span>
+            </div>
+            <div className={styles.cardRow}>
+              <span>Status:</span>
+              <Tag
+                value={eventListing.eventListingStatus}
+                severity={getStatus(eventListing.eventListingStatus)}
+              />
+            </div>
           </div>
-          <div className={styles.cardRow}>
-            <span>Location:</span>
-            <span>{eventListing.location}</span>
-          </div>
-          <div className={styles.cardRow}>
-            <span>Event Date:</span>
-            <span>{formatDate(eventListing.eventDate)}</span>
-          </div>
-          <div className={styles.cardRow}>
-            <span>Listed On:</span>
-            <span>{formatDate(eventListing.listingDate)}</span>
-          </div>
-          <div className={styles.cardRow}>
-            <span>Status:</span>
-            <Tag
-              value={eventListing.eventListingStatus}
-              severity={getStatus(eventListing.eventListingStatus)}
+          <div className={styles.cardFooter}>
+            <Button
+              label="Edit"
+              icon="pi pi-pencil"
+              rounded
+              onClick={() => {
+                setSelectedEventListingData(eventListing);
+                setShowEditDialog(eventListing);
+              }}
+            />
+            <Button
+              label="Delete"
+              icon="pi pi-trash"
+              rounded
+              onClick={() => {
+                setSelectedEventListingData(eventListing);
+                setShowDeleteDialog(eventListing);
+              }}
             />
           </div>
         </div>
-        <div className={styles.cardFooter}>
-          <Button
-            label="Edit"
-            icon="pi pi-pencil"
-            rounded
-            onClick={() => {
-              setSelectedEventListingData(eventListing);
-              setShowEditDialog(eventListing);
-            }}
-          />
-          <Button
-            label="Delete"
-            icon="pi pi-trash"
-            rounded
-            onClick={() => {
-              setSelectedEventListingData(eventListing);
-              setShowDeleteDialog(eventListing);
-            }}
-          />
-        </div>
-      </div>
+      </a>
     );
   };
 

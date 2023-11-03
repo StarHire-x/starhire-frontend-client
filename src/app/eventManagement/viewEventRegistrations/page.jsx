@@ -4,12 +4,12 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { DataView } from 'primereact/dataview';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import { getJobApplicationsByJobListingId } from '@/app/api/jobListing/route';
+import { findAllEventRegistrationsByEventListing } from '@/app/api/eventListing/route';
 import { useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
 
 const ViewEventRegistrationsPage = () => {
-  const [jobApplications, setJobApplications] = useState(null);
+  const [eventRegistrations, setEventRegistrations] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const session = useSession();
   const router = useRouter();
@@ -34,35 +34,31 @@ const ViewEventRegistrationsPage = () => {
 
   useEffect(() => {
     if (accessToken) {
-      getJobApplicationsByJobListingId(id, accessToken)
+      findAllEventRegistrationsByEventListing(id, accessToken)
         .then((response) => {
-          setJobApplications(response);
+          setEventRegistrations(response);
           setIsLoading(false);
         })
         .catch((error) => {
-          console.error('Error fetching job listings:', error);
+          console.error('Error fetching event registrations:', error);
           setIsLoading(false);
         });
     }
   }, [userIdRef, accessToken]);
 
-  const itemTemplate = (jobApplication) => {
-    const cardLink = `/jobListingManagement/viewAllMyJobListings/viewJobApplicationDetails?id=${jobApplication.jobApplicationId}`;
+  const itemTemplate = (eventRegistration) => {
+    // const cardLink = `/eventManagement/viewAllMyJobListings/viewJobApplicationDetails?id=${jobApplication.jobApplicationId}`;
     return (
       <a href={cardLink} className={styles.cardLink}>
         <div className={styles.card}>
           <div className={styles.cardHeader}>
-            <span>Job Application Id:</span>
-            <h5>{jobApplication.jobApplicationId}</h5>
+            <span>Event Registration Id:</span>
+            <h5>{eventRegistration.eventRegistrationId}</h5>
           </div>
           <div className={styles.cardBody}>
             <div className={styles.cardRow}>
-              <span>Available Start Date:</span>
-              <span>{formatDate(jobApplication.availableStartDate)}</span>
-            </div>
-            <div className={styles.cardRow}>
-              <span>Submission Date:</span>
-              <span>{formatDate(jobApplication.submissionDate)}</span>
+              <span>Registration Date:</span>
+              <span>{formatDate(eventRegistration.registrationDate)}</span>
             </div>
           </div>
         </div>
@@ -88,19 +84,19 @@ const ViewEventRegistrationsPage = () => {
           />
         ) : (
           <DataView
-            value={jobApplications}
+            value={eventRegistrations}
             className={styles.dataViewContainer}
             layout="grid"
             rows={10}
             paginator
             header={
               <h2 className={styles.headerTitle}>
-                All Applications for Current Job Listing
+                All Registrations for Current Event Listing
               </h2>
             }
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             rowsPerPageOptions={[10, 25, 50]}
-            emptyMessage="No Application found for this Job Listing"
+            emptyMessage="No Registration found for this Event Listing"
             itemTemplate={itemTemplate}
           />
         )}

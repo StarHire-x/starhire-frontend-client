@@ -9,7 +9,6 @@ import { useRouter } from 'next/navigation';
 import { findAllJobListingsByCorporate } from '@/app/api/jobListing/route';
 import styles from '../page.module.css';
 import 'primeflex/primeflex.css';
-import Enums from '@/common/enums/enums';
 import { Badge } from 'primereact/badge';
 
 const ViewAllMyJobListingsManagementPage = () => {
@@ -56,10 +55,18 @@ const ViewAllMyJobListingsManagementPage = () => {
           // logic to get num of pending job apps to be processed by corporate
           jobListing?.map((selectedJobListing) => {
             let updatedJobListing = selectedJobListing;
-            updatedJobListing.numOfPendingJobAppsToProcess = updatedJobListing?.jobApplications.filter((jobApp) => jobApp?.jobApplicationStatus === "Processing" || jobApp?.jobApplicationStatus === "Waiting_For_Interview")?.length;
+            updatedJobListing.numOfPendingJobAppsToProcess =
+              updatedJobListing?.jobApplications.filter(
+                (jobApp) =>
+                  jobApp?.jobApplicationStatus === 'Processing' ||
+                  jobApp?.jobApplicationStatus === 'Waiting_For_Interview'
+              )?.length;
             return updatedJobListing;
           });
-          const sortedJobListings = jobListing?.sort((x,y) => y?.numOfPendingJobAppsToProcess - x?.numOfPendingJobAppsToProcess);
+          const sortedJobListings = jobListing?.sort(
+            (x, y) =>
+              y?.numOfPendingJobAppsToProcess - x?.numOfPendingJobAppsToProcess
+          );
           setJobListing(sortedJobListings);
         })
         .catch((error) => {
@@ -78,11 +85,14 @@ const ViewAllMyJobListingsManagementPage = () => {
     return (
       <a href={cardLink} className={styles.cardLink}>
         <div className={styles.card}>
-          <div style={{display: 'flex', justifyContent:'space-between'}} className={styles.cardHeader}>
+          <div
+            style={{ display: 'flex', justifyContent: 'space-between' }}
+            className={styles.cardHeader}
+          >
             <h3>{jobListing.title}</h3>
             <Badge
               value={jobListing?.numOfPendingJobAppsToProcess}
-              style={{backgroundColor: "#35acfe"}}
+              style={{ backgroundColor: '#35acfe' }}
             ></Badge>
           </div>
           <div className={styles.cardBody}>
