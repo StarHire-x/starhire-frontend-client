@@ -16,7 +16,6 @@ import CreateEventForm from '@/components/CreateEventForm/CreateEventForm';
 import EditEventForm from '@/components/EditEventForm/EditEventForm';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Enums from '@/common/enums/enums';
 import styles from './page.module.css';
 
 const EventManagementPage = () => {
@@ -52,14 +51,14 @@ const EventManagementPage = () => {
   };
 
   const getStatus = (status) => {
-    console.log("Checking status: ", status)
+    console.log('Checking status: ', status);
     switch (status) {
       case 'Upcoming':
         return 'success';
       case 'Expired':
         return 'danger';
-      case "Upcoming": 
-      return "success"
+      case 'Upcoming':
+        return 'success';
     }
   };
 
@@ -286,9 +285,7 @@ const EventManagementPage = () => {
       <>
         <Toast ref={toast} />
         <div className={styles.header}>
-          <h1 className={styles.headerTitle}>
-            Event Management
-          </h1>
+          <h1 className={styles.headerTitle}>Event Management</h1>
           <Button
             className={styles.createEventListingButton}
             label="Create An Event"

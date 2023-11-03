@@ -17,7 +17,6 @@ import 'primeflex/primeflex.css';
 import CreateJobListingForm from '@/components/CreateJobListingForm/CreateJobListingForm';
 import EditJobListingForm from '@/components/EditJobListingForm/EditJobListingForm';
 import { useRouter } from 'next/navigation';
-import Enums from '@/common/enums/enums';
 import { Toast } from 'primereact/toast';
 
 //this page is viewed by corporate
@@ -276,9 +275,7 @@ const JobListingManagementPage = () => {
       <>
         <Toast ref={toast} />
         <div className={styles.header}>
-          <h1 className={styles.headerTitle}>
-            Job Listing Management
-          </h1>
+          <h1 className={styles.headerTitle}>Job Listing Management</h1>
           <Button
             className={styles.createJobListingButton}
             label="Add A Job Listing"
