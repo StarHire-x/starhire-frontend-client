@@ -6,7 +6,7 @@
 }
 
 .headerTitle {
-  font-family: "Source Sans 3";
+  font-family: 'Source Sans 3';
 }
 
 /* Grid layout for cards, making them appear in rows of up to 5 */
@@ -33,7 +33,7 @@
 
 .createEventListingButton {
   margin-left: 20px;
-  border: #006d77;
+  border: #35acfe;
   background-color: #35acfe !important;
   color: #edf6f9;
 }

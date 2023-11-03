@@ -5,8 +5,8 @@
   padding: 20px;
 }
 
-.headerTitle{
-  font-family: "Source Sans 3", sans-serif;
+.headerTitle {
+  font-family: 'Source Sans 3', sans-serif;
 }
 
 /* Grid layout for cards, making them appear in rows of up to 5 */
@@ -33,12 +33,12 @@
 
 .createJobListingButton {
   margin-left: 20px;
-  border: #006d77;
+  border: #35acfe;
   background-color: #35acfe;
   color: #edf6f9;
 }
 
-.createJobListingButton:hover{
+.createJobListingButton:hover {
   background-color: #082948 !important;
 }
 
