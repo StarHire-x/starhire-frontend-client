@@ -15,6 +15,22 @@
   margin-top: -10px; /* If needed */
 }
 
+.tryPremiumButton {
+  background-color: #35acfe !important;
+  color: white !important;
+  white-space: nowrap !important;
+  border: 1px solid #35acfe !important;
+  margin-top: 10px !important;
+}
+
+.premiumButton {
+  background-color: #ffc937 !important;
+  color: white !important;
+  white-space: nowrap !important;
+  border: 1px solid #ffc937!important;
+  margin-top: 10px !important;
+}
+
 .nav__menu_bar {
   display: flex;
   flex-direction: column;
