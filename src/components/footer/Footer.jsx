@@ -3,37 +3,32 @@
 import React from "react";
 import styles from "./footer.module.css";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const Footer = () => {
+  const session = useSession();
+
+  let roleRef, sessionTokenRef, userIdRef;
+
+  if (session && session.data && session.data.user) {
+    userIdRef = session.data.user.userId;
+    roleRef = session.data.user.role;
+    sessionTokenRef = session.data.user.accessToken;
+  }
+
   return (
     <div className={styles.container}>
       <div>
-      <p>©2023 StarHire. All rights reserved</p>
+        <p>©2023 StarHire. All rights reserved</p>
       </div>
-      <Link className={styles.tryPremium} href="/payment">Become Premium?</Link>
-      <Link className={styles.reportIssue} href="/ticketManagement">Need Help?</Link>
-      {/* <div>
-          {session.status === 'authenticated' &&
-            session.data.user.role === Enums.CORPORATE &&
-            (status === 'Premium' ? (
-              <Link href="/payment" passHref>
-                <Button
-                  className={styles.premiumButton}
-                  size='small'
-                >
-                  Premium
-                </Button>
-              </Link>
-            ) : (
-              <Link href="/payment" passHref>
-                <Button
-                  className={styles.tryPremiumButton}
-                >
-                  Become Premium?
-                </Button>
-              </Link>
-            ))}
-        </div> */}
+      {roleRef === "Corporate" && (
+        <Link className={styles.tryPremium} href="/payment">
+          Become Premium?
+        </Link>
+      )}
+      <Link className={styles.reportIssue} href="/ticketManagement">
+        Need Help?
+      </Link>
     </div>
   );
 };
