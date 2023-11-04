@@ -22,10 +22,18 @@
 }
 
 .tryPremium {
-  position: absolute; /* Updated to absolute position */
-  left: 0; /* Positioned to the right */
+  position: absolute; 
+  left: 0;
   font-size: 14px;
-  color: black;
+  color: #007bff;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.premium {
+  position: absolute; 
+  left: 0; 
+  font-size: 14px;
   color: #007bff;
   cursor: pointer;
   transition: color 0.3s;
