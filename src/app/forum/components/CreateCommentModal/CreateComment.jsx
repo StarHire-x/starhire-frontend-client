@@ -192,52 +192,55 @@ const CreateComment = ({
           </div>
         </div>
       </Card>
-
-      <div className={styles.leaveCommentContainer}>
-        <form onSubmit={(e) => handleSubmit(e)}>
-          <div className={styles.leaveCommentHeader}>
-            <h3>Leave a comment!</h3>
+      {postData.forumPostStatus !== "Pending" && (
+        <>
+          <div className={styles.leaveCommentContainer}>
+            <form onSubmit={(e) => handleSubmit(e)}>
+              <div className={styles.leaveCommentHeader}>
+                <h3>Leave a comment!</h3>
+              </div>
+              <div className={styles.leaveCommentContent}>
+                <InputTextarea
+                  rows={5}
+                  cols={75}
+                  value={comment}
+                  onChange={(e) => handleCommentChange(e)}
+                  className={styles.textarea}
+                />
+              </div>
+              <div className={styles.leaveCommentFooter}>
+                <div className={styles.anonymous}>
+                  <Checkbox
+                    inputId="anonymous"
+                    onChange={(e) => handleAnonymousChange(e)}
+                    checked={anonymous}
+                  />
+                  <label htmlFor="anonymous" className={styles.anonymousText}>
+                    Anonymous?
+                  </label>
+                </div>
+                <div className={styles.characterCount}>
+                  {maxCharacterCount - comment.length} characters left
+                </div>
+                <div className={styles.commentButtonContainer}>
+                  <Button
+                    icon="pi pi-arrow-right"
+                    size="small"
+                    className={styles.commentButton}
+                  />
+                </div>
+              </div>
+            </form>
           </div>
-          <div className={styles.leaveCommentContent}>
-            <InputTextarea
-              rows={5}
-              cols={75}
-              value={comment}
-              onChange={(e) => handleCommentChange(e)}
-              className={styles.textarea}
-            />
+          <div className={styles.allCommentsContainer}>
+            <div className={styles.allCommentsHeader}>
+              <h3>All Comments</h3>
+              <p>{comments.length} comments</p>
+            </div>
+            <ForumComments forumComments={comments} />
           </div>
-          <div className={styles.leaveCommentFooter}>
-            <div className={styles.anonymous}>
-              <Checkbox
-                inputId="anonymous"
-                onChange={(e) => handleAnonymousChange(e)}
-                checked={anonymous}
-              />
-              <label htmlFor="anonymous" className={styles.anonymousText}>
-                Anonymous?
-              </label>
-            </div>
-            <div className={styles.characterCount}>
-              {maxCharacterCount - comment.length} characters left
-            </div>
-            <div className={styles.commentButtonContainer}>
-              <Button
-                icon="pi pi-arrow-right"
-                size="small"
-                className={styles.commentButton}
-              />
-            </div>
-          </div>
-        </form>
-      </div>
-      <div className={styles.allCommentsContainer}>
-        <div className={styles.allCommentsHeader}>
-          <h3>All Comments</h3>
-          <p>{comments.length} comments</p>
-        </div>
-        <ForumComments forumComments={comments} />
-      </div>
+        </>
+      )}
     </>
   );
 };
