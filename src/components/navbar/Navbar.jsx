@@ -93,30 +93,6 @@ const Navbar = () => {
             height={100}
           />
         </Link>
-
-        <div>
-          {session.status === 'authenticated' &&
-            session.data.user.role === Enums.CORPORATE &&
-            (status === 'Premium' ? (
-              <Link href="/payment" passHref>
-                <Button
-                  className={styles.premiumButton}
-                  size='small'
-                >
-                  Premium
-                </Button>
-              </Link>
-            ) : (
-              <Link href="/payment" passHref>
-                <Button
-                  className={styles.tryPremiumButton}
-                >
-                  Become Premium?
-                </Button>
-              </Link>
-            ))}
-        </div>
-
         <div
           onClick={() => setNavActive(!navActive)}
           className={styles.nav__menu_bar}

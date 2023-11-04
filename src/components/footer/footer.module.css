@@ -21,6 +21,16 @@
   transition: color 0.3s;
 }
 
+.tryPremium {
+  position: absolute; /* Updated to absolute position */
+  left: 0; /* Positioned to the right */
+  font-size: 14px;
+  color: black;
+  color: #007bff;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
 .reportIssue:hover {
   color: #0056b3;
 }
