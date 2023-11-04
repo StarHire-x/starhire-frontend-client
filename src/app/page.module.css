@@ -85,6 +85,7 @@
   color: white;
   font-size: 20px;
   margin: 0 10px; /* Add margin to create space between buttons */
+  cursor: pointer;
 }
 
 .button {
