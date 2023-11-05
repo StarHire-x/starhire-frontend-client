@@ -178,11 +178,11 @@ const PaymentPage = () => {
                     </p>
                     <p>
                       If you ever decide to unsubscribe, you can do so by
-                      clicking the "Unsubscribe" button below.
+                      clicking the &quot;Unsubscribe&quot; button below.
                     </p>
                     <p className={styles.warningText}>
                       Upon unsubscribing, you will immediately lose all access
-                      to "Premium" services!! There will be no partial refunds.
+                      to &quot;Premium&quot; services!! There will be no partial refunds.
                     </p>
                   </div>
                   <Button
