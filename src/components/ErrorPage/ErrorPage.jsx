@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "./ErrorPage.module.css";
-import ErrorImage from '../../../public/error.jpg';
+import ErrorImage from '../../../public/error.png';
 import { Button } from "primereact/button";
 const ErrorPage = ({ error, resetErrorBoundary }) => {
   return (
