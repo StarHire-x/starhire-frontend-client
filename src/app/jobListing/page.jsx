@@ -202,7 +202,7 @@ const JobListingPage = () => {
         </span>
         <Button
           className={styles.savedJobsButton}
-          label="My Saved Job Listings"
+          label="My Saved Jobs"
           onClick={() =>
             router.push('/jobListing/viewSavedJobListingsJobSeeker')
           }

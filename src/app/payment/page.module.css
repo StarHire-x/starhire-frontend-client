@@ -115,9 +115,9 @@
 .viewInvoicesButton {
   align-self: flex-end;
   margin-top: auto;
-  border: #35acfe;
-  background-color: #35acfe;
-  color: #edf6f9;
+  border: #ffc937 !important;
+  background-color: #ffc937 !important;
+  color: #082948 !important;
   border-radius: 4px;
   padding: 0.5rem 1rem;
   font-size: 1rem;
