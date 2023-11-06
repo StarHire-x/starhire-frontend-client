@@ -46,10 +46,17 @@ const EventManagementPage = () => {
 
   const toast = useRef(null);
 
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+  const formatDateTime = (dateTimeString) => {
+    const options = {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    return new Date(dateTimeString).toLocaleString(undefined, options);
   };
+  
 
   const getStatus = (status) => {
     console.log('Checking status: ', status);
@@ -135,12 +142,16 @@ const EventManagementPage = () => {
               <span>{eventListing.location}</span>
             </div>
             <div className={styles.cardRow}>
-              <span>Event Date:</span>
-              <span>{formatDate(eventListing.eventDate)}</span>
+              <span>Event Start:</span>
+              <span>{formatDateTime(eventListing.eventStartDateAndTime)}</span>
+            </div>
+            <div className={styles.cardRow}>
+              <span>Event End:</span>
+              <span>{formatDateTime(eventListing.eventEndDateAndTime)}</span>
             </div>
             <div className={styles.cardRow}>
               <span>Listed On:</span>
-              <span>{formatDate(eventListing.listingDate)}</span>
+              <span>{formatDateTime(eventListing.listingDate)}</span>
             </div>
             <div className={styles.cardRow}>
               <span>Status:</span>
