@@ -363,7 +363,7 @@ const JobApplicationModal = ({ accessToken, userId }) => {
               ></Column>
               <Column
                 field="recrutierName"
-                header="Recrutier"
+                header="Recruiter"
                 sortable
                 body={recruiterBodyTemplate}
               ></Column>
