@@ -51,6 +51,8 @@ const CreateEventForm = ({ onCreate }) => {
           id="eventDate"
           name="eventDate"
           value={formData.eventDate}
+          showTime
+          hourFormat='24'
           minDate={new Date(new Date().setDate(new Date().getDate() + 1))} // set minimum date to tomorrow
           onChange={(e) =>
             setFormData((prev) => ({ ...prev, eventDate: e.value }))
