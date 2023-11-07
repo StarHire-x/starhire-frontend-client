@@ -24,7 +24,7 @@ const JobApplicationModal = ({ accessToken, userId }) => {
   const [jobApplications, setJobApplications] = useState([]);
   const router = useRouter();
 
-  const [selectedFilter, setSelectedFilter] = useState("All");
+  const [selectedFilter, setSelectedFilter] = useState("-");
   const [filterOptions, setFilterOptions] = useState([
     {
       label: "Select a job Listing",
@@ -154,42 +154,11 @@ const JobApplicationModal = ({ accessToken, userId }) => {
   }, [accessToken, userId, currentTab, selectedFilter]);
 
   const header = () => {
-    return renderRecruiterHeader();
-  };
-
-  const cardHeader = () => {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <h2 style={{ margin: "10px 10px 10px 10px" }}>
-          Job Application Analytics for Job Listing Id {selectedFilter}
-        </h2>
-        <Dropdown
-          style={{ margin: "10px 10px 10px 10px" }}
-          value={selectedFilter}
-          options={filterOptions}
-          onChange={(e) => setSelectedFilter(e.value)}
-          placeholder="Select timespan"
-        />
-      </div>
-    );
-  };
-
-  const renderRecruiterHeader = () => {
-    return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
+      <div >
+        <div className={styles.cardColumnRightHeader}
         >
+          <div></div>
           <h2 className="m-0">
             Job Application - Action Required
           </h2>
@@ -207,6 +176,25 @@ const JobApplicationModal = ({ accessToken, userId }) => {
           model={tabs}
           onTabChange={(e) => setCurrentTab(e.index)}
           activeIndex={currentTab}
+        />
+      </div>
+    );
+  };
+
+  const cardHeader = () => {
+    return (
+      <div className={styles.cardHeader}
+      ><div></div>
+      <div></div>
+        <h2>
+          Applications for: ({selectedFilter})
+        </h2>
+        <Dropdown
+          style={{ margin: "10px 10px 10px 10px" }}
+          value={selectedFilter}
+          options={filterOptions}
+          onChange={(e) => setSelectedFilter(e.value)}
+          placeholder="Select timespan"
         />
       </div>
     );
@@ -302,38 +290,38 @@ const JobApplicationModal = ({ accessToken, userId }) => {
           <div className={styles.cardColumnLeft}>
             <Card className={styles.customCard}>
               <div className={styles.cardLayout}>
-                <h1>{overallStats.Total}</h1>
-                <h4>Total Application</h4>
+                <h3>{overallStats.Total}</h3>
+                <p>Total Application</p>
               </div>
             </Card>
             <Card className={styles.customCard}>
               <div className={styles.cardLayout}>
-                <h1>{overallStats.Submitted}</h1>
-                <h4>Submitted</h4>
+                <h3>{overallStats.Submitted}</h3>
+                <p>Submitted</p>
               </div>
             </Card>
             <Card className={styles.customCard}>
               <div className={styles.cardLayout}>
-                <h1>{overallStats.To_Be_Submitted}</h1>
-                <h4>To be Submitted</h4>
+                <h3>{overallStats.To_Be_Submitted}</h3>
+                <p>To be Submitted</p>
               </div>
             </Card>
             <Card className={styles.customCard}>
               <div className={styles.cardLayout}>
-                <h1>{overallStats.Processing}</h1>
-                <h4>Processing</h4>
+                <h3>{overallStats.Processing}</h3>
+                <p>Processing</p>
               </div>
             </Card>
             <Card className={styles.customCard}>
               <div className={styles.cardLayout}>
-                <h1>{overallStats.Waiting_For_Interview}</h1>
-                <h4>Waiting for Interview</h4>
+                <h3>{overallStats.Waiting_For_Interview}</h3>
+                <p>Waiting for Interview</p>
               </div>
             </Card>
           </div>
           <div className={styles.cardColumnRight}>
             <DataTable
-              header={header}
+              // header={header}
               value={jobApplications}
               showGridlines
               filters={filters}
@@ -352,7 +340,7 @@ const JobApplicationModal = ({ accessToken, userId }) => {
               <Column
                 field="jobApplicationId"
                 header="Id"
-                style={{ textAlign: "center", verticalAlign: "middle" }}
+                style={{ textAlign: "center", verticalAlign: "middle", width: "50px" }}
                 sortable
               ></Column>
               <Column
@@ -360,23 +348,25 @@ const JobApplicationModal = ({ accessToken, userId }) => {
                 header="Job Seeker"
                 sortable
                 body={jobSeekerBodyTemplate}
+                style={{width: "100px"}}
               ></Column>
               <Column
-                field="recrutierName"
+                field="recruiterName"
                 header="Recruiter"
                 sortable
                 body={recruiterBodyTemplate}
+                style={{width: "100px"}}
               ></Column>
               <Column
                 field="jobApplicationStatus"
                 header="Status"
-                style={{ textAlign: "center", verticalAlign: "middle" }}
+                style={{ textAlign: "center", verticalAlign: "middle", width: "100px" }}
                 sortable
                 body={statusBodyTemplate}
               ></Column>
               <Column
                 exportable={false}
-                style={{ minWidth: "1rem" }}
+                style={{ width: "50px" }}
                 header="Actions"
                 body={viewDetailsBodyTemplate}
               ></Column>
