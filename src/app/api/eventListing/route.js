@@ -145,15 +145,22 @@ export const removeEventListing = async (id, accessToken) => {
       }
     );
 
-    console.log(res);
-    if (res.ok) {
-      return;
-    } else {
-      throw new Error(errorData.message || 'An error occurred');
+    if (!res.ok) {
+      const errorData = await res.json();
+      console.log(errorData);
+      throw new Error(errorData.message);
     }
     return await res.json();
+
+    // console.log(res);
+    // if (res.ok) {
+    //   return;
+    // } else {
+    //   throw new Error(errorData.message || 'An error occurred');
+    // }
+    // return await res.json();
   } catch (error) {
-    console.log('There was a problem fetching the event listings', error);
+    console.log('There was a problem deleting this event listing', error);
     throw error;
   }
 };
