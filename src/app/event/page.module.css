@@ -16,6 +16,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
   transition: transform 0.3s, box-shadow 0.3s;
+  height: 60vh;
 }
 
 .event:hover {

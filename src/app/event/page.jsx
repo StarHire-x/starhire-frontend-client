@@ -133,11 +133,13 @@ const EventPage = () => {
 
     return (
       <div className={styles.event} onClick={() => setSelectedEvent(eventData)}>
-        <img
-          src={eventData.image}
-          alt={eventData.eventName}
-          className={styles.eventImage}
-        />
+        {eventData.image && (
+          <img
+            src={eventData.image}
+            alt={eventData.eventName}
+            className={styles.eventImage}
+          />
+        )}
         <h4>{eventData.eventName}</h4>
         <p>
           <strong>Location:</strong> {eventData.location}
@@ -188,12 +190,12 @@ const EventPage = () => {
             {
               breakpoint: "1024px",
               numVisible: 3,
-              numScroll: 3,
+              numScroll: 1,
             },
             {
               breakpoint: "600px",
               numVisible: 2,
-              numScroll: 2,
+              numScroll: 1,
             },
             {
               breakpoint: "480px",
@@ -212,31 +214,27 @@ const EventPage = () => {
         className={`${styles.cardDialog} ${styles.dialogSize}`}
         footer={
           <>
-            <div className={styles.dialogFooter}>
-              {selectedEvent &&
-              !registeredEvents.includes(selectedEvent.eventListingId) ? (
-                <Button
-                  label="Register"
-                  className={styles.createButton}
-                  icon="pi pi-plus"
-                  onClick={() => {
-                    setSelectedEventId(selectedEvent.eventListingId);
-                    setShowEventRegistrationDialog(true);
-                  }}
-                  rounded
-                />
-              ) : (
-                <h4 style={{ marginBottom: "20px" }}>
-                  You have registered for this event.
-                </h4>
-              )}
+            {selectedEvent &&
+            !registeredEvents.includes(selectedEvent.eventListingId) ? (
               <Button
-                label="Close"
-                className={styles.closeButton}
-                onClick={() => setSelectedEvent(null)}
+                label="Register"
+                className={styles.createButton}
+                icon="pi pi-plus"
+                onClick={() => {
+                  setSelectedEventId(selectedEvent.eventListingId);
+                  setShowEventRegistrationDialog(true);
+                }}
                 rounded
               />
-            </div>
+            ) : (
+              <span>You have registered for this event</span>
+            )}
+            <Button
+              label="Close"
+              className={styles.closeButton}
+              onClick={() => setSelectedEvent(null)}
+              rounded
+            />
           </>
         }
       >
