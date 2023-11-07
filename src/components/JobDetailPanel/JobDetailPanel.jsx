@@ -266,7 +266,7 @@ const JobDetailPanel = ({
         header="Create Job Application"
         visible={showCreateJobApplicationDialog}
         onHide={hideCreateJobApplicationDialog}
-        className={styles.cardDialog}
+        // className={styles.createDialog}
       >
         <CreateJobApplicationForm
           formData={formData}
