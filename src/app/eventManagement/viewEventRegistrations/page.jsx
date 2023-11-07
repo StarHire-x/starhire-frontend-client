@@ -57,7 +57,7 @@ const ViewEventRegistrationsPage = () => {
         <div className={styles.cardBody}>
           <div className={styles.cardRow}>
             <span>Registered by:</span>
-            <span>{eventRegistration.jobSeeker.fullName}</span>
+            <span>{eventRegistration.jobSeeker.userName}</span>
           </div>
           {/* <div className={styles.cardRow}>
             <span>Contact email:</span>

@@ -81,7 +81,7 @@ const EventPage = () => {
   };
 
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+    const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: "2-digit", minute: "2-digit", };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
@@ -140,7 +140,10 @@ const EventPage = () => {
           {eventData.corporate && eventData.corporate.userName}
         </p>
         <p>
-          <strong>Date:</strong> {formatDate(eventData.eventDate)}
+          <strong>Start Date:</strong> {formatDate(eventData.eventStartDateAndTime)}
+        </p>
+        <p>
+          <strong>End Date:</strong> {formatDate(eventData.eventEndDateAndTime)}
         </p>
         <p>
           <strong>Posted On:</strong> {formatDate(eventData.listingDate)}
@@ -239,7 +242,10 @@ const EventPage = () => {
               {selectedEvent.corporate && selectedEvent.corporate.userName}
             </p>
             <p className={styles.dialogField}>
-              <strong>Date:</strong> {formatDate(selectedEvent.eventDate)}
+              <strong>Start Date:</strong> {formatDate(selectedEvent.eventStartDateAndTime)}
+            </p>
+            <p className={styles.dialogField}>
+              <strong>End Date:</strong> {formatDate(selectedEvent.eventEndDateAndTime)}
             </p>
             <p className={styles.dialogField}>
               <strong>Details:</strong> {selectedEvent.details}
