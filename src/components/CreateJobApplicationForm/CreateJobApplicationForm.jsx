@@ -55,11 +55,10 @@ const CreateJobApplicationForm = ({
   };
 
   return (
-    <div className={styles.container}>
-      <form className={styles.form} onSubmit={addJobApplication}>
-        <div className={styles.cardBody}>
+    <div>
+      <form onSubmit={addJobApplication}>
           <div className={styles.cardRow}>
-            <label>Available Start Date:</label>
+            <p>Available Start Date:</p>
             <Calendar
               id="availableStartDate"
               name="availableStartDate"
@@ -83,7 +82,7 @@ const CreateJobApplicationForm = ({
             </small>
           )}
           <div className={styles.cardRow}>
-            <label>Available End Date:</label>
+            <p>Available End Date:</p>
             <Calendar
               id="availableEndDate"
               name="availableEndDate"
@@ -109,7 +108,7 @@ const CreateJobApplicationForm = ({
             />
           </div>
           <div className={styles.cardRow}>
-            <label>Remarks:</label>
+            <p>Remarks:</p>
             <InputTextarea
               id="remarks"
               name="remarks"
@@ -136,7 +135,7 @@ const CreateJobApplicationForm = ({
             {formData.documents.map((document, index) => (
               <div key={index}>
                 <div className={styles.cardRow}>
-                  <label>Document Title</label>
+                  <p>Document Title</p>
                   <InputText
                     name={`documentName-${index}`}
                     value={document.documentName}
@@ -145,7 +144,7 @@ const CreateJobApplicationForm = ({
                   />
                 </div>
                 <div className={styles.cardRow}>
-                  <label>Document Link</label>
+                  <p>Document Link</p>
                   <input
                     type="file"
                     id={`documentFile-${index}`}
@@ -154,7 +153,7 @@ const CreateJobApplicationForm = ({
                 </div>
                 {document.documentLink && (
                   <div className={styles.cardRow}>
-                    <label>File</label>
+                    <p>File</p>
                     <Button
                       type="button"
                       icon="pi pi-file-pdf"
@@ -193,7 +192,6 @@ const CreateJobApplicationForm = ({
               </div>
             ))}
           </Panel>
-        </div>
         <div className={styles.buttonContainer}>
           <Button label="Submit" rounded severity="success" raised />
         </div>
