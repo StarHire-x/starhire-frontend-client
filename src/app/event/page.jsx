@@ -214,27 +214,29 @@ const EventPage = () => {
         className={`${styles.cardDialog} ${styles.dialogSize}`}
         footer={
           <>
-            {selectedEvent &&
-            !registeredEvents.includes(selectedEvent.eventListingId) ? (
+            <div className={styles.dialogFooter}>
+              {selectedEvent &&
+              !registeredEvents.includes(selectedEvent.eventListingId) ? (
+                <Button
+                  label="Register"
+                  className={styles.createButton}
+                  icon="pi pi-plus"
+                  onClick={() => {
+                    setSelectedEventId(selectedEvent.eventListingId);
+                    setShowEventRegistrationDialog(true);
+                  }}
+                  rounded
+                />
+              ) : (
+                <h3 style={{marginBottom: "20px"}}>You have registered for this event</h3>
+              )}
               <Button
-                label="Register"
-                className={styles.createButton}
-                icon="pi pi-plus"
-                onClick={() => {
-                  setSelectedEventId(selectedEvent.eventListingId);
-                  setShowEventRegistrationDialog(true);
-                }}
+                label="Close"
+                className={styles.closeButton}
+                onClick={() => setSelectedEvent(null)}
                 rounded
               />
-            ) : (
-              <span>You have registered for this event</span>
-            )}
-            <Button
-              label="Close"
-              className={styles.closeButton}
-              onClick={() => setSelectedEvent(null)}
-              rounded
-            />
+            </div>
           </>
         }
       >
