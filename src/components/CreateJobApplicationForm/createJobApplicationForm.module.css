@@ -1,46 +1,12 @@
-.cardBody {
-  /* Add some padding to make the content breathe */
-  font-family: 'Arial', sans-serif; /* Use Arial font for content */
-}
-
-.form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-  max-width: 80%;
-  margin: 0 auto; /* centers the form on the page */
-}
-
 .cardRow {
-  display: flex; /* Make the row flexible */
-  justify-content: space-between; /* Separate the label and the input */
-  align-items: center; /* Center items vertically */
-  margin-bottom: 15px; /* Add some space below each row */
-}
-
-.cardRow label {
-  flex: 1; /* Let the label take 1 part of the space */
-  font-size: 0.8em;
-  margin-right: 10px; /* Add some margin to the right of the label */
-}
-
-.cardRow input,
-.cardRow .p-inputnumber,
-.cardRow .p-calendar {
-  flex: 2; /* Let the input or any prime react component take 2 parts of the space */
-  min-width: 0; /* Ensure input respects flex parent boundaries */
-}
-
-.cardRow textarea,
-.cardRow .p-inputtextarea {
-  flex: 2; /* Let the textarea take 2 parts of the space */
-  min-width: 0; /* Ensure textarea respects flex parent boundaries */
-  width: 100%; /* Ensure it takes the full width available in the flex container */
-  height: 300px;
-  padding: 5px;
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 15px; 
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
+  max-width: 1200px; 
 }
 
 .cardFooter {
@@ -83,4 +49,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (min-width: 1201px) {
+  .cardRow {
+    width: 1200px; /* Or any larger max-width that suits your design */
+  }
 }
