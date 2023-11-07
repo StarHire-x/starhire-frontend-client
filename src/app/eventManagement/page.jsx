@@ -1,23 +1,23 @@
-'use client';
-import React, { useEffect, useState, useRef } from 'react';
-import { Badge } from 'primereact/badge';
-import { Button } from 'primereact/button';
-import { Dialog } from 'primereact/dialog';
-import { ProgressSpinner } from 'primereact/progressspinner';
-import { Tag } from 'primereact/tag';
-import { Toast } from 'primereact/toast';
-import { uploadFile } from '@/app/api/upload/route';
+"use client";
+import React, { useEffect, useState, useRef } from "react";
+import { Badge } from "primereact/badge";
+import { Button } from "primereact/button";
+import { Dialog } from "primereact/dialog";
+import { ProgressSpinner } from "primereact/progressspinner";
+import { Tag } from "primereact/tag";
+import { Toast } from "primereact/toast";
+import { uploadFile } from "@/app/api/upload/route";
 import {
   findAllEventListingsByCorporate,
   createEventListing,
   updateEventListing,
   removeEventListing,
-} from '../api/eventListing/route';
-import CreateEventForm from '@/components/CreateEventForm/CreateEventForm';
-import EditEventForm from '@/components/EditEventForm/EditEventForm';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import styles from './page.module.css';
+} from "../api/eventListing/route";
+import CreateEventForm from "@/components/CreateEventForm/CreateEventForm";
+import EditEventForm from "@/components/EditEventForm/EditEventForm";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import styles from "./page.module.css";
 
 const EventManagementPage = () => {
   const [eventListing, setEventListing] = useState(null);
@@ -32,12 +32,12 @@ const EventManagementPage = () => {
   const router = useRouter();
 
   const userIdRef =
-    session.status === 'authenticated' &&
+    session.status === "authenticated" &&
     session.data &&
     session.data.user.userId;
 
   const accessToken =
-    session.status === 'authenticated' &&
+    session.status === "authenticated" &&
     session.data &&
     session.data.user.accessToken;
 
@@ -56,17 +56,16 @@ const EventManagementPage = () => {
     };
     return new Date(dateTimeString).toLocaleString(undefined, options);
   };
-  
 
   const getStatus = (status) => {
-    console.log('Checking status: ', status);
+    console.log("Checking status: ", status);
     switch (status) {
-      case 'Upcoming':
-        return 'success';
-      case 'Expired':
-        return 'danger';
-      case 'Upcoming':
-        return 'success';
+      case "Upcoming":
+        return "success";
+      case "Expired":
+        return "danger";
+      case "Upcoming":
+        return "success";
     }
   };
 
@@ -98,16 +97,16 @@ const EventManagementPage = () => {
   );
 
   useEffect(() => {
-    if (session.status === 'unauthenticated') {
-      router.push('/login');
-    } else if (session.status === 'authenticated') {
+    if (session.status === "unauthenticated") {
+      router.push("/login");
+    } else if (session.status === "authenticated") {
       findAllEventListingsByCorporate(userIdRef, accessToken)
         .then((eventListing) => {
           setEventListing(eventListing);
           setIsLoading(false);
         })
         .catch((error) => {
-          console.error('Error fetching user:', error);
+          console.error("Error fetching user:", error);
           setIsLoading(false);
         });
     }
@@ -121,46 +120,50 @@ const EventManagementPage = () => {
       </div>
     </a>;
     return (
-      <a href={cardLink} className={styles.cardLink}>
+      <>
         <div className={styles.card}>
-          {/* Display the image if available */}
-          {eventListing.image && (
-            <div className={styles.cardImage}>
-              <img src={eventListing.image} alt={eventListing.eventName} />
+          <a href={cardLink} className={styles.cardLink}>
+            {/* Display the image if available */}
+            {eventListing.image && (
+              <div className={styles.cardImage}>
+                <img src={eventListing.image} alt={eventListing.eventName} />
+              </div>
+            )}
+            <div className={styles.cardHeader}>
+              <h3>{eventListing.eventName}</h3>
             </div>
-          )}
-          <div className={styles.cardHeader}>
-            <h3>{eventListing.eventName}</h3>
-          </div>
-          <div className={styles.cardDetails}>
-            <div className={styles.cardRow}>
-              <span>Event ID:</span>
-              <span>{eventListing.eventListingId}</span>
+            <div className={styles.cardDetails}>
+              <div className={styles.cardRow}>
+                <span>Event ID:</span>
+                <span>{eventListing.eventListingId}</span>
+              </div>
+              <div className={styles.cardRow}>
+                <span>Location:</span>
+                <span>{eventListing.location}</span>
+              </div>
+              <div className={styles.cardRow}>
+                <span>Event Start:</span>
+                <span>
+                  {formatDateTime(eventListing.eventStartDateAndTime)}
+                </span>
+              </div>
+              <div className={styles.cardRow}>
+                <span>Event End:</span>
+                <span>{formatDateTime(eventListing.eventEndDateAndTime)}</span>
+              </div>
+              <div className={styles.cardRow}>
+                <span>Listed On:</span>
+                <span>{formatDateTime(eventListing.listingDate)}</span>
+              </div>
+              <div className={styles.cardRow}>
+                <span>Status:</span>
+                <Tag
+                  value={eventListing.eventListingStatus}
+                  severity={getStatus(eventListing.eventListingStatus)}
+                />
+              </div>
             </div>
-            <div className={styles.cardRow}>
-              <span>Location:</span>
-              <span>{eventListing.location}</span>
-            </div>
-            <div className={styles.cardRow}>
-              <span>Event Start:</span>
-              <span>{formatDateTime(eventListing.eventStartDateAndTime)}</span>
-            </div>
-            <div className={styles.cardRow}>
-              <span>Event End:</span>
-              <span>{formatDateTime(eventListing.eventEndDateAndTime)}</span>
-            </div>
-            <div className={styles.cardRow}>
-              <span>Listed On:</span>
-              <span>{formatDateTime(eventListing.listingDate)}</span>
-            </div>
-            <div className={styles.cardRow}>
-              <span>Status:</span>
-              <Tag
-                value={eventListing.eventListingStatus}
-                severity={getStatus(eventListing.eventListingStatus)}
-              />
-            </div>
-          </div>
+          </a>
           <div className={styles.cardFooter}>
             <Button
               label="Edit"
@@ -182,7 +185,7 @@ const EventManagementPage = () => {
             />
           </div>
         </div>
-      </a>
+      </>
     );
   };
 
@@ -202,24 +205,24 @@ const EventManagementPage = () => {
         corporateId: userIdRef,
       };
       const response = await createEventListing(payload, accessToken);
-      console.log('Created Event listing Successfully', response);
+      console.log("Created Event listing Successfully", response);
       // alert('Created event listing successfully');
       toast.current.show({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Created event listing successfully',
+        severity: "success",
+        summary: "Success",
+        detail: "Created event listing successfully",
         life: 5000,
       });
       setRefreshData((prev) => !prev);
     } catch (error) {
       console.error(
-        'There was an error creating the event listing:',
+        "There was an error creating the event listing:",
         error.message
       );
       // alert('There was an error creating the event listing:');
       toast.current.show({
-        severity: 'error',
-        summary: 'Error',
+        severity: "error",
+        summary: "Error",
         detail: error.message,
         life: 5000,
       });
@@ -231,33 +234,33 @@ const EventManagementPage = () => {
     try {
       const payload = {
         ...updatedData,
-        eventListingStatus: 'Upcoming',
+        eventListingStatus: "Upcoming",
         corporateId: userIdRef,
       };
-      console.log('Payload:', payload);
+      console.log("Payload:", payload);
       const response = await updateEventListing(
         payload,
         eventListingId,
         accessToken
       );
-      console.log('Updated event listing Successfully', response);
+      console.log("Updated event listing Successfully", response);
       // alert('Updated job listing successfully');
       toast.current.show({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Updated event listing successfully',
+        severity: "success",
+        summary: "Success",
+        detail: "Updated event listing successfully",
         life: 5000,
       });
       setRefreshData((prev) => !prev);
     } catch (error) {
       console.error(
-        'There was an error updating the event listing:',
+        "There was an error updating the event listing:",
         error.message
       );
       // alert('There was an error updating the job listing:');
       toast.current.show({
-        severity: 'error',
-        summary: 'Error',
+        severity: "error",
+        summary: "Error",
         detail: error.message,
         life: 5000,
       });
@@ -269,21 +272,21 @@ const EventManagementPage = () => {
   const handleDeleteEventListing = async (eventListingId) => {
     try {
       const response = await removeEventListing(eventListingId, accessToken);
-      console.log('User is deleted', response);
+      console.log("User is deleted", response);
       // alert('Deleted job listing successfully');
       toast.current.show({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Deleted event listing successfully',
+        severity: "success",
+        summary: "Success",
+        detail: "Deleted event listing successfully",
         life: 5000,
       });
       setRefreshData((prev) => !prev);
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error("Error deleting user:", error);
       // alert('There was an error deleting the job listing:');
       toast.current.show({
-        severity: 'error',
-        summary: 'Error',
+        severity: "error",
+        summary: "Error",
         detail: error.message,
         life: 5000,
       });
@@ -300,7 +303,7 @@ const EventManagementPage = () => {
     );
   }
 
-  if (session.status === 'authenticated') {
+  if (session.status === "authenticated") {
     return (
       <>
         <Toast ref={toast} />
@@ -352,7 +355,7 @@ const EventManagementPage = () => {
           footer={deleteDialogFooter}
         >
           <h3>
-            Confirm Delete Event ID:{' '}
+            Confirm Delete Event ID:{" "}
             {showDeleteDialog && showDeleteDialog.eventListingId}?
           </h3>
         </Dialog>
