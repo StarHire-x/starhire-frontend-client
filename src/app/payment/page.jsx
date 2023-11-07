@@ -182,7 +182,7 @@ const PaymentPage = () => {
                     </p>
                     <p className={styles.warningText}>
                       Upon unsubscribing, you will immediately lose all access
-                      to &quot;Premium&quot; services!! There will be no partial refunds.
+                      to &quot;Premium&quot; services! There will be no partial refunds.
                     </p>
                   </div>
                   <Button
@@ -238,14 +238,14 @@ const PaymentPage = () => {
                     <Button
                       label="I Acknowledge"
                       icon="pi pi-check"
-                      style={{ backgroundColor: 'red', color: 'white' }}
+                      style={{ backgroundColor: 'red', color: 'white', border: '1px red solid'}}
                       onClick={confirmUnsubscribe}
                     />
                   </div>
                 }
               >
                 Are you sure you want to unsubscribe from Starhire Premium?
-                <p style={{ color: 'red' }}>No refunds will be given!!</p>
+                <p style={{ color: 'red', marginTop:"5px", fontWeight: "bold" }}>No refunds will be given!</p>
               </Dialog>
             </>
           ) : (
