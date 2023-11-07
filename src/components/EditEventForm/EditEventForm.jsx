@@ -9,7 +9,8 @@ const EditEventForm = ({ initialData, onSave }) => {
   const [formData, setFormData] = useState({
     eventName: initialData?.eventName || '',
     location: initialData?.location || '',
-    eventDate: initialData?.eventDate || null,
+    eventStartDateAndTime: initialData?.eventStartDateAndTime || null,
+    eventEndDateAndTime: initialData?.eventEndDateAndTime || null,
     details: initialData?.details || '',
     image: initialData?.image || '',
   });
@@ -63,11 +64,26 @@ const EditEventForm = ({ initialData, onSave }) => {
       </div>
 
       <div className={styles.cardRow}>
-        <label htmlFor="eventDate">Event Date:</label>
+        <label htmlFor="eventStartDateAndTime">Event Start Date:</label>
         <Calendar
-          id="eventDate"
-          name="eventDate"
-          value={formData.eventDate}
+          id="eventStartDateAndTime"
+          name="eventStartDateAndTime"
+          showTime
+          hourFormat='24'
+          value={formData.eventStartDateAndTime}
+          minDate={new Date(new Date().setDate(new Date().getDate() + 1))}
+          onChange={(e) => handleInputChange(e)}
+        />
+      </div>
+
+      <div className={styles.cardRow}>
+        <label htmlFor="eventEndDateAndTime">Event End Date:</label>
+        <Calendar
+          id="eventEndDateAndTime"
+          name="eventEndDateAndTime"
+          value={formData.eventEndDateAndTime}
+          showTime
+          hourFormat='24'
           minDate={new Date(new Date().setDate(new Date().getDate() + 1))}
           onChange={(e) => handleInputChange(e)}
         />

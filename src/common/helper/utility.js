@@ -32,6 +32,24 @@ const Utility = {
     const yearsAgo = Math.floor(weeksAgo / 52);
     return `${yearsAgo} year${yearsAgo === 1 ? "" : "s"} ago`;
   },
+  formatDateTime(inputDateTime) {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    };
+
+    const formattedDateTime = new Date(inputDateTime).toLocaleDateString(
+      "en-SG",
+      options
+    );
+
+    const formattedWithoutAt = formattedDateTime.replace(" at", ",");
+    return formattedWithoutAt;
+  },
 };
 
 export default Utility;

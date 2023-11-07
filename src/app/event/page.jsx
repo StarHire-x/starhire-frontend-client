@@ -14,6 +14,7 @@ import {
   findExistingEventRegistration,
 } from '@/app/api/eventRegistration/route';
 import styles from './page.module.css';
+import Utility from '@/common/helper/utility';
 
 const EventPage = () => {
   const session = useSession();
@@ -140,13 +141,13 @@ const EventPage = () => {
           {eventData.corporate && eventData.corporate.userName}
         </p>
         <p>
-          <strong>Start Date:</strong> {formatDate(eventData.eventStartDateAndTime)}
+          <strong>Start Date:</strong> {Utility.formatDateTime(eventData.eventStartDateAndTime)}
         </p>
         <p>
-          <strong>End Date:</strong> {formatDate(eventData.eventEndDateAndTime)}
+          <strong>End Date:</strong> {Utility.formatDateTime(eventData.eventEndDateAndTime)}
         </p>
         <p>
-          <strong>Posted On:</strong> {formatDate(eventData.listingDate)}
+          <strong>Posted On:</strong> {Utility.formatDateTime(eventData.listingDate)}
         </p>
         <p>
           <Tag value={eventData.eventListingStatus} severity={statusSeverity} />
@@ -242,17 +243,17 @@ const EventPage = () => {
               {selectedEvent.corporate && selectedEvent.corporate.userName}
             </p>
             <p className={styles.dialogField}>
-              <strong>Start Date:</strong> {formatDate(selectedEvent.eventStartDateAndTime)}
+              <strong>Start Date:</strong> {Utility.formatDateTime(selectedEvent.eventStartDateAndTime)}
             </p>
             <p className={styles.dialogField}>
-              <strong>End Date:</strong> {formatDate(selectedEvent.eventEndDateAndTime)}
+              <strong>End Date:</strong> {Utility.formatDateTime(selectedEvent.eventEndDateAndTime)}
             </p>
             <p className={styles.dialogField}>
               <strong>Details:</strong> {selectedEvent.details}
             </p>
             <p className={styles.dialogField}>
               <strong>Posted On:</strong>{' '}
-              {formatDate(selectedEvent.listingDate)}
+              {Utility.formatDateTime(selectedEvent.listingDate)}
             </p>
             <p>
               <Tag

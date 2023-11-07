@@ -8,6 +8,7 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { findAllEventRegistrationsByEventListing } from '@/app/api/eventListing/route';
 import { useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
+import Utility from '@/common/helper/utility';
 
 const ViewEventRegistrationsPage = () => {
   const [eventRegistrations, setEventRegistrations] = useState(null);
@@ -65,7 +66,7 @@ const ViewEventRegistrationsPage = () => {
           </div> */}
           <div className={styles.cardRow}>
             <span>Registration Date:</span>
-            <span>{formatDate(eventRegistration.registrationDate)}</span>
+            <span>{Utility.formatDateTime(eventRegistration.registrationDate)}</span>
           </div>
         </div>
       </div>
