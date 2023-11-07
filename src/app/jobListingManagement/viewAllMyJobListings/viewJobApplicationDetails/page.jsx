@@ -190,6 +190,7 @@ const ViewJobApplicationDetails = () => {
           hideConfirmSendDialog();
           hideArrangeInterviewDialog();
 
+          const recruiterName = recruiter?.fullName;
           const recruiterEmail = recruiter?.email;
           const jobSeekerName = jobSeeker?.fullName;
           const formattedDates = interviewDateTimes
@@ -207,7 +208,7 @@ ${formattedDates}
 Hope to hear from you soon.
 ${currentUserName}`;
 */
-const finalMessage = `Hi ${recruiterEmail},
+const finalMessage = `Hi ${recruiterName},
 
 Follow up on Job application ID: ${jobApplication.jobApplicationId} \n
 Please Arrange an interview with ${jobSeeker.userName}, (${jobSeeker.email}). \n
