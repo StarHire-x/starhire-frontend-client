@@ -291,15 +291,12 @@ const JobApplicationPage = () => {
   const itemTemplate = (jobApplication) => {
     return (
       <div className={styles.card}>
-        <div className={styles.cardHeader}>
-          <span>Job Application Id:</span>
-          <h5>{jobApplication.jobApplicationId}</h5>
+        <div className={styles.cardRow}>
+          <span>Job Title:</span>
+          <p>{jobApplication.jobListing.title}</p>
         </div>
+        
         <div className={styles.cardBody}>
-          <div className={styles.cardRow}>
-            <span>Available Start Date:</span>
-            <span>{formatDate(jobApplication.availableStartDate)}</span>
-          </div>
           <div className={styles.cardRow}>
             <span>Submission Date:</span>
             <span>{formatDate(jobApplication.submissionDate)}</span>
@@ -343,27 +340,6 @@ const JobApplicationPage = () => {
               />
             </>
           )}
-          {jobApplication.jobApplicationStatus === 'To_Be_Submitted' && (
-            <Button
-              label="Edit Application"
-              rounded
-              className={styles.editApplicationButton}
-              severity="info"
-              onClick={() => {
-                setSelectedJobApplicationData(jobApplication);
-                setShowEditJobApplicationDialog(jobApplication);
-              }}
-            />
-          )}
-          <Button
-            label="Details"
-            rounded
-            className={styles.cardFooterButton}
-            onClick={() => {
-              setSelectedJobApplicationData(jobApplication);
-              setShowViewJobApplicationDialog(jobApplication);
-            }}
-          />
         </div>
       </div>
     );

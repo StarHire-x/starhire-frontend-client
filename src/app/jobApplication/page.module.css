@@ -52,14 +52,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.cardHeader {
-  border-bottom: 1px solid white;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  font-family: 'Arial', sans-serif;
-  justify-content: center;
-}
-
 .cardBody {
   font-size: 1em;
   color: #555;
@@ -101,29 +93,6 @@
 .cardFooter {
   margin-top: 25px;
   text-align: right;
-}
-
-.editApplicationButton {
-  background-color: #696969 !important;
-  border: none;
-  border-radius: 4px;
-  color: #edf6f9;
-  padding: 5px 10px;
-  font-size: 0.8em;
-  margin-right: 10px !important;
-}
-
-.cardFooterButton {
-  background-color: #4183bf;
-  border: none;
-  border-radius: 4px;
-  color: #edf6f9;
-  padding: 5px 10px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 0.8em;
-  cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 .cardFooterButton:hover {
