@@ -18,6 +18,7 @@ import EditEventForm from "@/components/EditEventForm/EditEventForm";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
+import Utility from "@/common/helper/utility";
 
 const EventManagementPage = () => {
   const [eventListing, setEventListing] = useState(null);
@@ -142,18 +143,18 @@ const EventManagementPage = () => {
                 <span>{eventListing.location}</span>
               </div>
               <div className={styles.cardRow}>
-                <span>Event Start:</span>
+                <span>Start Date:</span>
                 <span>
-                  {formatDateTime(eventListing.eventStartDateAndTime)}
+                  {Utility.formatDateTime(eventListing.eventStartDateAndTime)}
                 </span>
               </div>
               <div className={styles.cardRow}>
-                <span>Event End:</span>
-                <span>{formatDateTime(eventListing.eventEndDateAndTime)}</span>
+                <span>End Date:</span>
+                <span>{Utility.formatDateTime(eventListing.eventEndDateAndTime)}</span>
               </div>
               <div className={styles.cardRow}>
                 <span>Listed On:</span>
-                <span>{formatDateTime(eventListing.listingDate)}</span>
+                <span>{Utility.formatDateTime(eventListing.listingDate)}</span>
               </div>
               <div className={styles.cardRow}>
                 <span>Status:</span>
@@ -202,6 +203,7 @@ const EventManagementPage = () => {
       const payload = {
         ...newEventListing,
         image: imageUrl,
+        listingDate: new Date(),
         corporateId: userIdRef,
       };
       const response = await createEventListing(payload, accessToken);
@@ -234,6 +236,7 @@ const EventManagementPage = () => {
     try {
       const payload = {
         ...updatedData,
+        listingDate: new Date(),
         eventListingStatus: "Upcoming",
         corporateId: userIdRef,
       };
