@@ -1,20 +1,20 @@
-'use client';
-import React, { useEffect, useState, useRef } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { Button } from 'primereact/button';
-import { Carousel } from 'primereact/carousel';
-import { Dialog } from 'primereact/dialog';
-import { ProgressSpinner } from 'primereact/progressspinner';
-import { Tag } from 'primereact/tag';
-import { Toast } from 'primereact/toast';
-import { findAllEventListings } from '../api/eventListing/route';
+"use client";
+import React, { useEffect, useState, useRef } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { Button } from "primereact/button";
+import { Carousel } from "primereact/carousel";
+import { Dialog } from "primereact/dialog";
+import { ProgressSpinner } from "primereact/progressspinner";
+import { Tag } from "primereact/tag";
+import { Toast } from "primereact/toast";
+import { findAllEventListings } from "../api/eventListing/route";
 import {
   createEventRegistration,
   findExistingEventRegistration,
-} from '@/app/api/eventRegistration/route';
-import styles from './page.module.css';
-import Utility from '@/common/helper/utility';
+} from "@/app/api/eventRegistration/route";
+import styles from "./page.module.css";
+import Utility from "@/common/helper/utility";
 
 const EventPage = () => {
   const session = useSession();
@@ -31,18 +31,18 @@ const EventPage = () => {
   const [registeredEvents, setRegisteredEvents] = useState([]);
 
   const accessToken =
-    session.status === 'authenticated' &&
+    session.status === "authenticated" &&
     session.data &&
     session.data.user.accessToken;
 
   const jobSeekerId =
-    session.status === 'authenticated' &&
+    session.status === "authenticated" &&
     session.data &&
     session.data.user.userId;
 
   useEffect(() => {
-    if (session.status === 'unauthenticated' || session.status === 'loading') {
-      router.push('/login');
+    if (session.status === "unauthenticated" || session.status === "loading") {
+      router.push("/login");
     }
 
     const fetchData = async () => {
@@ -68,7 +68,7 @@ const EventPage = () => {
           });
         }
       } catch (error) {
-        console.error('Error fetching event listings:', error);
+        console.error("Error fetching event listings:", error);
       } finally {
         setIsLoading(false);
       }
@@ -82,7 +82,13 @@ const EventPage = () => {
   };
 
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: "2-digit", minute: "2-digit", };
+    const options = {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
@@ -95,8 +101,8 @@ const EventPage = () => {
     createEventRegistration(newEventRegistration, accessToken)
       .then(() => {
         toast.current.show({
-          severity: 'success',
-          summary: 'Registered Successfully',
+          severity: "success",
+          summary: "Registered Successfully",
         });
         setRegisteredEvents((prevEvents) => {
           const updatedState = [...prevEvents, selectedEvent.eventListingId];
@@ -106,8 +112,8 @@ const EventPage = () => {
       })
       .catch((error) => {
         toast.current.show({
-          severity: 'error',
-          summary: 'Registration Failed',
+          severity: "error",
+          summary: "Registration Failed",
           detail: error.message,
         });
       });
@@ -116,11 +122,11 @@ const EventPage = () => {
   const eventTemplate = (eventData) => {
     let statusSeverity;
     switch (eventData.eventListingStatus) {
-      case 'Upcoming':
-        statusSeverity = 'success';
+      case "Upcoming":
+        statusSeverity = "success";
         break;
-      case 'Expired':
-        statusSeverity = 'danger';
+      case "Expired":
+        statusSeverity = "danger";
         break;
     }
     eventData.statusSeverity = statusSeverity;
@@ -137,17 +143,20 @@ const EventPage = () => {
           <strong>Location:</strong> {eventData.location}
         </p>
         <p>
-          <strong>Organized By:</strong>{' '}
+          <strong>Organized By:</strong>{" "}
           {eventData.corporate && eventData.corporate.userName}
         </p>
         <p>
-          <strong>Start Date:</strong> {Utility.formatDateTime(eventData.eventStartDateAndTime)}
+          <strong>Start Date:</strong>{" "}
+          {Utility.formatDateTime(eventData.eventStartDateAndTime)}
         </p>
         <p>
-          <strong>End Date:</strong> {Utility.formatDateTime(eventData.eventEndDateAndTime)}
+          <strong>End Date:</strong>{" "}
+          {Utility.formatDateTime(eventData.eventEndDateAndTime)}
         </p>
         <p>
-          <strong>Posted On:</strong> {Utility.formatDateTime(eventData.listingDate)}
+          <strong>Posted On:</strong>{" "}
+          {Utility.formatDateTime(eventData.listingDate)}
         </p>
         <p>
           <Tag value={eventData.eventListingStatus} severity={statusSeverity} />
@@ -163,10 +172,10 @@ const EventPage = () => {
       {isLoading ? (
         <ProgressSpinner
           style={{
-            display: 'flex',
-            height: '100vh',
-            'justify-content': 'center',
-            'align-items': 'center',
+            display: "flex",
+            height: "100vh",
+            "justify-content": "center",
+            "align-items": "center",
           }}
         />
       ) : (
@@ -177,17 +186,17 @@ const EventPage = () => {
           numScroll={1}
           responsiveOptions={[
             {
-              breakpoint: '1024px',
+              breakpoint: "1024px",
               numVisible: 3,
               numScroll: 3,
             },
             {
-              breakpoint: '600px',
+              breakpoint: "600px",
               numVisible: 2,
               numScroll: 2,
             },
             {
-              breakpoint: '480px',
+              breakpoint: "480px",
               numVisible: 1,
               numScroll: 1,
             },
@@ -203,27 +212,31 @@ const EventPage = () => {
         className={`${styles.cardDialog} ${styles.dialogSize}`}
         footer={
           <>
-            {selectedEvent &&
-            !registeredEvents.includes(selectedEvent.eventListingId) ? (
+            <div className={styles.dialogFooter}>
+              {selectedEvent &&
+              !registeredEvents.includes(selectedEvent.eventListingId) ? (
+                <Button
+                  label="Register"
+                  className={styles.createButton}
+                  icon="pi pi-plus"
+                  onClick={() => {
+                    setSelectedEventId(selectedEvent.eventListingId);
+                    setShowEventRegistrationDialog(true);
+                  }}
+                  rounded
+                />
+              ) : (
+                <h4 style={{ marginBottom: "20px" }}>
+                  You have registered for this event.
+                </h4>
+              )}
               <Button
-                label="Register"
-                className={styles.createButton}
-                icon="pi pi-plus"
-                onClick={() => {
-                  setSelectedEventId(selectedEvent.eventListingId);
-                  setShowEventRegistrationDialog(true);
-                }}
+                label="Close"
+                className={styles.closeButton}
+                onClick={() => setSelectedEvent(null)}
                 rounded
               />
-            ) : (
-              <span>You have registered for this event</span>
-            )}
-            <Button
-              label="Close"
-              className={styles.closeButton}
-              onClick={() => setSelectedEvent(null)}
-              rounded
-            />
+            </div>
           </>
         }
       >
@@ -239,20 +252,22 @@ const EventPage = () => {
               <strong>Location:</strong> {selectedEvent.location}
             </p>
             <p className={styles.dialogField}>
-              <strong>Organized By:</strong>{' '}
+              <strong>Organized By:</strong>{" "}
               {selectedEvent.corporate && selectedEvent.corporate.userName}
             </p>
             <p className={styles.dialogField}>
-              <strong>Start Date:</strong> {Utility.formatDateTime(selectedEvent.eventStartDateAndTime)}
+              <strong>Start Date:</strong>{" "}
+              {Utility.formatDateTime(selectedEvent.eventStartDateAndTime)}
             </p>
             <p className={styles.dialogField}>
-              <strong>End Date:</strong> {Utility.formatDateTime(selectedEvent.eventEndDateAndTime)}
+              <strong>End Date:</strong>{" "}
+              {Utility.formatDateTime(selectedEvent.eventEndDateAndTime)}
             </p>
             <p className={styles.dialogField}>
               <strong>Details:</strong> {selectedEvent.details}
             </p>
             <p className={styles.dialogField}>
-              <strong>Posted On:</strong>{' '}
+              <strong>Posted On:</strong>{" "}
               {Utility.formatDateTime(selectedEvent.listingDate)}
             </p>
             <p>

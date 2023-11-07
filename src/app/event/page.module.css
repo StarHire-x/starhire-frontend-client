@@ -62,6 +62,10 @@
   */
 }
 
+.dialogFooter {
+  text-align: center;
+}
+
 .createButton {
   background-color: #e29578 !important;
   color: white;
