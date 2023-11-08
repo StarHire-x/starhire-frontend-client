@@ -12,6 +12,7 @@ import { getCorporateByUserID } from "@/app/api/payment/route";
 import Enums from "@/common/enums/enums";
 import { ThemeContext } from "@/context/ThemeContext";
 import { Button } from "primereact/button";
+import { useRouter } from "next/router";
 
 const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
   { text: "Home", href: "/" },
@@ -67,6 +68,12 @@ const Navbar = () => {
     userIdRef = session.data.user.userId;
     roleRef = session.data.user.role;
     sessionTokenRef = session.data.user.accessToken;
+  }
+
+  const handleSignOut = async (event) => {
+    event.preventDefault();
+    await signOut({ redirect: false });
+    window.location.replace('/')
   }
 
   useEffect(() => {
@@ -205,7 +212,10 @@ const Navbar = () => {
                 )}
                 <h6>{userData?.userName}</h6>
               </div>
-              <div className={styles.menuItem} onClick={signOut}>
+              <div
+                className={styles.menuItem}
+                onClick={handleSignOut}
+              >
                 <NavItem text="Logout" href={"/"} />
               </div>
             </>
