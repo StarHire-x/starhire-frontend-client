@@ -1,0 +1,60 @@
+.graphContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.customCardGraph {
+  width: 800px;
+  height: 700px;
+  overflow: auto;
+  background-color: white;
+  box-shadow: 
+  0 -2px 4px rgba(0, 0, 0, 0.1), /* Top shadow */
+  0 2px 4px rgba(0, 0, 0, 0.1);  /* Bottom shadow */
+  border-radius: 10px;
+}
+
+.cardHeader {
+  font-family: "Source Sans 3";
+  text-align: right;
+}
+
+.customCardGraph1 {
+  width: 300px;
+  height: 700px;
+  overflow: auto;
+  background-color: white;
+  box-shadow: 
+  0 -2px 4px rgba(0, 0, 0, 0.1), /* Top shadow */
+  0 2px 4px rgba(0, 0, 0, 0.1);  /* Bottom shadow */
+  border-radius: 10px;
+}
+
+.headerGraph {
+  display: flex;
+  justify-content: space-between;
+}
+
+.headerGraph1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.card1Title {
+  text-align: center;
+  font-family: "Source Sans 3";
+  margin-top: 10px;
+}
+
+.filterColumn {
+  text-align: center;
+}
+
+.card2Text {
+
+}

@@ -10,7 +10,8 @@ const CreateEventForm = ({ onCreate }) => {
   const [formData, setFormData] = useState({
     eventName: '',
     location: '',
-    eventDate: null,
+    eventStartDateAndTime: null,
+    eventEndDateAndTime: null,
     details: '',
     image: '',
     eventListingStatus: 'Upcoming', // default status
@@ -46,14 +47,31 @@ const CreateEventForm = ({ onCreate }) => {
       </div>
 
       <div className={styles.cardRow}>
-        <label htmlFor="eventDate">Event Date:</label>
+        <label htmlFor="eventDate">Event Start Date and Time:</label>
         <Calendar
-          id="eventDate"
-          name="eventDate"
-          value={formData.eventDate}
+          id="eventStartDateAndTime"
+          name="eventStartDateAndTime"
+          value={formData.eventStartDateAndTime}
+          showTime
+          hourFormat='24'
           minDate={new Date(new Date().setDate(new Date().getDate() + 1))} // set minimum date to tomorrow
           onChange={(e) =>
-            setFormData((prev) => ({ ...prev, eventDate: e.value }))
+            setFormData((prev) => ({ ...prev, eventStartDateAndTime: e.value }))
+          }
+        />
+      </div>
+      
+      <div className={styles.cardRow}>
+        <label htmlFor="eventDate">Event End Date and Time:</label>
+        <Calendar
+          id="eventEndDateAndTime"
+          name="eventEndDateAndTime"
+          value={formData.eventEndDateAndTime}
+          showTime
+          hourFormat='24'
+          minDate={new Date(new Date().setDate(new Date().getDate() + 1))} // set minimum date to tomorrow
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, eventEndDateAndTime: e.value }))
           }
         />
       </div>
@@ -63,7 +81,7 @@ const CreateEventForm = ({ onCreate }) => {
         <InputTextarea
           id="details"
           name="details"
-          value={formData.requirements}
+          value={formData.details}
           onChange={handleInputChange}
           rows={7}
           autoResize={true}

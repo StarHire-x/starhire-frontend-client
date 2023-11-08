@@ -1,0 +1,52 @@
+.pageContainer {
+  padding: 2rem;
+  background: #f7f7f7;
+  min-height: 100vh;
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+.headerTitle {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #333;
+  font-size: 2.5rem;
+}
+
+.contentSection {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.dataTable .p-datatable-thead > tr > th {
+  background-color: #005792;
+  color: white;
+  font-size: 1rem;
+  padding: 1rem;
+}
+
+.dataTable .p-datatable-tbody > tr > td {
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: center;
+}
+
+.actionButton {
+  margin-right: 10px;
+  background-color: #ffc937 !important;
+  color: #082948 !important;
+  border: #ffc937 !important;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.actionButton:last-child {
+  margin-right: 0;
+}

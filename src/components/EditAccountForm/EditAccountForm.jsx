@@ -52,8 +52,8 @@ const EditAccountForm = ({
   return (
     <div className={styles.container}>
       <Toast ref={toast} />
-      <Card>
-        <h1 className={styles.title}>My Account Details</h1>
+      <Card className={styles.card}>
+        <p className={styles.title}>My Account Details</p>
         {session.data.user.role === Enums.JOBSEEKER && (
           <div className={styles.followingContainer}>
             <Button
@@ -329,8 +329,8 @@ const EditAccountForm = ({
             </div>
           </div>
 
-          <div className={styles.buttonContainer}>
-            <Button label="Save Changes" severity="success" raised />
+          <div>
+            <Button label="Save" className={styles.customButton} raised />
           </div>
         </form>
       </Card>

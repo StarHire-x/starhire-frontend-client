@@ -1,0 +1,9 @@
+.typeFormContainer {
+    height: 500px;
+}
+
+@media (max-width: 768px) {
+    .typeFormContainer {
+        height: 400px;
+    }
+}

@@ -32,6 +32,10 @@ const ForumPage = () => {
     router.push("/login");
   }
 
+  if (session.status === "authenticated" && currentUserRole !== Enums.JOBSEEKER) {
+    router.push("/dashboard");
+  }
+
   const accessToken =
     session.status === "authenticated" &&
     session.data &&

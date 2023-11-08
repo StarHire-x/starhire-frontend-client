@@ -3,11 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { DataView } from 'primereact/dataview';
-import { Dialog } from 'primereact/dialog';
 import { Tag } from 'primereact/tag';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { getJobApplicationsByJobListingId } from '@/app/api/jobListing/route';
-// import 'primeflex/primeflex.css';
 import { useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
 
@@ -64,7 +62,7 @@ const ViewJobApplicationsPage = () => {
           setIsLoading(false);
         })
         .catch((error) => {
-          console.error('Error fetching job listings:', error);
+          console.error('Error fetching job applications:', error);
           setIsLoading(false);
         });
     }

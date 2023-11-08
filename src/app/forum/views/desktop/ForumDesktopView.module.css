@@ -2,6 +2,23 @@
   display: flex;
   flex-direction: row;
   padding: 20px;
+  background-color: inherit;
+  border-radius: 20px;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.title {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: "Source Sans 3";
+}
+
+.categories {
+  padding-left: 10px;
+  font-family: "Source Sans 3";
+  font-size: 20px;
+  margin-bottom: 10px;
 }
 
 .categoriesMenuContainer {
@@ -20,7 +37,7 @@
   flex-direction: row;
   /* width: 100%;
   justify-content: space-between; */
-  margin-right: 20px;
+  /* margin-right: 20px; */
 }
 
 .searchBarContainer {
@@ -32,9 +49,9 @@
 }
 
 .postsContainer {
-  width: 35vw;
+  width: 90%;
 }
 
 .guideLinesContainer {
-  min-height: 100vh;;
+  min-height: 100vh;
 }

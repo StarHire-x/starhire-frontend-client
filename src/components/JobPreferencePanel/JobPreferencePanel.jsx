@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import { Panel } from "primereact/panel";
 import { Rating } from "primereact/rating";
 import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
 import styles from "./jobPreferencePanel.module.css";
 import {
   createJobPreference,
@@ -10,6 +9,7 @@ import {
 } from "@/app/api/preference/route";
 import { Toast } from "primereact/toast";
 import Enums from "@/common/enums/enums";
+import { Card } from "primereact/card";
 
 const JobPreferencePanel = ({
   formData,
@@ -167,7 +167,7 @@ const JobPreferencePanel = ({
   };
 
   return (
-    <Panel header="Job Preference" toggleable>
+    <Card className={styles.card}>
       <Toast ref={toast} />
 
       {isJobPreferenceAbsent ? (
@@ -300,12 +300,12 @@ const JobPreferencePanel = ({
               </div>
             </div>
             <div className={styles.buttonContainer}>
-              <Button label="Save" severity="success" raised />
+              <Button label="Save" className={styles.button} raised />
             </div>
           </form>
         </>
       )}
-    </Panel>
+    </Card>
   );
 };
 

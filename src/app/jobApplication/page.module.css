@@ -16,12 +16,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 8px;
+  background-color: white;
+  padding: 15px;
+  margin: -16px;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .headerTitle {
-  margin-bottom: 20px;
+  margin-bottom: 15x;
   text-align: left;
   font-weight: bold;
+  font-family: "Source Sans 3";
 }
 
 .dataViewContainer {
@@ -29,7 +35,7 @@
 }
 
 .card {
-  background-color: #edf6f9;
+  background-color: white;
   padding: 20px;
   width: 100%;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
@@ -47,7 +53,7 @@
 }
 
 .cardHeader {
-  border-bottom: 1px solid #e0ecee;
+  border-bottom: 1px solid white;
   margin-bottom: 15px;
   padding-bottom: 10px;
   font-family: 'Arial', sans-serif;
@@ -97,8 +103,18 @@
   text-align: right;
 }
 
+.editApplicationButton {
+  background-color: #696969 !important;
+  border: none;
+  border-radius: 4px;
+  color: #edf6f9;
+  padding: 5px 10px;
+  font-size: 0.8em;
+  margin-right: 10px !important;
+}
+
 .cardFooterButton {
-  background-color: #e29578;
+  background-color: #4183bf;
   border: none;
   border-radius: 4px;
   color: #edf6f9;
@@ -111,7 +127,7 @@
 }
 
 .cardFooterButton:hover {
-  background-color: #e2947888;
+  background-color: #082948 !important
 }
 
 .cardDialog {

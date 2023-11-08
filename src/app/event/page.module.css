@@ -1,7 +1,8 @@
 .header {
   margin-bottom: 40px;
-  text-align: left;
+  text-align: center;
   font-weight: bold;
+  font-family: "Source Sans 3", sans-serif;
 }
 
 .event {
@@ -14,6 +15,14 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
+  transition: transform 0.3s, box-shadow 0.3s;
+  height: 60vh;
+}
+
+.event:hover {
+  transform: scale(1.05); /* Slightly scale the event on hover */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Add a shadow on hover */
+  cursor: pointer; /* Change the cursor to a hand pointer */
 }
 
 .eventImage {
@@ -40,4 +49,33 @@
 .event p strong {
   font-weight: 600;
   color: #444;
+}
+
+.dialogField {
+  margin-bottom: 10px;
+}
+
+.dialogSize {
+  width: 70%;
+  max-width: 600px; /* Set a max-width to ensure it doesn't become too big on larger screens */
+  /* Optionally, you can set a height as well if needed:
+  height: 500px;
+  */
+}
+
+.dialogFooter {
+  text-align: center;
+}
+
+.createButton {
+  background-color: #e29578 !important;
+  color: white;
+  border: none !important;
+  margin-right: 20px;
+}
+
+.closeButton {
+  background-color: #7a3434 !important;
+  color: white;
+  border: none !important;
 }

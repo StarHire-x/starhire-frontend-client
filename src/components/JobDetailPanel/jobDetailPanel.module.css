@@ -111,15 +111,15 @@
 }
 
 .createButton {
-  background-color: #e29578 !important;
+  background-color: #35acfe !important;
   color: white;
   border: none !important;
   margin-right: 20px;
 }
 
 .rejectButton {
-  background-color: #7a3434 !important;
-  color: white;
+  background-color: #eaeaea !important;
+  color: black;
   border: none !important;
 }
 
@@ -139,6 +139,13 @@
   align-items: center;
 }
 
+.createDialog {
+  max-width: 50vw;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
 @media (max-width: 768px) {
   .header {
     flex-direction: column;

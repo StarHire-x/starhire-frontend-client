@@ -347,7 +347,7 @@ const JobApplicationPage = () => {
             <Button
               label="Edit Application"
               rounded
-              className={styles.cardFooterButton}
+              className={styles.editApplicationButton}
               severity="info"
               onClick={() => {
                 setSelectedJobApplicationData(jobApplication);
@@ -415,7 +415,6 @@ const JobApplicationPage = () => {
         header="Edit Job Application"
         visible={showEditJobApplicationDialog}
         onHide={hideEditJobApplicationDialog}
-        className={styles.editCardDialog}
       >
         <EditJobApplicationForm
           formData={formData}

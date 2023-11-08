@@ -82,7 +82,7 @@ const ViewJobApplicationForm = ({
           <span>Status</span>
           <span>
             <Tag
-              value={jobApplication.jobApplicationStatus}
+              value={jobApplication?.jobApplicationStatus?.replace("_", " ")}
               severity={getStatus(jobApplication.jobApplicationStatus)}
             />
           </span>

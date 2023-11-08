@@ -1,0 +1,93 @@
+.mainContainer {
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.customCardGraph {
+  width: 1100px;
+  height: 1000px;
+  background-color: white;
+  box-shadow: 
+  0 -2px 4px rgba(0, 0, 0, 0.1), /* Top shadow */
+  0 2px 4px rgba(0, 0, 0, 0.1);  /* Bottom shadow */
+  border-radius: 10px;
+}
+
+.layout {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.cardHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  font-family: "Source Sans 3";
+}
+
+.cardColumnLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.cardColumnRight {
+  width: 850px;
+}
+
+.customCard {
+  width: 200px !important;
+  height: 100px !important;
+  background-color: #eaeaea;
+  border-radius: 10px;
+  border: 1px solid #fefbf6
+}
+
+.cardLayout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cardColumnRightHeader {
+  font-family: "Source Sans 3";
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.imageContainer {
+  display: flex;
+  flex-direction: column; /* To ensure children are stacked vertically */
+  align-items: center; /* Horizontally center the children */
+  justify-content: center; /* Vertically center the children (though it's optional here) */
+  gap: 1px; /* Gives a little space between the image and the h6 */
+}
+
+.avatarImageContainer {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* To make it circular */
+  object-fit: cover; /* To ensure the image maintains its aspect ratio */
+  margin-bottom: 0px; /* Add some spacing below the image */
+}
+
+.buttonContainer {
+  display: flex; /* Use flexbox to arrange buttons horizontally */
+  align-items: center; /* Align buttons vertically in the center */
+}
+
+.tabMenu {
+  display: flex;
+  min-height: 10px;
+  width: 100%;
+}

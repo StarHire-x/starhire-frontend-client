@@ -1,3 +1,7 @@
+.card {
+  background-color: inherit;
+}
+
 .titleContainer {
   display: flex; /* Use flexbox layout */
   flex-direction: column;
@@ -15,8 +19,8 @@
   text-align: center;
   display: flex;
   justify-content: center;
-  font-weight: bold;
   flex: 3; /* Title takes up 2/3 of the space */
+  font-family: 'Source Sans 3', sans-serif; 
 }
 
 
@@ -25,11 +29,13 @@
   color: #000000; /* This will make the title black */
   margin-bottom: 10px;
   text-align: center;
+  font-family: 'Grantha Sangam MN', sans-serif; 
 }
 
 .starCounter {
   color: rgb(60, 66, 255);
   font-size: 16px;
+  font-family: 'Grantha Sangam MN', sans-serif; 
 }
 
 .error {
@@ -62,14 +68,9 @@
 }
 
 .button {
-  width: 300px;
-  padding: 20px;
-  cursor: pointer;
-  background-color: #53c28b;
+  background-color: #35acfe;
   border: none;
-  border-radius: 5px;
-  color: #eee;
-  font-weight: bold;
+  
 }
 
 .buttonContainer {

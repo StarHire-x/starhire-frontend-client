@@ -21,6 +21,45 @@
   transition: color 0.3s;
 }
 
+.tryPremium {
+  position: absolute;
+  left: 0;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 10px 10px;
+  background-color: #35acfe;
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+  height: 35px;
+}
+
+.tryPremium:hover {
+  position: absolute;
+  left: 0;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 10px 10px;
+  background-color: #FFC938;
+  color: black;
+  border: none;
+  border-radius: 15px;
+  height: 35px;
+}
+
+.premium {
+  position: absolute;
+  left: 0;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 10px 10px;
+  background-color: #FFC938;
+  color: black;
+  border: none;
+  border-radius: 15px;
+  height: 35px;
+}
+
 .reportIssue:hover {
   color: #0056b3;
 }

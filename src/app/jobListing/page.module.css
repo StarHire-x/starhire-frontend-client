@@ -3,18 +3,31 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: #006d77;
+  background-color: white;
+  /* Add a box shadow to the top side */
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+
+  /* Leave the bottom side without a border */
+  border-bottom: none;
 }
 .header .p-input-icon-left input.p-inputtext {
   width: 250px;
+}
+
+.title {
+  font-family: "Source Sans 3";
+  color: black;
+  margin-left: 30px;
 }
 
 .container {
   display: flex;
   height: 900px;
   padding: 0 20px;
-  background-color: #ffffff;
+  background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 .companyInfo {
@@ -92,13 +105,8 @@
 .savedJobsButton {
   margin-left: 20px;
   border: #edf6f9;
-  background-color: #edf6f9;
-  color: #006d77;
-}
-
-.savedJobsButton:hover {
-  background-color: #d4e4e7 !important;
-  color: #004a53 !important;
+  background-color: #ffc937;
+  color: #082948;
 }
 
 .saveButton {
@@ -150,10 +158,9 @@
     display: none;
   }
 
-.jobDescriptionDialog {
-  height: 80%;
-}
-
+  .jobDescriptionDialog {
+    height: 80%;
+  }
 }
 
 @media (max-width: 480px) {
