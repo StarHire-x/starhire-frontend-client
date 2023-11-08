@@ -24,12 +24,8 @@ const JobApplicationModal = ({ accessToken, userId }) => {
   const [jobApplications, setJobApplications] = useState([]);
   const router = useRouter();
 
-  const [selectedFilter, setSelectedFilter] = useState("-");
+  const [selectedFilter, setSelectedFilter] = useState("");
   const [filterOptions, setFilterOptions] = useState([
-    {
-      label: "Select a job Listing",
-      value: "All",
-    },
   ]);
 
   const [globalFilterValue, setGlobalFilterValue] = useState("");
@@ -72,12 +68,10 @@ const JobApplicationModal = ({ accessToken, userId }) => {
         }));
 
         setFilterOptions([
-          {
-            label: "Select a job Listing",
-            value: "All",
-          },
           ...corporateOptions,
         ]);
+
+        console.log(filterOptions);
 
         if (selectedFilter) {
           await filterData(information);
@@ -110,9 +104,13 @@ const JobApplicationModal = ({ accessToken, userId }) => {
     };
 
     const filterData = async (information) => {
+      console.log("Hiiiiii")
+      console.log(selectedFilter);
       const filteredData = information.formatResponse.filter(
         (item) => item.jobListingId === selectedFilter
       );
+      console.log("TESTTT");
+      console.log(filteredData);
 
       // Check if filteredData has elements and access jobApplications from the first element
       const jobApplicationsArray =
@@ -130,7 +128,7 @@ const JobApplicationModal = ({ accessToken, userId }) => {
         )
       );
 
-      console.log(filteredInformation);
+      // console.log(filteredInformation);
 
       if (currentTab === 0) {
         setJobApplications(filteredInformation);
@@ -194,7 +192,7 @@ const JobApplicationModal = ({ accessToken, userId }) => {
           value={selectedFilter}
           options={filterOptions}
           onChange={(e) => setSelectedFilter(e.value)}
-          placeholder="Select timespan"
+          placeholder="Select Job Listing"
         />
       </div>
     );
@@ -290,8 +288,26 @@ const JobApplicationModal = ({ accessToken, userId }) => {
           <div className={styles.cardColumnLeft}>
             <Card className={styles.customCard}>
               <div className={styles.cardLayout}>
-                <h3>{overallStats.Total}</h3>
-                <p>Total Application</p>
+                <h3>{overallStats.Offer_Accepted}</h3>
+                <p>Accepted Offer</p>
+              </div>
+            </Card>
+            <Card className={styles.customCard}>
+              <div className={styles.cardLayout}>
+                <h3>{overallStats.Offered}</h3>
+                <p>Offered</p>
+              </div>
+            </Card>
+            <Card className={styles.customCard}>
+              <div className={styles.cardLayout}>
+                <h3>{overallStats.Waiting_For_Interview}</h3>
+                <p>Waiting for Interview</p>
+              </div>
+            </Card>
+            <Card className={styles.customCard}>
+              <div className={styles.cardLayout}>
+                <h3>{overallStats.Processing}</h3>
+                <p>Processing</p>
               </div>
             </Card>
             <Card className={styles.customCard}>
@@ -308,20 +324,20 @@ const JobApplicationModal = ({ accessToken, userId }) => {
             </Card>
             <Card className={styles.customCard}>
               <div className={styles.cardLayout}>
-                <h3>{overallStats.Processing}</h3>
-                <p>Processing</p>
+                <h3>{overallStats.Offer_Rejected + overallStats.Rejected}</h3>
+                <p>Rejected</p>
               </div>
             </Card>
             <Card className={styles.customCard}>
               <div className={styles.cardLayout}>
-                <h3>{overallStats.Waiting_For_Interview}</h3>
-                <p>Waiting for Interview</p>
+                <h3>{overallStats.Total}</h3>
+                <p>Total Application</p>
               </div>
             </Card>
           </div>
           <div className={styles.cardColumnRight}>
             <DataTable
-              // header={header}
+              header={header}
               value={jobApplications}
               showGridlines
               filters={filters}
@@ -334,13 +350,17 @@ const JobApplicationModal = ({ accessToken, userId }) => {
               rows={4}
               paginator
               paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-              emptyMessage="No job assignments found."
+              emptyMessage="No job application found."
               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             >
               <Column
                 field="jobApplicationId"
                 header="Id"
-                style={{ textAlign: "center", verticalAlign: "middle", width: "50px" }}
+                style={{
+                  textAlign: "center",
+                  verticalAlign: "middle",
+                  width: "50px",
+                }}
                 sortable
               ></Column>
               <Column
@@ -348,19 +368,23 @@ const JobApplicationModal = ({ accessToken, userId }) => {
                 header="Job Seeker"
                 sortable
                 body={jobSeekerBodyTemplate}
-                style={{width: "100px"}}
+                style={{ width: "100px" }}
               ></Column>
               <Column
                 field="recruiterName"
                 header="Recruiter"
                 sortable
                 body={recruiterBodyTemplate}
-                style={{width: "100px"}}
+                style={{ width: "100px" }}
               ></Column>
               <Column
                 field="jobApplicationStatus"
                 header="Status"
-                style={{ textAlign: "center", verticalAlign: "middle", width: "100px" }}
+                style={{
+                  textAlign: "center",
+                  verticalAlign: "middle",
+                  width: "100px",
+                }}
                 sortable
                 body={statusBodyTemplate}
               ></Column>
