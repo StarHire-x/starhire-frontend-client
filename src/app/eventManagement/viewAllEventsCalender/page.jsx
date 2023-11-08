@@ -52,7 +52,7 @@ if (session.status === "unauthenticated") {
   };
 
   const redirectToEvent = () => {
-    router.push(`/events/viewAnEvent?id=${selectedEvent.eventId}`)
+    router.push(`/eventManagement/viewEventRegistrations?id=${selectedEvent.eventId}`)
   }
 
   const viewEventDetails = (event) => {
@@ -167,7 +167,7 @@ if (session.status === "unauthenticated") {
       </div>
 
       <Dialog
-        header="See more details?"
+        header="See All Registrations?"
         visible={displayEventDialog}
         style={{ width: "30vw" }}
         onHide={hideEventDialog}
@@ -178,7 +178,7 @@ if (session.status === "unauthenticated") {
           </div>
         }
       >
-        <p>See more details of this event.</p>
+        <p>You will be shown all job seekers who registered for your event.</p>
       </Dialog>
     </Layout>
   );
