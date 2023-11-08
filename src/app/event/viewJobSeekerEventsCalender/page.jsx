@@ -52,7 +52,7 @@ if (session.status === "unauthenticated") {
   };
 
   const redirectToEvent = () => {
-    router.push(`/eventManagement/viewEventRegistrations?id=${selectedEvent.eventId}`)
+    router.push(`/event`)
   }
 
   const viewEventDetails = (event) => {
@@ -104,7 +104,6 @@ if (session.status === "unauthenticated") {
     if (session.status === "authenticated") {
         findAllRegisteredEvents(userIdRef, accessToken)
         .then((data) => {
-            console.log("HERE" + data)
           const formattedEvents = data.map((event) => {
             return {
               title: event.eventName,
@@ -116,7 +115,6 @@ if (session.status === "unauthenticated") {
           });
   
           setEvents(formattedEvents);
-          //console.log("HERE" + formattedEvents);
         })
         .catch((error) => {
           console.error("Error fetching events:", error);
@@ -169,7 +167,7 @@ if (session.status === "unauthenticated") {
       </div>
 
       <Dialog
-        header="See All Registrations?"
+        header="Back to Events page"
         visible={displayEventDialog}
         style={{ width: "30vw" }}
         onHide={hideEventDialog}
@@ -180,7 +178,7 @@ if (session.status === "unauthenticated") {
           </div>
         }
       >
-        <p>You will be shown all job seekers who registered for your event.</p>
+        <p>Go to Events page? .</p>
       </Dialog>
     </Layout>
   );
