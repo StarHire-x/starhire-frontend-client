@@ -1,8 +1,38 @@
 .heading {
-  top: 10vh;
+  position: absolute;
+  top: 15vh;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 10px;
+  padding: 20px;
+}
+
+.mainTable {
+  position: absolute;
+  top: 25vh;
+  height: 65%;
+  width: 92%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.expandCollapseHeader {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.badge {
+  margin: 15px 0px 15px 0px;
+}
+
+.mainTableRow {
+  background-color: grey;
+}
+
+.paymentButton {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  width: 70%;
 }

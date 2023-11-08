@@ -1,13 +1,21 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Badge } from "primereact/badge";
 import { Button } from "primereact/button";
+import { Card } from "primereact/card";
 import { Column } from "primereact/column";
+import { ConfirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
+import { ProgressSpinner } from "primereact/progressspinner";
 import { Tag } from "primereact/tag";
-import { useEffect, useState } from "react";
-import { getAllCorporateInvoices } from "../api/invoices/route";
+import { useEffect, useRef, useState } from "react";
+import {
+  getAllCorporateInvoices,
+  updateInvoicePaymentStatus,
+} from "../api/invoices/route";
 import styles from "./page.module.css";
+import { Toast } from "primereact/toast";
 
 const Invoices = () => {
   const session = useSession();
@@ -29,13 +37,19 @@ const Invoices = () => {
 
   const [invoices, setInvoices] = useState([]);
   const [expandedRows, setExpandedRows] = useState(null);
+  const [selectedInvoicePaymentId, setSelectedInvoicePaymentId] =
+    useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const toast = useRef(null);
 
   const loadInvoices = async () => {
     const allInvoices = await getAllCorporateInvoices(accessToken, corporateId);
     setInvoices(allInvoices);
+    setIsLoading(false);
   };
 
   useEffect(() => {
+    setIsLoading(true);
     loadInvoices();
   }, [accessToken, corporateId]);
 
@@ -113,10 +127,30 @@ const Invoices = () => {
     return rowData.jobSeeker?.userName;
   };
 
+  const paidButtons = (rowData) => {
+    if (rowData.invoiceStatus === "Not_Paid") {
+      return (
+        <Button
+          label="Indicate Payment"
+          severity="success"
+          size="small"
+          className={styles.paymentButton}
+          onClick={() => setSelectedInvoicePaymentId(rowData?.invoiceId)}
+        />
+      );
+    }
+    return <></>;
+  };
+
   const rowExpansionTemplate = (data) => {
     return (
       <div className="p-3">
-        <h3>Job Applications under Invoice {data.invoiceId}</h3>
+        <Badge
+          value={`Job Applications under Invoice ${data.invoiceId}`}
+          severity="info"
+          size="large"
+          className={styles.badge}
+        />
         <DataTable value={data.jobApplications} showGridlines>
           <Column
             field="jobApplicationId"
@@ -151,7 +185,7 @@ const Invoices = () => {
   };
 
   const header = (
-    <div className="flex flex-wrap justify-content-end gap-2">
+    <div className={styles.expandCollapseHeader}>
       <Button icon="pi pi-plus" label="Expand All" onClick={expandAll} text />
       <Button
         icon="pi pi-minus"
@@ -162,55 +196,99 @@ const Invoices = () => {
     </div>
   );
 
+  const handlePaidClick = async () => {
+    setIsLoading(true);
+    await updateInvoicePaymentStatus(accessToken, selectedInvoicePaymentId, {
+      invoiceStatus: "Indicated_Paid",
+    });
+    await loadInvoices();
+    setSelectedInvoicePaymentId(null);
+    setIsLoading(false);
+    toast.current.show({
+      severity: "success",
+      summary: "Success",
+      detail: "Indicated payment for invoice!",
+      life: 5000,
+    });
+  };
+
+  const DialogConfirmation = (
+    <ConfirmDialog
+      visible={selectedInvoicePaymentId != null}
+      onHide={() => setSelectedInvoicePaymentId(null)}
+      message="Have you paid to StarHire?"
+      header="Confirm Payment"
+      icon="pi pi-exclamation-triangle"
+      accept={() => handlePaidClick()}
+      reject={() => setSelectedInvoicePaymentId(null)}
+    />
+  );
+
   return (
     <div>
+      <Toast ref={toast} />
+      {DialogConfirmation}
       <div className={styles.heading}>
         <h2>Invoices</h2>
       </div>
-      <DataTable
-        value={invoices}
-        expandedRows={expandedRows}
-        onRowToggle={(e) => {
-          setExpandedRows(e.data);
-        }}
-        rowExpansionTemplate={rowExpansionTemplate}
-        dataKey="invoiceId"
-        header={header}
-        tableStyle={{ minWidth: "60rem" }}
-      >
-        <Column expander={allowExpansion} style={{ width: "5rem" }} />
-        <Column field="invoiceId" header="ID" sortable />
-        <Column
-          field="invoiceDate"
-          header="Date Created"
-          sortable
-          body={dateBodyTemplate}
-        />
-        <Column
-          field="dueDate"
-          header="Due Date"
-          sortable
-          body={dateBodyTemplate}
-        />
-        <Column
-          field="invoiceStatus"
-          header="Status"
-          sortable
-          body={statusBodyTemplate}
-        />
-        <Column
-          field="totalAmount"
-          header="Total Amount"
-          sortable
-          body={amountBodyTemplate}
-        />
-        <Column
-          field="corporate"
-          header="Requested By"
-          sortable
-          body={requestedBodyTemplate}
-        />
-      </DataTable>
+      {isLoading && <ProgressSpinner />}
+      {!isLoading && (
+        <Card className={styles.mainTable}>
+          <DataTable
+            value={invoices}
+            expandedRows={expandedRows}
+            onRowToggle={(e) => {
+              setExpandedRows(e.data);
+            }}
+            rowExpansionTemplate={rowExpansionTemplate}
+            dataKey="invoiceId"
+            header={header}
+            tableStyle={{ minWidth: "60rem" }}
+            scrollable
+            scrollHeight="40vh"
+            rowClassName={styles.mainTableRow}
+          >
+            <Column expander={allowExpansion} style={{ width: "5rem" }} />
+            <Column field="invoiceId" header="ID" sortable />
+            <Column
+              field="invoiceDate"
+              header="Date Created"
+              sortable
+              body={dateBodyTemplate}
+            />
+            <Column
+              field="dueDate"
+              header="Due Date"
+              sortable
+              body={dateBodyTemplate}
+            />
+            <Column
+              field="invoiceStatus"
+              header="Status"
+              sortable
+              body={statusBodyTemplate}
+            />
+            <Column
+              field="totalAmount"
+              header="Total Amount"
+              sortable
+              body={amountBodyTemplate}
+            />
+            <Column
+              field="corporate"
+              header="Requested By"
+              sortable
+              body={requestedBodyTemplate}
+            />
+            <Column
+              field="paidButtons"
+              header="Paid?"
+              body={paidButtons}
+              style={{ width: "10rem" }}
+            />
+          </DataTable>
+        </Card>
+      )}
     </div>
   );
 };
