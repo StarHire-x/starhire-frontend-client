@@ -45,14 +45,7 @@ const Dashboard = () => {
             Welcome Back {session.data.user.name}!
           </h2>
           {session.data.user.role === "Corporate" && (
-            <div
-              // rilwan can help me style this thanks :)
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",  
-              }}
-            >
+            <div className={styles.mainContainer}>
               <JobStatisticsModal accessToken={accessToken} userId={userId} />
               <JobApplicationModal accessToken={accessToken} userId={userId} />
             </div>

@@ -37,7 +37,7 @@
   flex-direction: row;
   /* width: 100%;
   justify-content: space-between; */
-  margin-right: 20px;
+  /* margin-right: 20px; */
 }
 
 .searchBarContainer {
@@ -49,9 +49,9 @@
 }
 
 .postsContainer {
-  width: 80%;
+  width: 90%;
 }
 
 .guideLinesContainer {
-  min-height: 100vh;;
+  min-height: 100vh;
 }

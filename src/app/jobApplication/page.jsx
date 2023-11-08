@@ -391,7 +391,6 @@ const JobApplicationPage = () => {
         header="Edit Job Application"
         visible={showEditJobApplicationDialog}
         onHide={hideEditJobApplicationDialog}
-        className={styles.editCardDialog}
       >
         <EditJobApplicationForm
           formData={formData}
