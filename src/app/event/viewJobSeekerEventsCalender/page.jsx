@@ -104,7 +104,7 @@ if (session.status === "unauthenticated") {
     if (session.status === "authenticated") {
         findAllRegisteredEvents(userIdRef, accessToken)
         .then((data) => {
-            console.log(data)
+            console.log("HERE" + data)
           const formattedEvents = data.map((event) => {
             return {
               title: event.eventName,
@@ -116,7 +116,7 @@ if (session.status === "unauthenticated") {
           });
   
           setEvents(formattedEvents);
-          console.log("HERE" + formattedEvents);
+          //console.log("HERE" + formattedEvents);
         })
         .catch((error) => {
           console.error("Error fetching events:", error);
