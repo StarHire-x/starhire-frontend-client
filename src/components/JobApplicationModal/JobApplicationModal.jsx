@@ -350,7 +350,7 @@ const JobApplicationModal = ({ accessToken, userId }) => {
               rows={4}
               paginator
               paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-              emptyMessage="No job assignments found."
+              emptyMessage="No job application found."
               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             >
               <Column
