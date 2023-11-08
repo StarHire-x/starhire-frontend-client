@@ -44,6 +44,10 @@ const EventPage = () => {
     if (session.status === "unauthenticated" || session.status === "loading") {
       router.push("/login");
     }
+    const navigateToCalender = () => {
+      router.push('/eventManagement/viewAllEventsCalender'); 
+    };
+
 
     const fetchData = async () => {
       try {
@@ -117,6 +121,10 @@ const EventPage = () => {
           detail: error.message,
         });
       });
+  };
+
+  const navigateToCalender = () => {
+    router.push('/event/viewJobSeekerEventsCalender'); 
   };
 
   const eventTemplate = (eventData) => {
@@ -206,6 +214,12 @@ const EventPage = () => {
           circular={true}
         />
       )}
+      <Button
+        className={styles.createEventListingButton}
+        label="View on Calender"
+        rounded
+        onClick={navigateToCalender}
+      />
 
       <Dialog
         header="Event Details"
@@ -228,7 +242,9 @@ const EventPage = () => {
                   rounded
                 />
               ) : (
-                <h3 style={{marginBottom: "20px"}}>You have registered for this event</h3>
+                <h3 style={{ marginBottom: "20px" }}>
+                  You have registered for this event
+                </h3>
               )}
               <Button
                 label="Close"

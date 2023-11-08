@@ -298,6 +298,10 @@ const EventManagementPage = () => {
     setShowDeleteDialog(false);
   };
 
+  const navigateToCalender = () => {
+    router.push('/eventManagement/viewAllEventsCalender'); 
+  };
+
   if (isLoading) {
     return (
       <div className={styles.spinnerContainer}>
@@ -312,6 +316,12 @@ const EventManagementPage = () => {
         <Toast ref={toast} />
         <div className={styles.header}>
           <h1 className={styles.headerTitle}>Event Management</h1>
+          <Button
+            className={styles.createEventListingButton}
+            label="View On Calender"
+            rounded
+            onClick={navigateToCalender}
+          />
           <Button
             className={styles.createEventListingButton}
             label="Create An Event"
