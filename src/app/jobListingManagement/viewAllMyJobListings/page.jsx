@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { Badge } from 'primereact/badge';
-import { Tag } from 'primereact/tag';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { findAllJobListingsByCorporate } from '@/app/api/jobListing/route';
-import styles from '../page.module.css';
-import 'primeflex/primeflex.css';
+import React, { useEffect, useState } from "react";
+import { Badge } from "primereact/badge";
+import { Tag } from "primereact/tag";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { findAllJobListingsByCorporate } from "@/app/api/jobListing/route";
+import styles from "../page.module.css";
+import "primeflex/primeflex.css";
 
 const ViewAllMyJobListingsManagementPage = () => {
   const [jobListing, setJobListing] = useState(null);
@@ -16,12 +16,12 @@ const ViewAllMyJobListingsManagementPage = () => {
   const router = useRouter();
 
   const userIdRef =
-    session.status === 'authenticated' &&
+    session.status === "authenticated" &&
     session.data &&
     session.data.user.userId;
 
   const accessToken =
-    session.status === 'authenticated' &&
+    session.status === "authenticated" &&
     session.data &&
     session.data.user.accessToken;
 
@@ -29,25 +29,25 @@ const ViewAllMyJobListingsManagementPage = () => {
   console.log(userIdRef);
 
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+    const options = { year: "numeric", month: "numeric", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   const getStatus = (status) => {
     switch (status) {
-      case 'Approved':
-        return 'success';
-      case 'Unverified':
-        return 'danger';
-      case 'Rejected':
-        return 'danger';
+      case "Approved":
+        return "success";
+      case "Unverified":
+        return "danger";
+      case "Rejected":
+        return "danger";
     }
   };
 
   useEffect(() => {
-    if (session.status === 'unauthenticated' || session.status === 'loading') {
-      router.push('/login');
-    } else if (session.status === 'authenticated') {
+    if (session.status === "unauthenticated" || session.status === "loading") {
+      router.push("/login");
+    } else if (session.status === "authenticated") {
       findAllJobListingsByCorporate(userIdRef, accessToken)
         .then((jobListing) => {
           // logic to get num of pending job apps to be processed by corporate
@@ -56,8 +56,8 @@ const ViewAllMyJobListingsManagementPage = () => {
             updatedJobListing.numOfPendingJobAppsToProcess =
               updatedJobListing?.jobApplications.filter(
                 (jobApp) =>
-                  jobApp?.jobApplicationStatus === 'Processing' ||
-                  jobApp?.jobApplicationStatus === 'Waiting_For_Interview'
+                  jobApp?.jobApplicationStatus === "Processing" ||
+                  jobApp?.jobApplicationStatus === "Waiting_For_Interview"
               )?.length;
             return updatedJobListing;
           });
@@ -68,7 +68,7 @@ const ViewAllMyJobListingsManagementPage = () => {
           setJobListing(sortedJobListings);
         })
         .catch((error) => {
-          console.error('Error fetching user:', error);
+          console.error("Error fetching user:", error);
         });
     }
   }, [refreshData, userIdRef, accessToken]);
@@ -84,13 +84,13 @@ const ViewAllMyJobListingsManagementPage = () => {
       <a href={cardLink} className={styles.cardLink}>
         <div className={styles.card}>
           <div
-            style={{ display: 'flex', justifyContent: 'space-between' }}
+            style={{ display: "flex", justifyContent: "space-between" }}
             className={styles.cardHeader}
           >
             <h3>{jobListing.title}</h3>
             <Badge
               value={jobListing?.numOfPendingJobAppsToProcess}
-              style={{ backgroundColor: '#35acfe' }}
+              style={{ backgroundColor: "#35acfe" }}
             ></Badge>
           </div>
           <div className={styles.cardBody}>
@@ -100,11 +100,15 @@ const ViewAllMyJobListingsManagementPage = () => {
             </div>
             <div className={styles.cardRow}>
               <span>Location:</span>
-              <span>{jobListing.jobLocation}</span>
+              <span>{jobListing.address}</span>
             </div>
             <div className={styles.cardRow}>
               <span>Average Salary</span>
-              <span>${jobListing.averageSalary}</span>
+              <div className={styles.payRangeDiv}>
+                {jobListing.payRange.split("_").map((range, key) => (
+                  <span key={key}>{range}</span>
+                ))}
+              </div>
             </div>
             <div className={styles.cardRow}>
               <span>Listing Date:</span>
@@ -127,15 +131,15 @@ const ViewAllMyJobListingsManagementPage = () => {
     );
   };
 
-  if (session.status === 'unauthenticated') {
-    router?.push('/login');
+  if (session.status === "unauthenticated") {
+    router?.push("/login");
   }
 
-  if (session.status === 'authenticated') {
+  if (session.status === "authenticated") {
     return (
       <>
         <div className={styles.header}>
-          <h1 className={styles.headerTitle} style={{ marginBottom: '15px' }}>
+          <h1 className={styles.headerTitle} style={{ marginBottom: "15px" }}>
             My Job Listings
           </h1>
         </div>

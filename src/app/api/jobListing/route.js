@@ -3,12 +3,12 @@ export const findAllJobListingsByCorporate = async (userId, accessToken) => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/corporate/${userId}`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        cache: 'no-store',
+        cache: "no-store",
       }
     );
 
@@ -17,10 +17,10 @@ export const findAllJobListingsByCorporate = async (userId, accessToken) => {
     if (response.statusCode === 200) {
       return response.data;
     } else {
-      throw new Error(response.message || 'An error occurred');
+      throw new Error(response.message || "An error occurred");
     }
   } catch (error) {
-    console.log('There was a problem fetching the job listings', error);
+    console.log("There was a problem fetching the job listings", error);
     throw error;
   }
 };
@@ -29,26 +29,26 @@ export const createJobListing = async (newJobListing, accessToken) => {
   try {
     const transformedData = {
       ...newJobListing,
-      requiredDocuments: newJobListing.requiredDocuments.join(','),
+      requiredDocuments: newJobListing.requiredDocuments.join(","),
     };
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/job-listing`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(transformedData),
-      cache: 'no-store',
+      cache: "no-store",
     });
     const response = await res.json();
     console.log(response);
     if (response.statusCode === 200) {
       return response.data;
     } else {
-      throw new Error(response.message || 'An error occurred');
+      throw new Error(response.message || "An error occurred");
     }
   } catch (error) {
-    console.log('There was a problem creating this jobListing', error);
+    console.log("There was a problem creating this jobListing", error);
     throw error;
   }
 };
@@ -57,14 +57,14 @@ export const updateJobListing = async (request, id, accessToken) => {
   try {
     const transformedData = {
       ...request,
-      requiredDocuments: request.requiredDocuments.join(','),
+      requiredDocuments: request.requiredDocuments.join(","),
     };
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/${id}`,
       {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify(transformedData),
@@ -75,10 +75,10 @@ export const updateJobListing = async (request, id, accessToken) => {
     if (response.statusCode === 200) {
       return response.data;
     } else {
-      throw new Error(response.message || 'An error occurred');
+      throw new Error(response.message || "An error occurred");
     }
   } catch (error) {
-    console.log('There was a problem fetching the job listings', error);
+    console.log("There was a problem fetching the job listings", error);
     throw error;
   }
 };
@@ -88,12 +88,12 @@ export const removeJobListing = async (id, accessToken) => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/${id}`,
       {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        cache: 'no-store',
+        cache: "no-store",
       }
     );
 
@@ -101,27 +101,27 @@ export const removeJobListing = async (id, accessToken) => {
     if (res.ok) {
       return;
     } else {
-      throw new Error(errorData.message || 'An error occurred');
+      throw new Error(errorData.message || "An error occurred");
     }
     return await res.json();
   } catch (error) {
-    console.log('There was a problem fetching the job listings', error);
+    console.log("There was a problem fetching the job listings", error);
     throw error;
   }
 };
 
 export const getJobApplicationsByJobListingId = async (id, accessToken) => {
   try {
-    console.log('TEST');
+    console.log("TEST");
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/corporate/jobApplications/${id}`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        cache: 'no-store',
+        cache: "no-store",
       }
     );
 
@@ -130,10 +130,10 @@ export const getJobApplicationsByJobListingId = async (id, accessToken) => {
     if (response.statusCode === 200) {
       return await response.data;
     } else {
-      throw new Error(response.message || 'An error occurred');
+      throw new Error(response.message || "An error occurred");
     }
   } catch (error) {
-    console.log('There was a problem fetching the job applications', error);
+    console.log("There was a problem fetching the job applications", error);
     throw error;
   }
 };
@@ -143,12 +143,12 @@ export const getJobSeekersByJobApplicationId = async (id, accessToken) => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/job-Application/corporate/jobSeekers/${id}`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        cache: 'no-store',
+        cache: "no-store",
       }
     );
 
@@ -157,10 +157,10 @@ export const getJobSeekersByJobApplicationId = async (id, accessToken) => {
     if (response.statusCode === 200) {
       return await response.data;
     } else {
-      throw new Error(response.message || 'An error occurred');
+      throw new Error(response.message || "An error occurred");
     }
   } catch (error) {
-    console.log('There was a problem fetching the job applications', error);
+    console.log("There was a problem fetching the job applications", error);
     throw error;
   }
 };
@@ -170,12 +170,12 @@ export const viewOneJobListing = async (jobListingId, accessToken) => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/${jobListingId}`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        cache: 'no-store',
+        cache: "no-store",
       }
     );
 
@@ -186,7 +186,7 @@ export const viewOneJobListing = async (jobListingId, accessToken) => {
     }
     return await res.json();
   } catch (error) {
-    console.log('There was a problem fetching single job listing', error);
+    console.log("There was a problem fetching single job listing", error);
     throw error;
   }
 };
@@ -196,12 +196,12 @@ export const saveJobListing = async (jobListingId, accessToken) => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/saved-job-listing/save/${jobListingId}`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        cache: 'no-store',
+        cache: "no-store",
       }
     );
 
@@ -213,7 +213,7 @@ export const saveJobListing = async (jobListingId, accessToken) => {
     const text = await res.text();
     return text ? JSON.parse(text) : {};
   } catch (error) {
-    console.log('There was a problem saving the job listing', error);
+    console.log("There was a problem saving the job listing", error);
     throw error;
   }
 };
@@ -223,12 +223,12 @@ export const fetchSavedJobListings = async (userId, accessToken) => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/saved-job-listing/saved/${userId}`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        cache: 'no-store',
+        cache: "no-store",
       }
     );
 
@@ -239,11 +239,11 @@ export const fetchSavedJobListings = async (userId, accessToken) => {
     if (Array.isArray(jobListings)) {
       return jobListings;
     } else {
-      throw new Error('Unexpected response format from the server');
+      throw new Error("Unexpected response format from the server");
     }
   } catch (error) {
     console.log(
-      'There was a problem fetching the assigned job listings for the job seeker',
+      "There was a problem fetching the assigned job listings for the job seeker",
       error
     );
     throw error;
@@ -255,12 +255,12 @@ export const unsaveJobListing = async (jobListingId, accessToken) => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/saved-job-listing/unsave/${jobListingId}`,
       {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        cache: 'no-store',
+        cache: "no-store",
       }
     );
 
@@ -272,7 +272,7 @@ export const unsaveJobListing = async (jobListingId, accessToken) => {
     const text = await res.text();
     return text ? JSON.parse(text) : {};
   } catch (error) {
-    console.log('There was a problem un-saving the job listing', error);
+    console.log("There was a problem un-saving the job listing", error);
     throw error;
   }
 };
@@ -282,12 +282,12 @@ export const checkIfJobIsSaved = async (jobListingId, accessToken) => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/saved-job-listing/is-saved/${jobListingId}`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        cache: 'no-store',
+        cache: "no-store",
       }
     );
 
@@ -301,7 +301,7 @@ export const checkIfJobIsSaved = async (jobListingId, accessToken) => {
     }
   } catch (error) {
     console.log(
-      'There was a problem checking if the job listing is saved',
+      "There was a problem checking if the job listing is saved",
       error
     );
     throw error;
@@ -316,12 +316,12 @@ export const findAssignedJobListingsByJobSeeker = async (
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/job-listing/assigned/${userId}`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        cache: 'no-store',
+        cache: "no-store",
       }
     );
 
@@ -352,14 +352,68 @@ export const findAssignedJobListingsByJobSeeker = async (
           }
         })
       );
-
-      return jobsWithSavedStatus;
-    } else {
-      throw new Error('Unexpected response format from the server');
+      if (jobsWithSavedStatus) {
+        return jobsWithSavedStatus;
+      } else {
+        return [];
+      }
     }
   } catch (error) {
     console.log(
-      'There was a problem fetching the assigned job listings for the job seeker',
+      "There was a problem fetching the assigned job listings for the job seeker",
+      error
+    );
+    throw error;
+  }
+};
+
+export const findAllJobListings = async (userId, accessToken) => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/job-listing`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: "no-store",
+    });
+
+    // Directly parse the response as JSON, expecting an array
+    const jobListings = await res.json();
+
+    // Check if the response is an array
+    if (Array.isArray(jobListings)) {
+      // Fetch saved status for each job listing
+      const jobsWithSavedStatus = await Promise.all(
+        jobListings.map(async (job) => {
+          try {
+            const savedStatus = await checkIfJobIsSaved(
+              job.jobListingId,
+              accessToken
+            );
+            return {
+              ...job,
+              isSaved: savedStatus.statusCode === 200,
+            };
+          } catch (error) {
+            console.error(
+              `Error checking saved status for job ${job.jobListingId}:`,
+              error
+            );
+            // In case of an error, default to not saved
+            return { ...job, isSaved: false };
+          }
+        })
+      );
+      if (jobsWithSavedStatus) {
+        return jobsWithSavedStatus;
+      } else {
+        return [];
+      }
+    }
+  } catch (error) {
+    console.log(
+      "There was a problem fetching the job listings for the job seeker",
       error
     );
     throw error;
@@ -388,11 +442,11 @@ export const removeJobListingAssignment = async (
     if (response.statusCode === 200) {
       return response;
     } else {
-      throw new Error(response.message || 'An error occurred');
+      throw new Error(response.message || "An error occurred");
     }
   } catch (error) {
     console.log(
-      'There was a problem assigning job listing to job seekers and assigning job listing to job seekers',
+      "There was a problem assigning job listing to job seekers and assigning job listing to job seekers",
       error
     );
     throw error;

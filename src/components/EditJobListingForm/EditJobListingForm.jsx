@@ -10,18 +10,20 @@ import styles from './page.module.css';
 const EditJobListingForm = ({ initialData, onSave }) => {
   const [formData, setFormData] = useState({
     title: initialData?.title || '',
-    overview: initialData?.overview || '',
-    responsibilities: initialData?.responsibilities || '',
-    requirements: initialData?.requirements || '',
-    requiredDocuments: Array.isArray(initialData?.requiredDocuments)
-      ? initialData?.requiredDocuments
-      : typeof initialData?.requiredDocuments === 'string'
-      ? initialData?.requiredDocuments.split(',')
-      : [],
-    // otherCertifications: initialData?.otherCertifications || '',
-    jobLocation: initialData?.jobLocation || '',
-    averageSalary: initialData?.averageSalary || null,
+    description: initialData?.description || '',
+    experienceRequired: initialData?.experienceRequired || '',
+    address: initialData?.address || '',
+    postalCode: initialData?.postalCode || '',
     jobStartDate: initialData?.jobStartDate || null,
+    payRange: initialData?.payRange || '',
+    jobType: initialData?.jobType || '',
+    schedule: initialData?.schedule || '',
+    supplementalPay: initialData.supplementalPay || '',
+    otherBenefits: initialData.otherBenefits || '',
+    certificationsRequired: initialData.certificationsRequired || '',
+    typeOfWorkers: initialData.typeOfWorkers || '',
+    requiredLanguages: initialData.requiredLanguages || '',
+    otherConsiderations: initialData.otherConsiderations || ''
   });
 
   // const handleInputChange = (e) => {
@@ -109,37 +111,168 @@ const EditJobListingForm = ({ initialData, onSave }) => {
       </div>
 
       <div className={styles.cardRow}>
-        <label htmlFor="overview">Job Overview:</label>
+        <label htmlFor="overview">Job Description:</label>
         <InputTextarea
-          id="overview"
-          name="overview"
-          value={formData.overview}
+          id="description"
+          name="description"
+          value={formData.description}
           onChange={handleInputChange}
-          rows={5} /* Adjust as needed */
+          rows={3} /* Adjust as needed */
           autoResize={true} /* If you want it to resize automatically */
         />
       </div>
 
       <div className={styles.cardRow}>
-        <label htmlFor="responsibilities">Job Responsibilities:</label>
+        <label htmlFor="responsibilities">Experience Required:</label>
         <InputTextarea
-          id="responsibilities"
-          name="responsibilities"
-          value={formData.responsibilities}
+          id="experienceRequired"
+          name="experienceRequired"
+          value={formData.experienceRequired}
           onChange={handleInputChange}
-          rows={7} /* Adjust as needed */
+          rows={3} /* Adjust as needed */
           autoResize={true} /* If you want it to resize automatically */
         />
       </div>
 
       <div className={styles.cardRow}>
-        <label htmlFor="requirements">Job Requirements:</label>
+        <label htmlFor="requirements">Address:</label>
         <InputTextarea
-          id="requirements"
-          name="requirements"
-          value={formData.requirements}
+          id="address"
+          name="address"
+          value={formData.address}
           onChange={handleInputChange}
-          rows={7} /* Adjust as needed */
+          rows={1} /* Adjust as needed */
+          autoResize={true} /* If you want it to resize automatically */
+        />
+      </div>
+
+      <div className={styles.cardRow}>
+        <label htmlFor="requirements">Postal Code:</label>
+        <InputTextarea
+          id="postalCode"
+          name="postalCode"
+          value={formData.postalCode}
+          onChange={handleInputChange}
+          rows={1} /* Adjust as needed */
+          autoResize={true} /* If you want it to resize automatically */
+        />
+      </div>
+
+      <div className={styles.cardRow}>
+        <label htmlFor="jobStartDate">Job Start Date:</label>
+        <Calendar
+          id="jobStartDate"
+          name="jobStartDate"
+          value={formData.jobStartDate}
+          minDate={new Date(new Date().setDate(new Date().getDate() + 1))}
+          onChange={(e) => handleInputChange(e)}
+        />
+      </div>
+
+      <div className={styles.cardRow}>
+        <label htmlFor="requirements">Pay Range:</label>
+        <InputTextarea
+          id="payRange"
+          name="payRange"
+          value={formData.payRange}
+          onChange={handleInputChange}
+          rows={1} /* Adjust as needed */
+          autoResize={true} /* If you want it to resize automatically */
+        />
+      </div>
+
+      <div className={styles.cardRow}>
+        <label htmlFor="requirements">Job Type:</label>
+        <InputTextarea
+          id="jobType"
+          name="jobType"
+          value={formData.jobType}
+          onChange={handleInputChange}
+          rows={1} /* Adjust as needed */
+          autoResize={true} /* If you want it to resize automatically */
+        />
+      </div>
+
+      <div className={styles.cardRow}>
+        <label htmlFor="requirements">Schedule:</label>
+        <InputTextarea
+          id="schedule"
+          name="schedule"
+          value={formData.schedule}
+          onChange={handleInputChange}
+          rows={1} /* Adjust as needed */
+          autoResize={true} /* If you want it to resize automatically */
+        />
+      </div>
+
+      <div className={styles.cardRow}>
+        <label htmlFor="requirements">Supplemental Pay:</label>
+        <InputTextarea
+          id="supplementalPay"
+          name="supplementalPay"
+          value={formData.supplementalPay}
+          onChange={handleInputChange}
+          rows={1} /* Adjust as needed */
+          autoResize={true} /* If you want it to resize automatically */
+        />
+      </div>
+
+      <div className={styles.cardRow}>
+        <label htmlFor="requirements">Other Benefits:</label>
+        <InputTextarea
+          id="otherBenefits"
+          name="otherBenefits"
+          value={formData.otherBenefits}
+          onChange={handleInputChange}
+          rows={1} /* Adjust as needed */
+          autoResize={true} /* If you want it to resize automatically */
+        />
+      </div>
+
+      <div className={styles.cardRow}>
+        <label htmlFor="requirements">Certifications Required:</label>
+        <InputTextarea
+          id="certificationsRequired"
+          name="certificationsRequired"
+          value={formData.certificationsRequired}
+          onChange={handleInputChange}
+          rows={1} /* Adjust as needed */
+          autoResize={true} /* If you want it to resize automatically */
+        />
+      </div>
+
+      <div className={styles.cardRow}>
+        <label htmlFor="requirements">Type Of Workers:</label>
+        <InputTextarea
+          id="typeOfWorkers"
+          name="typeOfWorkers"
+          value={formData.typeOfWorkers}
+          onChange={handleInputChange}
+          rows={1} /* Adjust as needed */
+          autoResize={true} /* If you want it to resize automatically */
+        />
+      </div>
+
+      <div className={styles.cardRow}>
+        <label htmlFor="requirements">Required Languages:</label>
+        <InputTextarea
+          id="requiredLanguages"
+          name="requiredLanguages"
+          value={formData.requiredLanguages}
+          onChange={handleInputChange}
+          rows={1} /* Adjust as needed */
+          autoResize={true} /* If you want it to resize automatically */
+        />
+      </div>
+
+      <div className={styles.cardRow}>
+        <label htmlFor="requirements">Other Considerations:</label>
+        <InputTextarea
+          id="otherConsiderations"
+          name="otherConsiderations"
+          value={formData.otherConsiderations}
+          onChange={handleInputChange}
+          rows={1} /* Adjust as needed */
           autoResize={true} /* If you want it to resize automatically */
         />
       </div>
@@ -157,50 +290,7 @@ const EditJobListingForm = ({ initialData, onSave }) => {
         />
       </div>
 
-      {/* {formData.requiredDocuments.includes('Other Certifications') && (
-        <div className={styles.cardRow}>
-          <label htmlFor="otherCertifications">Please Specify:</label>
-          <InputText
-            id="otherCertifications"
-            name="otherCertifications"
-            value={formData.otherCertifications}
-            onChange={handleInputChange}
-          />
-        </div>
-      )} */}
 
-      <div className={styles.cardRow}>
-        <label htmlFor="jobLocation">Job Location:</label>
-        <InputText
-          id="jobLocation"
-          name="jobLocation"
-          value={formData.jobLocation}
-          onChange={handleInputChange}
-        />
-      </div>
-
-      <div className={styles.cardRow}>
-        <label htmlFor="averageSalary">Average Salary:</label>
-        <InputNumber
-          id="averageSalary"
-          name="averageSalary"
-          value={formData.averageSalary}
-          onChange={(e) => handleInputChange(e.value, 'averageSalary')}
-          mode="currency"
-          currency="SGD"
-        />
-      </div>
-
-      <div className={styles.cardRow}>
-        <label htmlFor="jobStartDate">Job Start Date:</label>
-        <Calendar
-          id="jobStartDate"
-          name="jobStartDate"
-          value={formData.jobStartDate}
-          minDate={new Date(new Date().setDate(new Date().getDate() + 1))}
-          onChange={(e) => handleInputChange(e)}
-        />
-      </div>
 
       <div className={styles.cardFooter}>
         <Button label="Save Changes" rounded onClick={handleSubmit} />

@@ -1,23 +1,23 @@
-'use client';
-import React, { useEffect, useState, useRef } from 'react';
-import { Button } from 'primereact/button';
-import { DataView } from 'primereact/dataview';
-import { Dialog } from 'primereact/dialog';
-import { ProgressSpinner } from 'primereact/progressspinner';
-import { Tag } from 'primereact/tag';
-import { useSession } from 'next-auth/react';
+"use client";
+import React, { useEffect, useState, useRef } from "react";
+import { Button } from "primereact/button";
+import { DataView } from "primereact/dataview";
+import { Dialog } from "primereact/dialog";
+import { ProgressSpinner } from "primereact/progressspinner";
+import { Tag } from "primereact/tag";
+import { useSession } from "next-auth/react";
 import {
   findAllJobListingsByCorporate,
   createJobListing,
   updateJobListing,
   removeJobListing,
-} from '../api/jobListing/route';
-import styles from './page.module.css';
-import 'primeflex/primeflex.css';
-import CreateJobListingForm from '@/components/CreateJobListingForm/CreateJobListingForm';
-import EditJobListingForm from '@/components/EditJobListingForm/EditJobListingForm';
-import { useRouter } from 'next/navigation';
-import { Toast } from 'primereact/toast';
+} from "../api/jobListing/route";
+import styles from "./page.module.css";
+import "primeflex/primeflex.css";
+import CreateJobListingForm from "@/components/CreateJobListingForm/CreateJobListingForm";
+import EditJobListingForm from "@/components/EditJobListingForm/EditJobListingForm";
+import { useRouter } from "next/navigation";
+import { Toast } from "primereact/toast";
 
 //this page is viewed by corporate
 const JobListingManagementPage = () => {
@@ -32,12 +32,12 @@ const JobListingManagementPage = () => {
   const router = useRouter();
 
   const userIdRef =
-    session.status === 'authenticated' &&
+    session.status === "authenticated" &&
     session.data &&
     session.data.user.userId;
 
   const accessToken =
-    session.status === 'authenticated' &&
+    session.status === "authenticated" &&
     session.data &&
     session.data.user.accessToken;
 
@@ -47,18 +47,18 @@ const JobListingManagementPage = () => {
   const toast = useRef(null);
 
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+    const options = { year: "numeric", month: "numeric", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   const getStatus = (status) => {
     switch (status) {
-      case 'Approved':
-        return 'success';
-      case 'Unverified':
-        return 'danger';
-      case 'Rejected':
-        return 'danger';
+      case "Approved":
+        return "success";
+      case "Unverified":
+        return "danger";
+      case "Rejected":
+        return "danger";
     }
   };
 
@@ -90,16 +90,16 @@ const JobListingManagementPage = () => {
   );
 
   useEffect(() => {
-    if (session.status === 'unauthenticated') {
-      router.push('/login');
-    } else if (session.status === 'authenticated') {
+    if (session.status === "unauthenticated") {
+      router.push("/login");
+    } else if (session.status === "authenticated") {
       findAllJobListingsByCorporate(userIdRef, accessToken)
         .then((jobListing) => {
           setJobListing(jobListing);
           setIsLoading(false);
         })
         .catch((error) => {
-          console.error('Error fetching user:', error);
+          console.error("Error fetching user:", error);
           setIsLoading(false);
         });
     }
@@ -118,11 +118,15 @@ const JobListingManagementPage = () => {
           </div>
           <div className={styles.cardRow}>
             <span>Location:</span>
-            <span>{jobListing.jobLocation}</span>
+            <span>{jobListing.address}</span>
           </div>
           <div className={styles.cardRow}>
             <span>Average Salary</span>
-            <span>${jobListing.averageSalary}</span>
+            <div className={styles.payRangeDiv}>
+            {jobListing.payRange.split("_").map((range, key) => (
+              <span key={key}>{range}</span>
+            ))}
+            </div>
           </div>
           <div className={styles.cardRow}>
             <span>Listing Date:</span>
@@ -173,24 +177,24 @@ const JobListingManagementPage = () => {
         corporateId: userIdRef,
       };
       const response = await createJobListing(payload, accessToken);
-      console.log('Created Job listing Successfully', response);
+      console.log("Created Job listing Successfully", response);
       // alert('Created job listing successfully');
       toast.current.show({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Created job listing successfully',
+        severity: "success",
+        summary: "Success",
+        detail: "Created job listing successfully",
         life: 5000,
       });
       setRefreshData((prev) => !prev);
     } catch (error) {
       console.error(
-        'There was an error creating the job listing:',
+        "There was an error creating the job listing:",
         error.message
       );
       // alert('There was an error creating the job listing:');
       toast.current.show({
-        severity: 'error',
-        summary: 'Error',
+        severity: "error",
+        summary: "Error",
         detail: error.message,
         life: 5000,
       });
@@ -202,7 +206,7 @@ const JobListingManagementPage = () => {
     try {
       const payload = {
         ...updatedData,
-        jobListingStatus: 'Unverified',
+        jobListingStatus: "Unverified",
         corporateId: userIdRef,
       };
       const response = await updateJobListing(
@@ -210,24 +214,24 @@ const JobListingManagementPage = () => {
         jobListingId,
         accessToken
       );
-      console.log('Updated job listing Successfully', response);
+      console.log("Updated job listing Successfully", response);
       // alert('Updated job listing successfully');
       toast.current.show({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Updated job listing successfully',
+        severity: "success",
+        summary: "Success",
+        detail: "Updated job listing successfully",
         life: 5000,
       });
       setRefreshData((prev) => !prev);
     } catch (error) {
       console.error(
-        'There was an error updating the job listing:',
+        "There was an error updating the job listing:",
         error.message
       );
       // alert('There was an error updating the job listing:');
       toast.current.show({
-        severity: 'error',
-        summary: 'Error',
+        severity: "error",
+        summary: "Error",
         detail: error.message,
         life: 5000,
       });
@@ -239,21 +243,21 @@ const JobListingManagementPage = () => {
   const handleDeleteJobListing = async (jobListingId) => {
     try {
       const response = await removeJobListing(jobListingId, accessToken);
-      console.log('User is deleted', response);
+      console.log("User is deleted", response);
       // alert('Deleted job listing successfully');
       toast.current.show({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Deleted job listing successfully',
+        severity: "success",
+        summary: "Success",
+        detail: "Deleted job listing successfully",
         life: 5000,
       });
       setRefreshData((prev) => !prev);
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error("Error deleting user:", error);
       // alert('There was an error deleting the job listing:');
       toast.current.show({
-        severity: 'error',
-        summary: 'Error',
+        severity: "error",
+        summary: "Error",
         detail: error.message,
         life: 5000,
       });
@@ -270,7 +274,7 @@ const JobListingManagementPage = () => {
     );
   }
 
-  if (session.status === 'authenticated') {
+  if (session.status === "authenticated") {
     return (
       <>
         <Toast ref={toast} />
@@ -280,7 +284,7 @@ const JobListingManagementPage = () => {
             className={styles.createJobListingButton}
             label="Add A Job Listing"
             rounded
-            style={{ marginTop: '10px', marginBottom: '15px' }}
+            style={{ marginTop: "10px", marginBottom: "15px" }}
             onClick={() => setShowCreateDialog(true)}
           />
         </div>
@@ -320,7 +324,7 @@ const JobListingManagementPage = () => {
           footer={deleteDialogFooter}
         >
           <h3>
-            Confirm Delete Job ID:{' '}
+            Confirm Delete Job ID:{" "}
             {showDeleteDialog && showDeleteDialog.jobListingId}?
           </h3>
         </Dialog>

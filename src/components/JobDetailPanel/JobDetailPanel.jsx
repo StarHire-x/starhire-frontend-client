@@ -1,17 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { Panel } from 'primereact/panel';
-import { Button } from 'primereact/button';
-import { Dialog } from 'primereact/dialog';
-import styles from './jobDetailPanel.module.css';
-import Image from 'next/image';
-import HumanIcon from './../../../public/icon.png';
-import { removeJobListingAssignment } from '@/app/api/jobListing/route';
+import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Panel } from "primereact/panel";
+import { Button } from "primereact/button";
+import { Dialog } from "primereact/dialog";
+import styles from "./jobDetailPanel.module.css";
+import Image from "next/image";
+import HumanIcon from "./../../../public/icon.png";
+import { removeJobListingAssignment } from "@/app/api/jobListing/route";
 import {
   createJobApplication,
   findExistingJobApplication,
-} from '@/app/api/jobApplication/route';
-import CreateJobApplicationForm from '@/components/CreateJobApplicationForm/CreateJobApplicationForm';
+} from "@/app/api/jobApplication/route";
+import CreateJobApplicationForm from "@/components/CreateJobApplicationForm/CreateJobApplicationForm";
 
 const JobDetailPanel = ({
   selectedJob,
@@ -46,16 +46,16 @@ const JobDetailPanel = ({
         } else if (response.statusCode === 404) {
           setIsJobApplicationAbsent(true);
         } else {
-          console.error('Error fetching job preference:', response);
+          console.error("Error fetching job preference:", response);
           setIsJobApplicationAbsent(true);
         }
       });
 
       const documentsList = selectedJob.requiredDocuments
-        ? selectedJob.requiredDocuments.split(',').map((name) => ({
+        ? selectedJob.requiredDocuments.split(",").map((name) => ({
             mandatory: true,
             documentName: name.trim(),
-            documentLink: '',
+            documentLink: "",
           }))
         : [];
       setFormData((prevData) => ({
@@ -74,88 +74,120 @@ const JobDetailPanel = ({
   };
 
   const [formData, setFormData] = useState({
-    jobApplicationStatus: '',
-    availableStartDate: '',
-    availableEndDate: '',
-    submissionDate: '',
-    remarks: '',
+    jobApplicationStatus: "",
+    availableStartDate: "",
+    availableEndDate: "",
+    submissionDate: "",
+    remarks: "",
     documents: [
       {
-        documentName: '',
-        documentLink: '',
+        documentName: "",
+        documentLink: "",
       },
     ],
   });
 
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+    const options = { year: "numeric", month: "numeric", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  const addJobApplication = async (e) => {
+  // const addJobApplication = async (e) => {
+  //   e.preventDefault();
+  //   if (Object.keys(formErrors).length > 0) {
+  //     // There are validation errors
+  //     //alert('Please fix the form errors before submitting.');
+  //     toast.current.show({
+  //       severity: 'warn',
+  //       summary: 'Warning',
+  //       detail: 'Please fix the form errors before submitting.',
+  //       life: 5000,
+  //     });
+  //     return;
+  //   }
+
+  //   const areDocumentsFilled = formData.documents.every(
+  //     (doc) => doc.documentName.trim() !== '' && doc.documentLink.trim() !== ''
+  //   );
+
+  //   if (!areDocumentsFilled) {
+  //     //alert('Please ensure all documents are properly filled up.');
+  //     toast.current.show({
+  //       severity: 'warn',
+  //       summary: 'Warning',
+  //       detail: 'Please ensure all documents are properly filled up.',
+  //       life: 5000,
+  //     });
+  //     return;
+  //   }
+
+  //   const reqBody = {
+  //     jobListingId: selectedJob.jobListingId,
+  //     jobSeekerId: jobSeekerId,
+  //     jobApplicationStatus: 'Submitted',
+  //     availableStartDate: formData.availableStartDate,
+  //     availableEndDate: formData.availableEndDate,
+  //     remarks: formData.remarks,
+  //     submissionDate: new Date(),
+  //     documents: formData.documents,
+  //   };
+
+  //   console.log(reqBody);
+
+  //   try {
+  //     const response = await createJobApplication(reqBody, accessToken);
+  //     if (!response.error) {
+  //       console.log('Job application created successfully:', response);
+  //       toast.current.show({
+  //         severity: 'success',
+  //         summary: 'Success',
+  //         detail: `Successfully created job application for ${selectedJob.title}`,
+  //         life: 5000,
+  //       });
+  //       setRefreshData((prev) => !prev);
+  //     }
+  //   } catch (error) {
+  //     //alert(error.message);
+  //     toast.current.show({
+  //       severity: 'error',
+  //       summary: 'Error',
+  //       detail: error.message,
+  //       life: 5000,
+  //     });
+  //   }
+  //   setShowCreateJobApplicationDialog(false);
+  // };
+
+  const submitApplication = async (e) => {
     e.preventDefault();
-    if (Object.keys(formErrors).length > 0) {
-      // There are validation errors
-      //alert('Please fix the form errors before submitting.');
-      toast.current.show({
-        severity: 'warn',
-        summary: 'Warning',
-        detail: 'Please fix the form errors before submitting.',
-        life: 5000,
-      });
-      return;
-    }
-
-    const areDocumentsFilled = formData.documents.every(
-      (doc) => doc.documentName.trim() !== '' && doc.documentLink.trim() !== ''
-    );
-
-    if (!areDocumentsFilled) {
-      //alert('Please ensure all documents are properly filled up.');
-      toast.current.show({
-        severity: 'warn',
-        summary: 'Warning',
-        detail: 'Please ensure all documents are properly filled up.',
-        life: 5000,
-      });
-      return;
-    }
-
     const reqBody = {
       jobListingId: selectedJob.jobListingId,
       jobSeekerId: jobSeekerId,
-      jobApplicationStatus: 'Submitted',
-      availableStartDate: formData.availableStartDate,
-      availableEndDate: formData.availableEndDate,
-      remarks: formData.remarks,
+      jobApplicationStatus: "Submitted",
       submissionDate: new Date(),
-      documents: formData.documents,
     };
-
-    console.log(reqBody);
-
     try {
       const response = await createJobApplication(reqBody, accessToken);
       if (!response.error) {
-        console.log('Job application created successfully:', response);
+        console.log("Job application created successfully:", response);
         toast.current.show({
-          severity: 'success',
-          summary: 'Success',
+          severity: "success",
+          summary: "Success",
           detail: `Successfully created job application for ${selectedJob.title}`,
           life: 5000,
         });
-        setRefreshData((prev) => !prev);
+        setSelectedJob(null);
+        setShowCreateJobApplicationDialog(false);
       }
     } catch (error) {
       //alert(error.message);
       toast.current.show({
-        severity: 'error',
-        summary: 'Error',
+        severity: "error",
+        summary: "Error",
         detail: error.message,
         life: 5000,
       });
     }
-    setShowCreateJobApplicationDialog(false);
   };
 
   const removeJobListing = async (jobSeekerId, jobListingId) => {
@@ -166,21 +198,21 @@ const JobDetailPanel = ({
         accessToken
       );
       console.log(
-        'Job Listing disassociated with Job Seeker',
+        "Job Listing disassociated with Job Seeker",
         response.message
       );
       toast.current.show({
-        severity: 'success',
-        summary: 'Success',
+        severity: "success",
+        summary: "Success",
         detail: `${selectedJob.title} disassociated successfully!`,
         life: 5000,
       });
       setRefreshData((prev) => !prev);
     } catch (error) {
-      console.error('Error dissociating job listing:', error);
+      console.error("Error dissociating job listing:", error);
       toast.current.show({
-        severity: 'error',
-        summary: 'Error',
+        severity: "error",
+        summary: "Error",
         detail: error.message,
         life: 5000,
       });
@@ -199,83 +231,116 @@ const JobDetailPanel = ({
     </React.Fragment>
   );
 
+  const createJobApplicationFooter = (
+    <React.Fragment>
+      <Button label="Yes" icon="pi pi-check" onClick={submitApplication} />
+    </React.Fragment>
+  );
+
   const job = selectedJob;
   if (!selectedJob) return null;
 
   return (
     <div className={styles.jobDetailPanel}>
-      <h2>{selectedJob.title}</h2>
-      <div className={styles.pCardContent}>
+      <div className={styles.jobHeading}>
         <div className={styles.companyInfo}>
-          {job.corporate.profilePictureUrl === '' ? (
-            <Image src={HumanIcon} alt="User" className={styles.avatar} />
-          ) : (
-            <img
-              src={selectedJob.corporate.profilePictureUrl}
-              alt="Corporate Profile"
-              className={styles.avatar}
-            />
-          )}
+          <div>
+            {job.corporate.profilePictureUrl === "" ? (
+              <Image src={HumanIcon} alt="User" className={styles.avatar} />
+            ) : (
+              <img
+                src={selectedJob.corporate.profilePictureUrl}
+                alt="Corporate Profile"
+                className={styles.avatar}
+              />
+            )}
+          </div>
           <div>
             <p>{selectedJob.corporate.userName}</p>
           </div>
         </div>
+        <div>
+          <h2>{selectedJob.title}</h2>
+          <p>{selectedJob.description}</p>
+        </div>
       </div>
-      <strong>Job Overview</strong>
-      <p>{selectedJob.overview}</p>
-      <strong>Responsibilities</strong>
-      <p>{selectedJob.responsibilities}</p>
-      <strong>Requirements</strong>
-      <p>{selectedJob.requirements}</p>
-      <strong>Suggested Documents</strong>
-      <p>{selectedJob.requiredDocuments}</p>
-      <strong>Average Monthly Salary</strong>
-      <p>
-        <span>$</span>
-        {selectedJob.averageSalary}
-      </p>
-      <strong>Preferred Start Date</strong>
-      <p>{formatDate(selectedJob.jobStartDate)}</p>
-      <p>
-        <span>Posted on </span>
-        {formatDate(selectedJob.listingDate)}
-      </p>
+      
+      <div className={styles.jobDetailContainer}>
+        <div className={styles.titleContainer}>
+          <p>Experience Required</p>
+          <p>Preferred Start Date</p>
+          <p>Pay Range</p>
+          <p>Job Type</p>
+          <p>Schedule</p>
+          <p>Supplemental Pay</p>
+          <p>Other Benefits</p>
+          <p>Certifications Required</p>
+          <p>Eligibility</p>
+          <p>Required Languages</p>
+          <p>Other Considerations</p>
+        </div>
+        <div className={styles.textContainer}>
+          <p>{selectedJob.experienceRequired}</p>
+          <p>{formatDate(selectedJob.jobStartDate)}</p>
+          <p>{selectedJob.payRange.split('_').join(' / ')}</p>
+          <p>{selectedJob.jobType.split('_').join(' / ')}</p>
+          <p>{selectedJob.schedule.split('_').join(' / ')}</p>
+          <p>{selectedJob.supplementalPay.split('_').join(' / ')}</p>
+          <p>{selectedJob.otherBenefits.split('_').join(' / ')}</p>
+          <p>{selectedJob.certificationsRequired.split('_').join(' / ')}</p>
+          <p>{selectedJob.typeOfWorkers}</p>
+          <p>{selectedJob.requiredLanguages.split('_').join(' / ')}</p>
+          <p>{selectedJob.otherConsiderations}</p>
+        </div>
+      </div>
+
+      <div className={styles.jobListingDate}>
+        <p>
+          <span>Posted on </span>
+          {formatDate(selectedJob.listingDate)}
+        </p>
+      </div>
 
       {isJobApplicationAbsent ? (
         <>
-          <Button
-            label="Apply Now"
-            className={styles.createButton}
-            icon="pi pi-plus"
-            onClick={() => setShowCreateJobApplicationDialog(true)}
-            rounded
-          />
-          <Button
-            label="Not Interested"
-            className={styles.rejectButton}
-            icon="pi pi-trash"
-            onClick={() => setShowRejectJobListingDialog(true)}
-            rounded
-          />
+          <div className={styles.buttonContainer}>
+            <Button
+              label="Apply Now"
+              className={styles.createButton}
+              icon="pi pi-plus"
+              onClick={() => setShowCreateJobApplicationDialog(true)}
+              rounded
+            />
+            <Button
+              label="Not Interested"
+              className={styles.rejectButton}
+              icon="pi pi-trash"
+              onClick={() => setShowRejectJobListingDialog(true)}
+              rounded
+            />
+          </div>
         </>
       ) : (
         <span>You have submitted an application for this job</span>
       )}
 
       <Dialog
-        header="Create Job Application"
+        header="Confirm Application"
         visible={showCreateJobApplicationDialog}
         onHide={hideCreateJobApplicationDialog}
-        // className={styles.createDialog}
+        className={styles.cardDialog}
+        footer={createJobApplicationFooter}
       >
-        <CreateJobApplicationForm
+        {/* <CreateJobApplicationForm
           formData={formData}
           setFormData={setFormData}
           addJobApplication={addJobApplication}
           accessToken={accessToken}
           formErrors={formErrors}
           setFormErrors={setFormErrors}
-        />
+        /> */}
+        Would you like to apply for <b>{selectedJob.title}</b> at{" "}
+        <b>{selectedJob.corporate.companyName}</b>?
       </Dialog>
 
       <Dialog

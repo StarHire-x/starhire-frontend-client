@@ -69,6 +69,13 @@ const Navbar = () => {
     sessionTokenRef = session.data.user.accessToken;
   }
 
+  const handleSignOut = async (event) => {
+    event.preventDefault();
+    await signOut({ redirect: false });
+    window.location.replace('/')
+  }
+
+
   useEffect(() => {
     if (roleRef === "Corporate") {
       getCorporateByUserID(userIdRef, sessionTokenRef)
@@ -205,7 +212,10 @@ const Navbar = () => {
                 )}
                 <h6>{userData?.userName}</h6>
               </div>
-              <div className={styles.menuItem} onClick={signOut}>
+              <div
+                className={styles.menuItem}
+                onClick={handleSignOut}
+              >
                 <NavItem text="Logout" href={"/"} />
               </div>
             </>

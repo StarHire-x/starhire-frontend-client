@@ -31,6 +31,11 @@
   align-items: center;
 }
 
+.payRangeDiv {
+  display: flex;
+  flex-direction: column;
+}
+
 .createJobListingButton {
   margin-left: 20px;
   border: #35acfe;
