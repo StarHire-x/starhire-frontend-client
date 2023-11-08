@@ -216,3 +216,30 @@ export const viewAllNonPremiumUsers = async (accessToken) => {
     throw error;
   }
 };
+
+export const findAllRegisteredEvents = async (userId, accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/event-registration/existing-events/${userId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: 'no-store',
+      }
+    );
+
+    const response = await res.json();
+    console.log(response);
+    if (response.statusCode === 200) {
+      return response.data;
+    } else {
+      throw new Error(response.message || 'An error occurred');
+    }
+  } catch (error) {
+    console.log('There was a problem fetching the event listings', error);
+    throw error;
+  }
+};
