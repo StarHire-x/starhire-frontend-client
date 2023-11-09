@@ -33,7 +33,7 @@ export const updateInvoicePaymentStatus = async (
 ) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/invoice/${invoiceId}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/invoice/invoice-payment/${invoiceId}`,
       {
         method: "PUT",
         headers: {

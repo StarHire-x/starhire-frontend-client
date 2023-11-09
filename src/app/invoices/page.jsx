@@ -139,7 +139,18 @@ const Invoices = () => {
         />
       );
     }
-    return <></>;
+    return rowData?.invoiceLink ? (
+      <Button
+        label="Invoice"
+        severity="info"
+        size="small"
+        className={styles.paymentButton}
+        icon="pi pi-download"
+        onClick={() => window.location.assign(rowData?.invoiceLink)}
+      />
+    ) : (
+      <></>
+    );
   };
 
   const rowExpansionTemplate = (data) => {
