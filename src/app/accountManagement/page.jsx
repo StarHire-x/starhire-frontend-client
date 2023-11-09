@@ -33,20 +33,25 @@ const AccountManagement = () => {
   const [deactivateAccountDialog, setDeactivateAccountDialog] = useState(false);
   const [typeformSubmitted, setTypeformSubmitted] = useState(false);
   const [formData, setFormData] = useState({
+    // Common Fields
     userId: "",
     userName: "",
     email: "",
-    fullName: "",
-    homeAddress: "",
-    companyName: "",
-    companyAddress: "",
+    firstName: "",
     profilePictureUrl: "",
     notificationMode: "",
     status: "",
     contactNo: "",
-    dateOfBirth: "",
-    instituteName: "",
-    dateOfGraduation: "",
+
+    // Corporate Fields
+    schoolName: "",
+    schoolCategory: "",
+    companyAddress: "",
+    postalCode: "",
+    companyRegistrationId: "",
+    regions: "",
+
+    //Job Seeker Fields
     jobPreferenceId: "",
     resumePdf: "",
     benefitPreference: 0,
@@ -60,6 +65,19 @@ const AccountManagement = () => {
     jobDescription: "",
     highestEducationStatus: "",
     visibilityOptions: "",
+    country: "",
+    description: "",
+    proficientLanguages: "",
+    experience: "",
+    certifications: "",
+    recentRole: "",
+    preferredRegions: "",
+    preferredJobType: "",
+    preferredSchedule: "",
+    payRange: "",
+    visaRequirements: "",
+    ranking: "",
+    otherInfo: "",
   });
 
   const toast = useRef(null);
@@ -269,23 +287,41 @@ const AccountManagement = () => {
     const userId = formData.userId;
 
     const updateUserDetails = {
+      // Common Fields
       role: roleRef,
       email: formData.email,
       userName: formData.userName,
-      fullName: formData.fullName,
-      homeAddress: formData.homeAddress,
-      companyName: formData.companyName,
-      companyAddress: formData.companyAddress,
+      firstName: formData.firstName,
       contactNo: formData.contactNo,
-      dateOfBirth: formData.dateOfBirth,
+      visibility: formData.visibility,
       profilePictureUrl: formData.profilePictureUrl,
-      resumePdf: formData.resumePdf,
       notificationMode: formData.notificationMode,
       status: formData.status,
-      instituteName: formData.instituteName,
-      dateOfGraduation: formData.dateOfGraduation,
+
+      // Job Seeker Fields
+      resumePdf: formData.resumePdf,
       highestEducationStatus: formData.highestEducationStatus,
-      visibility: formData.visibility,
+      country: formData.country, 
+      proficientLanguages: formData.proficientLanguages,
+      experience: formData.experience,
+      certifications: formData.certifications, 
+      recentRole: formData.recentRole, 
+      startDate: formData.startDate, 
+      preferredRegions: formData.preferredRegions,
+      preferredJobType: formData.preferredJobType, 
+      preferredSchedule: formData.preferredSchedule, 
+      payRange: formData.payRange, 
+      visaRequirements: formData.visaRequirements,
+      ranking: formData.ranking, 
+      otherInfo: formData.otherInfo, 
+
+      // Corporate Fields
+      schoolName: formData.schoolName,
+      schoolCategory: formData.schoolCategory,
+      companyAddress: formData.companyAddress,
+      postalCode: formData.postalCode,
+      companyRegistrationId: formData.companyRegistrationId,
+      regions: formData.regions,
     };
 
     if (formData.contactNo && formData.contactNo.toString().length !== 8) {

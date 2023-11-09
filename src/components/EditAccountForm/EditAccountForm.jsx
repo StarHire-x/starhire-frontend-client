@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./editAccountForm.module.css"
+import styles from "./editAccountForm.module.css";
 import { RadioButton } from "primereact/radiobutton";
 import { Card } from "primereact/card";
 import "primeicons/primeicons.css";
@@ -28,7 +28,6 @@ const EditAccountForm = ({
   refreshData,
   setRefreshData,
 }) => {
-
   const educationOptions = [
     { label: "No School", value: "No_School" },
     { label: "High School", value: "High_School" },
@@ -42,8 +41,7 @@ const EditAccountForm = ({
     { label: "Limited (Hide Sensitive Details)", value: "Limited" },
   ];
 
-  const [showMyFollowingsDialog, setShowMyFollowingsDialog] =
-    useState(false);
+  const [showMyFollowingsDialog, setShowMyFollowingsDialog] = useState(false);
 
   const hideMyFollowingsDialog = () => {
     setShowMyFollowingsDialog(false);
@@ -77,65 +75,53 @@ const EditAccountForm = ({
               />
             )}
           </div>
+          <div>
+            <div className={styles.inputFields}>
+              <div className={styles.field}>
+                <label htmlFor="userName">User Name:</label>
+                <InputText
+                  name="userName"
+                  value={formData.userName}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className={styles.field}>
+                <label htmlFor="email">Email Address:</label>
+                <InputText
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className={styles.field}>
+                <label htmlFor="contactNo">Contact Number:</label>
+                <InputNumber
+                  name="contactNo"
+                  value={formData.contactNo}
+                  onChange={(e) =>
+                    handleInputNumberChange("contactNo", e.value)
+                  }
+                  useGrouping={false}
+                />
+              </div>
+            </div>
 
-          <div className={styles.inputFields}>
-            <div className={styles.field}>
-              <label htmlFor="userName">User Name:</label>
-              <InputText
-                name="userName"
-                value={formData.userName}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="email">Email Address:</label>
-              <InputText
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="contactNo">Contact Number:</label>
-              <InputNumber
-                name="contactNo"
-                value={formData.contactNo}
-                onChange={(e) => handleInputNumberChange("contactNo", e.value)}
-                useGrouping={false}
-              />
-            </div>
             {session.data.user.role === Enums.JOBSEEKER && (
-              <>
+              <div className={styles.inputFields}>
                 <div className={styles.field}>
-                  <label htmlFor="fullName">Full Name:</label>
+                  <label htmlFor="firstName">First Name:</label>
                   <InputText
-                    name="fullName"
-                    value={formData.fullName}
+                    name="firstName"
+                    value={formData.firstName}
                     onChange={handleInputChange}
                   />
                 </div>
                 <div className={styles.field}>
-                  <label htmlFor="homeAddress">Home Address:</label>
+                  <label htmlFor="country">Country:</label>
                   <InputText
-                    name="homeAddress"
-                    value={formData.homeAddress}
+                    name="country"
+                    value={formData.country}
                     onChange={handleInputChange}
-                  />
-                </div>
-                <div className={styles.field}>
-                  <label htmlFor="dateOfBirth">Date of Birth:</label>
-                  <Calendar
-                    id="dateOfBirth"
-                    name="dateOfBirth"
-                    dateFormat="dd/mm/yy"
-                    value={new Date(formData.dateOfBirth)}
-                    maxDate={new Date()}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        dateOfBirth: e.value,
-                      }))
-                    }
                   />
                 </div>
                 <div className={styles.field}>
@@ -152,57 +138,110 @@ const EditAccountForm = ({
                   />
                 </div>
                 <div className={styles.field}>
-                  <label htmlFor="instituteName">Education Institution:</label>
+                  <label htmlFor="proficientLanguages">
+                    Proficient Languages:
+                  </label>
                   <InputText
-                    name="instituteName"
-                    value={formData.instituteName}
+                    name="proficientLanguages"
+                    value={formData.proficientLanguages}
                     onChange={handleInputChange}
                   />
                 </div>
                 <div className={styles.field}>
-                  <label htmlFor="dateOfGraduation">Date of Graduation:</label>
+                  <label htmlFor="experience">Experience Level:</label>
+                  <InputText
+                    name="experience"
+                    value={formData.experience}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="certifications">Certifications:</label>
+                  <InputText
+                    name="certifications"
+                    value={formData.certifications}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="recentRole">Recent Role:</label>
+                  <InputText
+                    name="recentRole"
+                    value={formData.recentRole}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="startDate">Job Start Date:</label>
                   <Calendar
-                    id="dateOfGraduation"
-                    name="dateOfGraduation"
+                    id="startDate"
+                    name="startDate"
                     dateFormat="dd/mm/yy"
-                    value={new Date(formData.dateOfGraduation)}
+                    value={new Date(formData.startDate)}
                     maxDate={new Date()}
                     onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
-                        dateOfGraduation: e.value,
+                        startDate: e.value,
                       }))
                     }
                   />
                 </div>
                 <div className={styles.field}>
-                  <label htmlFor="resumePdf">Upload Resume:</label>
-                  <input
-                    type="file"
-                    id="resumePdf"
-                    onChange={handleFileChange}
+                  <label htmlFor="preferredRegions">Preferred Regions:</label>
+                  <InputText
+                    name="preferredRegions"
+                    value={formData.preferredRegions}
+                    onChange={handleInputChange}
                   />
-                  {formData?.resumePdf && (
-                    <div className={styles.pdfButtons}>
-                      <Button
-                        type="button"
-                        icon="pi pi-file-pdf"
-                        onClick={(e) => {
-                          e.stopPropagation(); // This stops the event from propagating up
-                          window.open(formData.resumePdf, "_blank");
-                        }}
-                        className="p-button-rounded p-button-danger"
-                        aria-label="Open PDF"
-                      />
-                      <Button
-                        type="button"
-                        label="X"
-                        onClick={removePdf}
-                        className={`p-button-rounded p-button-danger ${styles.smallButton}`}
-                        aria-label="Remove PDF"
-                      />
-                    </div>
-                  )}
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="preferredJobType">Preferred Job Type:</label>
+                  <InputText
+                    name="preferredJobType"
+                    value={formData.preferredJobType}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="preferredSchedule">Preferred Schedule:</label>
+                  <InputText
+                    name="preferredSchedule"
+                    value={formData.preferredSchedule}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="payRange">Expected Pay:</label>
+                  <InputText
+                    name="payRange"
+                    value={formData.payRange}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="visaRequirements">Visa Requirements:</label>
+                  <InputText
+                    name="visaRequirements"
+                    value={formData.visaRequirements}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="ranking">Ranking:</label>
+                  <InputText
+                    name="ranking"
+                    value={formData.ranking}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="otherInfo">Other Information:</label>
+                  <InputText
+                    name="otherInfo"
+                    value={formData.otherInfo}
+                    onChange={handleInputChange}
+                  />
                 </div>
                 <div className={styles.field}>
                   <label htmlFor="visibility">Visibility Settings:</label>
@@ -215,116 +254,160 @@ const EditAccountForm = ({
                     placeholder="Select Visibility Options"
                   />
                 </div>
-              </>
+              </div>
             )}
             {session.data.user.role === Enums.CORPORATE && (
-              <>
+              <div className={styles.inputFields}>
                 <div className={styles.field}>
-                  <label htmlFor="companyName">Company Name:</label>
+                  <label htmlFor="firstName">First Name:</label>
                   <InputText
-                    name="companyName"
-                    value={formData.companyName}
+                    name="firstName"
+                    value={formData.firstName}
                     onChange={handleInputChange}
                   />
                 </div>
                 <div className={styles.field}>
-                  <label htmlFor="companyAddress">Company Address:</label>
+                  <label htmlFor="schoolName">Scbool Name:</label>
+                  <InputText
+                    name="schoolName"
+                    value={formData.schoolName}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="schoolCategory">School Category:</label>
+                  <InputText
+                    name="schoolCategory"
+                    value={formData.schoolCategory}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="companyAddress">School Address:</label>
                   <InputText
                     name="companyAddress"
                     value={formData.companyAddress}
                     onChange={handleInputChange}
                   />
                 </div>
-              </>
+                <div className={styles.field}>
+                  <label htmlFor="postalCode">Postal Code:</label>
+                  <InputText
+                    name="postalCode"
+                    value={formData.postalCode}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="companyRegistrationId">UEN number:</label>
+                  <InputText
+                    name="companyRegistrationId"
+                    value={formData.companyRegistrationId}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="firstName">Regions:</label>
+                  <InputText
+                    name="regions"
+                    value={formData.regions}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
             )}
-            {/* This is just to check the image link */}
-            {/* <div className={styles.field}>
-            <label htmlFor="profilePictureUrl">Profile Picture URL:</label>
-            <input
-              type="url"
-              id="profilePictureUrl"
-              name="profilePictureUrl"
-              className={styles.input}
-              value={formData.profilePictureUrl}
-              onChange={handleInputChange}
-            />
-            </div> */}
-
-            {/* <div className={styles.field}>
-              <label htmlFor="resumePdf">Resume Pdf:</label>
-              <input
-                type="url"
-                id="resumePdf"
-                name="resumePdf"
-                className={styles.input}
-                value={formData.resumePdf}
-                onChange={handleInputChange}
-              />
-            </div> */}
-            <div className={styles.field}>
-              <label htmlFor="profilePicture">Profile Picture:</label>
-              <input
-                type="file"
-                id="profilePicture"
-                onChange={handleFileChange}
-              />
-            </div>
-
-            <div className={styles.radioFields}>
-              <div className={styles.radioHeader}>
-                <p>Notifications</p>
+            <div className={styles.inputFields}>
+              <div className={styles.field}>
+                <label htmlFor="profilePicture">Profile Picture:</label>
+                <input
+                  type="file"
+                  id="profilePicture"
+                  onChange={handleFileChange}
+                />
               </div>
-              <div className={styles.radioOption}>
-                <RadioButton
-                  inputId="Email"
-                  name="notificationMode"
-                  value="Email"
-                  onChange={handleInputChange}
-                  checked={formData.notificationMode === "Email"}
-                />
-                <label htmlFor="Email" className="ml-2">
-                  Email
-                </label>
-                <br />
-                <RadioButton
-                  inputId="Sms"
-                  name="notificationMode"
-                  value="Sms"
-                  onChange={handleInputChange}
-                  checked={formData.notificationMode === "Sms"}
-                />
-                <label htmlFor="Sms" className="ml-2">
-                  Sms
-                </label>
+              <div className={styles.field}>
+                <label htmlFor="resumePdf">Upload Resume:</label>
+                <input type="file" id="resumePdf" onChange={handleFileChange} />
+                {formData?.resumePdf && (
+                  <div className={styles.pdfButtons}>
+                    <Button
+                      type="button"
+                      icon="pi pi-file-pdf"
+                      onClick={(e) => {
+                        e.stopPropagation(); // This stops the event from propagating up
+                        window.open(formData.resumePdf, "_blank");
+                      }}
+                      className="p-button-rounded p-button-danger"
+                      aria-label="Open PDF"
+                    />
+                    <Button
+                      type="button"
+                      label="X"
+                      onClick={removePdf}
+                      className={`p-button-rounded p-button-danger ${styles.smallButton}`}
+                      aria-label="Remove PDF"
+                    />
+                  </div>
+                )}
               </div>
             </div>
-
-            <div className={styles.radioFields}>
-              <div className={styles.radioHeader}>
-                <p>Status</p>
+            <div className={styles.inputFields}>
+              <div className={styles.radioFields}>
+                <div className={styles.radioHeader}>
+                  <p>Notifications</p>
+                </div>
+                <div className={styles.radioOption}>
+                  <RadioButton
+                    inputId="Email"
+                    name="notificationMode"
+                    value="Email"
+                    onChange={handleInputChange}
+                    checked={formData.notificationMode === "Email"}
+                  />
+                  <label htmlFor="Email" className="ml-2">
+                    Email
+                  </label>
+                  <br />
+                  <RadioButton
+                    inputId="Sms"
+                    name="notificationMode"
+                    value="Sms"
+                    onChange={handleInputChange}
+                    checked={formData.notificationMode === "Sms"}
+                  />
+                  <label htmlFor="Sms" className="ml-2">
+                    Sms
+                  </label>
+                </div>
               </div>
-              <div className={styles.radioOption}>
-                <RadioButton
-                  inputId="status"
-                  name="status"
-                  value={Enums.ACTIVE}
-                  onChange={handleInputChange}
-                  checked={formData.status === Enums.ACTIVE}
-                />
-                <label htmlFor="notificationMode" className="ml-2">
-                  Active
-                </label>
-                <br />
-                <RadioButton
-                  inputId="status"
-                  name="status"
-                  value={Enums.INACTIVE}
-                  onChange={handleInputChange}
-                  checked={formData.status === Enums.INACTIVE}
-                />
-                <label htmlFor="notificationMode" className="ml-2">
-                  Inactive
-                </label>
+
+              <div className={styles.radioFields}>
+                <div className={styles.radioHeader}>
+                  <p>Status</p>
+                </div>
+                <div className={styles.radioOption}>
+                  <RadioButton
+                    inputId="status"
+                    name="status"
+                    value={Enums.ACTIVE}
+                    onChange={handleInputChange}
+                    checked={formData.status === Enums.ACTIVE}
+                  />
+                  <label htmlFor="notificationMode" className="ml-2">
+                    Active
+                  </label>
+                  <br />
+                  <RadioButton
+                    inputId="status"
+                    name="status"
+                    value={Enums.INACTIVE}
+                    onChange={handleInputChange}
+                    checked={formData.status === Enums.INACTIVE}
+                  />
+                  <label htmlFor="notificationMode" className="ml-2">
+                    Inactive
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -341,9 +424,7 @@ const EditAccountForm = ({
         onHide={hideMyFollowingsDialog}
         className={styles.cardFollowing}
       >
-        <Following 
-        refreshData={refreshData}
-        setRefreshData={setRefreshData} />
+        <Following refreshData={refreshData} setRefreshData={setRefreshData} />
       </Dialog>
     </div>
   );
