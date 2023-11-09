@@ -12,6 +12,7 @@ import { getCorporateByUserID } from "@/app/api/payment/route";
 import Enums from "@/common/enums/enums";
 import { ThemeContext } from "@/context/ThemeContext";
 import { Button } from "primereact/button";
+import { useRouter } from "next/router";
 
 const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
   { text: "Home", href: "/" },
@@ -39,6 +40,8 @@ const MENU_LIST_AUTHENTICATED_CORPORATE = [
     ],
   },
   { text: "Event Management", href: "/eventManagement" },
+  { text: "Invoices", href: "/invoices" },
+  { text: "Contact", href: "/contact" },
   { text: "Chat", href: "/chat" },
 ];
 
@@ -72,9 +75,8 @@ const Navbar = () => {
   const handleSignOut = async (event) => {
     event.preventDefault();
     await signOut({ redirect: false });
-    window.location.replace('/')
-  }
-
+    window.location.replace("/");
+  };
 
   useEffect(() => {
     if (roleRef === "Corporate") {
@@ -212,10 +214,7 @@ const Navbar = () => {
                 )}
                 <h6>{userData?.userName}</h6>
               </div>
-              <div
-                className={styles.menuItem}
-                onClick={handleSignOut}
-              >
+              <div className={styles.menuItem} onClick={handleSignOut}>
                 <NavItem text="Logout" href={"/"} />
               </div>
             </>
