@@ -60,6 +60,17 @@ const AccountManagement = () => {
     jobDescription: "",
     highestEducationStatus: "",
     visibilityOptions: "",
+    reviewId: "",
+    jobSeekerId: "",
+    corporateId: "",
+    description: "",
+    reviewType: "",
+    attitudeJS: "",
+    professionalismJS: 0,
+    passionJS: 0,
+    benefitsCP: 0,
+    cultureCP: 0,
+    growthCP: 0,
   });
 
   const toast = useRef(null);
