@@ -204,8 +204,8 @@ const EventPage = () => {
           style={{
             display: 'flex',
             height: '100vh',
-            'justify-content': 'center',
-            'align-items': 'center',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         />
       ) : (
