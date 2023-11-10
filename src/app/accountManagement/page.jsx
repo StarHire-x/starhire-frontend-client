@@ -24,12 +24,16 @@ import {
   fetchTypeFormResponsesCorporate,
   fetchTypeFormResponsesJobSeeker,
 } from "../api/typeform/routes";
+import ReviewPanel from "@/components/ReviewPanel/ReviewPanel";
+import { getDropdownList, getReviews } from "../api/review/route";
 
 const AccountManagement = () => {
   const session = useSession();
   const router = useRouter();
   const [refreshData, setRefreshData] = useState(false);
   const [jobExperience, setJobExperience] = useState([]);
+  const [dropdownList, setDropdownList] = useState([]);
+  const [review, setReview] = useState([]);
   const [deactivateAccountDialog, setDeactivateAccountDialog] = useState(false);
   const [typeformSubmitted, setTypeformSubmitted] = useState(false);
   const [formData, setFormData] = useState({
@@ -60,6 +64,17 @@ const AccountManagement = () => {
     jobDescription: "",
     highestEducationStatus: "",
     visibilityOptions: "",
+    reviewId: "",
+    jobSeekerId: "",
+    corporateId: "",
+    description: "",
+    reviewType: "",
+    attitudeJS: "",
+    professionalismJS: 0,
+    passionJS: 0,
+    benefitsCP: 0,
+    cultureCP: 0,
+    growthCP: 0,
   });
 
   const toast = useRef(null);
@@ -142,6 +157,37 @@ const AccountManagement = () => {
         }
       };
 
+      const retrieveDropdownList = async () => {
+        try {
+          const response = await getDropdownList(
+            userIdRef,
+            roleRef,
+            sessionTokenRef
+          );
+          console.log(response.data);
+          if (response.statusCode === 200) {
+            return response.data;
+          }
+        } catch (error) {
+          console.log("Error fetching dropdown list: ", error.message);
+        }
+      }
+
+      const retrieveReviews = async () => {
+        try {
+          const response = await getReviews(
+            userIdRef,
+            roleRef,
+            sessionTokenRef
+          );
+          if (response.statusCode === 200) {
+            return response.data;
+          }
+        } catch (error) {
+          console.log("Error fetching reviews", error.message);
+        }
+      };
+
       const retrieveTypeformSubmissionJobSeeker = async (email) => {
         const response = await fetchTypeFormResponsesJobSeeker(
           sessionTokenRef,
@@ -170,6 +216,8 @@ const AccountManagement = () => {
         populateFormDataWithUserPreference(formDataWithUserInfo)
       );
       retrieveJobExperience().then((result) => setJobExperience(result));
+      retrieveDropdownList().then((result) => setDropdownList(result));
+      retrieveReviews().then((result) => setReview(result))
 
       if (session.data.user.role === "Corporate") {
         retrieveTypeformSubmissionCorporate(session.data.user.email).then(
@@ -425,6 +473,20 @@ const AccountManagement = () => {
               setRefreshData={setRefreshData}
               jobExperience={jobExperience}
               handleInputChange={handleInputChange}
+            />
+          </>
+        )}
+        {roleRef === Enums.CORPORATE && (
+          <>
+            <ReviewPanel
+              formData={formData}
+              setFormData={setFormData}
+              review={review}
+              roleRef={roleRef}
+              sessionTokenRef={sessionTokenRef}
+              setRefreshData={setRefreshData}
+              handleInputChange={handleInputChange}
+              dropdownList={dropdownList}
             />
           </>
         )}
