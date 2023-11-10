@@ -1,20 +1,23 @@
-"use client";
-import React, { useEffect, useState, useRef } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { Button } from "primereact/button";
-import { Carousel } from "primereact/carousel";
-import { Dialog } from "primereact/dialog";
-import { ProgressSpinner } from "primereact/progressspinner";
-import { Tag } from "primereact/tag";
-import { Toast } from "primereact/toast";
-import { findAllEventListings } from "../api/eventListing/route";
+'use client';
+import React, { useEffect, useState, useRef } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { Button } from 'primereact/button';
+import { Carousel } from 'primereact/carousel';
+import { Dialog } from 'primereact/dialog';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import { Tag } from 'primereact/tag';
+import { Toast } from 'primereact/toast';
+import {
+  getAllPremiumUsersEvents,
+  getAllNonPremiumUsersEvents,
+} from '../api/eventListing/route';
 import {
   createEventRegistration,
   findExistingEventRegistration,
-} from "@/app/api/eventRegistration/route";
-import styles from "./page.module.css";
-import Utility from "@/common/helper/utility";
+} from '@/app/api/eventRegistration/route';
+import styles from './page.module.css';
+import Utility from '@/common/helper/utility';
 
 const EventPage = () => {
   const session = useSession();
@@ -31,31 +34,47 @@ const EventPage = () => {
   const [registeredEvents, setRegisteredEvents] = useState([]);
 
   const accessToken =
-    session.status === "authenticated" &&
+    session.status === 'authenticated' &&
     session.data &&
     session.data.user.accessToken;
 
   const jobSeekerId =
-    session.status === "authenticated" &&
+    session.status === 'authenticated' &&
     session.data &&
     session.data.user.userId;
 
   useEffect(() => {
-    if (session.status === "unauthenticated" || session.status === "loading") {
-      router.push("/login");
+    if (session.status === 'unauthenticated' || session.status === 'loading') {
+      router.push('/login');
     }
     const navigateToCalender = () => {
-      router.push('/eventManagement/viewAllEventsCalender'); 
+      router.push('/eventManagement/viewAllEventsCalender');
     };
 
+    const fetchPremiumEvents = async () => {
+      const premiumEvents = await getAllPremiumUsersEvents(accessToken);
+      return premiumEvents || [];
+    };
+
+    const fetchNonPremiumEvents = async () => {
+      const nonPremiumEvents = await getAllNonPremiumUsersEvents(accessToken);
+      return nonPremiumEvents || [];
+    };
 
     const fetchData = async () => {
       try {
         if (accessToken) {
-          const data = await findAllEventListings(accessToken);
-          setEventListings(data);
+          const [premiumEvents, nonPremiumEvents] = await Promise.all([
+            fetchPremiumEvents(),
+            fetchNonPremiumEvents(),
+          ]);
 
-          const checkRegistrations = data.map((event) =>
+          // Combine the event listings from premium and non-premium users
+          const combinedEvents = [...premiumEvents, ...nonPremiumEvents];
+          setEventListings(combinedEvents);
+
+          // Check registrations for all events
+          const checkRegistrations = combinedEvents.map((event) =>
             findExistingEventRegistration(
               jobSeekerId,
               event.eventListingId,
@@ -64,7 +83,7 @@ const EventPage = () => {
           );
 
           Promise.all(checkRegistrations).then((responses) => {
-            const registered = data
+            const registered = combinedEvents
               .filter((event, index) => responses[index].statusCode === 200)
               .map((event) => event.eventListingId);
 
@@ -72,14 +91,14 @@ const EventPage = () => {
           });
         }
       } catch (error) {
-        console.error("Error fetching event listings:", error);
+        console.error('Error fetching event listings:', error);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, [refreshData, accessToken]);
+  }, [refreshData, accessToken, session.status, router]);
 
   const hideEventRegistrationDialog = () => {
     setShowEventRegistrationDialog(false);
@@ -87,11 +106,11 @@ const EventPage = () => {
 
   const formatDate = (dateString) => {
     const options = {
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
     };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
@@ -105,8 +124,8 @@ const EventPage = () => {
     createEventRegistration(newEventRegistration, accessToken)
       .then(() => {
         toast.current.show({
-          severity: "success",
-          summary: "Registered Successfully",
+          severity: 'success',
+          summary: 'Registered Successfully',
         });
         setRegisteredEvents((prevEvents) => {
           const updatedState = [...prevEvents, selectedEvent.eventListingId];
@@ -116,25 +135,26 @@ const EventPage = () => {
       })
       .catch((error) => {
         toast.current.show({
-          severity: "error",
-          summary: "Registration Failed",
+          severity: 'error',
+          summary: 'Registration Failed',
           detail: error.message,
         });
       });
   };
 
   const navigateToCalender = () => {
-    router.push('/event/viewJobSeekerEventsCalender'); 
+    router.push('/event/viewJobSeekerEventsCalender');
   };
 
   const eventTemplate = (eventData) => {
+    console.log('Rendering event:', eventData);
     let statusSeverity;
     switch (eventData.eventListingStatus) {
-      case "Upcoming":
-        statusSeverity = "success";
+      case 'Upcoming':
+        statusSeverity = 'success';
         break;
-      case "Expired":
-        statusSeverity = "danger";
+      case 'Expired':
+        statusSeverity = 'danger';
         break;
     }
     eventData.statusSeverity = statusSeverity;
@@ -153,19 +173,19 @@ const EventPage = () => {
           <strong>Location:</strong> {eventData.location}
         </p>
         <p>
-          <strong>Organized By:</strong>{" "}
+          <strong>Organized By:</strong>{' '}
           {eventData.corporate && eventData.corporate.userName}
         </p>
         <p>
-          <strong>Start Date:</strong>{" "}
+          <strong>Start Date:</strong>{' '}
           {Utility.formatDateTime(eventData.eventStartDateAndTime)}
         </p>
         <p>
-          <strong>End Date:</strong>{" "}
+          <strong>End Date:</strong>{' '}
           {Utility.formatDateTime(eventData.eventEndDateAndTime)}
         </p>
         <p>
-          <strong>Posted On:</strong>{" "}
+          <strong>Posted On:</strong>{' '}
           {Utility.formatDateTime(eventData.listingDate)}
         </p>
         <p>
@@ -182,10 +202,10 @@ const EventPage = () => {
       {isLoading ? (
         <ProgressSpinner
           style={{
-            display: "flex",
-            height: "100vh",
-            "justify-content": "center",
-            "align-items": "center",
+            display: 'flex',
+            height: '100vh',
+            'justify-content': 'center',
+            'align-items': 'center',
           }}
         />
       ) : (
@@ -196,17 +216,17 @@ const EventPage = () => {
           numScroll={1}
           responsiveOptions={[
             {
-              breakpoint: "1024px",
+              breakpoint: '1024px',
               numVisible: 3,
               numScroll: 1,
             },
             {
-              breakpoint: "600px",
+              breakpoint: '600px',
               numVisible: 2,
               numScroll: 1,
             },
             {
-              breakpoint: "480px",
+              breakpoint: '480px',
               numVisible: 1,
               numScroll: 1,
             },
@@ -242,7 +262,7 @@ const EventPage = () => {
                   rounded
                 />
               ) : (
-                <h3 style={{ marginBottom: "20px" }}>
+                <h3 style={{ marginBottom: '20px' }}>
                   You have registered for this event
                 </h3>
               )}
@@ -268,22 +288,22 @@ const EventPage = () => {
               <strong>Location:</strong> {selectedEvent.location}
             </p>
             <p className={styles.dialogField}>
-              <strong>Organized By:</strong>{" "}
+              <strong>Organized By:</strong>{' '}
               {selectedEvent.corporate && selectedEvent.corporate.userName}
             </p>
             <p className={styles.dialogField}>
-              <strong>Start Date:</strong>{" "}
+              <strong>Start Date:</strong>{' '}
               {Utility.formatDateTime(selectedEvent.eventStartDateAndTime)}
             </p>
             <p className={styles.dialogField}>
-              <strong>End Date:</strong>{" "}
+              <strong>End Date:</strong>{' '}
               {Utility.formatDateTime(selectedEvent.eventEndDateAndTime)}
             </p>
             <p className={styles.dialogField}>
               <strong>Details:</strong> {selectedEvent.details}
             </p>
             <p className={styles.dialogField}>
-              <strong>Posted On:</strong>{" "}
+              <strong>Posted On:</strong>{' '}
               {Utility.formatDateTime(selectedEvent.listingDate)}
             </p>
             <p>
