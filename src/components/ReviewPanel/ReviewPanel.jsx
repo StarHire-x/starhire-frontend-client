@@ -207,7 +207,9 @@ const ReviewPanel = ({
 
   const removeReview = async (reviewId) => {
     try {
-    } catch (error) {}
+    } catch (error) {
+        
+    }
   };
 
   const itemTemplate = (review) => {
