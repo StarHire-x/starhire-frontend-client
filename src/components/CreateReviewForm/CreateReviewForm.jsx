@@ -48,7 +48,7 @@ const CreateReviewForm = ({
           {roleRef === Enums.CORPORATE && (
             <>
               <div className={styles.cardRow}>
-                <label>Job Seeker's username</label>
+                <label>Job Seeker username</label>
                 <Dropdown
                   name="jobSeekerId"
                   value={selectedFilter}
