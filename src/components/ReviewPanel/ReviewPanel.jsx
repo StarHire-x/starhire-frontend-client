@@ -3,7 +3,7 @@ import { Panel } from "primereact/panel";
 import { Button } from "primereact/button";
 import { DataView } from "primereact/dataview";
 import { Dialog } from "primereact/dialog";
-import styles from "./JobExperiencePanel.module.css";
+import styles from "./ReviewPanel.module.css";
 import CreateJobExperienceForm from "../CreateJobExperienceForm/CreateJobExperienceForm";
 import { Card } from "primereact/card";
 import { Dropdown } from "primereact/dropdown";
@@ -14,6 +14,8 @@ import {
 } from "@/app/api/jobExperience/route";
 import EditJobExperienceForm from "../EditJobExperienceForm/EditJobExperienceForm";
 import { Toast } from "primereact/toast";
+import CreateReviewForm from "../CreateReviewForm/CreateReviewForm";
+import { createReview } from "@/app/api/review/route";
 
 const ReviewPanel = ({
   formData,
@@ -23,6 +25,7 @@ const ReviewPanel = ({
   sessionTokenRef,
   setRefreshData,
   handleInputChange,
+  dropdownList,
 }) => {
   const [showCreateReviewDialog, setShowCreateReviewDialog] = useState(false);
   const [showEditReviewDialog, setShowEditReviewDialog] = useState(false);
@@ -73,7 +76,7 @@ const ReviewPanel = ({
           value={sortKey}
           options={[
             { label: "Start Date", value: "startDate" },
-            { label: "Job Title", value: "jobTitle" },
+            { label: "User Name", value: "userName" },
           ]}
           onChange={(e) => setSortKey(e.value)}
           placeholder="Sort By"
@@ -134,38 +137,102 @@ const ReviewPanel = ({
 
   const addReview = async (e) => {
     e.preventDefault();
+    const userId = formData.userId;
+
+    const role = roleRef;
+
+    console.log("Hello");
+
+    if (Object.keys(formErrors).length > 0) {
+      toast.current.show({
+        severity: "warn",
+        summary: "Warning",
+        detail: "Please fix the form errors before submitting.",
+        life: 5000,
+      });
+      return;
+    }
+
+    let reqBody;
+
+    if (formData.endDate === "null") {
+      reqBody = {
+        jobSeekerId: formData.jobSeekerId,
+        corporateId: userId,
+        startDate: formData.startDate,
+        description: formData.description,
+        reviewType: "Job_Seeker",
+        submissionDate: new Date(),
+      };
+    } else {
+      reqBody = {
+        jobSeekerId: formData.jobSeekerId,
+        corporateId: userId,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        description: formData.description,
+        reviewType: "Job_Seeker",
+        submissionDate: new Date(),
+      };
+    }
+
+    console.log(reqBody);
+    try {
+      const response = await createReview(reqBody, sessionTokenRef);
+      if (!response.error) {
+        console.log("Review created successfully:", response);
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Review created successfully!",
+          life: 5000,
+        });
+        setRefreshData((prev) => !prev);
+      }
+    } catch (error) {
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: error.message,
+        life: 5000,
+      });
+    }
+    setFormData(initialFormData);
+    setShowCreateReviewDialog(false);
   };
 
   const editReview = async (e) => {
     e.preventDefault();
   };
 
-  const removeJobExperience = async (jobExperienceId) => {
+  const removeReview = async (reviewId) => {
     try {
     } catch (error) {}
   };
 
-  const itemTemplate = (jobExperience) => {
+  const itemTemplate = (review) => {
     return (
       <Card className={styles.card}>
         <div className={styles.cardHeader}>
           <div className={styles.cardHeaderLeft}>
-            <h4>{jobExperience.jobTitle}</h4>
+            <h4>Username: {review.jobSeeker.userName}</h4>
             <h4 className={styles.hideOnMobile}>|</h4>
-            <h4>{jobExperience.employerName}</h4>
+            <h4>Full name: {review.jobSeeker.fullName}</h4>
+            <h4 className={styles.hideOnMobile}>|</h4>
+            <h4>Review Type: {review.reviewType}</h4>
           </div>
           <div className={styles.cardHeaderRight}>
-            <h4>{formatDate(jobExperience.startDate)}</h4>
+            <h4>{formatDate(review.startDate)}</h4>
             <h4 className={styles.hideOnMobile}>-</h4>
             <h4>
-              {formatDate(jobExperience.endDate) === "01/01/1970"
+              {formatDate(review.endDate) === "01/01/1970"
                 ? "Present"
-                : formatDate(jobExperience.endDate)}
+                : formatDate(review.endDate)}
             </h4>
           </div>
         </div>
         <div className={styles.cardDescription}>
-          <p>{jobExperience.jobDescription}</p>
+          <p>{review.description}</p>
         </div>
         <div className={styles.cardFooter}>
           <Button
@@ -174,8 +241,8 @@ const ReviewPanel = ({
             severity="success"
             className={styles.buttonSpacing}
             onClick={() => {
-              setSelectedJobExperienceData(jobExperience);
-              setShowEditJobExperienceDialog(jobExperience);
+              setSelectedReviewData(review);
+              setShowEditReviewDialog(review);
             }}
           />
           <Button
@@ -184,8 +251,8 @@ const ReviewPanel = ({
             severity="danger"
             className={styles.buttonSpacing}
             onClick={() => {
-              setSelectedJobExperienceData(jobExperience);
-              setShowDeleteJobExperienceDialog(jobExperience);
+              setSelectedReviewData(review);
+              setShowDeleteReviewDialog(review);
             }}
           />
         </div>
@@ -197,62 +264,60 @@ const ReviewPanel = ({
     <div className={styles.container}>
       <Toast ref={toast} />
       <DataView
-        value={sortFunction(jobExperience)}
+        value={sortFunction(review)}
         className={styles.dataViewContainer}
         layout="grid"
         rows={3}
-        header={jobExperienceHeader}
+        header={reviewHeader}
         itemTemplate={itemTemplate}
         color="black"
       ></DataView>
 
       <Dialog
         header="Create Review"
-        visible={showCreateJobExperienceDialog}
-        onHide={hideCreateJobExperienceDialog}
+        visible={showCreateReviewDialog}
+        onHide={hideCreateReviewDialog}
         className={styles.cardDialog}
       >
-        <CreateJobExperienceForm
+        <CreateReviewForm
           formData={formData}
           setFormData={setFormData}
           handleInputChange={handleInputChange}
-          addJobExperience={addJobExperience}
+          addReview={addReview}
           formErrors={formErrors}
           setFormErrors={setFormErrors}
+          roleRef={roleRef}
+          dropdownList={dropdownList}
         />
       </Dialog>
 
       <Dialog
-        header="Edit Job Experience"
-        visible={showEditJobExperienceDialog}
-        onHide={hideEditJobExperienceDialog}
+        header="Edit Review"
+        visible={showEditReviewDialog}
+        onHide={hideEditReviewDialog}
         className={styles.cardDialog}
       >
-        <EditJobExperienceForm
+        {/* <EditReviewForm
           formData={formData}
           setFormData={setFormData}
           handleInputChange={handleInputChange}
-          editJobExperience={editJobExperience}
-          selectedJobExperience={selectedJobExperienceData}
+          editReview={editReview}
+          selectedReview={selectedReviewData}
           formErrors={formErrors}
           setFormErrors={setFormErrors}
-        />
+        /> */}
       </Dialog>
 
       <Dialog
-        header="Delete Job Experience"
-        visible={showDeleteJobExperienceDialog}
-        onHide={hideDeleteJobExperienceDialog}
+        header="Delete Review"
+        visible={showDeleteReviewDialog}
+        onHide={hideDeleteReviewDialog}
         className={styles.cardDialog}
         footer={deleteDialogFooter}
       >
         <h3>
-          Confirm Delete Job Experience:{" "}
-          {showDeleteJobExperienceDialog &&
-            showDeleteJobExperienceDialog.jobTitle}
-          ,
-          {showDeleteJobExperienceDialog &&
-            showDeleteJobExperienceDialog.employerName}
+          Confirm Delete Review:{" "}
+          {showDeleteReviewDialog && showDeleteReviewDialog.reviewId},
         </h3>
       </Dialog>
     </div>
