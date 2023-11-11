@@ -49,8 +49,10 @@ const Invoices = () => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    loadInvoices();
+    if (accessToken) {
+      setIsLoading(true);
+      loadInvoices();
+    }
   }, [accessToken, corporateId]);
 
   const formatDate = (dateString) => {
@@ -242,7 +244,7 @@ const Invoices = () => {
       <div className={styles.heading}>
         <h2>Invoices</h2>
       </div>
-      {isLoading && <ProgressSpinner />}
+      {isLoading && <ProgressSpinner style={{marginLeft: "45vw"}}/>}
       {!isLoading && (
         <Card className={styles.mainTable}>
           <DataTable
