@@ -4,18 +4,15 @@ import { Button } from "primereact/button";
 import { DataView } from "primereact/dataview";
 import { Dialog } from "primereact/dialog";
 import styles from "./ReviewPanel.module.css";
-import CreateJobExperienceForm from "../CreateJobExperienceForm/CreateJobExperienceForm";
 import { Card } from "primereact/card";
 import { Dropdown } from "primereact/dropdown";
-import {
-  createJobExperience,
-  updateJobExperience,
-  deleteJobExperience,
-} from "@/app/api/jobExperience/route";
-import EditJobExperienceForm from "../EditJobExperienceForm/EditJobExperienceForm";
 import { Toast } from "primereact/toast";
 import CreateReviewForm from "../CreateReviewForm/CreateReviewForm";
-import { createReview } from "@/app/api/review/route";
+import { createReview, deleteReview, updateReview } from "@/app/api/review/route";
+import EditReviewForm from "../EditReviewForm/EditReviewForm";
+import Enums from "@/common/enums/enums";
+import { TabView, TabPanel } from "primereact/tabview";
+import { Image } from "primereact/image";
 
 const ReviewPanel = ({
   formData,
@@ -32,8 +29,8 @@ const ReviewPanel = ({
   const [showDeleteReviewDialog, setShowDeleteReviewDialog] = useState(false);
 
   const [formErrors, setFormErrors] = useState({});
-  const [sortKey, setSortKey] = useState(null);
-  const [sortOrder, setSortOrder] = useState(null);
+  // const [sortKey, setSortKey] = useState(null);
+  // const [sortOrder, setSortOrder] = useState(null);
 
   const [selectedReviewData, setSelectedReviewData] = useState(null);
 
@@ -41,6 +38,18 @@ const ReviewPanel = ({
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     return new Date(dateString).toLocaleDateString("en-GB", options);
   };
+
+  const receivedReviews = review.filter((r) =>
+    roleRef === Enums.CORPORATE
+      ? r.reviewType === "Corporate"
+      : r.reviewType === "Job_Seeker"
+  );
+
+  const givenReviews = review.filter((r) =>
+    roleRef === Enums.CORPORATE
+      ? r.reviewType === "Job_Seeker"
+      : r.reviewType === "Corporate"
+  );
 
   const initialFormData = {
     reviewId: "",
@@ -70,7 +79,7 @@ const ReviewPanel = ({
       }}
     >
       <h2 className={styles.headerTitle}>My Reviews</h2>
-      <div>
+      {/* <div>
         <Dropdown
           color="#fefbf6"
           value={sortKey}
@@ -90,7 +99,7 @@ const ReviewPanel = ({
           onChange={(e) => setSortOrder(e.value)}
           placeholder="Order"
         />
-      </div>
+      </div> */}
       <Button
         icon="pi pi-plus"
         rounded
@@ -100,18 +109,18 @@ const ReviewPanel = ({
     </div>
   );
 
-  const sortFunction = (data) => {
-    if (sortKey && sortOrder) {
-      return [...data].sort((a, b) => {
-        const value1 = a[sortKey];
-        const value2 = b[sortKey];
-        if (value1 < value2) return -1 * sortOrder;
-        if (value1 > value2) return 1 * sortOrder;
-        return 0;
-      });
-    }
-    return data;
-  };
+  // const sortFunction = (data) => {
+  //   if (sortKey && sortOrder) {
+  //     return [...data].sort((a, b) => {
+  //       const value1 = a[sortKey];
+  //       const value2 = b[sortKey];
+  //       if (value1 < value2) return -1 * sortOrder;
+  //       if (value1 > value2) return 1 * sortOrder;
+  //       return 0;
+  //     });
+  //   }
+  //   return data;
+  // };
 
   const hideCreateReviewDialog = () => {
     setShowCreateReviewDialog(false);
@@ -157,28 +166,32 @@ const ReviewPanel = ({
 
     if (formData.endDate === "null") {
       reqBody = {
-        jobSeekerId: formData.jobSeekerId,
-        corporateId: userId,
         startDate: formData.startDate,
         description: formData.description,
-        reviewType: "Job_Seeker",
         submissionDate: new Date(),
       };
     } else {
       reqBody = {
-        jobSeekerId: formData.jobSeekerId,
-        corporateId: userId,
         startDate: formData.startDate,
         endDate: formData.endDate,
         description: formData.description,
-        reviewType: "Job_Seeker",
         submissionDate: new Date(),
       };
     }
 
+    if(roleRef === Enums.CORPORATE) {
+      reqBody.jobSeekerId = formData.jobSeekerId;
+      reqBody.corporateId = userId;
+      reqBody.reviewType = "Job_Seeker"
+    } else if (roleRef === Enums.JOBSEEKER) {
+      reqBody.jobSeekerId = userId;
+      reqBody.corporateId = formData.corporateId;
+      reqBody.reviewType = "Corporate"
+    }
+
     console.log(reqBody);
     try {
-      const response = await createReview(reqBody, sessionTokenRef);
+      const response = await createReview(reqBody, roleRef, sessionTokenRef);
       if (!response.error) {
         console.log("Review created successfully:", response);
         toast.current.show({
@@ -203,13 +216,88 @@ const ReviewPanel = ({
 
   const editReview = async (e) => {
     e.preventDefault();
+    const reviewId = formData.reviewId;
+
+    if (Object.keys(formErrors).length > 0) {
+      // There are validation errors
+      //alert("Please fix the form errors before submitting.");
+      toast.current.show({
+        severity: "warn",
+        summary: "Warning",
+        detail: "Please fix the form errors before submitting.",
+        life: 5000,
+      });
+      return;
+    }
+
+    let reqBody;
+
+    if (formData.endDate === "null") {
+      reqBody = {
+        startDate: formData.startDate,
+        description: formData.description,
+      };
+    } else {
+      reqBody = {
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        description: formData.description,
+      };
+    }
+
+    try {
+      const response = await updateReview(
+        reviewId,
+        reqBody,
+        sessionTokenRef
+      );
+      if (!response.error) {
+        console.log("Review updated successfully:", response);
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Review updated successfully!",
+          life: 5000,
+        });
+        setRefreshData((prev) => !prev);
+      }
+    } catch (error) {
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: error.message,
+        life: 5000,
+      });
+    }
+    setFormData(initialFormData);
+    setSelectedReviewData(null);
+    setShowEditReviewDialog(false);
   };
 
   const removeReview = async (reviewId) => {
     try {
+      const response = await deleteReview(reviewId,sessionTokenRef);
+      console.log("Review is deleted", response);
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: "Deleted review successfully!",
+        life: 5000,
+      });
+      setRefreshData((prev) => !prev);
     } catch (error) {
-        
+      console.error("Error deleting review:", error);
+      //alert("There was an error deleting the job experience:");
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: error.message,
+        life: 5000,
+      });
     }
+    setFormData(initialFormData);
+    setSelectedReviewData(null);
+    setShowDeleteReviewDialog(false);
   };
 
   const itemTemplate = (review) => {
@@ -217,11 +305,64 @@ const ReviewPanel = ({
       <Card className={styles.card}>
         <div className={styles.cardHeader}>
           <div className={styles.cardHeaderLeft}>
-            <h4>Username: {review.jobSeeker.userName}</h4>
-            <h4 className={styles.hideOnMobile}>|</h4>
-            <h4>Full name: {review.jobSeeker.fullName}</h4>
-            <h4 className={styles.hideOnMobile}>|</h4>
-            <h4>Review Type: {review.reviewType}</h4>
+            {roleRef === Enums.JOBSEEKER && (
+              <>
+                <div className={styles.imageContainer}>
+                  {review.corporate.profilePictureUrl !== "" ? (
+                    <img
+                      alt={review.corporate.profilePictureUrl}
+                      src={review.corporate.profilePictureUrl}
+                      className={styles.avatarImageContainer}
+                    />
+                  ) : (
+                    <Image
+                      src={HumanIcon}
+                      alt="Icon"
+                      className={styles.avatarImageContainer}
+                    />
+                  )}
+                </div>
+                <div className={styles.imageContainer}>
+                  <div className={styles.imageContainer1}>
+                    <label>Username: </label>
+                    <h4>{review.corporate.userName}</h4>
+                  </div>
+                  <div className={styles.imageContainer1}>
+                    <label>Submitted Date: </label>
+                    <h4>{formatDate(review.submissionDate)}</h4>
+                  </div>
+                </div>
+              </>
+            )}
+            {roleRef === Enums.CORPORATE && (
+              <>
+                <div className={styles.imageContainer}>
+                  {review.jobSeeker.profilePictureUrl !== "" ? (
+                    <img
+                      alt={review.jobSeeker.profilePictureUrl}
+                      src={review.jobSeeker.profilePictureUrl}
+                      className={styles.avatarImageContainer}
+                    />
+                  ) : (
+                    <Image
+                      src={HumanIcon}
+                      alt="Icon"
+                      className={styles.avatarImageContainer}
+                    />
+                  )}
+                </div>
+                <div className={styles.imageContainer}>
+                  <div className={styles.imageContainer1}>
+                    <label>Username: </label>
+                    <h4>{review.jobSeeker.userName}</h4>
+                  </div>
+                  <div className={styles.imageContainer1}>
+                    <label>Submitted Date: </label>
+                    <h4>{formatDate(review.submissionDate)}</h4>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
           <div className={styles.cardHeaderRight}>
             <h4>{formatDate(review.startDate)}</h4>
@@ -237,26 +378,55 @@ const ReviewPanel = ({
           <p>{review.description}</p>
         </div>
         <div className={styles.cardFooter}>
-          <Button
-            label="Edit"
-            icon="pi pi-pencil"
-            severity="success"
-            className={styles.buttonSpacing}
-            onClick={() => {
-              setSelectedReviewData(review);
-              setShowEditReviewDialog(review);
-            }}
-          />
-          <Button
-            label="Delete"
-            icon="pi pi-trash"
-            severity="danger"
-            className={styles.buttonSpacing}
-            onClick={() => {
-              setSelectedReviewData(review);
-              setShowDeleteReviewDialog(review);
-            }}
-          />
+          {review.reviewType === "Corporate" && roleRef === Enums.JOBSEEKER && (
+            <>
+              <Button
+                label="Edit"
+                icon="pi pi-pencil"
+                severity="success"
+                className={styles.buttonSpacing}
+                onClick={() => {
+                  setSelectedReviewData(review);
+                  setShowEditReviewDialog(review);
+                }}
+              />
+              <Button
+                label="Delete"
+                icon="pi pi-trash"
+                severity="danger"
+                className={styles.buttonSpacing}
+                onClick={() => {
+                  setSelectedReviewData(review);
+                  setShowDeleteReviewDialog(review);
+                }}
+              />
+            </>
+          )}
+          {review.reviewType === "Job_Seeker" &&
+            roleRef === Enums.CORPORATE && (
+              <>
+                <Button
+                  label="Edit"
+                  icon="pi pi-pencil"
+                  severity="success"
+                  className={styles.buttonSpacing}
+                  onClick={() => {
+                    setSelectedReviewData(review);
+                    setShowEditReviewDialog(review);
+                  }}
+                />
+                <Button
+                  label="Delete"
+                  icon="pi pi-trash"
+                  severity="danger"
+                  className={styles.buttonSpacing}
+                  onClick={() => {
+                    setSelectedReviewData(review);
+                    setShowDeleteReviewDialog(review);
+                  }}
+                />
+              </>
+            )}
         </div>
       </Card>
     );
@@ -265,7 +435,7 @@ const ReviewPanel = ({
   return (
     <div className={styles.container}>
       <Toast ref={toast} />
-      <DataView
+      {/* <DataView
         value={sortFunction(review)}
         className={styles.dataViewContainer}
         layout="grid"
@@ -273,7 +443,33 @@ const ReviewPanel = ({
         header={reviewHeader}
         itemTemplate={itemTemplate}
         color="black"
-      ></DataView>
+      ></DataView> */}
+      <TabView>
+        <TabPanel header="Received">
+          <DataView
+            value={receivedReviews}
+            className={styles.dataViewContainer}
+            layout="grid"
+            rows={3}
+            header={reviewHeader}
+            itemTemplate={itemTemplate}
+            paginator
+            color="black"
+          />
+        </TabPanel>
+        <TabPanel header="Given">
+          <DataView
+            value={givenReviews}
+            className={styles.dataViewContainer}
+            layout="grid"
+            rows={3}
+            header={reviewHeader}
+            itemTemplate={itemTemplate}
+            paginator
+            color="black"
+          />
+        </TabPanel>
+      </TabView>
 
       <Dialog
         header="Create Review"
@@ -299,7 +495,7 @@ const ReviewPanel = ({
         onHide={hideEditReviewDialog}
         className={styles.cardDialog}
       >
-        {/* <EditReviewForm
+        <EditReviewForm
           formData={formData}
           setFormData={setFormData}
           handleInputChange={handleInputChange}
@@ -307,7 +503,8 @@ const ReviewPanel = ({
           selectedReview={selectedReviewData}
           formErrors={formErrors}
           setFormErrors={setFormErrors}
-        /> */}
+          roleRef={roleRef}
+        />
       </Dialog>
 
       <Dialog
