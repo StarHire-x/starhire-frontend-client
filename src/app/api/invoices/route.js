@@ -26,11 +26,7 @@ export const getAllCorporateInvoices = async (accessToken, corporateId) => {
   }
 };
 
-export const updateInvoicePaymentStatus = async (
-  accessToken,
-  invoiceId,
-  request
-) => {
+export const updateInvoicePayment = async (accessToken, invoiceId, request) => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/invoice/invoice-payment/${invoiceId}`,

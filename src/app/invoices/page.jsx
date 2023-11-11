@@ -4,18 +4,20 @@ import { useRouter } from "next/navigation";
 import { Badge } from "primereact/badge";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
+import { Checkbox } from "primereact/checkbox";
 import { Column } from "primereact/column";
-import { ConfirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
+import { Dialog } from "primereact/dialog";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Tag } from "primereact/tag";
+import { Toast } from "primereact/toast";
 import { useEffect, useRef, useState } from "react";
 import {
   getAllCorporateInvoices,
-  updateInvoicePaymentStatus,
+  updateInvoicePayment,
 } from "../api/invoices/route";
+import { uploadFile } from "../api/upload/route";
 import styles from "./page.module.css";
-import { Toast } from "primereact/toast";
 
 const Invoices = () => {
   const session = useSession();
@@ -34,23 +36,33 @@ const Invoices = () => {
     session.status === "authenticated" &&
     session.data &&
     session.data.user.userId;
+  console.log(corporateId);
 
   const [invoices, setInvoices] = useState([]);
   const [expandedRows, setExpandedRows] = useState(null);
-  const [selectedInvoicePaymentId, setSelectedInvoicePaymentId] =
-    useState(null);
+  const [selectedInvoicePayment, setSelectedInvoicePayment] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const toast = useRef(null);
 
   const loadInvoices = async () => {
+    setIsLoading(true);
     const allInvoices = await getAllCorporateInvoices(accessToken, corporateId);
     setInvoices(allInvoices);
+    const selectedInvoiceUpdateList = allInvoices.filter(
+      (invoice) => invoice.invoiceId === selectedInvoicePayment?.invoiceId
+    );
+    selectedInvoicePayment &&
+      setSelectedInvoicePayment(
+        selectedInvoiceUpdateList.length > 0
+          ? selectedInvoiceUpdateList[0]
+          : null
+      );
     setIsLoading(false);
   };
 
   useEffect(() => {
     if (accessToken) {
-      setIsLoading(true);
       loadInvoices();
     }
   }, [accessToken, corporateId]);
@@ -130,28 +142,35 @@ const Invoices = () => {
   };
 
   const paidButtons = (rowData) => {
-    if (rowData.invoiceStatus === "Not_Paid") {
-      return (
-        <Button
-          label="Indicate Payment"
-          severity="success"
-          size="small"
-          className={styles.paymentButton}
-          onClick={() => setSelectedInvoicePaymentId(rowData?.invoiceId)}
-        />
-      );
-    }
-    return rowData?.invoiceLink ? (
-      <Button
-        label="Invoice"
-        severity="info"
-        size="small"
-        className={styles.paymentButton}
-        icon="pi pi-download"
-        onClick={() => window.location.assign(rowData?.invoiceLink)}
-      />
-    ) : (
-      <></>
+    return (
+      <div className={styles.actionButtons}>
+        {rowData?.invoiceLink && (
+          <Button
+            label="Invoice"
+            severity="info"
+            size="small"
+            className={styles.paymentButton}
+            icon="pi pi-download"
+            onClick={() =>
+              window.open(
+                rowData?.stripePaymentLink !== ""
+                  ? rowData?.stripePaymentLink
+                  : rowData?.invoiceLink,
+                "_blank"
+              )
+            }
+          />
+        )}
+        {rowData?.invoiceStatus === "Not_Paid" && (
+          <Button
+            label="Make Payment"
+            severity="success"
+            size="small"
+            className={styles.makePaymentButton}
+            onClick={() => setSelectedInvoicePayment(rowData)}
+          />
+        )}
+      </div>
     );
   };
 
@@ -211,11 +230,26 @@ const Invoices = () => {
 
   const handlePaidClick = async () => {
     setIsLoading(true);
-    await updateInvoicePaymentStatus(accessToken, selectedInvoicePaymentId, {
-      invoiceStatus: "Indicated_Paid",
-    });
+    let request = {};
+    if (selectedInvoicePayment?.proofOfPaymentLink !== "") {
+      request = {
+        invoiceStatus: "Indicated_Paid",
+        proofOfPaymentLink: selectedInvoicePayment?.proofOfPaymentLink,
+        stripePaymentLink: "",
+        stripeInvoiceId: "",
+      };
+    } else {
+      request = {
+        invoiceStatus: "Indicated_Paid",
+      };
+    }
+    await updateInvoicePayment(
+      accessToken,
+      selectedInvoicePayment?.invoiceId,
+      request
+    );
     await loadInvoices();
-    setSelectedInvoicePaymentId(null);
+    setSelectedInvoicePayment(null);
     setIsLoading(false);
     toast.current.show({
       severity: "success",
@@ -225,16 +259,103 @@ const Invoices = () => {
     });
   };
 
+  const handleUploadNewFile = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    try {
+      setIsUploading(true);
+      const response = await uploadFile(file, accessToken);
+
+      const updatedInvoice = {
+        ...selectedInvoicePayment,
+        proofOfPaymentLink: response?.url,
+      };
+      console.log(updatedInvoice);
+      setSelectedInvoicePayment(updatedInvoice);
+      setIsUploading(false);
+    } catch (error) {
+      console.error("There was an error uploading the file", error);
+    }
+  };
+
+  const footerContent = (
+    <div>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        onClick={() => setSelectedInvoicePayment(null)}
+        className="p-button-text"
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        onClick={() => handlePaidClick()}
+        autoFocus
+        loading={isUploading}
+        disabled={
+          !(
+            selectedInvoicePayment?.invoiceStatus === "Indicated_Paid" ||
+            selectedInvoicePayment?.proofOfPaymentLink !== ""
+          )
+        }
+      />
+    </div>
+  );
+
   const DialogConfirmation = (
-    <ConfirmDialog
-      visible={selectedInvoicePaymentId != null}
-      onHide={() => setSelectedInvoicePaymentId(null)}
-      message="Have you paid to StarHire?"
-      header="Confirm Payment"
-      icon="pi pi-exclamation-triangle"
-      accept={() => handlePaidClick()}
-      reject={() => setSelectedInvoicePaymentId(null)}
-    />
+    <>
+      <Dialog
+        header="Payment Methods"
+        visible={selectedInvoicePayment != null}
+        style={{ width: "50vw" }}
+        onHide={() => setSelectedInvoicePayment(null)}
+        footer={footerContent}
+      >
+        <div className={styles.dialogConfirmation}>
+          <div className={styles.stripeHeader}>
+            <b>{"1) Stripe"}</b>
+            <Checkbox
+              checked={
+                selectedInvoicePayment?.invoiceStatus === "Indicated_Paid"
+              }
+              disabled
+            />
+            <Button
+              icon="pi pi-refresh"
+              rounded
+              text
+              onClick={() => loadInvoices()}
+            />
+          </div>
+          <div className={styles.stripePayment}>
+            <p> Make payment with Stripe: </p>
+            <Button
+              label="Payment Link"
+              severity="info"
+              text
+              styles={{ width: "1px" }}
+              onClick={() => {
+                window.open(
+                  selectedInvoicePayment?.stripePaymentLink,
+                  "_blank"
+                );
+              }}
+            />
+          </div>
+
+          <div className={styles.stripeHeader}>
+            <b>{"2) Others"}</b>
+            <Checkbox
+              checked={selectedInvoicePayment?.proofOfPaymentLink !== ""}
+              disabled
+            />
+          </div>
+          <div>
+            <input type="file" onChange={(e) => handleUploadNewFile(e)} />
+          </div>
+        </div>
+      </Dialog>
+    </>
   );
 
   return (
@@ -244,7 +365,7 @@ const Invoices = () => {
       <div className={styles.heading}>
         <h2>Invoices</h2>
       </div>
-      {isLoading && <ProgressSpinner style={{marginLeft: "45vw"}}/>}
+      {isLoading && <ProgressSpinner style={{ marginLeft: "45vw" }} />}
       {!isLoading && (
         <Card className={styles.mainTable}>
           <DataTable
