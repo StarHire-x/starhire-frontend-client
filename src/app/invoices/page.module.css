@@ -30,9 +30,43 @@
   background-color: grey;
 }
 
+.actionButtons {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
 .paymentButton {
   display: flex;
   align-self: center;
   justify-content: center;
-  width: 70%;
+  width: 100px;
+}
+
+.makePaymentButton {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  width: 150px;
+}
+
+.dialogConfirmation {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stripeHeader {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.stripePayment {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  padding-left: 25px;
 }
