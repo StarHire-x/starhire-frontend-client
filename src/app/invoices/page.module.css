@@ -13,8 +13,13 @@
   top: 25vh;
   height: 65%;
   width: 92%;
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
+}
+
+.tableHeader {
+  display: flex;
+  justify-content: space-between;
 }
 
 .expandCollapseHeader {
@@ -69,4 +74,19 @@
   align-content: center;
   align-items: center;
   padding-left: 25px;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.avatarImageContainer {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* To make it circular */
+  object-fit: cover; /* To ensure the image maintains its aspect ratio */
+  margin-bottom: 0px; /* Add some spacing below the image */
 }

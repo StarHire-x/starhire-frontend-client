@@ -1,17 +1,20 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Badge } from "primereact/badge";
+import { FilterMatchMode, FilterOperator } from "primereact/api";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { Checkbox } from "primereact/checkbox";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
+import { Image } from "primereact/image";
+import { InputText } from "primereact/inputtext";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Tag } from "primereact/tag";
 import { Toast } from "primereact/toast";
 import { useEffect, useRef, useState } from "react";
+import HumanIcon from "../../../public/icon.png";
 import {
   getAllCorporateInvoices,
   updateInvoicePayment,
@@ -22,6 +25,7 @@ import styles from "./page.module.css";
 const Invoices = () => {
   const session = useSession();
   const router = useRouter();
+  const toast = useRef(null);
 
   if (session.status === "unauthenticated") {
     router.push("/login");
@@ -36,14 +40,30 @@ const Invoices = () => {
     session.status === "authenticated" &&
     session.data &&
     session.data.user.userId;
-  console.log(corporateId);
 
   const [invoices, setInvoices] = useState([]);
   const [expandedRows, setExpandedRows] = useState(null);
   const [selectedInvoicePayment, setSelectedInvoicePayment] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const toast = useRef(null);
+  const [globalFilterValue, setGlobalFilterValue] = useState("");
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    invoiceId: {
+      operator: FilterOperator.OR,
+      constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }],
+    },
+  });
+
+  const onGlobalFilterChange = (e) => {
+    const value = e.target.value;
+    let _filters = { ...filters };
+
+    _filters["global"].value = value;
+
+    setFilters(_filters);
+    setGlobalFilterValue(value);
+  };
 
   const loadInvoices = async () => {
     setIsLoading(true);
@@ -125,6 +145,29 @@ const Invoices = () => {
     }
   };
 
+  const userDetailBodyTemplate = (userData) => {
+    const userName = userData?.userName;
+    const avatar = userData?.profilePictureUrl;
+    return (
+      <div className={styles.imageContainer}>
+        {avatar !== "" ? (
+          <img
+            alt={avatar}
+            src={avatar}
+            className={styles.avatarImageContainer}
+          />
+        ) : (
+          <Image
+            src={HumanIcon}
+            alt="Icon"
+            className={styles.avatarImageContainer}
+          />
+        )}
+        <span>{userName}</span>
+      </div>
+    );
+  };
+
   const allowExpansion = (rowData) => {
     return rowData.jobApplications?.length > 0;
   };
@@ -177,13 +220,17 @@ const Invoices = () => {
   const rowExpansionTemplate = (data) => {
     return (
       <div className="p-3">
-        <Badge
-          value={`Job Applications under Invoice ${data.invoiceId}`}
+        {/* <Badge
+          value={}
           severity="info"
           size="large"
           className={styles.badge}
-        />
-        <DataTable value={data.jobApplications} showGridlines>
+        /> */}
+        <DataTable
+          value={data.jobApplications}
+          showGridlines
+          header={`Invoice ${data.invoiceId} Job Applications`}
+        >
           <Column
             field="jobApplicationId"
             header="Application ID"
@@ -206,9 +253,9 @@ const Invoices = () => {
           />
           <Column
             field="jobSeeker"
-            header="Job Seeker"
+            header="Applicant"
             sortable
-            body={usernameBodyTemplate}
+            body={(rowData) => userDetailBodyTemplate(rowData?.jobSeeker)}
             style={{ width: "10rem" }}
           />
         </DataTable>
@@ -217,14 +264,24 @@ const Invoices = () => {
   };
 
   const header = (
-    <div className={styles.expandCollapseHeader}>
-      <Button icon="pi pi-plus" label="Expand All" onClick={expandAll} text />
-      <Button
-        icon="pi pi-minus"
-        label="Collapse All"
-        onClick={collapseAll}
-        text
-      />
+    <div className={styles.tableHeader}>
+      <div className={styles.expandCollapseHeader}>
+        <Button icon="pi pi-plus" label="Expand All" onClick={expandAll} text />
+        <Button
+          icon="pi pi-minus"
+          label="Collapse All"
+          onClick={collapseAll}
+          text
+        />
+      </div>
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText
+          value={globalFilterValue}
+          onChange={onGlobalFilterChange}
+          placeholder="Search By ID"
+        />
+      </span>
     </div>
   );
 
@@ -381,6 +438,12 @@ const Invoices = () => {
             scrollable
             scrollHeight="40vh"
             rowClassName={styles.mainTableRow}
+            emptyMessage="No invoices found."
+            paginator
+            rows={10}
+            rowsPerPageOptions={[10, 25, 50]}
+            filters={filters}
+            globalFilterFields={["invoiceId"]}
           >
             <Column expander={allowExpansion} style={{ width: "5rem" }} />
             <Column field="invoiceId" header="ID" sortable />
@@ -412,11 +475,10 @@ const Invoices = () => {
               field="corporate"
               header="Requested By"
               sortable
-              body={requestedBodyTemplate}
+              body={(rowData) => userDetailBodyTemplate(rowData?.administrator)}
             />
             <Column
               field="paidButtons"
-              header="Paid?"
               body={paidButtons}
               style={{ width: "10rem" }}
             />
