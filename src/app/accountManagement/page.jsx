@@ -476,8 +476,6 @@ const AccountManagement = () => {
             />
           </>
         )}
-        {roleRef === Enums.CORPORATE && (
-          <>
             <ReviewPanel
               formData={formData}
               setFormData={setFormData}
@@ -488,8 +486,6 @@ const AccountManagement = () => {
               handleInputChange={handleInputChange}
               dropdownList={dropdownList}
             />
-          </>
-        )}
       </div>
     );
   }

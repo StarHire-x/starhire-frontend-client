@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "./CreateReviewForm.module.css";
+import styles from "./EditReviewForm.module.css";
 import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
@@ -8,68 +8,64 @@ import { Calendar } from "primereact/calendar";
 import { Button } from "primereact/button";
 import { Checkbox } from "primereact/checkbox";
 import Enums from "@/common/enums/enums"; 
-import { Dropdown } from "primereact/dropdown";
 
-const CreateReviewForm = ({
+const EditReviewForm = ({
   formData,
   setFormData,
   handleInputChange,
-  addReview,
+  editReview,
+  selectedReview,
   formErrors,
-  setFormErrors,
   roleRef,
-  dropdownList,
+  setFormErrors,
 }) => {
+  useEffect(() => {
+    if (selectedReview) {
+      if (formatDate(new Date(selectedReview.endDate)) === "01/01/1970") {
+        setIsCurrentJob(true);
+      }
+      setFormData({
+        reviewId: selectedReview.reviewId,
+        startDate: new Date(selectedReview.startDate),
+        endDate:
+          formatDate(new Date(selectedReview.endDate)) === "01/01/1970"
+            ? null
+            : new Date(selectedReview.endDate),
+        description: selectedReview.description,
+      });
+    }
+  }, [selectedReview]);
+
   const [isCurrentJob, setIsCurrentJob] = useState(false);
 
-  const [selectedFilter, setSelectedFilter] = useState("");
-  const [filterOptions, setFilterOptions] = useState([]);
-
-  useEffect(() => {
-    if (dropdownList.length > 0 && roleRef === Enums.CORPORATE) {
-      let options = dropdownList.map((item) => ({
-        label: item.key,
-        value: item.value,
-      }));
-
-      setFilterOptions([...options]);
-
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        jobSeekerId: selectedFilter,
-      }));
-    } else if (dropdownList.length > 0 && roleRef === Enums.JOBSEEKER) {
-      let options = dropdownList.map((item) => ({
-        label: item.key,
-        value: item.value,
-      }));
-
-      setFilterOptions([...options]);
-
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        corporateId: selectedFilter,
-      }));
-    }
-  }, [dropdownList, setFormData, selectedFilter]);
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    return new Date(dateString).toLocaleDateString("en-GB", options);
+  };
 
   return (
     <div className={styles.container}>
-      <form className={styles.form} onSubmit={addReview}>
+      <form className={styles.form} onSubmit={editReview}>
         <div className={styles.cardBody}>
           {roleRef === Enums.CORPORATE && (
             <>
-              <div className={styles.cardRow}>
-                <label>Job Seeker username</label>
-                <Dropdown
-                  name="jobSeekerId"
-                  value={selectedFilter}
-                  options={filterOptions}
-                  onChange={(e) => setSelectedFilter(e.value)}
-                  placeholder="Select Job Seeker"
-                  required
+              {/* <div className={styles.cardRow}>
+                <label>Job Seeker Username</label>
+                <InputText
+                  name="userName"
+                  value={selectedReview?.jobSeeker.userName}
+                  readOnly
                 />
               </div>
+
+              <div className={styles.cardRow}>
+                <label>Job Seeker Full Name</label>
+                <InputText
+                  name="fullName"
+                  value={selectedReview?.jobSeeker.fullName}
+                  readOnly
+                />
+              </div> */}
 
               <div className={styles.cardRow}>
                 <label>Start Date</label>
@@ -147,8 +143,8 @@ const CreateReviewForm = ({
                   name="description"
                   value={formData?.description}
                   onChange={handleInputChange}
-                  rows={7}
-                  autoResize={true}
+                  rows={7} /* Adjust as needed */
+                  autoResize={true} /* If you want it to resize automatically */
                   required
                 />
               </div>
@@ -156,17 +152,23 @@ const CreateReviewForm = ({
           )}
           {roleRef === Enums.JOBSEEKER && (
             <>
-              <div className={styles.cardRow}>
-                <label>Corporate username</label>
-                <Dropdown
-                  name="corporateId"
-                  value={selectedFilter}
-                  options={filterOptions}
-                  onChange={(e) => setSelectedFilter(e.value)}
-                  placeholder="Select Corporate"
-                  required
+              {/* <div className={styles.cardRow}>
+                <label>Job Seeker Username</label>
+                <InputText
+                  name="userName"
+                  value={selectedReview?.jobSeeker.userName}
+                  readOnly
                 />
               </div>
+
+              <div className={styles.cardRow}>
+                <label>Job Seeker Full Name</label>
+                <InputText
+                  name="fullName"
+                  value={selectedReview?.jobSeeker.fullName}
+                  readOnly
+                />
+              </div> */}
 
               <div className={styles.cardRow}>
                 <label>Start Date</label>
@@ -244,8 +246,8 @@ const CreateReviewForm = ({
                   name="description"
                   value={formData?.description}
                   onChange={handleInputChange}
-                  rows={7}
-                  autoResize={true}
+                  rows={7} /* Adjust as needed */
+                  autoResize={true} /* If you want it to resize automatically */
                   required
                 />
               </div>
@@ -254,11 +256,11 @@ const CreateReviewForm = ({
         </div>
 
         <div className={styles.buttonContainer}>
-          <Button label="Create Review" severity="success" raised />
+          <Button label="Save Changes" severity="success" raised />
         </div>
       </form>
     </div>
   );
 };
 
-export default CreateReviewForm;
+export default EditReviewForm;
