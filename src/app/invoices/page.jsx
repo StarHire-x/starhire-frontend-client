@@ -116,6 +116,44 @@ const Invoices = () => {
     return formatMoney(rowData.totalAmount);
   };
 
+  const getPaymentMethodSeverity = (paymentMethod) => {
+    if (paymentMethod === "Others") {
+      // using manual payment
+      return "info";
+    } else if (paymentMethod === "Stripe") {
+      // using stripe payment
+      return "warning";
+    }
+  };
+
+  const paymentMethodBodyTemplate = (rowData) => {
+    const paymentMethod =
+      rowData.stripePaymentLink == null || rowData.stripePaymentLink === ""
+        ? "Others"
+        : "Stripe";
+    //this column will be showing which payment method did the corporate use.
+    return (
+      <>
+        {rowData.invoiceStatus !== "Not_Paid" ? (
+          <Tag
+            value={paymentMethod}
+            severity={getPaymentMethodSeverity(paymentMethod)}
+            style={{
+              fontSize: "0.8em",
+              display: "flex",
+              justifyContent: "center",
+              alignContent: "center",
+              textAlign: "center",
+              width: "100px",
+            }}
+          />
+        ) : (
+          <p style={{marginLeft: "45px"}}>-</p>
+        )}
+      </>
+    );
+  };
+
   const requestedBodyTemplate = (rowData) => {
     return rowData.administrator?.userName;
   };
@@ -471,6 +509,11 @@ const Invoices = () => {
               sortable
               body={amountBodyTemplate}
             />
+            <Column
+              header="Payment Method"
+              sortable
+              body={paymentMethodBodyTemplate}
+            ></Column>
             <Column
               field="corporate"
               header="Requested By"
