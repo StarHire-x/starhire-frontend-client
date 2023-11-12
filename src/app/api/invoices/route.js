@@ -51,3 +51,28 @@ export const updateInvoicePayment = async (accessToken, invoiceId, request) => {
     throw error;
   }
 };
+
+export const getCorporateInvoiceStats = async (userId, accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/invoice/oneCorporate/${userId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: "no-store",
+      }
+    );
+    const response = await res.json();
+    if (response.statusCode === 200) {
+      return response.data;
+    } else {
+      throw error;
+    }
+  } catch (error) {
+    console.log("There was a problem updating the job application", error);
+    throw error;
+  }
+};

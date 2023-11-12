@@ -8,6 +8,7 @@ import Link from "next/link";
 import Enums from "@/common/enums/enums";
 import JobStatisticsModal from "@/components/JobStatisticsModal/JobStatisticsModal";
 import JobApplicationModal from "@/components/JobApplicationModal/JobApplicationModal";
+import InvoiceStatisticsModal from "@/components/InvoiceStatisticsModal/InvoiceStatisticsModal";
 
 const Dashboard = () => {
   const session = useSession();
@@ -48,6 +49,7 @@ const Dashboard = () => {
             <div className={styles.mainContainer}>
               <JobStatisticsModal accessToken={accessToken} userId={userId} />
               <JobApplicationModal accessToken={accessToken} userId={userId} />
+              <InvoiceStatisticsModal accessToken={accessToken} userId={userId} />
             </div>
           )}
           <div className={styles.textContainer}>

@@ -68,6 +68,11 @@ const JobStatisticsModal = ({ accessToken, userId }) => {
           },
           scales: {
             x: {
+              title: {
+                display: true,
+                text: "Time Period", // Replace with your actual x-axis label
+                color: textColorSecondary,
+              },
               ticks: {
                 color: textColorSecondary,
               },
@@ -76,6 +81,12 @@ const JobStatisticsModal = ({ accessToken, userId }) => {
               },
             },
             y: {
+              title: {
+                display: true,
+                text: "Number of Job Listings", // Replace with your actual y-axis label
+                color: textColorSecondary,
+                position: "left",
+              },
               ticks: {
                 stepSize: 1,
                 color: textColorSecondary,
