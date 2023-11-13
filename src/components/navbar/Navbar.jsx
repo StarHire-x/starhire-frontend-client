@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 
 const MENU_LIST_AUTHENTICATED_JOB_SEEKER = [
   { text: "Home", href: "/" },
+  { text: "Dashboard", href: "/dashboard" },
   { text: "Jobs", href: "/jobListing" },
   { text: "Applications", href: "/jobApplication" },
   { text: "Forum", href: "/forum" },
