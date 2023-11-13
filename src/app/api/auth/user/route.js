@@ -364,3 +364,32 @@ export const getCorporateJobApplicationStatistics = async (
     throw error;
   }
 };
+
+export const getJobSeekerInformation = async (
+  jobSeekerId,
+  accessToken
+) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/job-seeker/${jobSeekerId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: "no-store",
+      }
+    );
+
+    const response = await res.json();
+
+    return response;
+  } catch (error) {
+    console.log(
+      "There was a problem obtaining the job application from job seeker",
+      error
+    );
+    throw error;
+  }
+};

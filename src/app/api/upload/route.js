@@ -50,3 +50,30 @@ export const uploadFileNonAccessToken = async (file) => {
     throw error;
   }
 };
+
+export const generateResume = async (jobSeekerData, accessToken) => {
+  try {
+    
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/pdf`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(jobSeekerData), // You don't need the content-type header, browsers will automatically recognize the multipart form data
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(
+        errorData.message || "An error occurred during the file upload."
+      );
+    }
+    const responseJson = await res.json();
+    return responseJson;
+  } catch (error) {
+    console.log("There was a problem uploading the pdf", error);
+    throw error;
+  }
+};
