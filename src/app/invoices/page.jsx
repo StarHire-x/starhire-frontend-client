@@ -148,7 +148,7 @@ const Invoices = () => {
             }}
           />
         ) : (
-          <p style={{marginLeft: "45px"}}>-</p>
+          <p style={{ marginLeft: "45px" }}>-</p>
         )}
       </>
     );
@@ -234,7 +234,9 @@ const Invoices = () => {
             icon="pi pi-download"
             onClick={() =>
               window.open(
-                rowData?.stripePaymentLink !== ""
+                rowData?.invoiceStatus === "Not_Paid"
+                  ? rowData?.invoiceLink
+                  : rowData?.stripePaymentLink !== ""
                   ? rowData?.stripePaymentLink
                   : rowData?.invoiceLink,
                 "_blank"
@@ -386,7 +388,7 @@ const Invoices = () => {
         icon="pi pi-check"
         onClick={() => handlePaidClick()}
         autoFocus
-        loading={isUploading}
+        loading={isUploading || isLoading}
         disabled={
           !(
             selectedInvoicePayment?.invoiceStatus === "Indicated_Paid" ||
