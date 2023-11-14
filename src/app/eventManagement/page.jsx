@@ -144,13 +144,13 @@ const EventManagementPage = () => {
                 <span>{eventListing.location}</span>
               </div>
               <div className={styles.cardRow}>
-                <span>Start Date:</span>
+                <span>Starts:</span>
                 <span>
                   {Utility.formatDateTime(eventListing.eventStartDateAndTime)}
                 </span>
               </div>
               <div className={styles.cardRow}>
-                <span>End Date:</span>
+                <span>Ends:</span>
                 <span>
                   {Utility.formatDateTime(eventListing.eventEndDateAndTime)}
                 </span>
@@ -326,7 +326,7 @@ const EventManagementPage = () => {
           />
           <Button
             className={styles.createEventListingButton}
-            label="Create An Event"
+            label="Post An Event"
             rounded
             onClick={() => setShowCreateDialog(true)}
           />

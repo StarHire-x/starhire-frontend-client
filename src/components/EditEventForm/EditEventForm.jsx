@@ -64,12 +64,14 @@ const EditEventForm = ({ initialData, onSave }) => {
       </div>
 
       <div className={styles.cardRow}>
-        <label htmlFor="eventStartDateAndTime">Event Start Date:</label>
+        <label htmlFor="eventStartDateAndTime">
+          Event Start Date and Time:
+        </label>
         <Calendar
           id="eventStartDateAndTime"
           name="eventStartDateAndTime"
           showTime
-          hourFormat='24'
+          hourFormat="24"
           value={formData.eventStartDateAndTime}
           minDate={new Date(new Date().setDate(new Date().getDate() + 1))}
           onChange={(e) => handleInputChange(e)}
@@ -77,13 +79,13 @@ const EditEventForm = ({ initialData, onSave }) => {
       </div>
 
       <div className={styles.cardRow}>
-        <label htmlFor="eventEndDateAndTime">Event End Date:</label>
+        <label htmlFor="eventEndDateAndTime">Event End Date and Time:</label>
         <Calendar
           id="eventEndDateAndTime"
           name="eventEndDateAndTime"
           value={formData.eventEndDateAndTime}
           showTime
-          hourFormat='24'
+          hourFormat="24"
           minDate={new Date(new Date().setDate(new Date().getDate() + 1))}
           onChange={(e) => handleInputChange(e)}
         />
