@@ -180,7 +180,7 @@ const EventManagementPage = () => {
             />
             <Button
               label="Cancel"
-              icon="pi pi-trash"
+              icon="pi pi-times"
               rounded
               onClick={() => {
                 setSelectedEventListingData(eventListing);
