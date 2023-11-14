@@ -168,24 +168,52 @@ const EventPage = () => {
             className={styles.eventImage}
           />
         )}
-        <h4>{eventData.eventName}</h4>
+        <p>
+          {eventData.corporate && (
+            <span
+              style={{
+                color:
+                  eventData.corporate.corporatePromotionStatus === "Premium"
+                    ? "gold"
+                    : "inherit",
+              }}
+            >
+              <h4 style={{ color: "inherit", margin: 0 }}>
+                {eventData.eventName}
+              </h4>
+            </span>
+          )}
+        </p>
+
         <p>
           <strong>Location:</strong> {eventData.location}
         </p>
         <p>
-          <strong>Organized By:</strong>{' '}
-          {eventData.corporate && eventData.corporate.userName}
+          <strong>Organized By:</strong>{" "}
+          {eventData.corporate && (
+            <span
+              style={{
+                color:
+                  eventData.corporate.corporatePromotionStatus === "Premium"
+                    ? "gold"
+                    : "inherit",
+              }}
+            >
+              {eventData.corporate.userName}
+            </span>
+          )}
         </p>
+
         <p>
-          <strong>Start Date:</strong>{' '}
+          <strong>Start Date:</strong>{" "}
           {Utility.formatDateTime(eventData.eventStartDateAndTime)}
         </p>
         <p>
-          <strong>End Date:</strong>{' '}
+          <strong>End Date:</strong>{" "}
           {Utility.formatDateTime(eventData.eventEndDateAndTime)}
         </p>
         <p>
-          <strong>Posted On:</strong>{' '}
+          <strong>Posted On:</strong>{" "}
           {Utility.formatDateTime(eventData.listingDate)}
         </p>
         <p>
