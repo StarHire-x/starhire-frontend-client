@@ -79,12 +79,20 @@ if (session.status === "unauthenticated") {
     const eventListingStatus = eventInfo.event.extendedProps.eventListingStatus;
     const eventTime = eventInfo.event.extendedProps.eventTime;
 
+    let textColor = "inherit"; 
+
+    if (eventListingStatus === "Upcoming") {
+      textColor = "green";
+    } else if (eventListingStatus === "Cancelled") {
+      textColor = "red";
+    } 
+
     return (
       <div
         style={{
           padding: "2px",
           borderRadius: "4px",
-          //color: eventListingStatus === "Upcoming" ? "green" : "red",
+          color: textColor,
           whiteSpace: "normal",
           overflow: "hidden",
           textOverflow: "ellipsis",
