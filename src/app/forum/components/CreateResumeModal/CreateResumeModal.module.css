@@ -47,6 +47,8 @@
   border: none;
   color: white;
   margin-top: 20px;
+  box-shadow: 0 4px 8px #35acfe !important;
+  transition: background-color 0.3s, box-shadow 0.3s !important; 
 }
 
 .progressBar {
