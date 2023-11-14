@@ -131,32 +131,60 @@ export const updateEventListing = async (request, id, accessToken) => {
   }
 };
 
-export const removeEventListing = async (id, accessToken) => {
+export const cancelEventListing = async (id, accessToken) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/event-listing/${id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/event-listing/${id}/cancel`,
       {
-        method: 'DELETE',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
-        cache: 'no-store',
       }
     );
 
-    console.log(res);
-    if (res.ok) {
-      return;
-    } else {
-      throw new Error(errorData.message || 'An error occurred');
+    if (!res.ok) {
+      const errorData = await res.json();
+      console.log(errorData);
+      throw new Error(
+        errorData.message || 'An error occurred while cancelling the event'
+      );
     }
+
     return await res.json();
   } catch (error) {
-    console.log('There was a problem deleting this event listing', error);
+    console.log('There was a problem cancelling the event listing', error);
     throw error;
   }
 };
+
+// export const removeEventListing = async (id, accessToken) => {
+//   try {
+//     const res = await fetch(
+//       `${process.env.NEXT_PUBLIC_BASE_URL}/event-listing/${id}`,
+//       {
+//         method: 'DELETE',
+//         headers: {
+//           'Content-Type': 'application/json',
+//           Authorization: `Bearer ${accessToken}`,
+//         },
+//         cache: 'no-store',
+//       }
+//     );
+
+//     console.log(res);
+//     if (res.ok) {
+//       return;
+//     } else {
+//       throw new Error(errorData.message || 'An error occurred');
+//     }
+//     return await res.json();
+//   } catch (error) {
+//     console.log('There was a problem deleting this event listing', error);
+//     throw error;
+//   }
+// };
 
 export const viewAllPremiumUsers = async (accessToken) => {
   try {
