@@ -2,7 +2,7 @@
   margin-bottom: 40px;
   text-align: center;
   font-weight: bold;
-  font-family: "Source Sans 3", sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
 }
 
 .event {
@@ -20,9 +20,9 @@
 }
 
 .event:hover {
-  transform: scale(1.05); /* Slightly scale the event on hover */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Add a shadow on hover */
-  cursor: pointer; /* Change the cursor to a hand pointer */
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 .eventImage {
@@ -57,10 +57,7 @@
 
 .dialogSize {
   width: 70%;
-  max-width: 600px; /* Set a max-width to ensure it doesn't become too big on larger screens */
-  /* Optionally, you can set a height as well if needed:
-  height: 500px;
-  */
+  max-width: 600px;
 }
 
 .dialogFooter {
