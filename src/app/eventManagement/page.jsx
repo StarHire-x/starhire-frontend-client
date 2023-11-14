@@ -1,6 +1,5 @@
 'use client';
 import React, { useEffect, useState, useRef } from 'react';
-import { Badge } from 'primereact/badge';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { ProgressSpinner } from 'primereact/progressspinner';
@@ -46,17 +45,6 @@ const EventManagementPage = () => {
   console.log(userIdRef);
 
   const toast = useRef(null);
-
-  const formatDateTime = (dateTimeString) => {
-    const options = {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    };
-    return new Date(dateTimeString).toLocaleString(undefined, options);
-  };
 
   const getStatus = (status) => {
     console.log('Checking status: ', status);
@@ -185,7 +173,6 @@ const EventManagementPage = () => {
               onClick={() => {
                 setSelectedEventListingData(eventListing);
                 setShowCancelDialog(eventListing);
-                // cancelEventListing(selectedEventListingData.eventListingId, accessToken);
               }}
             />
           </div>
@@ -202,7 +189,7 @@ const EventManagementPage = () => {
           newEventListing.image,
           accessToken
         );
-        imageUrl = uploadResponse.url; // Assuming your server returns a field named 'url' in its response that contains the S3 URL.
+        imageUrl = uploadResponse.url;
       }
       const payload = {
         ...newEventListing,
