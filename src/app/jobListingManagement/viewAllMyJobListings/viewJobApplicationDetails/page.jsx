@@ -755,6 +755,74 @@ ${currentUserName}`
                 </Dialog>
               </div>
             )}
+
+            {jobApplication?.jobApplicationStatus ===
+              "Offered" && (
+              <div className={styles.subButtons}>
+                <Button
+                  label="Reject"
+                  icon="pi pi-thumbs-down"
+                  rounded
+                  severity="danger"
+                  onClick={() => showUserDialog("Rejected")}
+                />
+
+                <Dialog
+                  visible={userDialog}
+                  style={{ width: "32rem" }}
+                  breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+                  header="Are you sure? This action is not reversible!!"
+                  className="p-fluid"
+                  footer={userDialogFooter}
+                  onHide={hideDialog}
+                ></Dialog>
+
+                <Dialog
+                  visible={confirmSendDialog}
+                  style={{ width: "32rem" }}
+                  header="Are you sure?, This action is not reversible!!"
+                  className="p-fluid"
+                  footer={confirmSendDialogFooter}
+                  onHide={hideConfirmSendDialog}
+                >
+                  {confirmSendDialogContent}
+                </Dialog>
+              </div>
+            )}
+
+            {jobApplication?.jobApplicationStatus ===
+              "Rejected" && (
+              <div className={styles.subButtons}>
+                <Button
+                  label="Accept"
+                  icon="pi pi-thumbs-up"
+                  rounded
+                  severity="success"
+                  onClick={() => showUserDialog("Offered")}
+                />
+
+                <Dialog
+                  visible={userDialog}
+                  style={{ width: "32rem" }}
+                  breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+                  header="Are you sure? This action is not reversible!!"
+                  className="p-fluid"
+                  footer={userDialogFooter}
+                  onHide={hideDialog}
+                ></Dialog>
+
+                <Dialog
+                  visible={confirmSendDialog}
+                  style={{ width: "32rem" }}
+                  header="Are you sure?, This action is not reversible!!"
+                  className="p-fluid"
+                  footer={confirmSendDialogFooter}
+                  onHide={hideConfirmSendDialog}
+                >
+                  {confirmSendDialogContent}
+                </Dialog>
+              </div>
+            )}
           </div>
         </div>
       )}
