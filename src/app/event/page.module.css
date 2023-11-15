@@ -5,6 +5,12 @@
   font-family: 'Source Sans 3', sans-serif;
 }
 
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .event {
   display: flex;
   flex-direction: column;
@@ -62,6 +68,12 @@
 
 .dialogFooter {
   text-align: center;
+}
+
+.calendarButton {
+  background-color: #35acfe !important;
+  color: white;
+  border: none !important;
 }
 
 .createButton {

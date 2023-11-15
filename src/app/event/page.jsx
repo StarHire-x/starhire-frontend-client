@@ -221,7 +221,15 @@ const EventPage = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.header}>Upcoming Events For You</h1>
+      <div className={styles.headerContainer}>
+        <h1 className={styles.header}>Upcoming Events For You</h1>
+        <Button
+          className={styles.calendarButton}
+          label="View on Calendar"
+          rounded
+          onClick={navigateToCalender}
+        />
+      </div>
       <Toast ref={toast} />
       {isLoading ? (
         <ProgressSpinner
@@ -258,12 +266,6 @@ const EventPage = () => {
           circular={true}
         />
       )}
-      <Button
-        className={styles.createEventListingButton}
-        label="View on Calender"
-        rounded
-        onClick={navigateToCalender}
-      />
 
       <Dialog
         header="Event Details"
