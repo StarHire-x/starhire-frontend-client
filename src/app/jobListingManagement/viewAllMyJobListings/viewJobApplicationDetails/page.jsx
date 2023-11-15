@@ -1008,7 +1008,7 @@ ${currentUserName}`
                     </p>
                     <p style={{ marginBottom: "30px" }}>
                       <strong>
-                        Are you sure you want to re offer this job application?
+                        Are you sure you want to re-offer this job application?
                       </strong>
                     </p>
                     <p style={{ marginBottom: "30px" }}>
