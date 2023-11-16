@@ -24,8 +24,12 @@ const JobApplicationModal = ({ accessToken, userId }) => {
   const [jobApplications, setJobApplications] = useState([]);
   const router = useRouter();
 
-  const [selectedFilter, setSelectedFilter] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("All Job Listings");
   const [filterOptions, setFilterOptions] = useState([
+    {
+      label: "All Job Listings",
+      value: "All Job Listings",
+    },
   ]);
 
   const [globalFilterValue, setGlobalFilterValue] = useState("");
@@ -45,10 +49,22 @@ const JobApplicationModal = ({ accessToken, userId }) => {
 
   const tabs = [
     { label: "All", icon: "pi pi-fw pi-user" },
-    { label: "Processing", icon: "pi pi-fw pi-thumbs-up" },
+    { label: "Processing", icon: "pi pi-fw pi-eye" },
     {
       label: "Waiting for Interview",
       icon: "pi pi-fw pi-stop-circle",
+    },
+    {
+      label: "Offered",
+      icon: "pi pi-fw pi-exclamation-circle",
+    },
+    {
+      label: "Rejected",
+      icon: "pi pi-fw pi-trash",
+    },
+    {
+      label: "Offer Accepted",
+      icon: "pi pi-fw pi-thumbs-up",
     },
   ];
 
@@ -68,6 +84,10 @@ const JobApplicationModal = ({ accessToken, userId }) => {
         }));
 
         setFilterOptions([
+          {
+            label: "All Job Listings",
+            value: "All Job Listings",
+          },
           ...corporateOptions,
         ]);
 
@@ -76,6 +96,7 @@ const JobApplicationModal = ({ accessToken, userId }) => {
         if (selectedFilter) {
           await filterData(information);
         }
+
       } catch (error) {
         console.error("An error occurred while fetching the data", error);
       }
@@ -93,7 +114,7 @@ const JobApplicationModal = ({ accessToken, userId }) => {
         Rejected: 0,
         Offered: 0,
       };
-
+      
       for (let application of applicationsArray) {
         if (stats[application.jobApplicationStatus] !== undefined) {
           stats[application.jobApplicationStatus]++;
@@ -104,26 +125,37 @@ const JobApplicationModal = ({ accessToken, userId }) => {
     };
 
     const filterData = async (information) => {
-      console.log("Hiiiiii")
-      console.log(selectedFilter);
-      const filteredData = information.formatResponse.filter(
-        (item) => item.jobListingId === selectedFilter
-      );
-      console.log("TESTTT");
-      console.log(filteredData);
+      let computedStats;
+      let filteredData;
+      let jobApplicationsArray;
 
-      // Check if filteredData has elements and access jobApplications from the first element
-      const jobApplicationsArray =
-        filteredData.length > 0 ? filteredData[0].jobApplications : [];
+      if(selectedFilter === "All Job Listings") {
+        filteredData = information.formatResponse.flatMap(
+          (item) => item.jobApplications
+        );
+  
+        jobApplicationsArray =
+          filteredData.length > 0 ? filteredData : [];
 
-      // Compute statistics for this set of job applications
-      const computedStats = computeOverallStats(jobApplicationsArray);
+        computedStats = computeOverallStats(jobApplicationsArray);
+      } else {
+        filteredData = information.formatResponse.filter(
+          (item) => item.jobListingId === selectedFilter
+        );
+
+        jobApplicationsArray =
+          filteredData.length > 0 ? filteredData[0].jobApplications : [];
+
+        computedStats = computeOverallStats(
+          jobApplicationsArray
+        );
+      }
 
       // Update overallStats state
       setOverallStats(computedStats);
 
       const filteredInformation = jobApplicationsArray.filter((item) =>
-        ["Processing", "Waiting_For_Interview"].includes(
+        ["Processing", "Waiting_For_Interview", "Offered", "Rejected", "Offer_Accepted"].includes(
           item.jobApplicationStatus
         )
       );
@@ -143,6 +175,25 @@ const JobApplicationModal = ({ accessToken, userId }) => {
           filteredInformation.filter(
             (application) =>
               application.jobApplicationStatus === "Waiting_For_Interview"
+          )
+        );
+      } else if (currentTab === 3) {
+        setJobApplications(
+          filteredInformation.filter(
+            (application) => application.jobApplicationStatus === "Offered"
+          )
+        );
+      } else if (currentTab === 4) {
+        setJobApplications(
+          filteredInformation.filter(
+            (application) => application.jobApplicationStatus === "Rejected"
+          )
+        );
+      } else if (currentTab === 5) {
+        setJobApplications(
+          filteredInformation.filter(
+            (application) =>
+              application.jobApplicationStatus === "Offer_Accepted"
           )
         );
       }
@@ -185,7 +236,7 @@ const JobApplicationModal = ({ accessToken, userId }) => {
       ><div></div>
       <div></div>
         <h2>
-          Applications for: ({selectedFilter})
+          Job Applications for Id:({selectedFilter})
         </h2>
         <Dropdown
           style={{ margin: "10px 10px 10px 10px" }}
@@ -288,6 +339,12 @@ const JobApplicationModal = ({ accessToken, userId }) => {
           <div className={styles.cardColumnLeft}>
             <Card className={styles.customCard}>
               <div className={styles.cardLayout}>
+                <h3>{overallStats.Total}</h3>
+                <p>Total Application</p>
+              </div>
+            </Card>
+            <Card className={styles.customCard}>
+              <div className={styles.cardLayout}>
                 <h3>{overallStats.Offer_Accepted}</h3>
                 <p>Accepted Offer</p>
               </div>
@@ -328,12 +385,6 @@ const JobApplicationModal = ({ accessToken, userId }) => {
                 <p>Rejected</p>
               </div>
             </Card>
-            <Card className={styles.customCard}>
-              <div className={styles.cardLayout}>
-                <h3>{overallStats.Total}</h3>
-                <p>Total Application</p>
-              </div>
-            </Card>
           </div>
           <div className={styles.cardColumnRight}>
             <DataTable
@@ -346,7 +397,7 @@ const JobApplicationModal = ({ accessToken, userId }) => {
                 "jobSeekerName",
                 "recrutierName",
               ]}
-              tableStyle={{ minWidth: "65rem" }}
+              tableStyle={{ maxWidth: "65rem" }}
               rows={4}
               paginator
               paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -359,7 +410,7 @@ const JobApplicationModal = ({ accessToken, userId }) => {
                 style={{
                   textAlign: "center",
                   verticalAlign: "middle",
-                  width: "50px",
+                  width: "20px",
                 }}
                 sortable
               ></Column>
@@ -368,14 +419,14 @@ const JobApplicationModal = ({ accessToken, userId }) => {
                 header="Job Seeker"
                 sortable
                 body={jobSeekerBodyTemplate}
-                style={{ width: "100px" }}
+                style={{ width: "50px" }}
               ></Column>
               <Column
                 field="recruiterName"
                 header="Recruiter"
                 sortable
                 body={recruiterBodyTemplate}
-                style={{ width: "100px" }}
+                style={{ width: "50px" }}
               ></Column>
               <Column
                 field="jobApplicationStatus"
@@ -383,14 +434,14 @@ const JobApplicationModal = ({ accessToken, userId }) => {
                 style={{
                   textAlign: "center",
                   verticalAlign: "middle",
-                  width: "100px",
+                  width: "50px",
                 }}
                 sortable
                 body={statusBodyTemplate}
               ></Column>
               <Column
                 exportable={false}
-                style={{ width: "50px" }}
+                style={{ width: "10px", verticalAlign: "middle" }}
                 header="Actions"
                 body={viewDetailsBodyTemplate}
               ></Column>
