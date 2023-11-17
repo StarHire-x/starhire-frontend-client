@@ -8,6 +8,8 @@ import Link from "next/link";
 import Enums from "@/common/enums/enums";
 import JobStatisticsModal from "@/components/JobStatisticsModal/JobStatisticsModal";
 import JobApplicationModal from "@/components/JobApplicationModal/JobApplicationModal";
+import InvoiceStatisticsModal from "@/components/InvoiceStatisticsModal/InvoiceStatisticsModal";
+import CreateResumeModal from "../forum/components/CreateResumeModal/CreateResumeModal";
 
 const Dashboard = () => {
   const session = useSession();
@@ -24,7 +26,7 @@ const Dashboard = () => {
     session.data &&
     session.data.user.userId;
 
-  const role =
+  const roleRef =
     session.status === "authenticated" &&
     session.data &&
     session.data.user.role;
@@ -48,6 +50,19 @@ const Dashboard = () => {
             <div className={styles.mainContainer}>
               <JobStatisticsModal accessToken={accessToken} userId={userId} />
               <JobApplicationModal accessToken={accessToken} userId={userId} />
+              <InvoiceStatisticsModal
+                accessToken={accessToken}
+                userId={userId}
+              />
+            </div>
+          )}
+          {session.data.user.role === "Job_Seeker" && (
+            <div className={styles.mainContainer}>
+              <CreateResumeModal
+                accessToken={accessToken}
+                userId={userId}
+                roleRef={roleRef}
+              />
             </div>
           )}
           <div className={styles.textContainer}>

@@ -147,7 +147,7 @@ const PaymentPage = () => {
       }
 
       closeDialog();
-    }, 3000);
+    }, 2000);
   };
 
   const closeDialog = () => {
@@ -163,7 +163,7 @@ const PaymentPage = () => {
         </div>
 
         <div className="paymentContent">
-          {status === 'Premium' ? (
+          {status === "Premium" ? (
             <>
               <Card
                 title="Thanks for choosing Starhire!"
@@ -182,7 +182,8 @@ const PaymentPage = () => {
                     </p>
                     <p className={styles.warningText}>
                       Upon unsubscribing, you will immediately lose all access
-                      to &quot;Premium&quot; services! There will be no partial refunds.
+                      to &quot;Premium&quot; services! There will be no partial
+                      refunds.
                     </p>
                   </div>
                   <Button
@@ -201,7 +202,7 @@ const PaymentPage = () => {
                       <strong>Username:</strong> {corporate.userName}
                     </p>
                     <p>
-                      <strong>Status Type:</strong>{' '}
+                      <strong>Status Type:</strong>{" "}
                       {corporate.corporatePromotionStatus}
                     </p>
                     <p>
@@ -211,16 +212,16 @@ const PaymentPage = () => {
                       <strong>Customer ID:</strong> {corporate.stripeCustId}
                     </p>
                     <p>
-                      <strong>Next Billing Cycle Start Date:</strong>{' '}
+                      <strong>Next Billing Cycle Start Date:</strong>{" "}
                       {convertToSingaporeDate(billCycle?.nextBillingCycleStart)}
                     </p>
                     <p>
-                      <strong>Next Billing Cycle End Date:</strong>{' '}
+                      <strong>Next Billing Cycle End Date:</strong>{" "}
                       {convertToSingaporeDate(billCycle?.nextBillingCycleEnd)}
                     </p>
                   </div>
                   <Button
-                    label="View My Invoices"
+                    label="Invoice History"
                     className={styles.viewInvoicesButton}
                     onClick={viewMyInvoicesPageRedirect}
                     rounded
@@ -231,48 +232,66 @@ const PaymentPage = () => {
               <Dialog
                 header="Unsubscribe Confirmation"
                 visible={showUnSubscribeDialog}
-                style={{ width: '400px' }}
+                style={{ width: "400px" }}
                 onHide={() => setShowUnSubscribeDialog(false)}
                 footer={
                   <div>
                     <Button
                       label="I Acknowledge"
                       icon="pi pi-check"
-                      style={{ backgroundColor: 'red', color: 'white', border: '1px red solid'}}
+                      style={{
+                        backgroundColor: "red",
+                        color: "white",
+                        border: "1px red solid",
+                      }}
                       onClick={confirmUnsubscribe}
                     />
                   </div>
                 }
               >
                 Are you sure you want to unsubscribe from Starhire Premium?
-                <p style={{ color: 'red', marginTop:"5px", fontWeight: "bold" }}>No refunds will be given!</p>
+                <p
+                  style={{ color: "red", marginTop: "5px", fontWeight: "bold" }}
+                >
+                  No refunds will be given!
+                </p>
               </Dialog>
             </>
           ) : (
-            <Card title="Subscribe to Premium" className={styles.card}>
-              <div className={styles.cardContent}>
-                <ul className={styles.benefitList}>
-                  {subscriptionBenefits.map((benefit, index) => (
-                    <li key={index} className={styles.benefitItem}>
-                      {benefit}
-                    </li>
-                  ))}
-                </ul>
-                <div className={styles.subscribeButtonContainer}>
-                  <Button
-                    label="Subscribe Now"
-                    icon="pi pi-check"
-                    className={styles.btnSubscribe}
-                    onClick={handleSubscribe}
-                  />
+            <>
+              <Card title="Subscribe to Premium" className={styles.card}>
+                <div className={styles.cardContent}>
+                  <ul className={styles.benefitList}>
+                    {subscriptionBenefits.map((benefit, index) => (
+                      <li key={index} className={styles.benefitItem}>
+                        {benefit}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className={styles.subscribeButtonContainer}>
+                    <Button
+                      label="Subscribe Now"
+                      icon="pi pi-check"
+                      className={styles.btnSubscribe}
+                      onClick={handleSubscribe}
+                      rounded
+                    />
+                    <Button
+                      label="Invoice History"
+                      className={styles.viewInvoicesButton}
+                      onClick={viewMyInvoicesPageRedirect}
+                      rounded
+                    />
+                  </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
+            </>
           )}
+
           <Dialog
             header="Subscribe Confirmation"
             visible={showSubscribeDialog}
-            style={{ width: '400px' }}
+            style={{ width: "400px" }}
             onHide={() => setShowSubscribeDialog(false)}
             footer={
               <div>
@@ -292,21 +311,22 @@ const PaymentPage = () => {
             The price of Starhire Premium is $10 SGD, Are you sure you want to
             continue?
           </Dialog>
+
           <Dialog
             header="Redirecting..."
             visible={redirectingDialogVisible}
-            style={{ width: '400px' }}
+            style={{ width: "400px" }}
             onHide={closeDialog}
           >
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
               }}
             >
               <ProgressSpinner
-                style={{ width: '50px', height: '50px' }}
+                style={{ width: "50px", height: "50px" }}
                 strokeWidth="4"
               />
               <p>You will be redirected to the Stripe Payment Page.</p>

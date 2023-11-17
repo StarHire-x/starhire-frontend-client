@@ -1,0 +1,98 @@
+.mainCard {
+  background-color: inherit;
+}
+
+.dataViewContainer {
+  background-color: #fefbf6;
+}
+
+.jobExperienceHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerTitle {
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+.card {
+  border: 1px dotted #000000;
+  background-color: #fefbf6;
+}
+
+.cardHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* This will push cardHeaderLeft and cardHeaderRight apart */
+  align-items: center; /* Vertically centers the content if needed */
+  border-bottom: 2px solid #000000; /* This will add a light gray line below cardHeader */
+}
+
+.cardHeaderLeft {
+  display: flex;
+  align-items: center; /* Vertically centers the content */
+  gap: 10px; /* Spacing between the items */
+}
+
+.cardHeaderRight {
+  display: flex;
+  align-items: center; /* Vertically centers the content */
+  gap: 10px; /* Spacing between the items */
+}
+
+.cardFooter {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* This will push cardHeaderLeft and cardHeaderRight apart */
+  align-items: center;
+}
+
+.imageContainer {
+  display: flex;
+  flex-direction: column; /* To ensure children are stacked vertically */
+  align-items: flex-start; /* Horizontally center the children */
+  justify-content: center; /* Vertically center the children (though it's optional here) */
+  gap: 1px; /* Gives a little space between the image and the h6 */
+}
+
+.imageContainer1 {
+  display: flex;
+  flex-direction: row; /* To ensure children are stacked vertically */
+  align-items: flex-start; /* Horizontally center the children */
+  justify-content: center; /* Vertically center the children (though it's optional here) */
+  gap: 1px; /* Gives a little space between the image and the h6 */
+}
+
+.avatarImageContainer {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* To make it circular */
+  object-fit: cover; /* To ensure the image maintains its aspect ratio */
+  margin-bottom: 0px; /* Add some spacing below the image */
+}
+
+@media (max-width: 768px) {
+  .hideOnMobile {
+    display: none;
+  }
+
+  .cardHeader {
+    flex-direction: column;
+    padding: 5px;
+  }
+
+  .cardHeaderLeft,
+  .cardHeaderRight {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .cardFooter {
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+  }
+}

@@ -97,12 +97,7 @@ export const deleteJobExperience = async (
         cache: "no-store",
       }
     );
-    const response = await res.json();
-    if (response.statusCode === 200) {
-      return response;
-    } else {
-      throw new Error(response.message || "An error occured");
-    }
+    return await res.json();
   } catch (error) {
     console.log("There was a problem fetching job preference", error);
     throw error;

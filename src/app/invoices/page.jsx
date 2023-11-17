@@ -1,25 +1,31 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Badge } from "primereact/badge";
+import { FilterMatchMode, FilterOperator } from "primereact/api";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
+import { Checkbox } from "primereact/checkbox";
 import { Column } from "primereact/column";
-import { ConfirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
+import { Dialog } from "primereact/dialog";
+import { Image } from "primereact/image";
+import { InputText } from "primereact/inputtext";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Tag } from "primereact/tag";
+import { Toast } from "primereact/toast";
 import { useEffect, useRef, useState } from "react";
+import HumanIcon from "../../../public/icon.png";
 import {
   getAllCorporateInvoices,
-  updateInvoicePaymentStatus,
+  updateInvoicePayment,
 } from "../api/invoices/route";
+import { uploadFile } from "../api/upload/route";
 import styles from "./page.module.css";
-import { Toast } from "primereact/toast";
 
 const Invoices = () => {
   const session = useSession();
   const router = useRouter();
+  const toast = useRef(null);
 
   if (session.status === "unauthenticated") {
     router.push("/login");
@@ -37,20 +43,48 @@ const Invoices = () => {
 
   const [invoices, setInvoices] = useState([]);
   const [expandedRows, setExpandedRows] = useState(null);
-  const [selectedInvoicePaymentId, setSelectedInvoicePaymentId] =
-    useState(null);
+  const [selectedInvoicePayment, setSelectedInvoicePayment] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const toast = useRef(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [globalFilterValue, setGlobalFilterValue] = useState("");
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    invoiceId: {
+      operator: FilterOperator.OR,
+      constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }],
+    },
+  });
+
+  const onGlobalFilterChange = (e) => {
+    const value = e.target.value;
+    let _filters = { ...filters };
+
+    _filters["global"].value = value;
+
+    setFilters(_filters);
+    setGlobalFilterValue(value);
+  };
 
   const loadInvoices = async () => {
+    setIsLoading(true);
     const allInvoices = await getAllCorporateInvoices(accessToken, corporateId);
     setInvoices(allInvoices);
+    const selectedInvoiceUpdateList = allInvoices.filter(
+      (invoice) => invoice.invoiceId === selectedInvoicePayment?.invoiceId
+    );
+    selectedInvoicePayment &&
+      setSelectedInvoicePayment(
+        selectedInvoiceUpdateList.length > 0
+          ? selectedInvoiceUpdateList[0]
+          : null
+      );
     setIsLoading(false);
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    loadInvoices();
+    if (accessToken) {
+      loadInvoices();
+    }
   }, [accessToken, corporateId]);
 
   const formatDate = (dateString) => {
@@ -82,6 +116,44 @@ const Invoices = () => {
     return formatMoney(rowData.totalAmount);
   };
 
+  const getPaymentMethodSeverity = (paymentMethod) => {
+    if (paymentMethod === "Others") {
+      // using manual payment
+      return "info";
+    } else if (paymentMethod === "Stripe") {
+      // using stripe payment
+      return "warning";
+    }
+  };
+
+  const paymentMethodBodyTemplate = (rowData) => {
+    const paymentMethod =
+      rowData.stripePaymentLink == null || rowData.stripePaymentLink === ""
+        ? "Others"
+        : "Stripe";
+    //this column will be showing which payment method did the corporate use.
+    return (
+      <>
+        {rowData.invoiceStatus !== "Not_Paid" ? (
+          <Tag
+            value={paymentMethod}
+            severity={getPaymentMethodSeverity(paymentMethod)}
+            style={{
+              fontSize: "0.8em",
+              display: "flex",
+              justifyContent: "center",
+              alignContent: "center",
+              textAlign: "center",
+              width: "100px",
+            }}
+          />
+        ) : (
+          <p style={{ marginLeft: "45px" }}>-</p>
+        )}
+      </>
+    );
+  };
+
   const requestedBodyTemplate = (rowData) => {
     return rowData.administrator?.userName;
   };
@@ -111,6 +183,29 @@ const Invoices = () => {
     }
   };
 
+  const userDetailBodyTemplate = (userData) => {
+    const userName = userData?.userName;
+    const avatar = userData?.profilePictureUrl;
+    return (
+      <div className={styles.imageContainer}>
+        {avatar !== "" ? (
+          <img
+            alt={avatar}
+            src={avatar}
+            className={styles.avatarImageContainer}
+          />
+        ) : (
+          <Image
+            src={HumanIcon}
+            alt="Icon"
+            className={styles.avatarImageContainer}
+          />
+        )}
+        <span>{userName}</span>
+      </div>
+    );
+  };
+
   const allowExpansion = (rowData) => {
     return rowData.jobApplications?.length > 0;
   };
@@ -128,30 +223,54 @@ const Invoices = () => {
   };
 
   const paidButtons = (rowData) => {
-    if (rowData.invoiceStatus === "Not_Paid") {
-      return (
-        <Button
-          label="Indicate Payment"
-          severity="success"
-          size="small"
-          className={styles.paymentButton}
-          onClick={() => setSelectedInvoicePaymentId(rowData?.invoiceId)}
-        />
-      );
-    }
-    return <></>;
+    return (
+      <div className={styles.actionButtons}>
+        {rowData?.invoiceLink && (
+          <Button
+            label="Invoice"
+            severity="info"
+            size="small"
+            className={styles.paymentButton}
+            icon="pi pi-download"
+            onClick={() =>
+              window.open(
+                rowData?.invoiceStatus === "Not_Paid"
+                  ? rowData?.invoiceLink
+                  : rowData?.stripePaymentLink !== ""
+                  ? rowData?.stripePaymentLink
+                  : rowData?.invoiceLink,
+                "_blank"
+              )
+            }
+          />
+        )}
+        {rowData?.invoiceStatus === "Not_Paid" && (
+          <Button
+            label="Make Payment"
+            severity="success"
+            size="small"
+            className={styles.makePaymentButton}
+            onClick={() => setSelectedInvoicePayment(rowData)}
+          />
+        )}
+      </div>
+    );
   };
 
   const rowExpansionTemplate = (data) => {
     return (
       <div className="p-3">
-        <Badge
-          value={`Job Applications under Invoice ${data.invoiceId}`}
+        {/* <Badge
+          value={}
           severity="info"
           size="large"
           className={styles.badge}
-        />
-        <DataTable value={data.jobApplications} showGridlines>
+        /> */}
+        <DataTable
+          value={data.jobApplications}
+          showGridlines
+          header={`Invoice ${data.invoiceId} Job Applications`}
+        >
           <Column
             field="jobApplicationId"
             header="Application ID"
@@ -174,9 +293,9 @@ const Invoices = () => {
           />
           <Column
             field="jobSeeker"
-            header="Job Seeker"
+            header="Applicant"
             sortable
-            body={usernameBodyTemplate}
+            body={(rowData) => userDetailBodyTemplate(rowData?.jobSeeker)}
             style={{ width: "10rem" }}
           />
         </DataTable>
@@ -185,24 +304,49 @@ const Invoices = () => {
   };
 
   const header = (
-    <div className={styles.expandCollapseHeader}>
-      <Button icon="pi pi-plus" label="Expand All" onClick={expandAll} text />
-      <Button
-        icon="pi pi-minus"
-        label="Collapse All"
-        onClick={collapseAll}
-        text
-      />
+    <div className={styles.tableHeader}>
+      <div className={styles.expandCollapseHeader}>
+        <Button icon="pi pi-plus" label="Expand All" onClick={expandAll} text />
+        <Button
+          icon="pi pi-minus"
+          label="Collapse All"
+          onClick={collapseAll}
+          text
+        />
+      </div>
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText
+          value={globalFilterValue}
+          onChange={onGlobalFilterChange}
+          placeholder="Search By ID"
+        />
+      </span>
     </div>
   );
 
   const handlePaidClick = async () => {
     setIsLoading(true);
-    await updateInvoicePaymentStatus(accessToken, selectedInvoicePaymentId, {
-      invoiceStatus: "Indicated_Paid",
-    });
+    let request = {};
+    if (selectedInvoicePayment?.proofOfPaymentLink !== "") {
+      request = {
+        invoiceStatus: "Indicated_Paid",
+        proofOfPaymentLink: selectedInvoicePayment?.proofOfPaymentLink,
+        stripePaymentLink: "",
+        stripeInvoiceId: "",
+      };
+    } else {
+      request = {
+        invoiceStatus: "Indicated_Paid",
+      };
+    }
+    await updateInvoicePayment(
+      accessToken,
+      selectedInvoicePayment?.invoiceId,
+      request
+    );
     await loadInvoices();
-    setSelectedInvoicePaymentId(null);
+    setSelectedInvoicePayment(null);
     setIsLoading(false);
     toast.current.show({
       severity: "success",
@@ -212,16 +356,103 @@ const Invoices = () => {
     });
   };
 
+  const handleUploadNewFile = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    try {
+      setIsUploading(true);
+      const response = await uploadFile(file, accessToken);
+
+      const updatedInvoice = {
+        ...selectedInvoicePayment,
+        proofOfPaymentLink: response?.url,
+      };
+      console.log(updatedInvoice);
+      setSelectedInvoicePayment(updatedInvoice);
+      setIsUploading(false);
+    } catch (error) {
+      console.error("There was an error uploading the file", error);
+    }
+  };
+
+  const footerContent = (
+    <div>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        onClick={() => setSelectedInvoicePayment(null)}
+        className="p-button-text"
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        onClick={() => handlePaidClick()}
+        autoFocus
+        loading={isUploading || isLoading}
+        disabled={
+          !(
+            selectedInvoicePayment?.invoiceStatus === "Indicated_Paid" ||
+            selectedInvoicePayment?.proofOfPaymentLink !== ""
+          )
+        }
+      />
+    </div>
+  );
+
   const DialogConfirmation = (
-    <ConfirmDialog
-      visible={selectedInvoicePaymentId != null}
-      onHide={() => setSelectedInvoicePaymentId(null)}
-      message="Have you paid to StarHire?"
-      header="Confirm Payment"
-      icon="pi pi-exclamation-triangle"
-      accept={() => handlePaidClick()}
-      reject={() => setSelectedInvoicePaymentId(null)}
-    />
+    <>
+      <Dialog
+        header="Payment Methods"
+        visible={selectedInvoicePayment != null}
+        style={{ width: "50vw" }}
+        onHide={() => setSelectedInvoicePayment(null)}
+        footer={footerContent}
+      >
+        <div className={styles.dialogConfirmation}>
+          <div className={styles.stripeHeader}>
+            <b>{"1) Stripe"}</b>
+            <Checkbox
+              checked={
+                selectedInvoicePayment?.invoiceStatus === "Indicated_Paid"
+              }
+              disabled
+            />
+            <Button
+              icon="pi pi-refresh"
+              rounded
+              text
+              onClick={() => loadInvoices()}
+            />
+          </div>
+          <div className={styles.stripePayment}>
+            <p> Make payment with Stripe: </p>
+            <Button
+              label="Payment Link"
+              severity="info"
+              text
+              styles={{ width: "1px" }}
+              onClick={() => {
+                window.open(
+                  selectedInvoicePayment?.stripePaymentLink,
+                  "_blank"
+                );
+              }}
+            />
+          </div>
+
+          <div className={styles.stripeHeader}>
+            <b>{"2) Others"}</b>
+            <Checkbox
+              checked={selectedInvoicePayment?.proofOfPaymentLink !== ""}
+              disabled
+            />
+          </div>
+          <div>
+            <input type="file" onChange={(e) => handleUploadNewFile(e)} />
+          </div>
+        </div>
+      </Dialog>
+    </>
   );
 
   return (
@@ -231,7 +462,7 @@ const Invoices = () => {
       <div className={styles.heading}>
         <h2>Invoices</h2>
       </div>
-      {isLoading && <ProgressSpinner />}
+      {isLoading && <ProgressSpinner style={{ marginLeft: "45vw" }} />}
       {!isLoading && (
         <Card className={styles.mainTable}>
           <DataTable
@@ -247,6 +478,12 @@ const Invoices = () => {
             scrollable
             scrollHeight="40vh"
             rowClassName={styles.mainTableRow}
+            emptyMessage="No invoices found."
+            paginator
+            rows={10}
+            rowsPerPageOptions={[10, 25, 50]}
+            filters={filters}
+            globalFilterFields={["invoiceId"]}
           >
             <Column expander={allowExpansion} style={{ width: "5rem" }} />
             <Column field="invoiceId" header="ID" sortable />
@@ -275,14 +512,18 @@ const Invoices = () => {
               body={amountBodyTemplate}
             />
             <Column
+              header="Payment Method"
+              sortable
+              body={paymentMethodBodyTemplate}
+            ></Column>
+            <Column
               field="corporate"
               header="Requested By"
               sortable
-              body={requestedBodyTemplate}
+              body={(rowData) => userDetailBodyTemplate(rowData?.administrator)}
             />
             <Column
               field="paidButtons"
-              header="Paid?"
               body={paidButtons}
               style={{ width: "10rem" }}
             />

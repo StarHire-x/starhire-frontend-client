@@ -26,14 +26,10 @@ export const getAllCorporateInvoices = async (accessToken, corporateId) => {
   }
 };
 
-export const updateInvoicePaymentStatus = async (
-  accessToken,
-  invoiceId,
-  request
-) => {
+export const updateInvoicePayment = async (accessToken, invoiceId, request) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/invoice/${invoiceId}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/invoice/invoice-payment/${invoiceId}`,
       {
         method: "PUT",
         headers: {
@@ -49,6 +45,31 @@ export const updateInvoicePaymentStatus = async (
       return res;
     } else {
       throw new Error(errorData.message || "An error occurred");
+    }
+  } catch (error) {
+    console.log("There was a problem updating the job application", error);
+    throw error;
+  }
+};
+
+export const getCorporateInvoiceStats = async (userId, accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/invoice/oneCorporate/${userId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: "no-store",
+      }
+    );
+    const response = await res.json();
+    if (response.statusCode === 200) {
+      return response.data;
+    } else {
+      throw error;
     }
   } catch (error) {
     console.log("There was a problem updating the job application", error);

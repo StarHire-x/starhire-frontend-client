@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
-import styles from "./jobStatisticsModal.module.css";
-import { Card } from "primereact/card";
-import { Button } from "primereact/button";
-import { Chart } from "primereact/chart";
-import { Dropdown } from "primereact/dropdown";
+import React, { useState, useEffect } from 'react';
+import styles from './jobStatisticsModal.module.css';
+import { Card } from 'primereact/card';
+import { Chart } from 'primereact/chart';
+import { Dropdown } from 'primereact/dropdown';
 import {
   getACorporateJobListingBreakdown,
   getCorporateJobListingStats,
-} from "@/app/api/auth/user/route";
+} from '@/app/api/auth/user/route';
 
 const JobStatisticsModal = ({ accessToken, userId }) => {
   const [chartData, setChartData] = useState({});
@@ -17,26 +15,26 @@ const JobStatisticsModal = ({ accessToken, userId }) => {
   const [chartData1, setChartData1] = useState({});
   const [chartOptions1, setChartOptions1] = useState({});
 
-  const [selectedFilter, setSelectedFilter] = useState("week");
+  const [selectedFilter, setSelectedFilter] = useState('week');
   const filterOptions = [
-    { label: "Month", value: "month" },
-    { label: "Week", value: "week" },
-    { label: "Day", value: "day" },
+    { label: 'Month', value: 'month' },
+    { label: 'Week', value: 'week' },
+    { label: 'Day', value: 'day' },
   ];
   const [corporatePercentage, setCorporatePercentage] = useState({});
-  const [corporateNumber, setCorporateNumber] = useState({}) 
+  const [corporateNumber, setCorporateNumber] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       const documentStyle = getComputedStyle(document.documentElement);
 
       const fetchBreakdown = async () => {
-        const textColor = documentStyle.getPropertyValue("--text-color");
+        const textColor = documentStyle.getPropertyValue('--text-color');
         const textColorSecondary = documentStyle.getPropertyValue(
-          "--text-color-secondary"
+          '--text-color-secondary'
         );
         const surfaceBorder =
-          documentStyle.getPropertyValue("--surface-border");
+          documentStyle.getPropertyValue('--surface-border');
 
         const information = await getCorporateJobListingStats(
           userId,
@@ -47,8 +45,8 @@ const JobStatisticsModal = ({ accessToken, userId }) => {
           labels: information[selectedFilter].labels,
           datasets: [
             {
-              label: "Job Listings",
-              borderColor: documentStyle.getPropertyValue("--blue-500"),
+              label: 'Job Listings',
+              borderColor: documentStyle.getPropertyValue('--blue-500'),
               tension: 0.4,
               fill: false,
               data: information[selectedFilter].data,
@@ -68,6 +66,11 @@ const JobStatisticsModal = ({ accessToken, userId }) => {
           },
           scales: {
             x: {
+              title: {
+                display: true,
+                text: 'Time Period', // Replace with your actual x-axis label
+                color: textColorSecondary,
+              },
               ticks: {
                 color: textColorSecondary,
               },
@@ -76,6 +79,12 @@ const JobStatisticsModal = ({ accessToken, userId }) => {
               },
             },
             y: {
+              title: {
+                display: true,
+                text: 'Number of Job Listings', // Replace with your actual y-axis label
+                color: textColorSecondary,
+                position: 'left',
+              },
               ticks: {
                 stepSize: 1,
                 color: textColorSecondary,
@@ -136,23 +145,23 @@ const JobStatisticsModal = ({ accessToken, userId }) => {
         rejected: rejectedData,
         unverified: unverifiedData,
         archived: archivedData,
-      })
+      });
       const data = {
-        labels: ["Approved", "Rejected", "Unverified", "Archived"],
+        labels: ['Approved', 'Rejected', 'Unverified', 'Archived'],
         datasets: [
           {
             data: [approvedData, rejectedData, unverifiedData, archivedData],
             backgroundColor: [
-              documentStyle.getPropertyValue("--blue-500"),
-              documentStyle.getPropertyValue("--red-500"),
-              documentStyle.getPropertyValue("--orange-500"),
-              documentStyle.getPropertyValue("--gray-500"),
+              documentStyle.getPropertyValue('--blue-500'),
+              documentStyle.getPropertyValue('--red-500'),
+              documentStyle.getPropertyValue('--orange-500'),
+              documentStyle.getPropertyValue('--gray-500'),
             ],
             hoverBackgroundColor: [
-              documentStyle.getPropertyValue("--blue-400"),
-              documentStyle.getPropertyValue("--red-400"),
-              documentStyle.getPropertyValue("--orange-400"),
-              documentStyle.getPropertyValue("--gray-400"),
+              documentStyle.getPropertyValue('--blue-400'),
+              documentStyle.getPropertyValue('--red-400'),
+              documentStyle.getPropertyValue('--orange-400'),
+              documentStyle.getPropertyValue('--gray-400'),
             ],
           },
         ],
@@ -178,16 +187,16 @@ const JobStatisticsModal = ({ accessToken, userId }) => {
     return (
       <div
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
         }}
       >
         <div></div>
         <div></div>
         <h2 className={styles.cardHeader}>Number of Job Listings</h2>
         <Dropdown
-          style={{ margin: "10px 10px 10px 10px" }}
+          style={{ margin: '10px 10px 10px 10px' }}
           value={selectedFilter}
           options={filterOptions}
           onChange={(e) => setSelectedFilter(e.value)}

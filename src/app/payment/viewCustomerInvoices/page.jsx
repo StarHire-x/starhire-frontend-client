@@ -35,7 +35,7 @@ const ViewCustomerInvoices = () => {
   }
 
   //const [invoices, setInvoices] = useState([]); // Your list of invoices
-  const [invoices, setInvoices] = useState({ data: [] });
+  const [invoices, setInvoices] = useState([]);
   const convertCentsToDollars = (cents) => (cents / 100).toFixed(2);
 
   function convertToSingaporeDate(utcDateString) {
@@ -75,7 +75,7 @@ const ViewCustomerInvoices = () => {
       <div
         className={`content-section implementation ${styles.contentSection}`}
       >
-        <DataTable value={invoices.data} className={styles.dataTable}>
+        <DataTable value={invoices} className={styles.dataTable}>
           <Column field="customer" header="Customer ID" />
           <Column
             field="created"

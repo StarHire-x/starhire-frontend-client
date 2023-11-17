@@ -12,6 +12,7 @@ import {
   findExistingJobApplication,
 } from "@/app/api/jobApplication/route";
 import CreateJobApplicationForm from "@/components/CreateJobApplicationForm/CreateJobApplicationForm";
+import { getReviews } from "@/app/api/review/route";
 
 const JobDetailPanel = ({
   selectedJob,
@@ -23,46 +24,78 @@ const JobDetailPanel = ({
   refreshData,
   setRefreshData,
   toast,
+  sessionTokenRef,
 }) => {
   const [showCreateJobApplicationDialog, setShowCreateJobApplicationDialog] =
     useState(false);
   const [showRejectJobListingDialog, setShowRejectJobListingDialog] =
     useState(false);
 
+  const [showCorporateReview, setShowCorporateReview] = useState(false);
+  const hideCorporateReview = () => {
+    setShowCorporateReview(false);
+  };
+  const [reviews, setReviews] = useState([]);
+
   const router = useRouter();
 
   const [isJobApplicationAbsent, setIsJobApplicationAbsent] = useState(false);
 
   useEffect(() => {
-    if (selectedJob) {
-      findExistingJobApplication(
-        jobSeekerId,
-        selectedJob.jobListingId,
-        accessToken
-      ).then((response) => {
-        console.log(response);
+    if (!selectedJob) return;
+
+    const fetchJobApplication = async () => {
+      try {
+        const response = await findExistingJobApplication(
+          jobSeekerId,
+          selectedJob.jobListingId,
+          accessToken
+        );
+        console.log("selectedJob", selectedJob.corporate.userId);
         if (response.statusCode === 200) {
           setIsJobApplicationAbsent(false);
         } else if (response.statusCode === 404) {
           setIsJobApplicationAbsent(true);
         } else {
-          console.error("Error fetching job preference:", response);
+          console.error("Error fetching job application:", response);
           setIsJobApplicationAbsent(true);
         }
-      });
+      } catch (error) {
+        console.error("Error fetching job application:", error);
+        setIsJobApplicationAbsent(true);
+      }
+    };
+    fetchJobApplication();
 
-      const documentsList = selectedJob.requiredDocuments
-        ? selectedJob.requiredDocuments.split(",").map((name) => ({
-            mandatory: true,
-            documentName: name.trim(),
-            documentLink: "",
-          }))
-        : [];
-      setFormData((prevData) => ({
-        ...prevData,
-        documents: documentsList,
-      }));
-    }
+    const documentsList = selectedJob.requiredDocuments
+      ? selectedJob.requiredDocuments.split(",").map((name) => ({
+          mandatory: true,
+          documentName: name.trim(),
+          documentLink: "",
+        }))
+      : [];
+    setFormData((prevData) => ({
+      ...prevData,
+      documents: documentsList,
+    }));
+
+    const retrieveReviews = async () => {
+      try {
+        const response = await getReviews(
+          selectedJob.corporate.userId,
+          "Corporate",
+          accessToken
+        );
+        if (response.statusCode === 200) {
+          console.log("Reviews retrieved");
+          console.log(response.data);
+          setReviews(response.data);
+        }
+      } catch (error) {
+        console.log("Error fetching reviews", error.message);
+      }
+    };
+    retrieveReviews();
   }, [refreshData, jobSeekerId, selectedJob]);
 
   const hideRejectJobListingDialog = () => {
@@ -92,78 +125,42 @@ const JobDetailPanel = ({
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  // const addJobApplication = async (e) => {
-  //   e.preventDefault();
-  //   if (Object.keys(formErrors).length > 0) {
-  //     // There are validation errors
-  //     //alert('Please fix the form errors before submitting.');
-  //     toast.current.show({
-  //       severity: 'warn',
-  //       summary: 'Warning',
-  //       detail: 'Please fix the form errors before submitting.',
-  //       life: 5000,
-  //     });
-  //     return;
-  //   }
-
-  //   const areDocumentsFilled = formData.documents.every(
-  //     (doc) => doc.documentName.trim() !== '' && doc.documentLink.trim() !== ''
-  //   );
-
-  //   if (!areDocumentsFilled) {
-  //     //alert('Please ensure all documents are properly filled up.');
-  //     toast.current.show({
-  //       severity: 'warn',
-  //       summary: 'Warning',
-  //       detail: 'Please ensure all documents are properly filled up.',
-  //       life: 5000,
-  //     });
-  //     return;
-  //   }
-
-  //   const reqBody = {
-  //     jobListingId: selectedJob.jobListingId,
-  //     jobSeekerId: jobSeekerId,
-  //     jobApplicationStatus: 'Submitted',
-  //     availableStartDate: formData.availableStartDate,
-  //     availableEndDate: formData.availableEndDate,
-  //     remarks: formData.remarks,
-  //     submissionDate: new Date(),
-  //     documents: formData.documents,
-  //   };
-
-  //   console.log(reqBody);
-
-  //   try {
-  //     const response = await createJobApplication(reqBody, accessToken);
-  //     if (!response.error) {
-  //       console.log('Job application created successfully:', response);
-  //       toast.current.show({
-  //         severity: 'success',
-  //         summary: 'Success',
-  //         detail: `Successfully created job application for ${selectedJob.title}`,
-  //         life: 5000,
-  //       });
-  //       setRefreshData((prev) => !prev);
-  //     }
-  //   } catch (error) {
-  //     //alert(error.message);
-  //     toast.current.show({
-  //       severity: 'error',
-  //       summary: 'Error',
-  //       detail: error.message,
-  //       life: 5000,
-  //     });
-  //   }
-  //   setShowCreateJobApplicationDialog(false);
-  // };
-
   const submitApplication = async (e) => {
     e.preventDefault();
+    if (Object.keys(formErrors).length > 0) {
+      // There are validation errors
+      //alert('Please fix the form errors before submitting.');
+      toast.current.show({
+        severity: "warn",
+        summary: "Warning",
+        detail: "Please fix the form errors before submitting.",
+        life: 5000,
+      });
+      return;
+    }
+
+    const areDocumentsFilled = formData.documents.every(
+      (doc) => doc.documentName.trim() !== "" && doc.documentLink.trim() !== ""
+    );
+
+    if (!areDocumentsFilled) {
+      //alert('Please ensure all documents are properly filled up.');
+      toast.current.show({
+        severity: "warn",
+        summary: "Warning",
+        detail: "Please ensure all documents are properly filled up.",
+        life: 5000,
+      });
+      return;
+    }
+
     const reqBody = {
       jobListingId: selectedJob.jobListingId,
       jobSeekerId: jobSeekerId,
       jobApplicationStatus: "Submitted",
+      availableStartDate: formData.availableStartDate,
+      availableEndDate: formData.availableEndDate,
+      remarks: formData.remarks,
       submissionDate: new Date(),
     };
     try {
@@ -244,19 +241,23 @@ const JobDetailPanel = ({
     <div className={styles.jobDetailPanel}>
       <div className={styles.jobHeading}>
         <div className={styles.companyInfo}>
+          {/* Add onclick button to setShowCorporateReivew to true */}
+          {job.corporate.profilePictureUrl === "" ? (
+            <Image src={HumanIcon} alt="User" className={styles.avatar} />
+          ) : (
+            <img
+              src={selectedJob.corporate.profilePictureUrl}
+              alt="Corporate Profile"
+              className={styles.avatar}
+            />
+          )}
           <div>
-            {job.corporate.profilePictureUrl === "" ? (
-              <Image src={HumanIcon} alt="User" className={styles.avatar} />
-            ) : (
-              <img
-                src={selectedJob.corporate.profilePictureUrl}
-                alt="Corporate Profile"
-                className={styles.avatar}
-              />
-            )}
-          </div>
-          <div>
-            <p>{selectedJob.corporate.userName}</p>
+            <p
+              className={styles.reviewText}
+              onClick={() => setShowCorporateReview(true)}
+            >
+              {selectedJob.corporate.userName}
+            </p>
           </div>
         </div>
         <div>
@@ -351,6 +352,31 @@ const JobDetailPanel = ({
         footer={deleteDialogFooter}
       >
         Are you sure you want to reject this job listing?
+      </Dialog>
+
+      <Dialog
+        header={selectedJob.corporate.userName + " Reviews"}
+        visible={showCorporateReview}
+        onHide={hideCorporateReview}
+        className={styles.cardDialog}
+      >
+        {reviews.length === 0 ? (
+          <p className={styles.noReviews}>
+            There are currently no reviews for this workplace.
+          </p>
+        ) : (
+          reviews.map(
+            (review, index) =>
+              review.description && (
+                <div className={styles.review} key={index}>
+                  <p>
+                    <strong> {review.jobSeeker.fullName}</strong>
+                  </p>
+                  <p>{review.description}</p>
+                </div>
+              )
+          )
+        )}
       </Dialog>
     </div>
   );

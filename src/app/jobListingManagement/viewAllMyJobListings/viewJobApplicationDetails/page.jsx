@@ -59,6 +59,7 @@ const ViewJobApplicationDetails = () => {
   const [jobListing, setJobListing] = useState(null);
   const [selectedDocuments, setSelectedDocuments] = useState([]);
   const [userDialog, setUserDialog] = useState(false);
+  const [userDialogForRevert, setUserDialogForRevert] = useState(false);
   const [status, setStatus] = useState(null);
   const [error, setError] = useState(null); 
 
@@ -360,6 +361,10 @@ ${currentUserName}`
     setUserDialog(false);
   };
 
+  const hideDialogForRevert = () => {
+    setUserDialogForRevert(false);
+  };
+
   const showUserDialog = (action) => {
     setUserDialog(true);
     setStatus(action);
@@ -378,6 +383,24 @@ ${currentUserName}`
       />
     </React.Fragment>
   );
+
+  const userDialogFooterForRevert = (
+    <React.Fragment>
+      <div style={{ textAlign: "center", color: "red" }}>
+        <Button
+          label="I have read and understood the consequences"
+          icon="pi pi-check"
+          outlined
+          style={{ color: "red" }}
+          onClick={() => {
+            updateJobApplication(status);
+          }}
+        />
+      </div>
+    </React.Fragment>
+  );
+  
+  
 
   const nodes = [
     {
@@ -482,16 +505,6 @@ ${currentUserName}`
                 <b>User ID: </b>
                 {jobSeeker?.userId}
               </p>
-              {/* do not show contact number and email in case corporate contact job seeker themselves.
-              <p className={styles.text}>
-                <b>Contact Number: </b>
-                {jobSeeker?.contactNo}
-              </p>
-              <p className={styles.text}>
-                <b>Email Address: </b>
-                {jobSeeker?.email}
-              </p>
-              */}
               <p className={styles.text}>
                 <b>Date of Birth: </b>
                 {convertTimestampToDate(jobSeeker?.dateOfBirth)}
@@ -647,16 +660,24 @@ ${currentUserName}`
                   visible={userDialog}
                   style={{ width: "32rem" }}
                   breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-                  header="Are you sure? This action is not reversible!!"
+                  header="Are you sure? "
                   className="p-fluid"
                   footer={userDialogFooter}
                   onHide={hideDialog}
-                ></Dialog>
+                >
+                  <p style={{ marginBottom: "30px" }}>
+                    <strong>Please ensure that you are certain you want to do this </strong>
+                  </p>
+
+                  <p style={{ marginBottom: "30px" }}>
+                    <strong>You can revert your decisions later but this is not recommended</strong>
+                  </p>
+                </Dialog>
 
                 <Dialog
                   visible={confirmSendDialog}
                   style={{ width: "32rem" }}
-                  header="Are you sure?, This action is not reversible!!"
+                  header="Confirm?"
                   className="p-fluid"
                   footer={confirmSendDialogFooter}
                   onHide={hideConfirmSendDialog}
@@ -738,21 +759,284 @@ ${currentUserName}`
                   visible={userDialog}
                   style={{ width: "32rem" }}
                   breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-                  header="Are you sure? This action is not reversible!!"
+                  header="Confirm?"
                   className="p-fluid"
                   footer={userDialogFooter}
                   onHide={hideDialog}
-                ></Dialog>
+                >
+                  <div>
+                    <p style={{ marginBottom: "30px" }}>
+                      <strong>
+                        Please ensure that you are certain about your decision
+                      </strong>
+                    </p>
+                    <p style={{ marginBottom: "30px" }}>
+                      <strong>
+                        While decisions can be reversed later, it is not
+                        advisable to do so.
+                      </strong>
+                    </p>
+                  </div>
+                </Dialog>
+              </div>
+            )}
+
+            {jobApplication?.jobApplicationStatus === "Offered" && (
+              <div className={styles.subButtons}>
+                <Button
+                  label="Revert Decision"
+                  icon="pi pi-thumbs-down"
+                  rounded
+                  severity="danger"
+                  onClick={() => showUserDialog("Rejected")}
+                />
+
+                <Button
+                  label="Arrange Another Interview"
+                  icon="pi pi-calendar"
+                  rounded
+                  severity="info"
+                  onClick={handleArrangeInterview}
+                />
 
                 <Dialog
                   visible={confirmSendDialog}
                   style={{ width: "32rem" }}
-                  header="Are you sure?, This action is not reversible!!"
+                  header="Confirm?"
                   className="p-fluid"
                   footer={confirmSendDialogFooter}
                   onHide={hideConfirmSendDialog}
                 >
                   {confirmSendDialogContent}
+                </Dialog>
+
+                <Dialog
+                  visible={showArrangeInterviewDialog}
+                  style={{ width: "52rem" }}
+                  breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+                  header="Arrange Another Interview"
+                  className="p-fluid"
+                  footer={arrangeInterviewDialogFooter}
+                  onHide={hideArrangeInterviewDialog}
+                >
+                  {error && <Message severity="error" text={error} />}
+                  <div>
+                    <label htmlFor="interviewDate">
+                      Choose Interview Date and Time:
+                    </label>
+                    <Calendar
+                      id="interviewDate"
+                      showTime
+                      showSeconds={false}
+                      value={interviewDate}
+                      minDate={new Date()}
+                      dateFormat="dd/mm/yy"
+                      onChange={(e) => setInterviewDate(e.value)}
+                    />
+                  </div>
+                  <Button
+                    label="Add Interview Date-Time"
+                    icon="pi pi-plus"
+                    onClick={addInterviewDateTime}
+                    className="p-button-success"
+                  />
+
+                  {interviewDateTimes.length > 0 && (
+                    <div>
+                      <label>Selected Interview Date-Times:</label>
+                      {renderInterviewDateTimes()}
+                    </div>
+                  )}
+                  <div>
+                    <label htmlFor="interviewNotes">
+                      Add Interview details (Do not add your video meeting
+                      links!)
+                    </label>
+                    <InputTextarea
+                      id="interviewNotes"
+                      value={interviewNotes}
+                      onChange={(e) => setInterviewNotes(e.target.value)}
+                    />
+                  </div>
+                </Dialog>
+
+                <Dialog
+                  visible={userDialog}
+                  style={{ width: "32rem", color: "red" }}
+                  breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+                  className="p-fluid"
+                  footer={userDialogFooterForRevert}
+                  onHide={hideDialog}
+                >
+                  <div style={{ color: "red", marginBottom: "30px" }}>
+                    <h1>Warning!</h1>
+                  </div>
+                  <div>
+                    <p style={{ marginBottom: "30px" }}>
+                      <strong>You have already offered this Job to </strong>
+                    </p>
+                    <p style={{ marginBottom: "30px" }}>
+                      <strong>
+                        Full name:
+                        {jobSeeker.fullName}
+                      </strong>
+                    </p>
+                    <p style={{ marginBottom: "30px" }}>
+                      <strong>
+                        User name:
+                        {jobSeeker.userName}
+                      </strong>
+                    </p>
+                    <p style={{ marginBottom: "30px" }}>
+                      <strong>
+                        Are you sure you want to revert this decision?
+                      </strong>
+                    </p>
+                    <p style={{ marginBottom: "30px" }}>
+                      <strong>
+                        Reverting this decision may cause reputational damage to
+                        your institution
+                      </strong>
+                    </p>
+                    <p style={{ marginBottom: "30px" }}>
+                      <strong>
+                        StarHire will not be responsible for any emotional or
+                        reputational damage that may occur
+                      </strong>
+                    </p>
+                  </div>
+                </Dialog>
+              </div>
+            )}
+
+            {jobApplication?.jobApplicationStatus === "Rejected" && (
+              <div className={styles.subButtons}>
+                <Button
+                  label="Revert Decision"
+                  icon="pi pi-thumbs-down"
+                  rounded
+                  severity="danger"
+                  onClick={() => showUserDialog("Offered")}
+                />
+
+                <Button
+                  label="Arrange Another Interview"
+                  icon="pi pi-calendar"
+                  rounded
+                  severity="info"
+                  onClick={handleArrangeInterview}
+                />
+
+                <Dialog
+                  visible={confirmSendDialog}
+                  style={{ width: "32rem" }}
+                  header="Confirm?"
+                  className="p-fluid"
+                  footer={confirmSendDialogFooter}
+                  onHide={hideConfirmSendDialog}
+                >
+                  {confirmSendDialogContent}
+                </Dialog>
+
+                <Dialog
+                  visible={showArrangeInterviewDialog}
+                  style={{ width: "52rem" }}
+                  breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+                  header="Arrange Another Interview"
+                  className="p-fluid"
+                  footer={arrangeInterviewDialogFooter}
+                  onHide={hideArrangeInterviewDialog}
+                >
+                  {error && <Message severity="error" text={error} />}
+                  <div>
+                    <label htmlFor="interviewDate">
+                      Choose Interview Date and Time:
+                    </label>
+                    <Calendar
+                      id="interviewDate"
+                      showTime
+                      showSeconds={false}
+                      value={interviewDate}
+                      minDate={new Date()}
+                      dateFormat="dd/mm/yy"
+                      onChange={(e) => setInterviewDate(e.value)}
+                    />
+                  </div>
+                  <Button
+                    label="Add Interview Date-Time"
+                    icon="pi pi-plus"
+                    onClick={addInterviewDateTime}
+                    className="p-button-success"
+                  />
+
+                  {interviewDateTimes.length > 0 && (
+                    <div>
+                      <label>Selected Interview Date-Times:</label>
+                      {renderInterviewDateTimes()}
+                    </div>
+                  )}
+                  <div>
+                    <label htmlFor="interviewNotes">
+                      Add Interview details (Do not add your video meeting
+                      links!)
+                    </label>
+                    <InputTextarea
+                      id="interviewNotes"
+                      value={interviewNotes}
+                      onChange={(e) => setInterviewNotes(e.target.value)}
+                    />
+                  </div>
+                </Dialog>
+
+                <Dialog
+                  visible={userDialog}
+                  style={{ width: "32rem", color: "red" }}
+                  breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+                  className="p-fluid"
+                  footer={userDialogFooterForRevert}
+                  onHide={hideDialog}
+                >
+                  <div style={{ color: "red", marginBottom: "30px" }}>
+                    <h1>Warning!</h1>
+                  </div>
+                  <div>
+                    <p style={{ marginBottom: "30px" }}>
+                      <strong>You have previously rejected</strong>
+                    </p>
+                    <p style={{ marginBottom: "30px" }}>
+                      <strong>
+                        Full name:
+                        {jobSeeker.fullName}
+                      </strong>
+                    </p>
+                    <p style={{ marginBottom: "30px" }}>
+                      <strong>
+                        User name:
+                        {jobSeeker.userName}
+                      </strong>
+                    </p>
+                    <p style={{ marginBottom: "30px" }}>
+                      <strong>
+                        Are you sure you want to re-offer this job application?
+                      </strong>
+                    </p>
+                    <p style={{ marginBottom: "30px" }}>
+                      <strong>
+                        Job Application ID: {jobApplication.jobApplicationId}
+                      </strong>
+                    </p>
+                    <p style={{ marginBottom: "30px" }}>
+                      <strong>
+                        Job Listing Title: {jobApplication.jobListing.title}
+                      </strong>
+                    </p>
+                    <p style={{ marginBottom: "30px" }}>
+                      <strong>
+                        StarHire will not be responsible for any emotional or
+                        reputational damage that may occur
+                      </strong>
+                    </p>
+                  </div>
                 </Dialog>
               </div>
             )}

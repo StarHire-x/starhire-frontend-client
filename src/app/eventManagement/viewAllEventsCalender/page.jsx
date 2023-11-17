@@ -79,16 +79,24 @@ if (session.status === "unauthenticated") {
     const eventListingStatus = eventInfo.event.extendedProps.eventListingStatus;
     const eventTime = eventInfo.event.extendedProps.eventTime;
 
+    let textColor = "inherit"; 
+
+    if (eventListingStatus === "Upcoming") {
+      textColor = "green";
+    } else if (eventListingStatus === "Cancelled") {
+      textColor = "red";
+    } 
+
     return (
       <div
         style={{
           padding: "2px",
           borderRadius: "4px",
-          //color: eventListingStatus === "Upcoming" ? "green" : "red",
+          color: textColor,
           whiteSpace: "normal",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          fontSize: "15px",
+          fontSize: "20px",
         }}
       >
         <b className="fc-event-title-container">
@@ -163,6 +171,35 @@ if (session.status === "unauthenticated") {
           ]}
           events={events}
           eventContent={renderEventContent}
+          views={{
+            timeGridWeek: {
+              columnHeaderFormat: { weekday: "short" },
+              slotLabelFormat: {
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+              },
+              eventContent: (arg) => {
+                const eventStatus = arg.event.extendedProps.eventListingStatus;
+                let textColor = "inherit";
+                let backgroundColor = "inherit";
+                let fontSize = "18px"; 
+
+                if (eventStatus === "Cancelled") {
+                  textColor = "inherit";
+                  backgroundColor = "red";
+                  return {
+                    html: `<div style="background-color: ${backgroundColor}; padding: 10px; border-radius: 20px; font-size: ${fontSize};">CANCELLED ${arg.timeText} - ${arg.event.title}</div>`,
+                  };
+                } else if (eventStatus === "Upcoming") {
+                  textColor = "inherit";
+                  return {
+                    html: `<div style="color: ${textColor}; font-size: ${fontSize};">${arg.timeText} - ${arg.event.title}</div>`,
+                  };
+                }
+              },
+            },
+          }}
         />
       </div>
 
@@ -174,7 +211,7 @@ if (session.status === "unauthenticated") {
         modal
         footer={
           <div>
-            <Button label="OK" onClick={redirectToEvent}  />
+            <Button label="OK" onClick={redirectToEvent} />
           </div>
         }
       >

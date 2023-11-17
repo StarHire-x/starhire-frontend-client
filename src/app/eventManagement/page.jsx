@@ -1,31 +1,30 @@
-"use client";
-import React, { useEffect, useState, useRef } from "react";
-import { Badge } from "primereact/badge";
-import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
-import { ProgressSpinner } from "primereact/progressspinner";
-import { Tag } from "primereact/tag";
-import { Toast } from "primereact/toast";
-import { uploadFile } from "@/app/api/upload/route";
+'use client';
+import React, { useEffect, useState, useRef } from 'react';
+import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import { Tag } from 'primereact/tag';
+import { Toast } from 'primereact/toast';
+import { uploadFile } from '@/app/api/upload/route';
 import {
   findAllEventListingsByCorporate,
   createEventListing,
   updateEventListing,
-  removeEventListing,
-} from "../api/eventListing/route";
-import CreateEventForm from "@/components/CreateEventForm/CreateEventForm";
-import EditEventForm from "@/components/EditEventForm/EditEventForm";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import styles from "./page.module.css";
-import Utility from "@/common/helper/utility";
+  cancelEventListing,
+} from '../api/eventListing/route';
+import CreateEventForm from '@/components/CreateEventForm/CreateEventForm';
+import EditEventForm from '@/components/EditEventForm/EditEventForm';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import styles from './page.module.css';
+import Utility from '@/common/helper/utility';
 
 const EventManagementPage = () => {
   const [eventListing, setEventListing] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [refreshData, setRefreshData] = useState(false);
   const [selectedEventListingData, setSelectedEventListingData] =
     useState(null);
@@ -33,12 +32,12 @@ const EventManagementPage = () => {
   const router = useRouter();
 
   const userIdRef =
-    session.status === "authenticated" &&
+    session.status === 'authenticated' &&
     session.data &&
     session.data.user.userId;
 
   const accessToken =
-    session.status === "authenticated" &&
+    session.status === 'authenticated' &&
     session.data &&
     session.data.user.accessToken;
 
@@ -47,26 +46,15 @@ const EventManagementPage = () => {
 
   const toast = useRef(null);
 
-  const formatDateTime = (dateTimeString) => {
-    const options = {
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    return new Date(dateTimeString).toLocaleString(undefined, options);
-  };
-
   const getStatus = (status) => {
-    console.log("Checking status: ", status);
+    console.log('Checking status: ', status);
     switch (status) {
-      case "Upcoming":
-        return "success";
-      case "Expired":
-        return "danger";
-      case "Upcoming":
-        return "success";
+      case 'Upcoming':
+        return 'success';
+      case 'Expired':
+        return 'danger';
+      case 'Cancelled':
+        return 'danger';
     }
   };
 
@@ -79,41 +67,42 @@ const EventManagementPage = () => {
     setShowEditDialog(false);
   };
 
-  const hideDeleteDialog = () => {
+  const hideCancelDialog = () => {
     setSelectedEventListingData(null);
-    setShowDeleteDialog(false);
+    setShowCancelDialog(false);
   };
 
-  const deleteDialogFooter = (
+  const cancelDialogFooter = (
     <React.Fragment>
       <Button
         label="Yes"
         icon="pi pi-check"
         rounded
         onClick={() =>
-          handleDeleteEventListing(selectedEventListingData.eventListingId)
+          handleCancelEventListing(selectedEventListingData.eventListingId)
         }
       />
     </React.Fragment>
   );
 
   useEffect(() => {
-    if (session.status === "unauthenticated") {
-      router.push("/login");
-    } else if (session.status === "authenticated") {
+    if (session.status === 'unauthenticated') {
+      router.push('/login');
+    } else if (session.status === 'authenticated') {
       findAllEventListingsByCorporate(userIdRef, accessToken)
         .then((eventListing) => {
           setEventListing(eventListing);
           setIsLoading(false);
         })
         .catch((error) => {
-          console.error("Error fetching user:", error);
+          console.error('Error fetching user:', error);
           setIsLoading(false);
         });
     }
   }, [refreshData, userIdRef, accessToken]);
 
   const itemTemplate = (eventListing) => {
+    console.log('Event Listing:', eventListing);
     const cardLink = `/eventManagement/viewEventRegistrations?id=${eventListing.eventListingId}`;
     <a href={cardLink} className={styles.cardLink}>
       <div className={styles.card}>
@@ -143,14 +132,16 @@ const EventManagementPage = () => {
                 <span>{eventListing.location}</span>
               </div>
               <div className={styles.cardRow}>
-                <span>Start Date:</span>
+                <span>Starts:</span>
                 <span>
                   {Utility.formatDateTime(eventListing.eventStartDateAndTime)}
                 </span>
               </div>
               <div className={styles.cardRow}>
-                <span>End Date:</span>
-                <span>{Utility.formatDateTime(eventListing.eventEndDateAndTime)}</span>
+                <span>Ends:</span>
+                <span>
+                  {Utility.formatDateTime(eventListing.eventEndDateAndTime)}
+                </span>
               </div>
               <div className={styles.cardRow}>
                 <span>Listed On:</span>
@@ -176,12 +167,12 @@ const EventManagementPage = () => {
               }}
             />
             <Button
-              label="Delete"
-              icon="pi pi-trash"
+              label="Cancel"
+              icon="pi pi-times"
               rounded
               onClick={() => {
                 setSelectedEventListingData(eventListing);
-                setShowDeleteDialog(eventListing);
+                setShowCancelDialog(eventListing);
               }}
             />
           </div>
@@ -198,7 +189,7 @@ const EventManagementPage = () => {
           newEventListing.image,
           accessToken
         );
-        imageUrl = uploadResponse.url; // Assuming your server returns a field named 'url' in its response that contains the S3 URL.
+        imageUrl = uploadResponse.url;
       }
       const payload = {
         ...newEventListing,
@@ -207,24 +198,24 @@ const EventManagementPage = () => {
         corporateId: userIdRef,
       };
       const response = await createEventListing(payload, accessToken);
-      console.log("Created Event listing Successfully", response);
+      console.log('Created Event listing Successfully', response);
       // alert('Created event listing successfully');
       toast.current.show({
-        severity: "success",
-        summary: "Success",
-        detail: "Created event listing successfully",
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Created event listing successfully',
         life: 5000,
       });
       setRefreshData((prev) => !prev);
     } catch (error) {
       console.error(
-        "There was an error creating the event listing:",
+        'There was an error creating the event listing:',
         error.message
       );
       // alert('There was an error creating the event listing:');
       toast.current.show({
-        severity: "error",
-        summary: "Error",
+        severity: 'error',
+        summary: 'Error',
         detail: error.message,
         life: 5000,
       });
@@ -237,33 +228,33 @@ const EventManagementPage = () => {
       const payload = {
         ...updatedData,
         listingDate: new Date(),
-        eventListingStatus: "Upcoming",
+        eventListingStatus: 'Upcoming',
         corporateId: userIdRef,
       };
-      console.log("Payload:", payload);
+      console.log('Payload:', payload);
       const response = await updateEventListing(
         payload,
         eventListingId,
         accessToken
       );
-      console.log("Updated event listing Successfully", response);
+      console.log('Updated event listing Successfully', response);
       // alert('Updated job listing successfully');
       toast.current.show({
-        severity: "success",
-        summary: "Success",
-        detail: "Updated event listing successfully",
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Updated event listing successfully',
         life: 5000,
       });
       setRefreshData((prev) => !prev);
     } catch (error) {
       console.error(
-        "There was an error updating the event listing:",
+        'There was an error updating the event listing:',
         error.message
       );
       // alert('There was an error updating the job listing:');
       toast.current.show({
-        severity: "error",
-        summary: "Error",
+        severity: 'error',
+        summary: 'Error',
         detail: error.message,
         life: 5000,
       });
@@ -272,34 +263,32 @@ const EventManagementPage = () => {
     setShowEditDialog(false);
   };
 
-  const handleDeleteEventListing = async (eventListingId) => {
+  const handleCancelEventListing = async (eventListingId) => {
     try {
-      const response = await removeEventListing(eventListingId, accessToken);
-      console.log("User is deleted", response);
+      const response = await cancelEventListing(eventListingId, accessToken);
       // alert('Deleted job listing successfully');
       toast.current.show({
-        severity: "success",
-        summary: "Success",
-        detail: "Deleted event listing successfully",
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Event listing successfully cancelled',
         life: 5000,
       });
       setRefreshData((prev) => !prev);
     } catch (error) {
-      console.error("Error deleting user:", error);
       // alert('There was an error deleting the job listing:');
       toast.current.show({
-        severity: "error",
-        summary: "Error",
+        severity: 'error',
+        summary: 'Error',
         detail: error.message,
         life: 5000,
       });
     }
     setSelectedEventListingData(null);
-    setShowDeleteDialog(false);
+    setShowCancelDialog(false);
   };
 
   const navigateToCalender = () => {
-    router.push('/eventManagement/viewAllEventsCalender'); 
+    router.push('/eventManagement/viewAllEventsCalender');
   };
 
   if (isLoading) {
@@ -310,7 +299,7 @@ const EventManagementPage = () => {
     );
   }
 
-  if (session.status === "authenticated") {
+  if (session.status === 'authenticated') {
     return (
       <>
         <Toast ref={toast} />
@@ -324,7 +313,7 @@ const EventManagementPage = () => {
           />
           <Button
             className={styles.createEventListingButton}
-            label="Create An Event"
+            label="Post An Event"
             rounded
             onClick={() => setShowCreateDialog(true)}
           />
@@ -361,16 +350,13 @@ const EventManagementPage = () => {
         </Dialog>
 
         <Dialog
-          header="Delete Event Listing"
-          visible={showDeleteDialog}
-          onHide={hideDeleteDialog}
+          header="Cancel Event Listing"
+          visible={showCancelDialog}
+          onHide={hideCancelDialog}
           className={styles.cardDialog}
-          footer={deleteDialogFooter}
+          footer={cancelDialogFooter}
         >
-          <h3>
-            Confirm Delete Event ID:{" "}
-            {showDeleteDialog && showDeleteDialog.eventListingId}?
-          </h3>
+          <h3>Are You Sure You Want To Cancel This Event?</h3>
         </Dialog>
       </>
     );

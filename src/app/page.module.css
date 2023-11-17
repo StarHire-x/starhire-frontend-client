@@ -15,7 +15,9 @@
 .imageContainer {
   position: absolute;
   top: 65%; /* Vertically center the imageContainer within the .container */
-  left: calc(40% + 300px); /* Position the imageContainer to the right of the textContainer with some margin */
+  left: calc(
+    40% + 300px
+  ); /* Position the imageContainer to the right of the textContainer with some margin */
   transform: translate(-50%, -65%); /* Move the imageContainer back to center */
   width: auto;
   height: auto;
@@ -24,8 +26,13 @@
 .imageContainer2 {
   position: absolute;
   top: 30%; /* Vertically center the imageContainer within the .container */
-  left: calc(40% + 300px); /* Position the imageContainer to the right of the textContainer with some margin */
-  transform: translate(-10%, -160%); /* Move the imageContainer back to center */
+  left: calc(
+    40% + 300px
+  ); /* Position the imageContainer to the right of the textContainer with some margin */
+  transform: translate(
+    -10%,
+    -160%
+  ); /* Move the imageContainer back to center */
   width: auto;
   height: auto;
 }
@@ -39,37 +46,37 @@
 .mainTitle {
   font-size: 80px;
   color: black;
-  font-family: 'Source Sans 3', sans-serif; 
+  font-family: "Source Sans 3", sans-serif;
 }
 
 .logoA {
   font-size: 80px;
   color: black;
-  font-family: 'Kollektif', sans-serif;
-  margin-top: 8px;
+  font-family: "Kollektif", sans-serif;
+  margin-top: 16px;
 }
 
 .description {
   font-size: 24px;
   color: black;
-  font-family: 'Merriweather', sans-serif; 
+  font-family: "Merriweather", sans-serif;
 }
 
 .secondaryTitle {
   font-size: 48px;
   color: #35acfe;
-  font-family: 'Source Sans 3', sans-serif; 
+  font-family: "Source Sans 3", sans-serif;
   margin-top: -5px;
 }
 
 .img {
   width: 400px;
-  height: 400px; 
+  height: 400px;
 }
 
 .img2 {
-  width: 100px; 
-  height: 100px; 
+  width: 100px;
+  height: 100px;
 }
 
 .buttonContainer {
@@ -93,41 +100,52 @@
 }
 
 @media screen and (max-width: 768px) {
-
   .textContainer {
     top: 45%; /* Vertically center the textContainer within the .container */
     left: 40%; /* Horizontally center the textContainer within the .container */
-    transform: translate(-50%, -90%); /* Move the textContainer back to center */
+    transform: translate(
+      -50%,
+      -90%
+    ); /* Move the textContainer back to center */
   }
 
   .imageContainer {
     top: 50%; /* Vertically center the textContainer within the .container */
-    left: calc(30% + 300px); /* Position the imageContainer to the right of the textContainer with some margin */
-    transform: translate(-100%, -100%); /* Move the imageContainer back to center */
+    left: calc(
+      30% + 300px
+    ); /* Position the imageContainer to the right of the textContainer with some margin */
+    transform: translate(
+      -100%,
+      -100%
+    ); /* Move the imageContainer back to center */
   }
   .imageContainer2 {
     top: 50%; /* Vertically center the textContainer within the .container */
-    left: calc(30% + 300px); /* Position the imageContainer to the right of the textContainer with some margin */
-    transform: translate(-200%, -250%); /* Move the imageContainer back to center */
+    left: calc(
+      30% + 300px
+    ); /* Position the imageContainer to the right of the textContainer with some margin */
+    transform: translate(
+      -200%,
+      -250%
+    ); /* Move the imageContainer back to center */
   }
-
 
   .mainTitle {
     font-size: 48px;
     color: black;
-    font-family: 'Source Sans 3', sans-serif; 
+    font-family: "Source Sans 3", sans-serif;
   }
-  
+
   .logoA {
     font-size: 48px;
     margin-top: 5px;
   }
-  
+
   .description {
     font-size: 13px;
     margin-top: 5px;
   }
-  
+
   .secondaryTitle {
     font-size: 28px;
     margin-top: -5px;
@@ -152,4 +170,3 @@
     margin: 0 5px;
   }
 }
-

@@ -1,35 +1,39 @@
-"use client";
-import React, { useRef, useState, useEffect, useContext } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+'use client';
+import React, { useRef, useState, useEffect, useContext } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import {
   getMyFollowings,
   getUserByUserId,
   updateUser,
-} from "../api/auth/user/route";
-import { uploadFile } from "../api/upload/route";
-import styles from "./page.module.css";
-import { UserContext } from "@/context/UserContext";
-import { Button } from "primereact/button";
-import EditAccountForm from "@/components/EditAccountForm/EditAccountForm";
-import CollectJobSeekerInfoForm from "@/components/CollectJobSeekerInfoForm/CollectJobSeekerInfoForm";
-import CollectCorporateInfoForm from "@/components/CollectCorporateInfoForm/CollectCorporateInfoForm";
-import JobPreferencePanel from "@/components/JobPreferencePanel/JobPreferencePanel";
-import { getExistingJobPreference } from "../api/preference/route";
-import { getJobExperience } from "../api/jobExperience/route";
-import JobExperiencePanel from "@/components/JobExperiencePanel/JobExperiencePanel";
-import { Dialog } from "primereact/dialog";
-import Enums from "@/common/enums/enums";
+} from '../api/auth/user/route';
+import { uploadFile } from '../api/upload/route';
+import styles from './page.module.css';
+import { UserContext } from '@/context/UserContext';
+import { Button } from 'primereact/button';
+import EditAccountForm from '@/components/EditAccountForm/EditAccountForm';
+import CollectJobSeekerInfoForm from '@/components/CollectJobSeekerInfoForm/CollectJobSeekerInfoForm';
+import CollectCorporateInfoForm from '@/components/CollectCorporateInfoForm/CollectCorporateInfoForm';
+import JobPreferencePanel from '@/components/JobPreferencePanel/JobPreferencePanel';
+import { getExistingJobPreference } from '../api/preference/route';
+import { getJobExperience } from '../api/jobExperience/route';
+import JobExperiencePanel from '@/components/JobExperiencePanel/JobExperiencePanel';
+import { Dialog } from 'primereact/dialog';
+import Enums from '@/common/enums/enums';
 import {
   fetchTypeFormResponsesCorporate,
   fetchTypeFormResponsesJobSeeker,
-} from "../api/typeform/routes";
+} from '../api/typeform/routes';
+import ReviewPanel from '@/components/ReviewPanel/ReviewPanel';
+import { getDropdownList, getReviews } from '../api/review/route';
 
 const AccountManagement = () => {
   const session = useSession();
   const router = useRouter();
   const [refreshData, setRefreshData] = useState(false);
   const [jobExperience, setJobExperience] = useState([]);
+  const [dropdownList, setDropdownList] = useState([]);
+  const [review, setReview] = useState([]);
   const [deactivateAccountDialog, setDeactivateAccountDialog] = useState(false);
   const [typeformSubmitted, setTypeformSubmitted] = useState(false);
   const [formData, setFormData] = useState({
@@ -78,6 +82,15 @@ const AccountManagement = () => {
     visaRequirements: "",
     ranking: "",
     otherInfo: "",
+
+    // Review Fields
+    reviewType: '',
+    attitudeJS: '',
+    professionalismJS: 0,
+    passionJS: 0,
+    benefitsCP: 0,
+    cultureCP: 0,
+    growthCP: 0,
   });
 
   const toast = useRef(null);
@@ -90,7 +103,7 @@ const AccountManagement = () => {
   // Cap the number of stars
   const [totalStarsUsed, setTotalStarsUsed] = useState(0);
 
-  const [numOfFollowings, setNumOfFollowings] = useState("0");
+  const [numOfFollowings, setNumOfFollowings] = useState('0');
 
   let roleRef, sessionTokenRef, userIdRef;
 
@@ -101,9 +114,9 @@ const AccountManagement = () => {
   }
 
   useEffect(() => {
-    if (session.status === "unauthenticated") {
-      router.push("/login");
-    } else if (session.status !== "loading") {
+    if (session.status === 'unauthenticated') {
+      router.push('/login');
+    } else if (session.status !== 'loading') {
       const populateFormDataWithUserInfo = async (formData) => {
         try {
           const response = await getUserByUserId(
@@ -117,7 +130,7 @@ const AccountManagement = () => {
           setFormData(formData);
           return formData;
         } catch (error) {
-          console.log("Error fetching user Info: ", error.message);
+          console.log('Error fetching user Info: ', error.message);
         }
       };
 
@@ -145,7 +158,7 @@ const AccountManagement = () => {
             setIsJobPreferenceAbsent(true);
           }
         } catch (error) {
-          console.log("Error fetching user preference: ", error.message);
+          console.log('Error fetching user preference: ', error.message);
         }
       };
 
@@ -156,7 +169,38 @@ const AccountManagement = () => {
             return response.data;
           }
         } catch (error) {
-          console.log("Error fetching user job experience: ", error.message);
+          console.log('Error fetching user job experience: ', error.message);
+        }
+      };
+
+      const retrieveDropdownList = async () => {
+        try {
+          const response = await getDropdownList(
+            userIdRef,
+            roleRef,
+            sessionTokenRef
+          );
+          console.log(response.data);
+          if (response.statusCode === 200) {
+            return response.data;
+          }
+        } catch (error) {
+          console.log('Error fetching dropdown list: ', error.message);
+        }
+      };
+
+      const retrieveReviews = async () => {
+        try {
+          const response = await getReviews(
+            userIdRef,
+            roleRef,
+            sessionTokenRef
+          );
+          if (response.statusCode === 200) {
+            return response.data;
+          }
+        } catch (error) {
+          console.log('Error fetching reviews', error.message);
         }
       };
 
@@ -181,15 +225,17 @@ const AccountManagement = () => {
           setNumOfFollowings(data);
         })
         .catch((error) => {
-          console.log("Error fetching followings of user: ", error.message);
+          console.log('Error fetching followings of user: ', error.message);
         });
 
       populateFormDataWithUserInfo(formData).then((formDataWithUserInfo) =>
         populateFormDataWithUserPreference(formDataWithUserInfo)
       );
       retrieveJobExperience().then((result) => setJobExperience(result));
+      retrieveDropdownList().then((result) => setDropdownList(result));
+      retrieveReviews().then((result) => setReview(result));
 
-      if (session.data.user.role === "Corporate") {
+      if (session.data.user.role === 'Corporate') {
         retrieveTypeformSubmissionCorporate(session.data.user.email).then(
           (result) => {
             if (result) {
@@ -200,7 +246,7 @@ const AccountManagement = () => {
       } else {
         retrieveTypeformSubmissionJobSeeker(session.data.user.email).then(
           (result) => {
-            console.log("result");
+            console.log('result');
             console.log(result);
             if (result) {
               setTypeformSubmitted(true);
@@ -233,26 +279,26 @@ const AccountManagement = () => {
     try {
       const response = await uploadFile(file, sessionTokenRef);
 
-      if (inputId === "profilePicture") {
+      if (inputId === 'profilePicture') {
         setFormData((prevState) => ({
           ...prevState,
           profilePictureUrl: response.url,
         }));
-      } else if (inputId === "resumePdf") {
+      } else if (inputId === 'resumePdf') {
         setFormData((prevState) => ({
           ...prevState,
           resumePdf: response.url,
         }));
       }
     } catch (error) {
-      console.error("There was an error uploading the file", error);
+      console.error('There was an error uploading the file', error);
     }
   };
 
   const removePdf = () => {
     setFormData((prevState) => ({
       ...prevState,
-      resumePdf: "",
+      resumePdf: '',
     }));
   };
 
@@ -326,9 +372,9 @@ const AccountManagement = () => {
 
     if (formData.contactNo && formData.contactNo.toString().length !== 8) {
       toast.current.show({
-        severity: "error",
-        summary: "Error",
-        detail: "Contact number must contain 8 digits.",
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Contact number must contain 8 digits.',
         life: 5000,
       });
     } else {
@@ -348,9 +394,9 @@ const AccountManagement = () => {
             hideDeactivateAccountDialog();
           }
           toast.current.show({
-            severity: "success",
-            summary: "Success",
-            detail: "Account details updated successfully!",
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Account details updated successfully!',
             life: 5000,
           });
           setRefreshData((prev) => !prev);
@@ -358,18 +404,18 @@ const AccountManagement = () => {
           fetchUserData();
         }
       } catch (error) {
-        console.log("Failed to update user");
+        console.log('Failed to update user');
         // alert("Failed to update user particulars");
         toast.current.show({
-          severity: "error",
-          summary: "Error",
+          severity: 'error',
+          summary: 'Error',
           detail: error.message,
           life: 5000,
         });
       }
     }
   };
-  if (session.status === "authenticated") {
+  if (session.status === 'authenticated') {
     return (
       <div className={styles.container}>
         {roleRef === Enums.JOBSEEKER && !typeformSubmitted && (
@@ -425,8 +471,8 @@ const AccountManagement = () => {
 
         <Dialog
           visible={deactivateAccountDialog}
-          style={{ width: "32rem" }}
-          breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+          style={{ width: '32rem' }}
+          breakpoints={{ '960px': '75vw', '641px': '90vw' }}
           header="Warning on self-deactivation of account"
           className="p-fluid"
           footer={deactivateAccountDialogFooter}
@@ -461,6 +507,33 @@ const AccountManagement = () => {
               setRefreshData={setRefreshData}
               jobExperience={jobExperience}
               handleInputChange={handleInputChange}
+            />
+            <>
+              <br></br>
+            </>
+            <ReviewPanel
+              formData={formData}
+              setFormData={setFormData}
+              review={review}
+              roleRef={roleRef}
+              sessionTokenRef={sessionTokenRef}
+              setRefreshData={setRefreshData}
+              handleInputChange={handleInputChange}
+              dropdownList={dropdownList}
+            />
+          </>
+        )}
+        {roleRef === Enums.CORPORATE && (
+          <>
+            <ReviewPanel
+              formData={formData}
+              setFormData={setFormData}
+              review={review}
+              roleRef={roleRef}
+              sessionTokenRef={sessionTokenRef}
+              setRefreshData={setRefreshData}
+              handleInputChange={handleInputChange}
+              dropdownList={dropdownList}
             />
           </>
         )}
