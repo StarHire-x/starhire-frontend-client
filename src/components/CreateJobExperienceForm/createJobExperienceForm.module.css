@@ -1,48 +1,42 @@
-.cardBody {
-  /* Add some padding to make the content breathe */
-  font-family: 'Arial', sans-serif; /* Use Arial font for content */
+.container {
+  width: 1000px;
 }
 
-.form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
+.cardBody {
+  font-family: 'Arial', sans-serif;
 }
 
 .cardRow {
-  display: flex; /* Make the row flexible */
-  justify-content: space-between; /* Separate the label and the input */
-  align-items: center; /* Center items vertically */
-  margin-bottom: 15px; /* Add some space below each row */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
 .cardRow label {
-  flex: 1; /* Let the label take 1 part of the space */
+  flex: 1;
   font-size: 0.8em;
-  margin-right: 10px; /* Add some margin to the right of the label */
+  margin-right: 10px;
 }
 
 .cardRow input,
 .cardRow .p-inputnumber,
 .cardRow .p-calendar {
-  flex: 2; /* Let the input or any prime react component take 2 parts of the space */
-  min-width: 0; /* Ensure input respects flex parent boundaries */
+  flex: 2;
+  min-width: 0;
 }
 
 .cardRow textarea,
 .cardRow .p-inputtextarea {
-  flex: 2; /* Let the textarea take 2 parts of the space */
-  min-width: 0; /* Ensure textarea respects flex parent boundaries */
-  width: 100%; /* Ensure it takes the full width available in the flex container */
+  flex: 2;
+  min-width: 0;
+  width: 100%;
 }
 
 .cardFooter {
-  display: flex; /* Make the footer flexible */
-  justify-content: flex-end; /* Align the button to the right */
-  margin-top: 20px; /* Add some space above the button */
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
 }
 
 .cardFooter button {
@@ -58,15 +52,14 @@
   transition: background-color 0.3s;
 }
 
-/* Adjust the styling for PrimeReact components, if needed */
 .p-inputtext,
 .p-inputnumber,
 .p-calendar {
-  width: 100%; /* Ensure they take the full width available in the flex container */
+  width: 100%;
 }
 
 .p-inputnumber .p-inputnumber-input {
-  width: 100%; /* Ensure the input within the InputNumber component takes full width */
+  width: 100%;
 }
 
 .errorMessage {

@@ -6,7 +6,6 @@ import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
 import styles from './page.module.css';
-import Enums from '@/common/enums/enums';
 
 const CreateJobListingForm = ({ onCreate }) => {
   const [formData, setFormData] = useState({
@@ -15,15 +14,12 @@ const CreateJobListingForm = ({ onCreate }) => {
     responsibilities: '',
     requirements: '',
     requiredDocuments: [],
-    // otherCertifications: '',
     jobLocation: '',
     averageSalary: null,
     jobStartDate: null,
-    jobListingStatus: 'Unverified', // default status
+    jobListingStatus: 'Unverified',
     // corporateId will be set during API call
   });
-
-  // const jobListingStatuses = [Enums.ACTIVE, 'Unverified', Enums.INACTIVE];
 
   const documentOptions = [
     { label: 'Resume', value: 'Resume' },
@@ -92,8 +88,8 @@ const CreateJobListingForm = ({ onCreate }) => {
           name="overview"
           value={formData.overview}
           onChange={handleInputChange}
-          rows={5} /* Adjust as needed */
-          autoResize={true} /* If you want it to resize automatically */
+          rows={5}
+          autoResize={true}
         />
       </div>
 
@@ -104,8 +100,8 @@ const CreateJobListingForm = ({ onCreate }) => {
           name="responsibilities"
           value={formData.responsibilities}
           onChange={handleInputChange}
-          rows={7} /* Adjust as needed */
-          autoResize={true} /* If you want it to resize automatically */
+          rows={7}
+          autoResize={true}
         />
       </div>
 
@@ -116,8 +112,8 @@ const CreateJobListingForm = ({ onCreate }) => {
           name="requirements"
           value={formData.requirements}
           onChange={handleInputChange}
-          rows={7} /* Adjust as needed */
-          autoResize={true} /* If you want it to resize automatically */
+          rows={7}
+          autoResize={true}
         />
       </div>
 
@@ -133,18 +129,6 @@ const CreateJobListingForm = ({ onCreate }) => {
           filter
         />
       </div>
-
-      {/* {formData.requiredDocuments.includes('Other Certifications') && (
-        <div className={styles.cardRow}>
-          <label htmlFor="otherCertifications">Please Specify:</label>
-          <InputText
-            id="otherCertifications"
-            name="otherCertifications"
-            value={formData.otherCertifications}
-            onChange={handleInputChange}
-          />
-        </div>
-      )} */}
 
       <div className={styles.cardRow}>
         <label htmlFor="jobLocation">Job Location:</label>
