@@ -20,6 +20,14 @@
   /* margin-bottom: 16px; */
 }
 
+.reviewText {
+  text-decoration: underline;
+}
+
+.review {
+  margin-bottom: 15px;
+}
+
 .listingsPanel {
   flex: 1;
   overflow-y: auto;
