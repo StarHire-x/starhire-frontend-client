@@ -659,11 +659,19 @@ ${currentUserName}`
                   visible={userDialog}
                   style={{ width: "32rem" }}
                   breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-                  header="Are you sure? This action is not reversible!!"
+                  header="Are you sure? "
                   className="p-fluid"
                   footer={userDialogFooter}
                   onHide={hideDialog}
-                ></Dialog>
+                >
+                  <p style={{ marginBottom: "30px" }}>
+                    <strong>Please ensure that you are certain you want to do this </strong>
+                  </p>
+
+                  <p style={{ marginBottom: "30px" }}>
+                    <strong>You can revert your decisions later but this is not recommended</strong>
+                  </p>
+                </Dialog>
 
                 <Dialog
                   visible={confirmSendDialog}
@@ -782,7 +790,7 @@ ${currentUserName}`
                   onClick={() => showUserDialog("Rejected")}
                 />
 
-<Button
+                <Button
                   label="Arrange Another Interview"
                   icon="pi pi-calendar"
                   rounded
