@@ -62,3 +62,33 @@
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
+
+@media screen and (max-width: 600px) {
+  .mainContainer {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .card {
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  .content h3 {
+    font-size: 14px; /* Adjust font size for smaller screens */
+  }
+
+  .flex {
+    flex-direction: column; /* Stack elements vertically on small screens */
+    margin-bottom: 5px;
+  }
+
+  .generateButton {
+    max-width: 100%;
+    padding: 10px; /* Adjust padding for smaller screens */
+  }
+
+  .progressBar {
+    max-width: 100%;
+  }
+}
