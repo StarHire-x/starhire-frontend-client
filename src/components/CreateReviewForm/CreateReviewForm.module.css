@@ -1,18 +1,31 @@
+.cardBody {
+  font-family: 'Arial', sans-serif;
+}
+
 .cardRow {
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  margin-bottom: 15px; 
-  padding-left: 10px;
-  padding-right: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.cardRow label {
+  flex: 1;
+  font-size: 0.8em;
+  margin-right: 10px;
+}
+
+.cardRow textarea,
+.cardRow .p-inputtextarea {
+  flex: 2;
+  min-width: 0;
   width: 100%;
-  max-width: 1200px; 
 }
 
 .cardFooter {
-  display: flex; /* Make the footer flexible */
-  justify-content: flex-end; /* Align the button to the right */
-  margin-top: 20px; /* Add some space above the button */
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
 }
 
 .cardFooter button {
@@ -28,15 +41,10 @@
   transition: background-color 0.3s;
 }
 
-/* Adjust the styling for PrimeReact components, if needed */
 .p-inputtext,
 .p-inputnumber,
 .p-calendar {
-  width: 100%; /* Ensure they take the full width available in the flex container */
-}
-
-.p-inputnumber .p-inputnumber-input {
-  width: 100%; /* Ensure the input within the InputNumber component takes full width */
+  width: 100%;
 }
 
 .errorMessage {
@@ -53,6 +61,6 @@
 
 @media (min-width: 1201px) {
   .cardRow {
-    width: 1200px; /* Or any larger max-width that suits your design */
+    width: 1200px;
   }
 }

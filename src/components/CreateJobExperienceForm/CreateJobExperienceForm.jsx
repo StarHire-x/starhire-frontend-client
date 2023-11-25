@@ -1,12 +1,10 @@
-import React, { useState } from "react";
-import styles from "./createJobExperienceForm.module.css";
-import { Card } from "primereact/card";
-import { InputText } from "primereact/inputtext";
-import { InputNumber } from "primereact/inputnumber";
-import { InputTextarea } from "primereact/inputtextarea";
-import { Calendar } from "primereact/calendar";
-import { Button } from "primereact/button";
-import { Checkbox } from "primereact/checkbox";
+import React, { useState } from 'react';
+import styles from './createJobExperienceForm.module.css';
+import { InputText } from 'primereact/inputtext';
+import { InputTextarea } from 'primereact/inputtextarea';
+import { Calendar } from 'primereact/calendar';
+import { Button } from 'primereact/button';
+import { Checkbox } from 'primereact/checkbox';
 
 const CreateJobExperienceForm = ({
   formData,
@@ -14,14 +12,13 @@ const CreateJobExperienceForm = ({
   handleInputChange,
   addJobExperience,
   formErrors,
-  setFormErrors
+  setFormErrors,
 }) => {
-
   const [isCurrentJob, setIsCurrentJob] = useState(false);
 
   return (
     <div className={styles.container}>
-      <form className={styles.form} onSubmit={addJobExperience}>
+      <form onSubmit={addJobExperience}>
         <div className={styles.cardBody}>
           <div className={styles.cardRow}>
             <label>Company Name:</label>
@@ -74,7 +71,7 @@ const CreateJobExperienceForm = ({
                 if (e.checked) {
                   setFormData((prev) => ({
                     ...prev,
-                    endDate: "null",
+                    endDate: 'null',
                   }));
                 }
               }}
@@ -94,7 +91,7 @@ const CreateJobExperienceForm = ({
                 if (e.value <= formData.startDate) {
                   setFormErrors((prev) => ({
                     ...prev,
-                    endDate: "End date must be after start date.",
+                    endDate: 'End date must be after start date.',
                   }));
                 } else {
                   setFormErrors((prev) => {
@@ -124,7 +121,7 @@ const CreateJobExperienceForm = ({
           </div>
         </div>
 
-        <div className={styles.buttonContainer}>
+        <div className={styles.cardFooter}>
           <Button label="Create Job Experience" severity="success" raised />
         </div>
       </form>
