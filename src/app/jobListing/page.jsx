@@ -20,6 +20,7 @@ import JobDetailPanel from "@/components/JobDetailPanel/JobDetailPanel";
 import styles from "./page.module.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
+import { getUserByUserId } from "../api/auth/user/route";
 
 const JobListingPage = () => {
   const session = useSession();
@@ -31,6 +32,7 @@ const JobListingPage = () => {
   const [filterKeyword, setFilterKeyword] = useState("");
   const [showJobDescriptionDialog, setShowJobDescriptionDialog] =
     useState(false);
+  const [user, setUser] = useState(null);
 
   const hideJobDescriptionDialog = () => {
     setShowJobDescriptionDialog(false);
@@ -47,6 +49,11 @@ const JobListingPage = () => {
     session.status === "authenticated" &&
     session.data &&
     session.data.user.userId;
+
+  const roleRef =
+    session.status === "authenticated" &&
+    session.data &&
+    session.data.user.role;
 
   const [selectedJob, setSelectedJob] = useState(null);
 
@@ -67,19 +74,20 @@ const JobListingPage = () => {
     if (accessToken) {
       setIsMobile(window.innerWidth <= 768);
 
-      findAllJobListings(jobSeekerId, accessToken).then(
-        (data) => {
-          if (data) {
-            setJobListings(data);
-            setIsLoading(false);
-            console.log("data:", data);
-          } else {
-            console.error("Error fetching job listings");
-            setJobListings([]);
-            setIsLoading(false);
-          }
+      findAllJobListings(jobSeekerId, accessToken).then((data) => {
+        if (data) {
+          setJobListings(data);
+          setIsLoading(false);
+          console.log("data:", data);
+        } else {
+          console.error("Error fetching job listings");
+          setJobListings([]);
+          setIsLoading(false);
         }
-      );
+      });
+      getUserByUserId(jobSeekerId, roleRef, accessToken).then((response) => {
+        setUser(response.data)
+      });
     }
   }, [refreshData, accessToken, id, jobSeekerId]);
 
@@ -166,9 +174,7 @@ const JobListingPage = () => {
       <p>
         <strong>{jobListing.address}</strong>
       </p>
-      <p>
-      {jobListing.payRange.split('_').join(' & ')}
-      </p>
+      <p>{jobListing.payRange.split("_").join(" & ")}</p>
       <p>
         <span>Posted on </span>
         {formatDate(jobListing.listingDate)}
@@ -225,6 +231,7 @@ const JobListingPage = () => {
               setRefreshData={setRefreshData}
               jobSeekerId={jobSeekerId}
               toast={toast}
+              user={user}
             />
           ) : (
             <p>Select a job listing to view details.</p>

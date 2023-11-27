@@ -25,6 +25,7 @@ const JobDetailPanel = ({
   setRefreshData,
   toast,
   sessionTokenRef,
+  user
 }) => {
   const [showCreateJobApplicationDialog, setShowCreateJobApplicationDialog] =
     useState(false);
@@ -158,14 +159,15 @@ const JobDetailPanel = ({
       jobListingId: selectedJob.jobListingId,
       jobSeekerId: jobSeekerId,
       jobApplicationStatus: "Submitted",
-      availableStartDate: formData.availableStartDate,
-      availableEndDate: formData.availableEndDate,
+      availableStartDate: user.startDate,
+      availableEndDate: new Date('2024-11-11'),
       remarks: formData.remarks,
       submissionDate: new Date(),
+      recruiterId: "749c1b3a-a9ad-4fc6-9aba-11ed64e272b0"
     };
     try {
       const response = await createJobApplication(reqBody, accessToken);
-      if (!response.error) {
+      if (!response.error) {clea
         console.log("Job application created successfully:", response);
         toast.current.show({
           severity: "success",
@@ -178,6 +180,7 @@ const JobDetailPanel = ({
       }
     } catch (error) {
       //alert(error.message);
+      console.log(error.message);
       toast.current.show({
         severity: "error",
         summary: "Error",
